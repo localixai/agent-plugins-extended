@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Merges upstream's main into ours and says what upstream changed (U1, U2).
+#
+#   extend/tools/sync            fetch upstream, merge upstream/main into the current branch
+#   extend/tools/sync --dry-run  fetch and list what a merge would bring, change nothing
+#
+# A merge never conflicts while U1 holds: nothing of ours lives in upstream's files. The list of
+# changed upstream files is what chapters citing them (U2) must re-read.
+set -euo pipefail
+cd "$(dirname "$0")/../.."
+
+if [[ -n "$(git status --porcelain)" && "${1:-}" != "--dry-run" ]]; then
+  echo "sync: commit or set aside your changes first (the merge needs a clean tree)" >&2
+  exit 1
+fi
+git fetch --quiet upstream
+base=$(git merge-base HEAD upstream/main)
+incoming=$(git rev-list --count "$base..upstream/main")
+if [[ "$incoming" == 0 ]]; then
+  echo "sync: up to date with upstream/main ($(git rev-parse --short upstream/main))"
+  exit 0
+fi
+echo "sync: $incoming upstream commit(s); files they change:"
+git diff --stat "$base" upstream/main | sed 's/^/  /'
+cited=$(git diff --name-only "$base" upstream/main | grep -E '^(spec|schemas)/' || true)
+if [[ -n "$cited" ]]; then
+  echo "sync: chapters of extend/spec that cite these must be re-read (U2):"
+  for file in $cited; do grep -rl "$(basename "$file" .md)" extend/spec 2>/dev/null | sed 's/^/  /' || true; done | sort -u
+fi
+[[ "${1:-}" == "--dry-run" ]] && exit 0
+git merge --no-edit upstream/main
+(cd extend/tools && bun run check:upstream)

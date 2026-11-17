@@ -1,0 +1,25 @@
+{
+  "name": "agent-plugins-extended-tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "bun run typecheck && bun run check:upstream && bun run check:links && bun run check:sections && bun run coverage --check && bun run verification --check && bun run judgments --check && bun run implementations --check",
+    "check:upstream": "bun src/check-upstream.ts",
+    "coverage": "bun src/coverage.ts",
+    "check:links": "bun src/check-links.ts",
+    "check:sections": "bun src/check-sections.ts",
+    "corpus": "bun src/corpus/main.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "verification": "bun src/verification.ts",
+    "judgments": "bun src/judgments-index.ts",
+    "implementations": "bun src/implementations.ts"
+  },
+  "dependencies": {
+    "ajv": "8.17.1",
+    "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.4",
+    "typescript": "5.9.3"
+  }
+}
