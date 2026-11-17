@@ -36,5 +36,11 @@ extended to the plugin contract of Claude Code 2.1.321.
   declarations snapshot, the corpus and Claude Code's verdicts on it. The snapshots beside
   `requirements.json` (`mods-declarations.json`, `docs-tables.json`, `out-of-scope.json`,
   `out-of-scope-pages.json`, `scope-audit.md`) live in `conformance/`; implementations sync them.
+- Oracle runs (`tools/src/mine/oracle/`, `bun run oracle:record`): Claude Code run as a black box
+  on fixtures written for it (a session's registry, the settings merge and starting mode, the hook
+  scrub, remote MCP and `headersHelper` credential names, what the model reads of a skill), recorded
+  in `conformance/oracle/` for implementations to sync, and on the corpus (a session per plugin,
+  validator timings), cached in `.cache/oracle/<release>/`. `conformance/tools-table.json`: the
+  tools table of tools-reference.md as data.
 - Documentation: the GitHub front page (`.github/README.md`), and guides for `conformance/`,
   `tools/` and contributing.

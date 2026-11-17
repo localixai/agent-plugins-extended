@@ -1,0 +1,839 @@
+{
+  "claudeCodeVersion": "2.1.322",
+  "sdkVersion": "0.3.321",
+  "managed": {
+    "present": true,
+    "keys": [
+      "appendPlugins",
+      "enabledPlugins",
+      "extraKnownMarketplaces"
+    ]
+  },
+  "cases": [
+    {
+      "name": "project beats user",
+      "user": {
+        "model": "opus"
+      },
+      "project": {
+        "model": "haiku"
+      },
+      "keys": [
+        "model"
+      ],
+      "sdk": {
+        "model": "haiku"
+      }
+    },
+    {
+      "name": "local beats project beats user",
+      "user": {
+        "model": "a"
+      },
+      "project": {
+        "model": "b"
+      },
+      "local": {
+        "model": "c"
+      },
+      "keys": [
+        "model"
+      ],
+      "sdk": {
+        "model": "c"
+      }
+    },
+    {
+      "name": "permission lists combine",
+      "user": {
+        "permissions": {
+          "allow": [
+            "Read",
+            "Bash(ls:*)"
+          ],
+          "deny": [
+            "Bash(rm:*)"
+          ]
+        }
+      },
+      "project": {
+        "permissions": {
+          "allow": [
+            "Edit"
+          ],
+          "deny": [
+            "Write"
+          ]
+        }
+      },
+      "local": {
+        "permissions": {
+          "ask": [
+            "Bash(git push:*)"
+          ]
+        }
+      },
+      "keys": [
+        "permissions"
+      ],
+      "sdk": {
+        "permissions": {
+          "allow": [
+            "Bash(ls:*)",
+            "Edit",
+            "Read"
+          ],
+          "ask": [
+            "Bash(git push:*)"
+          ],
+          "deny": [
+            "Bash(rm:*)",
+            "Write"
+          ]
+        }
+      }
+    },
+    {
+      "name": "env merges per variable",
+      "user": {
+        "env": {
+          "A": "1",
+          "B": "u"
+        }
+      },
+      "project": {
+        "env": {
+          "B": "p",
+          "C": "3"
+        }
+      },
+      "local": {
+        "env": {
+          "C": "l"
+        }
+      },
+      "keys": [
+        "env"
+      ],
+      "sdk": {
+        "env": {
+          "A": "1",
+          "B": "p",
+          "C": "l"
+        }
+      }
+    },
+    {
+      "name": "hooks combine per event",
+      "user": {
+        "hooks": {
+          "PreToolUse": [
+            {
+              "matcher": "Bash",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "u.sh"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "project": {
+        "hooks": {
+          "PreToolUse": [
+            {
+              "matcher": "Bash",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "p.sh"
+                }
+              ]
+            }
+          ],
+          "Stop": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "s.sh"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "keys": [
+        "hooks"
+      ],
+      "sdk": {
+        "hooks": {
+          "PreToolUse": [
+            {
+              "hooks": [
+                {
+                  "command": "p.sh",
+                  "type": "command"
+                }
+              ],
+              "matcher": "Bash"
+            },
+            {
+              "hooks": [
+                {
+                  "command": "u.sh",
+                  "type": "command"
+                }
+              ],
+              "matcher": "Bash"
+            }
+          ],
+          "Stop": [
+            {
+              "hooks": [
+                {
+                  "command": "s.sh",
+                  "type": "command"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "enabledPlugins combine per id",
+      "user": {
+        "enabledPlugins": {
+          "a@m": true,
+          "b@m": true
+        }
+      },
+      "project": {
+        "enabledPlugins": {
+          "b@m": false,
+          "c@m": true
+        }
+      },
+      "keys": [
+        "enabledPlugins"
+      ],
+      "sdk": {
+        "enabledPlugins": {
+          "a@m": true,
+          "b@m": false,
+          "c@m": true,
+          "tokendoctor@tokendoctor-org": true
+        }
+      }
+    },
+    {
+      "name": "extraKnownMarketplaces combine per name",
+      "user": {
+        "extraKnownMarketplaces": {
+          "m1": {
+            "source": {
+              "source": "github",
+              "repo": "a/b"
+            }
+          }
+        }
+      },
+      "project": {
+        "extraKnownMarketplaces": {
+          "m1": {
+            "source": {
+              "source": "github",
+              "repo": "c/d"
+            }
+          },
+          "m2": {
+            "source": {
+              "source": "github",
+              "repo": "e/f"
+            }
+          }
+        }
+      },
+      "keys": [
+        "extraKnownMarketplaces"
+      ],
+      "sdk": {
+        "extraKnownMarketplaces": {
+          "m1": {
+            "source": {
+              "repo": "c/d",
+              "source": "github"
+            }
+          },
+          "m2": {
+            "source": {
+              "repo": "e/f",
+              "source": "github"
+            }
+          },
+          "tokendoctor-org": {
+            "source": {
+              "path": "/Library/Application Support/ClaudeCode/tokendoctor-org",
+              "source": "directory"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "sandbox merges nested",
+      "user": {
+        "sandbox": {
+          "enabled": true,
+          "network": {
+            "allowedDomains": [
+              "a.com"
+            ]
+          }
+        }
+      },
+      "project": {
+        "sandbox": {
+          "network": {
+            "allowedDomains": [
+              "b.com"
+            ]
+          },
+          "excludedCommands": [
+            "git"
+          ]
+        }
+      },
+      "keys": [
+        "sandbox"
+      ],
+      "sdk": {
+        "sandbox": {
+          "enabled": true,
+          "excludedCommands": [
+            "git"
+          ],
+          "network": {
+            "allowedDomains": [
+              "a.com",
+              "b.com"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "MCP server lists combine",
+      "user": {
+        "disabledMcpjsonServers": [
+          "a"
+        ]
+      },
+      "project": {
+        "disabledMcpjsonServers": [
+          "b"
+        ],
+        "enabledMcpjsonServers": [
+          "x"
+        ]
+      },
+      "keys": [
+        "disabledMcpjsonServers",
+        "enabledMcpjsonServers"
+      ],
+      "sdk": {
+        "disabledMcpjsonServers": [
+          "a",
+          "b"
+        ],
+        "enabledMcpjsonServers": [
+          "x"
+        ]
+      }
+    },
+    {
+      "name": "a broken file is skipped",
+      "user": {
+        "model": "opus"
+      },
+      "project": "{ \"model\": ",
+      "keys": [
+        "model"
+      ],
+      "sdk": {
+        "model": "opus"
+      }
+    },
+    {
+      "name": "a wrong-typed value is dropped",
+      "user": {
+        "model": 5,
+        "permissions": "x"
+      },
+      "keys": [
+        "model",
+        "permissions"
+      ],
+      "sdk": {}
+    },
+    {
+      "name": "an env of no text values",
+      "user": {
+        "env": {
+          "A": 1,
+          "B": true,
+          "N": null,
+          "O": {},
+          "L": [
+            1,
+            2
+          ]
+        }
+      },
+      "keys": [
+        "env"
+      ],
+      "sdk": {
+        "env": {
+          "A": "1",
+          "B": "true",
+          "L": "1,2",
+          "N": "null",
+          "O": "[object Object]"
+        }
+      }
+    },
+    {
+      "name": "a key the project cannot set",
+      "project": {
+        "skipDangerousModePermissionPrompt": true
+      },
+      "keys": [
+        "skipDangerousModePermissionPrompt"
+      ],
+      "sdk": {
+        "skipDangerousModePermissionPrompt": true
+      }
+    },
+    {
+      "name": "parent settings keep the restrictive keys",
+      "parent": {
+        "permissions": {
+          "deny": [
+            "Bash(curl:*)"
+          ]
+        },
+        "model": "x"
+      },
+      "user": {
+        "permissions": {
+          "allow": [
+            "Read"
+          ]
+        }
+      },
+      "keys": [
+        "permissions",
+        "model"
+      ],
+      "sdk": {
+        "permissions": {
+          "allow": [
+            "Read"
+          ]
+        }
+      }
+    },
+    {
+      "name": "parent allowManagedHooksOnly",
+      "parent": {
+        "allowManagedHooksOnly": true
+      },
+      "user": {
+        "hooks": {
+          "Stop": [
+            {
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "x"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "keys": [
+        "allowManagedHooksOnly",
+        "hooks"
+      ],
+      "sdk": {
+        "hooks": {
+          "Stop": [
+            {
+              "hooks": [
+                {
+                  "command": "x",
+                  "type": "command"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "defaultMode default from user",
+      "user": {
+        "permissions": {
+          "defaultMode": "default"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode acceptEdits from user",
+      "user": {
+        "permissions": {
+          "defaultMode": "acceptEdits"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "acceptEdits"
+      },
+      "cli": "acceptEdits"
+    },
+    {
+      "name": "defaultMode plan from user",
+      "user": {
+        "permissions": {
+          "defaultMode": "plan"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "plan"
+      },
+      "cli": "plan"
+    },
+    {
+      "name": "defaultMode dontAsk from user",
+      "user": {
+        "permissions": {
+          "defaultMode": "dontAsk"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "dontAsk"
+      },
+      "cli": "dontAsk"
+    },
+    {
+      "name": "defaultMode auto from user",
+      "user": {
+        "permissions": {
+          "defaultMode": "auto"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "auto"
+      },
+      "cli": "auto"
+    },
+    {
+      "name": "defaultMode bypassPermissions from user",
+      "user": {
+        "permissions": {
+          "defaultMode": "bypassPermissions"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "bypassPermissions"
+      },
+      "cli": "bypassPermissions"
+    },
+    {
+      "name": "defaultMode manual from user",
+      "user": {
+        "permissions": {
+          "defaultMode": "manual"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode default from project",
+      "project": {
+        "permissions": {
+          "defaultMode": "default"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode acceptEdits from project",
+      "project": {
+        "permissions": {
+          "defaultMode": "acceptEdits"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "acceptEdits"
+    },
+    {
+      "name": "defaultMode plan from project",
+      "project": {
+        "permissions": {
+          "defaultMode": "plan"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "plan"
+      },
+      "cli": "plan"
+    },
+    {
+      "name": "defaultMode dontAsk from project",
+      "project": {
+        "permissions": {
+          "defaultMode": "dontAsk"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "dontAsk"
+      },
+      "cli": "dontAsk"
+    },
+    {
+      "name": "defaultMode auto from project",
+      "project": {
+        "permissions": {
+          "defaultMode": "auto"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode bypassPermissions from project",
+      "project": {
+        "permissions": {
+          "defaultMode": "bypassPermissions"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode manual from project",
+      "project": {
+        "permissions": {
+          "defaultMode": "manual"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode default from local",
+      "local": {
+        "permissions": {
+          "defaultMode": "default"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode acceptEdits from local",
+      "local": {
+        "permissions": {
+          "defaultMode": "acceptEdits"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "acceptEdits"
+      },
+      "cli": "acceptEdits"
+    },
+    {
+      "name": "defaultMode plan from local",
+      "local": {
+        "permissions": {
+          "defaultMode": "plan"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "plan"
+      },
+      "cli": "plan"
+    },
+    {
+      "name": "defaultMode dontAsk from local",
+      "local": {
+        "permissions": {
+          "defaultMode": "dontAsk"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "dontAsk"
+      },
+      "cli": "dontAsk"
+    },
+    {
+      "name": "defaultMode auto from local",
+      "local": {
+        "permissions": {
+          "defaultMode": "auto"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode bypassPermissions from local",
+      "local": {
+        "permissions": {
+          "defaultMode": "bypassPermissions"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode manual from local",
+      "local": {
+        "permissions": {
+          "defaultMode": "manual"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    },
+    {
+      "name": "defaultMode plan from project over auto from user",
+      "user": {
+        "permissions": {
+          "defaultMode": "auto"
+        }
+      },
+      "project": {
+        "permissions": {
+          "defaultMode": "plan"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "plan"
+      },
+      "cli": "plan"
+    },
+    {
+      "name": "defaultMode of no mode",
+      "user": {
+        "permissions": {
+          "defaultMode": "banana"
+        }
+      },
+      "keys": [
+        "defaultMode"
+      ],
+      "sdk": {
+        "defaultMode": "default"
+      },
+      "cli": "default"
+    }
+  ]
+}

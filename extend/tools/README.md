@@ -36,12 +36,17 @@ one Claude Code release, and an implementation syncs it from here. The caches ar
 | `bun run docs:pull` | Downloads every page `llms.txt` lists, as Markdown; `--dry-run` prints the release and page count and writes nothing | code.claude.com | `.cache/claude-docs/<release>/` |
 | `bun run types:pull` | Lets Claude Code load a scratch mod in a private home, offline, and copies the declarations it writes | `CLAUDE_ORACLE_BIN` (else `claude`) | `.cache/claude-types/<release>/` |
 | `bun run types:extract [release]` | The mods declarations through the TypeScript checker | `.cache/claude-types/<release>/` | `conformance/mods-declarations.json` |
-| `bun run spec:extract [release]` | The requirements, by the table rules and the section and page audit (C2) | `.cache/claude-docs/<release>/`, `conformance/out-of-scope-pages.json` | `conformance/requirements.json`, `out-of-scope.json`, `docs-tables.json` |
+| `bun run spec:extract [release]` | The requirements, by the table rules and the section and page audit (C2) | `.cache/claude-docs/<release>/`, `conformance/out-of-scope-pages.json` | `conformance/requirements.json`, `out-of-scope.json`, `docs-tables.json`, `tools-table.json` |
 | `bun run corpus:fetch` | Clones the official and community marketplaces and fetches every plugin they list (§15.6); `--refresh` fetches again | github.com | `.cache/corpus/index.json` and the plugins |
 | `bun run corpus:oracle [release]` | `claude plugin validate --json` and `claude plugin details` on every fetched plugin, cached per release; `--validate-only` skips the second | `CLAUDE_ORACLE_BIN` (else `claude`), the corpus | `.cache/corpus/oracle/<release>/`, `oracle-load/<release>/` |
+| `bun run oracle:record [oracle…]` | Runs Claude Code as a black box on the fixtures written for it and records what it did; no oracle names every fixture oracle (`runtime`, `settings`, `subprocess-scrub`, `remote-mcp-env`, `headers-helper-env`, `model-content`); `corpus-runtime` and `validate-timings` run on the corpus only when named; `--check` writes nothing and fails on a change | `CLAUDE_ORACLE_BIN` (else `claude`), `conformance/oracle/`, the corpus | `conformance/oracle/` (fixture outcomes), `.cache/oracle/<release>/` (corpus outcomes, timings, the `init` cache) |
 | `bun run mine <release>` | All of the above in order, pulling only what is not cached; `--refresh`, `--skip-corpus` | | |
 
-`CORPUS_DIR` moves the corpus folder for `corpus:fetch`, `corpus:oracle` and `bun run corpus`.
+`CORPUS_DIR` moves the corpus folder for `corpus:fetch`, `corpus:oracle`, `oracle:record` and `bun
+run corpus`; `ORACLE_CACHE_DIR` moves `.cache/oracle`. A fixture oracle RUNS its fixtures (their
+hooks, MCP servers and `!` commands): point it only at fixtures written for it. `corpus-runtime`
+asks only the corpus plugins that run nothing at session start (`src/mine/oracle/session-start.ts`).
+`conformance/README.md`, "Oracle runs", says what each oracle records and where.
 `conformance/README.md`, "Mining the snapshots", says how each snapshot is read; `SOURCE.md` says
 when to mine.
 
@@ -99,4 +104,6 @@ branch.
 | `src/mine/requirements/` | `spec:extract`: the Markdown reader, the table rules (`sources.ts`, `tables-extra.ts`, `row-scope.ts`), the section audit (`scope*.ts`, `sections.ts`, `table-audit.ts`), the page audit (`page-scope.ts`), the mods tables (`mods-reference.ts`) |
 | `src/mine/declarations/` | `types:extract`: the checker reader, shapes and the snapshot's schema |
 | `src/mine/corpus/` | `corpus:fetch` (`plan.ts` plans each entry), `corpus:oracle` (`oracle.ts`, `load-oracle.ts`) |
+| `src/mine/requirements/tools-table.ts` | `tools-table.json`: the tools table of tools-reference.md |
+| `src/mine/oracle/` | `oracle:record` (`main.ts`): the isolation every run takes (`isolated.ts`), the session oracle and its `init` cache (`session.ts`), one recorder per oracle (`runtime.ts`, `settings.ts` with `settings-cases.ts`, `scrub.ts`, `remote-mcp-env.ts`, `headers-helper-env.ts`, `model-content.ts` with `model-request.ts`, `corpus-runtime.ts` with `session-start.ts`, `validate-timings.ts`), where outcomes go (`paths.ts`) |
 | `sync` | Merging upstream |

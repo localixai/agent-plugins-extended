@@ -1,0 +1,245 @@
+{
+  "claudeCode": "2.1.321",
+  "tools": [
+    {
+      "tool": "Agent",
+      "permissionRequired": false
+    },
+    {
+      "tool": "Artifact",
+      "permissionRequired": true
+    },
+    {
+      "tool": "AskUserQuestion",
+      "permissionRequired": false
+    },
+    {
+      "tool": "Bash",
+      "permissionRequired": true
+    },
+    {
+      "tool": "CronCreate",
+      "permissionRequired": false
+    },
+    {
+      "tool": "CronDelete",
+      "permissionRequired": false
+    },
+    {
+      "tool": "CronList",
+      "permissionRequired": false
+    },
+    {
+      "tool": "Edit",
+      "permissionRequired": true
+    },
+    {
+      "tool": "EndConversation",
+      "permissionRequired": false
+    },
+    {
+      "tool": "EnterPlanMode",
+      "permissionRequired": false
+    },
+    {
+      "tool": "EnterWorktree",
+      "permissionRequired": true
+    },
+    {
+      "tool": "ExitPlanMode",
+      "permissionRequired": true
+    },
+    {
+      "tool": "ExitWorktree",
+      "permissionRequired": false
+    },
+    {
+      "tool": "Glob",
+      "permissionRequired": false
+    },
+    {
+      "tool": "Grep",
+      "permissionRequired": false
+    },
+    {
+      "tool": "ListAgents",
+      "permissionRequired": false
+    },
+    {
+      "tool": "ListMcpResourcesTool",
+      "permissionRequired": false
+    },
+    {
+      "tool": "LSP",
+      "permissionRequired": false
+    },
+    {
+      "tool": "Monitor",
+      "permissionRequired": true
+    },
+    {
+      "tool": "NotebookEdit",
+      "permissionRequired": true
+    },
+    {
+      "tool": "PowerShell",
+      "permissionRequired": true
+    },
+    {
+      "tool": "PushNotification",
+      "permissionRequired": false
+    },
+    {
+      "tool": "Read",
+      "permissionRequired": false
+    },
+    {
+      "tool": "ReadMcpResourceTool",
+      "permissionRequired": false
+    },
+    {
+      "tool": "RemoteTrigger",
+      "permissionRequired": false
+    },
+    {
+      "tool": "ReportFindings",
+      "permissionRequired": false
+    },
+    {
+      "tool": "ScheduleWakeup",
+      "permissionRequired": false
+    },
+    {
+      "tool": "SendFeedback",
+      "permissionRequired": false
+    },
+    {
+      "tool": "SendMessage",
+      "permissionRequired": false
+    },
+    {
+      "tool": "SendUserFile",
+      "permissionRequired": false
+    },
+    {
+      "tool": "ShareOnboardingGuide",
+      "permissionRequired": true
+    },
+    {
+      "tool": "Skill",
+      "permissionRequired": true
+    },
+    {
+      "tool": "SubagentHandback",
+      "permissionRequired": false
+    },
+    {
+      "tool": "TaskCreate",
+      "permissionRequired": false
+    },
+    {
+      "tool": "TaskGet",
+      "permissionRequired": false
+    },
+    {
+      "tool": "TaskList",
+      "permissionRequired": false
+    },
+    {
+      "tool": "TaskOutput",
+      "permissionRequired": false
+    },
+    {
+      "tool": "TaskStop",
+      "permissionRequired": false
+    },
+    {
+      "tool": "TaskUpdate",
+      "permissionRequired": false
+    },
+    {
+      "tool": "TodoWrite",
+      "permissionRequired": false
+    },
+    {
+      "tool": "ToolSearch",
+      "permissionRequired": false
+    },
+    {
+      "tool": "WaitForMcpServers",
+      "permissionRequired": false
+    },
+    {
+      "tool": "WebFetch",
+      "permissionRequired": true
+    },
+    {
+      "tool": "WebSearch",
+      "permissionRequired": true
+    },
+    {
+      "tool": "Workflow",
+      "permissionRequired": true
+    },
+    {
+      "tool": "Write",
+      "permissionRequired": true
+    }
+  ],
+  "ruleFormats": [
+    {
+      "rule": "Bash(npm run *)",
+      "appliesTo": [
+        "Bash",
+        "Monitor"
+      ]
+    },
+    {
+      "rule": "PowerShell(Get-ChildItem *)",
+      "appliesTo": [
+        "PowerShell"
+      ]
+    },
+    {
+      "rule": "Read(~/secrets/**)",
+      "appliesTo": [
+        "Read",
+        "Grep",
+        "Glob",
+        "LSP"
+      ]
+    },
+    {
+      "rule": "Edit(/src/**)",
+      "appliesTo": [
+        "Edit",
+        "Write",
+        "NotebookEdit"
+      ]
+    },
+    {
+      "rule": "Skill(deploy *)",
+      "appliesTo": [
+        "Skill"
+      ]
+    },
+    {
+      "rule": "Agent(Explore)",
+      "appliesTo": [
+        "Agent"
+      ]
+    },
+    {
+      "rule": "WebFetch(domain:example.com)",
+      "appliesTo": [
+        "WebFetch"
+      ]
+    },
+    {
+      "rule": "WebSearch",
+      "appliesTo": [
+        "WebSearch"
+      ]
+    }
+  ]
+}

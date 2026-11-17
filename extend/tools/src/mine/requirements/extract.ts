@@ -3,7 +3,7 @@
  * `extend/.cache/claude-docs/<release>/` (`bun run docs:pull`) into
  * `conformance/requirements.json`: one entry per documented event, field, source, tool or element,
  * with the page and section it comes from and no text of the docs (C2, conformance/README.md). Also
- * writes `out-of-scope.json` and `docs-tables.json` beside it. Prints what was added and removed
+ * writes `out-of-scope.json`, `docs-tables.json` and `tools-table.json` beside it. Prints what was added and removed
  * since the committed file, and fails when a rule finds nothing, a skip matches no heading, or a
  * pulled page is neither audited nor excluded.
  *
@@ -14,6 +14,7 @@ import { CONFORMANCE } from '../../paths.ts'
 import { docsDir, DOCS_CACHE, releaseOf } from '../paths.ts'
 import { keysOf, parsePage, type Page } from './markdown.ts'
 import { DOCS_TABLES_FILE, pulledDocsTables } from './mods-reference.ts'
+import { pulledToolsTable, TOOLS_TABLE_FILE } from './tools-table.ts'
 import { docsPages, pageProblems, readOutOfScopePages } from './page-scope.ts'
 import { OUT_OF_SCOPE_FILE, readRequirements, REQUIREMENTS_FILE, type Requirement } from './requirements.ts'
 import { auditPage } from './sections.ts'
@@ -128,6 +129,8 @@ await Bun.write(REQUIREMENTS_FILE, `${JSON.stringify({ claudeCode: version, requ
 await Bun.write(OUT_OF_SCOPE_FILE, `${JSON.stringify(excluded, null, 2)}\n`)
 const tables = await pulledDocsTables(DOCS_DIR)
 if (tables) await Bun.write(DOCS_TABLES_FILE, `${JSON.stringify(tables, null, 2)}\n`)
+const toolsTable = await pulledToolsTable(DOCS_DIR, version)
+if (toolsTable) await Bun.write(TOOLS_TABLE_FILE, `${JSON.stringify(toolsTable, null, 2)}\n`)
 const added = requirements.filter((r) => !old.has(r.id))
 const removed = [...old].filter((id) => !now.has(id))
 console.log(`Claude Code ${version}: ${requirements.length} requirements`)

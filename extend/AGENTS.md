@@ -31,7 +31,8 @@ The owner merges it in from time to time (`extend/tools/sync`); that merge must 
 - **E2** Shapes come from the official types of the same release (`@anthropic-ai/claude-agent-sdk`,
   and for mods the declarations Claude Code writes beside a mod). Name the type you follow.
 - **E3** This repository owns the evidence: the docs, the declarations, the requirements and the
-  corpus with Claude Code's verdicts are mined here (`extend/tools/src/mine/`, `bun run mine`), and
+  corpus with Claude Code's verdicts, and the oracle runs on fixtures, are mined here
+  (`extend/tools/src/mine/`, `bun run mine`, `bun run oracle:record`), and
   the implementation, `agent-plugins` (`~/Documents/localixai/agent-plugins`), follows the
   specification and syncs those snapshots from `extend/conformance/`; it never mines its own. Read
   its code, tests and judgments to find what the docs imply; what it decided where the docs are
@@ -92,7 +93,8 @@ contract for the targeted release (`extend/conformance/SOURCE.md` says where it 
 | Upstream files untouched (U1) | `bun run check:upstream` |
 | Coverage markers and the report (C1, E5) | `bun run coverage` (`--check` in `check`) |
 | Schemas against the corpus (W4) | `bun run corpus` (writes `conformance/CORPUS.md`; reads `CORPUS_DIR`, default `extend/.cache/corpus`; not part of `check`) |
-| Mine a Claude Code release (E3, C2) | `bun run mine <release>`; the steps alone: `docs:pull`, `types:pull`, `types:extract`, `spec:extract`, `corpus:fetch`, `corpus:oracle` (`tools/README.md`) |
+| Mine a Claude Code release (E3, C2) | `bun run mine <release>`; the steps alone: `docs:pull`, `types:pull`, `types:extract`, `spec:extract`, `oracle:record`, `corpus:fetch`, `corpus:oracle` (`tools/README.md`) |
+| Oracle runs (E4a) | `bun run oracle:record [oracle…] [--check]`: Claude Code on the fixtures of `conformance/oracle/`, the corpus ones cached in `extend/.cache/oracle/` (`conformance/README.md`, "Oracle runs") |
 | Merge upstream | `./sync` (fetch, merge `upstream/main`, report what changed) |
 
 Commit only when asked, never push: the repository is local until the owner says otherwise.

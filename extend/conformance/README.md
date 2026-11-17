@@ -13,6 +13,8 @@ compatibility (E5).
 | [`out-of-scope-pages.json`](out-of-scope-pages.json) | Every documentation page not audited, with its reason | By hand: a person classifies each page ("Pages and scope") | When a release adds or removes a page |
 | [`scope-audit.md`](scope-audit.md) | The owner's scope decision, and what of each excluded page stays covered elsewhere | By hand | With the scope |
 | [`docs-tables.json`](docs-tables.json) | The tables of the mods reference (events, API methods, limits, elements, render sites, settings) as data, for implementations' tests | `bun run spec:extract` | With the snapshot |
+| [`tools-table.json`](tools-table.json) | The tools table of tools-reference.md as data: each built-in tool with "Permission required", and the tools each permission rule format applies to, for an implementation to check its own copy against | `bun run spec:extract` | With the snapshot |
+| [`oracle/`](oracle/) | Fixtures written for Claude Code to run, and what it did on each: the outcomes an implementation's tests compare with ("Oracle runs") | Fixtures by hand; outcomes by `bun run oracle:record` | When a fixture is added, or with a new release |
 | [`mods-declarations.json`](mods-declarations.json) | What the mods declarations of the release declare: events and their fields, `$` and its members, `next`, the elements and their props, the exports, the built-in tools' inputs, each with its line | `bun run types:extract` | With the snapshot |
 | [`REPORT.md`](REPORT.md) | The stated share: per category and per chapter file | `bun run coverage` | Whenever a marker is added, removed or changed |
 | [`verification/`](verification/) | The ledgers: one JSON file per verification pass | By the reader of each pass | When a pass is made |
@@ -226,6 +228,38 @@ types:pull` gets them from the program `CLAUDE_ORACLE_BIN` names (else `claude`)
 and config folder with an unusable key and no prompt typed, into `claude-types/<release>/`.
 `bun run types:extract [release]` reads them through the TypeScript checker, never by their text,
 into `mods-declarations.json` (E2).
+
+### Oracle runs
+
+Where the docs are silent or wrong, the evidence is what Claude Code does (E4a). `bun run
+oracle:record` runs the program `CLAUDE_ORACLE_BIN` names (else `claude`) as a black box, isolated:
+a private home, config folder and working folder, no inherited variable but `PATH`, an invalid key
+and an API address nothing listens on, unless the oracle serves a fake one itself. Every outcome
+names the release that answered (`claudeCodeVersion`), which may be another than the snapshot's.
+`--check` writes nothing and fails when Claude Code now does something else.
+
+Outcomes are kept by size. The fixture oracles are small, and an implementation's tests read them,
+so they are committed in `oracle/` beside their fixtures and synced with the other snapshots. The
+corpus oracles are large and belong to one machine's corpus checkout, so they are cached per release
+in `extend/.cache/oracle/<release>/` (or `ORACLE_CACHE_DIR`) and never committed; an implementation
+reads them from the checkout beside it.
+
+| Oracle | Inputs | What Claude Code is asked | Outcome |
+| --- | --- | --- | --- |
+| `runtime` | `oracle/runtime/<case>/`: a plugin per case (its name is the plugin's), `oracle-settings.json` the user settings | `claude -p --plugin-dir <case> --output-format stream-json`, read up to `init` | `<case>/expected.json`: the registry, ids only (`loaded`, `agents`, `slashCommands`, `skills`, `mcpServers`, `outputStyle`) |
+| `settings` | the cases of `tools/src/mine/oracle/settings-cases.ts` | the Agent SDK's `resolveSettings` and `filterEscalatingDefaultMode` per key; `claude -p` for the starting mode | `oracle/settings.json`: each case's files, keys, `sdk` values (canonical: keys sorted, lists as sorted sets) and `cli` mode; `managed` names only the keys the recording machine's managed settings set, which are not to be compared |
+| `subprocess-scrub` | `oracle/subprocess-scrub/candidates.json` | a SessionStart hook's environment under `CLAUDE_CODE_SUBPROCESS_ENV_SCRUB=1` | `expected.json`: `left`, each value or `null` |
+| `remote-mcp-env` | `oracle/remote-mcp-env/candidates.txt` | the header values `claude mcp get` sends a local server | `expected.json`: `empty`, `kept` |
+| `headers-helper-env` | `oracle/headers-helper-env/candidates.txt` | the variables a supplied `headersHelper` receives | `expected.json`: `removed`, `kept` |
+| `model-content` | `oracle/model-content/<case>/`: `plugin/` and `case.json` | the first request `claude -p "/<plugin>:<skill> <args>"` sends a local fake Messages API | `<case>/expected.json`: the user text blocks, normalized (`<PLUGIN_ROOT>`, `<PLUGIN_DATA>`, `<CWD>`, `<SESSION_ID>`) |
+| `corpus-runtime` | every corpus plugin that runs nothing at session start | the session oracle, the built-in names taken out | `.cache/oracle/<release>/corpus-runtime/<marketplace>/<name>.json` |
+| `validate-timings` | the first 30 corpus plugins by id | `claude plugin validate`, timed, median of 5 | `.cache/oracle/<release>/validate-timings.json` |
+
+A fixture oracle RUNS its fixture (hooks, MCP servers, a skill's `!` commands): fixtures are written
+for it, and a corpus plugin is asked only by `corpus-runtime`, only when it runs nothing on its way
+to `init`. `init` events are cached by the folder's content hash in `.cache/oracle/<release>/init/`.
+One fixture is known to answer two ways: `runtime/symlinked-duplicates` names a linked skill folder
+by either name from run to run, so `--check` may report it.
 
 ### Corpus and verdicts
 

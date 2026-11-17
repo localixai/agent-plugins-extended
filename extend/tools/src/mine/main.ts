@@ -7,13 +7,15 @@
  * 2. `types:pull` when its declarations are not cached, with `CLAUDE_ORACLE_BIN` defaulting to
  *    `~/.local/share/claude/versions/<release>`.
  * 3. `types:extract` and `spec:extract`: the snapshots in `conformance/`.
- * 4. `corpus:fetch` and `corpus:oracle`: the corpus and Claude Code's verdicts on it.
+ * 4. `oracle:record`: what the release does on the fixtures of `conformance/oracle/`.
+ * 5. `corpus:fetch`, `corpus:oracle` and `oracle:record corpus-runtime`: the corpus and Claude Code's
+ *    verdicts and sessions on it.
  *
  * Stops at the first step that fails.
  *
  *   bun run mine <release> [--refresh] [--skip-corpus]
  *     --refresh       pull docs and declarations again, and fetch the corpus again
- *     --skip-corpus   stop after the snapshots
+ *     --skip-corpus   stop after the snapshots and the fixture oracles
  */
 import { existsSync } from 'node:fs'
 import { homedir } from 'node:os'
@@ -59,8 +61,10 @@ if (!cached(typesDir(release))) {
 }
 await step('types:extract', release)
 await step('spec:extract', release)
+await step('oracle:record')
 if (!args.includes('--skip-corpus')) {
   await step('corpus:fetch', ...(refresh ? ['--refresh'] : []))
   await step('corpus:oracle', release)
+  await step('oracle:record', 'corpus-runtime')
 }
 console.log(`\nmine: Claude Code ${release} done; update conformance/SOURCE.md and run \`bun run coverage\``)

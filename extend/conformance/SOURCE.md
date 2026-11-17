@@ -29,8 +29,11 @@ its own. Everything runs in `extend/tools/`.
 2. `bun run mine <release>`: pulls the docs (`docs:pull`, only the current release is served) and
    the mods declarations (`types:pull`) into `extend/.cache/`, writes `mods-declarations.json`
    (`types:extract`), `requirements.json`, `out-of-scope.json` and `docs-tables.json`
-   (`spec:extract`), then fetches the corpus (`corpus:fetch`) and asks the release about every
-   plugin (`corpus:oracle`). `--skip-corpus` stops after the snapshots; `--refresh` pulls again.
+   (`spec:extract`, with `tools-table.json`), records what the release does on the fixtures of
+   `oracle/` (`oracle:record`), then fetches the corpus (`corpus:fetch`) and asks the release about
+   every plugin (`corpus:oracle`, `oracle:record corpus-runtime`). `--skip-corpus` stops after the
+   snapshots and the fixture oracles; `--refresh` pulls again. Read the diff of `oracle/`: a changed
+   outcome is a change of Claude Code's behaviour (a judgment or a deviation to revisit).
 3. When `spec:extract` stops, the docs moved: a rule that finds nothing or a stale skip is fixed in
    `src/mine/requirements/`, and a new page is classified in `out-of-scope-pages.json` or audited
    in a `scope-*.ts` (`README.md`, "Pages and scope"). Read the added and removed ids it prints.
