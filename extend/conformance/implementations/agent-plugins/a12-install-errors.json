@@ -1,0 +1,1196 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a12-install-errors",
+  "date": "2026-11-16",
+  "files": [
+    "16-install.md",
+    "17-errors.md"
+  ],
+  "requirements": [
+    {
+      "id": "install.loading.Entry name and manifest name",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-names.ts:13; tests/marketplace/plugin-names.test.ts"
+    },
+    {
+      "id": "install.loading.Check which stage a plugin reached",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/stage-report.ts:17; tests/marketplace/stage-report.test.ts"
+    },
+    {
+      "id": "install.overview.Make an installed plugin available in your session.Settings",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/stage-report.ts:17; tests/marketplace/stage-report.test.ts"
+    },
+    {
+      "id": "install.overview.Make an installed plugin available in your session.Disk",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/stage-report.ts:17; tests/marketplace/stage-report.test.ts"
+    },
+    {
+      "id": "install.overview.Make an installed plugin available in your session.Session",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/stage-report.ts:17; tests/marketplace/stage-report.test.ts"
+    },
+    {
+      "id": "install.loading.Plugins and marketplaces that aren't on disk at session start",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/stage-report.ts:17; tests/marketplace/stage-report.test.ts"
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.Context and usage",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-footprint.ts:10; tests/marketplace/plugin-footprint.test.ts"
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.Processes",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-footprint.ts:10; tests/marketplace/plugin-footprint.test.ts"
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.Permissions",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-footprint.ts:10; tests/marketplace/plugin-footprint.test.ts"
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.Before you install",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-footprint.ts:10; tests/marketplace/plugin-footprint.test.ts"
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.After you install",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-footprint.ts:83; tests/marketplace/plugin-footprint.test.ts",
+      "note": "SHOULD: the Not used recently group is named; no \"Last used\" detail line is modelled."
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.To stop it without uninstalling",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-footprint.ts:10; tests/marketplace/plugin-footprint.test.ts"
+    },
+    {
+      "id": "install.guide.Choose an install scope.User scope",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-records-at.ts:16; tests/marketplace/install-records-at.test.ts"
+    },
+    {
+      "id": "install.guide.Choose an install scope.Project scope",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-records-at.ts:16; tests/marketplace/install-records-at.test.ts"
+    },
+    {
+      "id": "install.guide.Choose an install scope.Local scope",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-records-at.ts:16; tests/marketplace/install-records-at.test.ts"
+    },
+    {
+      "id": "install.overview.Understand install scopes.User scope",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-records-at.ts:16; tests/marketplace/install-records-at.test.ts"
+    },
+    {
+      "id": "install.overview.Understand install scopes.Project scope",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-records-at.ts:16; tests/marketplace/install-records-at.test.ts"
+    },
+    {
+      "id": "install.overview.Understand install scopes.Local scope",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-records-at.ts:16; tests/marketplace/install-records-at.test.ts"
+    },
+    {
+      "id": "install.guide.Install from your shell.Scope",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-scopes.ts:10; tests/marketplace/install-scopes.test.ts"
+    },
+    {
+      "id": "install.guide.Manage plugins from your shell",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-scopes.ts:10; tests/marketplace/install-scopes.test.ts"
+    },
+    {
+      "id": "install.loading.Disabled in user settings but still loads",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/enablement-notes.ts:14; tests/marketplace/enablement-notes.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Disabled in ~/.claude/settings.json but still loads",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/enablement-notes.ts:14; tests/marketplace/enablement-notes.test.ts"
+    },
+    {
+      "id": "install.loading.Enabled in project settings but not installed",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/enablement-notes.ts:14; tests/marketplace/enablement-notes.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Plugin \"<name>\" is enabled in project settings but isn't installed here",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts, tests/marketplace/enablement-notes.test.ts"
+    },
+    {
+      "id": "install.guide.Uninstall a plugin the project enables",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-plans.ts:17; tests/marketplace/install-plans.test.ts"
+    },
+    {
+      "id": "install.guide.Manage installed plugins",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-plans.ts:17; tests/marketplace/install-plans.test.ts"
+    },
+    {
+      "id": "install.guide.Install a plugin",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-hosts.ts:10; tests/marketplace/install-hosts.test.ts, tests/marketplace/install-commands.test.ts"
+    },
+    {
+      "id": "install.guide.Install from your shell.When the plugins load",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-hosts.ts:10; tests/marketplace/install-hosts.test.ts, tests/marketplace/install-commands.test.ts"
+    },
+    {
+      "id": "install.guide.Install from your shell.The marketplace on a new machine",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-commands.ts:13; tests/marketplace/install-commands.test.ts"
+    },
+    {
+      "id": "install.guide.Add a marketplace.GitHub repository",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-input.ts:14; tests/marketplace/marketplace-input.test.ts"
+    },
+    {
+      "id": "install.guide.Add a marketplace.Git repository on any host",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-input.ts:14; tests/marketplace/marketplace-input.test.ts",
+      "note": "Bare host/path.git read as shorthand and refused."
+    },
+    {
+      "id": "install.guide.Add a marketplace.Local directory or file",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-input.ts:28; tests/marketplace/marketplace-input.test.ts"
+    },
+    {
+      "id": "install.guide.Add a marketplace.marketplace.json",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-add.ts:194; tests/marketplace/marketplace-input.test.ts"
+    },
+    {
+      "id": "install.guide.Manage marketplaces.List marketplaces",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-list.ts:11; tests/marketplace/install-marketplace-plans.test.ts"
+    },
+    {
+      "id": "install.guide.Manage marketplaces.Update a marketplace's listing",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-update.ts:20; tests/cli/marketplace-update.test.ts"
+    },
+    {
+      "id": "install.guide.Manage marketplaces.Remove a marketplace",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-remove.ts:26; tests/cli/marketplace-remove.test.ts"
+    },
+    {
+      "id": "install.guide.Add and install in a session",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-commands.ts:13; tests/marketplace/install-commands.test.ts"
+    },
+    {
+      "id": "install.guide.Add and install from your shell",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-commands.ts:13; tests/marketplace/install-commands.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Marketplace \"<name>\" is already added from a different source",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.guide.Add a private marketplace.HTTPS",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/git-transport.ts:5; tests/marketplace/git-transport.test.ts",
+      "note": "Prompts and askpass off; the host runs git."
+    },
+    {
+      "id": "install.guide.Add a private marketplace.SSH",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/git-transport.ts:47; tests/marketplace/git-transport.test.ts",
+      "note": "The user-named SSH program is kept, else ssh BatchMode; known_hosts is the host git's."
+    },
+    {
+      "id": "install.guide.Add a private marketplace.GitHub owner/repo shorthand",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/git-transport.ts:13; tests/marketplace/git-transport.test.ts"
+    },
+    {
+      "id": "install.guide.JetBrains, non-interactive runs, and the Agent SDK.claude -p and other non-interactive runs",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-hosts.ts:10; tests/marketplace/install-hosts.test.ts"
+    },
+    {
+      "id": "install.guide.JetBrains, non-interactive runs, and the Agent SDK.JetBrains IDEs",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-hosts.ts:10; tests/marketplace/install-hosts.test.ts"
+    },
+    {
+      "id": "install.guide.JetBrains, non-interactive runs, and the Agent SDK.Agent SDK",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-hosts.ts:10; tests/marketplace/install-hosts.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Plugin \"<name>\" not cached at <path>",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json holds a record under \"<id>\" that this version of Claude Code cannot read",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/installed-plugins.ts:26; tests/marketplace/installed-plugins.test.ts, tests/marketplace/install-messages.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json holds a record under \"<id>\" that this version of Claude Code cannot read.claude plugin list",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/ignored-marketplace.ts:26; tests/marketplace/ignored-marketplace.test.ts, tests/marketplace/install-messages.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json holds a record under \"<id>\" that this version of Claude Code cannot read.--json on any of those three commands",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-messages.ts:13; tests/marketplace/install-messages.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json holds a record under \"<id>\" that this version of Claude Code cannot read.Several such records",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/installed-plugins.ts:26; tests/marketplace/installed-plugins.test.ts, tests/marketplace/install-messages.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json could not be read and was rebuilt",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/installed-plugins.ts:26; tests/marketplace/installed-plugins.test.ts, tests/marketplace/installed-plugins-store.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.install records under names that no version of Claude Code can use were removed from installed_plugins.json",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/installed-plugins.ts:26; tests/marketplace/installed-plugins.test.ts, tests/marketplace/install-messages.test.ts"
+    },
+    {
+      "id": "install.loading.In-place and copied plugins",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-plan.ts:21; tests/marketplace/install-plan.test.ts, tests/marketplace/install-mode.test.ts"
+    },
+    {
+      "id": "install.loading.Paths that escape the plugin directory",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/format/path-escape.ts:55; tests/loading/path-escape.test.ts, tests/format/mcp-path-escape.test.ts"
+    },
+    {
+      "id": "install.loading.Cleanup of previous versions",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/uninstall-records.ts:26; tests/marketplace/uninstall-records.test.ts, tests/marketplace/install-plan.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Could not move the new copy of this plugin version into <path>",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/staged-commit.ts:21; tests/marketplace/staged-commit.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.\"<plugin>\" was not installed: it would share its folder with \"<other>\"",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/folder-collision.ts:11; tests/marketplace/folder-collision.test.ts"
+    },
+    {
+      "id": "install.loading.When the dependency install runs",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps.ts:68; tests/marketplace/node-deps.test.ts"
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.Registry packages only",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-spec.ts:15; tests/marketplace/node-deps-registry.test.ts, tests/marketplace/node-deps-spec.test.ts"
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.https downloads",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-spec.ts:15; tests/marketplace/node-deps-registry.test.ts, tests/marketplace/node-deps-limits.test.ts"
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.A separate install folder",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-checks.ts:43; tests/marketplace/node-deps-limits.test.ts"
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.Frozen resolution",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-checks.ts:43; tests/marketplace/node-deps-limits.test.ts"
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.No lifecycle scripts",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-checks.ts:44; tests/marketplace/node-deps-limits.test.ts"
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.No overrides or patches",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-checks.ts:62; tests/marketplace/node-deps-limits.test.ts"
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.60-second timeout",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-failure.ts:90; tests/marketplace/node-deps-failure.test.ts, tests/marketplace/node-deps-limits.test.ts"
+    },
+    {
+      "id": "install.loading.When the dependency install fails or is skipped",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-failure.ts:90; tests/marketplace/node-deps-failure.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.The packages it lists are not installed or were not installed, because ...",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-failure.ts:90; tests/marketplace/node-deps-failure.test.ts"
+    },
+    {
+      "id": "install.develop.Load a plugin from a directory or .zip",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/session-plugins.ts:16; tests/marketplace/session-plugins.test.ts"
+    },
+    {
+      "id": "install.develop.Load a plugin from a URL",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/session-plugins.ts:16; tests/marketplace/session-plugins.test.ts"
+    },
+    {
+      "id": "install.develop.Load plugins from an environment variable",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/session-plugins.ts:16; tests/marketplace/session-plugins.test.ts"
+    },
+    {
+      "id": "install.develop.Load a folder of plugins",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/session-plugins.ts:16; tests/marketplace/session-plugins.test.ts"
+    },
+    {
+      "id": "install.plugin.Flags that load a plugin for one session",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/session-plugins.ts:16; tests/marketplace/session-plugins.test.ts"
+    },
+    {
+      "id": "install.develop.Scaffold the plugin with claude plugin init",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/plugin-scaffold.ts:13; tests/loading/plugin-scaffold.test.ts"
+    },
+    {
+      "id": "install.develop.Name the plugin's skills",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/plugin-scaffold.ts:13; tests/loading/plugin-scaffold.test.ts"
+    },
+    {
+      "id": "install.develop.Stop loading the plugin",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/session-plugins.ts:16; tests/marketplace/session-plugins.test.ts"
+    },
+    {
+      "id": "install.develop.Share the plugin through a repository",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/plugin-scaffold.ts:13; tests/loading/plugin-scaffold.test.ts"
+    },
+    {
+      "id": "install.loading.Name conflicts",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/name-conflicts.ts:8; tests/host/session-plugins.test.ts, tests/marketplace/name-conflicts.test.ts"
+    },
+    {
+      "id": "install.loading.Hooks when two enabled plugins share a name",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/name-conflicts.ts:125; tests/marketplace/name-conflicts.test.ts"
+    },
+    {
+      "id": "install.loading.Keep a session-only plugin from loading",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/name-conflicts.ts:8; tests/host/session-plugins.test.ts"
+    },
+    {
+      "id": "install.plugin.Reload summary",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/reload-summary.ts:13; tests/marketplace/reload-summary.test.ts"
+    },
+    {
+      "id": "install.plugin.Reloads that change MCP tools",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/reload-summary.ts:13; tests/marketplace/reload-summary.test.ts"
+    },
+    {
+      "id": "install.plugin.Sessions without an interactive terminal",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/reload-summary.ts:13; tests/marketplace/reload-summary.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Run /reload-plugins to apply.",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.A plugin stays installed after plugin uninstall on Windows",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/uninstall-records.ts:26; tests/marketplace/uninstall-records.test.ts"
+    },
+    {
+      "id": "install.hints.Emit the hint",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:76; tests/marketplace/plugin-hints.test.ts",
+      "note": "CLAUDECODE/CLAUDE_CODE_CHILD_SESSION set in hook env (src/hooks/handlers/command/subprocess-env.ts)."
+    },
+    {
+      "id": "install.hints.Hint format.v",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:11; tests/marketplace/plugin-hints.test.ts"
+    },
+    {
+      "id": "install.hints.Hint format.type",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:11; tests/marketplace/plugin-hints.test.ts"
+    },
+    {
+      "id": "install.hints.Hint format.value",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:11; tests/marketplace/plugin-hints.test.ts"
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Official and installable",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:11; tests/marketplace/plugin-hints.test.ts"
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Analytics on",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:11; tests/marketplace/plugin-hints.test.ts"
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Frequency limits",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:11; tests/marketplace/plugin-hints.test.ts"
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Not turned off",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:11; tests/marketplace/plugin-hints.test.ts"
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Local, attended session",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:11; tests/marketplace/plugin-hints.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.not found in marketplace with a refresh hint",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.not found in marketplace with no hint",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Plugin \"<name>\" not found in any marketplace",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Plugin '<name>@<marketplace>' is already installed globally",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.This plugin uses a source type your Claude Code version does not support",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-failures.ts:6; tests/marketplace/install-failures.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Plugin archive integrity check failed",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-failures.ts:15; tests/marketplace/install-failures.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.An npm plugin source must name a registry package",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-failures.ts:5; tests/marketplace/install-failures.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Marketplace \"<name>\" is registered from an untrusted source",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/ignored-marketplace.ts:26; tests/marketplace/ignored-marketplace.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Marketplace \"<name>\" is added but ignored",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/ignored-marketplace.ts:26; tests/marketplace/ignored-marketplace.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Cannot add marketplace \"<name>\": its source doesn't match its extraKnownMarketplaces entry in user or managed settings",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/declared-source.ts:12; tests/marketplace/declared-source.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Plugin <name> has a corrupt manifest file or has an invalid manifest file",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-failures.ts:7; tests/marketplace/install-failures.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Plugin directory not found at path: <path>",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.No plugins available or No marketplaces configured",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Failed to install: <plugin> (<reason>)",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.does not load (...), so Claude Code ignores the whole file",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-failures.ts:8; tests/marketplace/install-failures.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Plugin directory does not exist: <path>",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:15; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Plugin doesn't appear or its skills don't show up",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/missing-plugin-diagnosis.ts:6; tests/marketplace/guidance.test.ts"
+    },
+    {
+      "id": "install.develop.Test and debug",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/plugin-debug.ts:8; tests/loading/plugin-debug.test.ts"
+    },
+    {
+      "id": "install.develop.Plugin layout..claude-plugin/plugin.json",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/folder-plugin.ts:19; tests/loading/plugin-layout.test.ts"
+    },
+    {
+      "id": "install.develop.Plugin layout.skills/",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/folder-plugin.ts:19; tests/loading/plugin-layout.test.ts"
+    },
+    {
+      "id": "install.develop.Plugin layout.commands/",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/folder-plugin.ts:19; tests/loading/plugin-layout.test.ts"
+    },
+    {
+      "id": "install.develop.Plugin layout.agents/",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/folder-plugin.ts:19; tests/loading/plugin-layout.test.ts"
+    },
+    {
+      "id": "install.develop.Plugin layout.hooks/hooks.json",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/folder-plugin.ts:19; tests/loading/plugin-layout.test.ts"
+    },
+    {
+      "id": "install.develop.Plugin layout..mcp.json",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/folder-plugin.ts:19; tests/loading/plugin-layout.test.ts"
+    },
+    {
+      "id": "cli.errors.A skill, command, or workflow wasn't loaded because its name is reserved",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-name.ts:68; tests/format/host-errors.test.ts",
+      "note": "Refusal in skill-name.ts; the notice is reservedSkillNameNotice (src/format/host-errors.ts:12), shown by the host."
+    },
+    {
+      "id": "cli.errors.Skill or command name refused",
+      "file": "17-errors.md",
+      "status": "diverges",
+      "evidence": "src/format/skill-name.ts:28; tests/format/host-errors.test.ts",
+      "note": "Spec: a refused frontmatter `name` leaves the skill loaded without that name, and names over 256 characters are refused. Code: outside a plugin a refused frontmatter name refuses the whole skill (strict), and no 256-character limit exists for skill/command names. errors.md \"Skill or command name refused\" agrees with the spec; the implementation should change. The notice text (skillNamesRefused) matches."
+    },
+    {
+      "id": "cli.errors.Path could not be checked",
+      "file": "17-errors.md",
+      "status": "missing",
+      "evidence": "src/format/host-errors.ts:148; tests/format/host-errors.test.ts",
+      "note": "Only the message builders exist. The Files port reports absence as undefined and has no error-code channel, and no loader refuses a path whose check failed with a code other than not-found (or reports it per component vs. whole plugin). The implementation should add this; the spec text is right."
+    },
+    {
+      "id": "cli.errors.Path could not be checked.ELOOP",
+      "file": "17-errors.md",
+      "status": "missing",
+      "evidence": "src/format/host-errors.ts:148; tests/format/host-errors.test.ts",
+      "note": "Same root cause as `Path could not be checked`: the code is passed through to the builder, but no check produces it."
+    },
+    {
+      "id": "cli.errors.Path could not be checked.EIO",
+      "file": "17-errors.md",
+      "status": "missing",
+      "evidence": "src/format/host-errors.ts:148; tests/format/host-errors.test.ts",
+      "note": "Same root cause as `Path could not be checked`: the code is passed through to the builder, but no check produces it."
+    },
+    {
+      "id": "cli.errors.Path could not be checked.EACCES",
+      "file": "17-errors.md",
+      "status": "missing",
+      "evidence": "src/format/host-errors.ts:148; tests/format/host-errors.test.ts",
+      "note": "Same root cause as `Path could not be checked`: the code is passed through to the builder, but no check produces it."
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory",
+      "file": "17-errors.md",
+      "status": "diverges",
+      "evidence": "src/format/messages.ts:9; tests/loading/path-escape.test.ts, tests/loading/path-escape-own-files.test.ts",
+      "note": "Refusal, link wording and the claude plugin form conform; the backslash case prints the plain `<component> path escapes plugin directory: <path>` without the quoted `— its path contains a backslash, which is not resolved reliably on this platform` suffix. Implementation should add it."
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory.hooks/hooks.json",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/path-escape.ts:61; tests/loading/path-escape-own-files.test.ts"
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory.monitors/monitors.json",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/path-escape.ts:61; tests/loading/path-escape-own-files.test.ts"
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory.settings.json",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/path-escape.ts:61; tests/loading/path-escape-own-files.test.ts"
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory.SKILL.md",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/path-escape.ts:61; tests/loading/path-escape-own-files.test.ts"
+    },
+    {
+      "id": "cli.errors.Plugin not loaded: its manifest was not read",
+      "file": "17-errors.md",
+      "status": "missing",
+      "evidence": "src/format/host-errors.ts:159; tests/format/host-errors.test.ts",
+      "note": "Message builder only; no loader checks that `.claude-plugin/plugin.json` resolves inside the plugin (and marketplace) and refuses the whole plugin. Implementation should add it."
+    },
+    {
+      "id": "cli.errors.Plugin command references user\\_config in a shell command",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/shell-guard-hook.ts:14; src/loading/resolve/shell-guard-monitor.ts:15; src/loading/resolve/shell-guard.ts:32; tests/loading/resolve/hook-command-shell.test.ts, tests/loading/resolve/monitor.test.ts, tests/loading/resolve/mcp-headers-helper.test.ts"
+    },
+    {
+      "id": "cli.errors.No shell command in a skill or command was run",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-refusal.ts:38; tests/skills/shell-run.test.ts"
+    },
+    {
+      "id": "cli.errors.Hook needs quotes around a path with a space",
+      "file": "17-errors.md",
+      "status": "missing",
+      "evidence": "src/format/host-errors.ts:96; tests/format/host-errors.test.ts",
+      "note": "Builder only; no hook runner detects a shell-form asyncRewake command with an interpreter and an unquoted placeholder resolving to a path with a space, nor skips it. Implementation should add it."
+    },
+    {
+      "id": "cli.errors.Plugin archive integrity check failed",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-failures.ts:15; tests/marketplace/install-failures.test.ts"
+    },
+    {
+      "id": "cli.errors.Plugin is required by your organization",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/cli/disable-plan.ts:43; tests/cli/errors-messages.test.ts",
+      "note": "Disabling a dependency of a required plugin is refused through the generic has_dependents path naming the dependent, not with the organization wording; acceptable under \"the same way\"."
+    },
+    {
+      "id": "cli.errors.Plugin was not uninstalled",
+      "file": "17-errors.md",
+      "status": "diverges",
+      "evidence": "src/cli/uninstall-plan.ts:185; tests/cli/uninstall-plan.test.ts",
+      "note": "Effect conforms (stops, keeps data, exit 1, failureCode settings_still_on). Message differs: code prints `\"<name>\" was not uninstalled: <file> still switches it on, so it stays installed with everything it saved`; spec (and errors.md) quote `it is still switched on in <file>, although the settings change reported no error. It is still installed. Take it out of \"enabledPlugins\"…`, plus the `settings change failed (<error>)`, `is there and could not be read` and network-path variants, none of which exist. Implementation should change."
+    },
+    {
+      "id": "cli.errors.Claude Code refuses the marketplace name",
+      "file": "17-errors.md",
+      "status": "diverges",
+      "evidence": "src/format/marketplace/marketplace-names.ts:206; tests/format/host-errors.test.ts",
+      "note": "`marketplace add` refuses the imitating name (`Marketplace name impersonates…`, marketplace-names.ts:110), and the builders marketplaceNameRefused / MARKETPLACE_NAME_LOOKS_OFFICIAL exist (host-errors.ts:65), but loadNameIssues leaves impersonation out, so a registered marketplace with an imitating name is not stopped on catalog read and its plugins keep loading; the settings-source steps are not produced. Implementation should change."
+    },
+    {
+      "id": "cli.errors.Marketplace is registered from an untrusted source",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/ignored-marketplace.ts:175; tests/marketplace/ignored-marketplace.test.ts"
+    },
+    {
+      "id": "cli.errors.Marketplace name is another spelling of a reserved name",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-names.ts:172; tests/format/host-errors.test.ts",
+      "note": "Refused on add and ignored when registered; the add and known_marketplaces.json warning texts are builders (host-errors.ts:77, :88) the host prints; the ignored entry also surfaces as `is added but ignored (see the debug log)`."
+    },
+    {
+      "id": "cli.errors.Failed to load marketplace configuration",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/known-marketplaces.ts:70; tests/cli/errors-messages.test.ts"
+    },
+    {
+      "id": "cli.errors.Marketplace is already added from a different source",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-errors.ts:217; tests/marketplace/install-errors.test.ts"
+    },
+    {
+      "id": "cli.errors.Marketplace entry path does not stay inside the marketplace directory",
+      "file": "17-errors.md",
+      "status": "diverges",
+      "evidence": "src/marketplace/copy-plan.ts:158; tests/cli/errors-messages.test.ts",
+      "note": "The refusal and the `Plugin source path refused: …` load line conform; the install message `Cannot install <id>: its marketplace entry path does not stay inside the marketplace directory (…)`, whose prefix J17.30 keeps as quoted, does not exist (fetch-plan.ts:70 prints `Relative path \"<path>\" cannot resolve: …` for the URL case). Implementation should add the prefix."
+    },
+    {
+      "id": "cli.errors.Settings file exceeds the 2MiB limit",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/cli/flags/settings.ts:13; tests/cli/flags-settings.test.ts"
+    },
+    {
+      "id": "cli.errors.Claude Code couldn't load your organization's settings",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:40; tests/format/host-errors.test.ts",
+      "note": "Kit gives the wording; the dialog, the hold and the exit are the host session's."
+    },
+    {
+      "id": "cli.errors.Managed settings document could not be parsed",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/settings/broken-file.ts:6; tests/settings/managed/present.test.ts",
+      "note": "Drop-in: settings/managed/drop-in.ts:117."
+    },
+    {
+      "id": "cli.errors.Unable to read managed policy settings",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts:217; tests/settings/managed/unreadable.test.ts",
+      "note": "The allowedProviders variant for sign-in, API requests and claude gateway is not modelled; those surfaces are the host's."
+    },
+    {
+      "id": "cli.errors.Managed settings need your approval",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:124; tests/format/host-errors.test.ts",
+      "note": "Wording only; reading the keyboard and stopping is the host CLI's."
+    },
+    {
+      "id": "cli.errors.Managed settings were not approved",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:128; tests/format/host-errors.test.ts",
+      "note": "Wording only; the dialog is the host's."
+    },
+    {
+      "id": "cli.errors.Remote managed settings failed to load",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:53; tests/format/host-errors.test.ts",
+      "note": "Wording (joined with \": \", agent-plugins spec/judgments.md); fetching and the Code-tab lines are the host's."
+    },
+    {
+      "id": "cli.errors.Remote managed settings failed to load.No cache",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:53; tests/format/host-errors.test.ts"
+    },
+    {
+      "id": "cli.errors.Remote managed settings failed to load.Remote managed settings did not load",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:58; tests/format/host-errors.test.ts"
+    },
+    {
+      "id": "cli.errors.Remote managed settings failed to load.Remote managed settings have now loaded",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:61; tests/format/host-errors.test.ts"
+    },
+    {
+      "id": "cli.errors.Sandbox allow entries are ignored under a managed lock",
+      "file": "17-errors.md",
+      "status": "diverges",
+      "evidence": "src/format/host-errors.ts:164; tests/format/host-errors.test.ts",
+      "note": "Both locks' wording conform except the count: for one entry the code prints `The 1 entry in <file>`, the spec quotes `The <N> entries in <file>` with only the number filled. Minor; implementation should drop the singular or the spec should allow it (no docs evidence for the singular)."
+    },
+    {
+      "id": "cli.errors.crossSessionInbound must be one of accept, hold, refuse",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/checks.ts:76; tests/settings/key-classes/cross-session.test.ts"
+    },
+    {
+      "id": "cli.errors.Workspace has not been trusted",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/loading/workspace-trust.ts:136; tests/cli/errors-messages.test.ts"
+    },
+    {
+      "id": "cli.errors.Agent descriptions are over the 15.0k-token limit",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:25; tests/format/host-errors.test.ts",
+      "note": "Wording only; the token estimate and the notice are the host's (no 15,000 threshold in src/agents)."
+    },
+    {
+      "id": "cli.errors.Agent would be spawned with zero tools",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:28; tests/agents/tool-resolution.test.ts"
+    },
+    {
+      "id": "cli.errors.Agent would be spawned with zero tools.Unrecognized",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:28; tests/agents/tool-resolution.test.ts"
+    },
+    {
+      "id": "cli.errors.Agent would be spawned with zero tools.Not available to subagents",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:28; tests/agents/tool-resolution.test.ts"
+    },
+    {
+      "id": "cli.errors.Agent would be spawned with zero tools.Matched no tools in this session",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:28; tests/agents/tool-resolution.test.ts"
+    },
+    {
+      "id": "cli.errors.Invalid --agents configuration",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/cli/flags/agents.ts:27; tests/cli/flags-subagents.test.ts"
+    },
+    {
+      "id": "cli.errors.subagent\\_type is required",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/resolve.ts:196; tests/agents/catalog/resolve.test.ts"
+    },
+    {
+      "id": "cli.errors.No such tool available",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:144; tests/format/host-errors.test.ts",
+      "note": "Wording only; the tool-call result is the host session's."
+    },
+    {
+      "id": "cli.errors.Can't read .mcp.json",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:33; tests/format/host-errors.test.ts",
+      "note": "Wording only; reading .mcp.json for claude mcp add/remove is the host's."
+    },
+    {
+      "id": "cli.errors.Cannot add MCP server to the managed scope",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:37; tests/format/host-errors.test.ts",
+      "note": "Wording only."
+    },
+    {
+      "id": "cli.errors.Cannot add MCP server when managed settings allow only plugin servers",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/settings/customization/policy.ts:14; tests/settings/customization/mcp.test.ts"
+    },
+    {
+      "id": "cli.errors.MCP permission prompt tool not found",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool.ts:161; tests/cli/errors-messages.test.ts",
+      "note": "Waiting for MCP_TIMEOUT and exiting are the host's."
+    },
+    {
+      "id": "cli.errors.MCP server is blocked by enterprise managed policy",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/allow-deny.ts:39; tests/cli/errors-messages.test.ts"
+    },
+    {
+      "id": "cli.errors.MCP server is disabled",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:132; tests/format/host-errors.test.ts",
+      "note": "Wording only."
+    },
+    {
+      "id": "cli.errors.MCP server name is reserved",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:136; tests/format/host-errors.test.ts",
+      "note": "Wording only; which names are reserved is the client's."
+    },
+    {
+      "id": "cli.errors.MCP server rejected the elicitation capability",
+      "file": "17-errors.md",
+      "status": "diverges",
+      "evidence": "src/format/mcp-elicitation.ts:48; tests/format/host-errors.test.ts",
+      "note": "The message builder (host-errors.ts:140) matches, but `bareElicitationCapability: true` is read nowhere: declaredElicitation offers `{form, url}` to a user-configured server regardless, where the spec says such an entry is offered form mode only. Implementation should change."
+    },
+    {
+      "id": "cli.errors.Has a wildcard before the rest of the command",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/wildcard-warning.ts:80; tests/cli/errors-messages.test.ts"
+    },
+    {
+      "id": "cli.errors.Is not matched by file permission checks",
+      "file": "17-errors.md",
+      "status": "missing",
+      "evidence": "src/format/host-errors.ts:107; tests/format/host-errors.test.ts",
+      "note": "Builders only; no rule check (src/rules/issues.ts emits only `matches no known tool`) flags a Write/NotebookEdit/MultiEdit/Glob path rule. Implementation should add the check."
+    },
+    {
+      "id": "cli.errors.Malformed Tool(content) rule",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/permission-rule-shape.ts:4; tests/rules/parse.test.ts"
+    },
+    {
+      "id": "cli.errors.Matches no tool · check for typos",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/rules/issues.ts:12; tests/format/host-errors.test.ts",
+      "note": "Row: matchesNoToolBannerRow (host-errors.ts:120)."
+    },
+    {
+      "id": "cli.errors.Denying Bash also turns off the PowerShell tool",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/availability.ts:27; tests/format/host-errors.test.ts",
+      "note": "Warning text: BASH_DENY_TURNS_OFF_POWERSHELL (host-errors.ts:92)."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J16.1",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/installed-plugins.ts:163; tests/marketplace/installed-plugins.test.ts",
+      "note": "Same as agent-plugins spec/judgments.md row for installed-plugins.ts."
+    },
+    {
+      "id": "J16.2",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/installed-plugins-store.ts:65; tests/marketplace/installed-plugins-store.test.ts",
+      "note": "Same as its judgments row for installed-plugins-store.ts."
+    },
+    {
+      "id": "J16.3",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/orphan-cleanup.ts:80; tests/marketplace/orphan-cleanup.test.ts",
+      "note": ">= 14 days; only cache/<m>/<p>/<v>; matches its judgments row."
+    },
+    {
+      "id": "J16.4",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/folder-collision.ts:67; tests/marketplace/folder-collision.test.ts",
+      "note": "Later id refused, as its judgments row."
+    },
+    {
+      "id": "J16.5",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/node-deps-checks.ts:43; src/marketplace/node-deps-types.ts:34; tests/marketplace/node-deps-limits.test.ts"
+    },
+    {
+      "id": "J16.6",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/loading/plugin-folder.ts; tests/marketplace/session-plugins.test.ts",
+      "note": "Same list as its judgments row for plugin-folder.ts."
+    },
+    {
+      "id": "J16.7",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/reload-summary.ts:53; tests/marketplace/reload-summary.test.ts"
+    },
+    {
+      "id": "J16.8",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/uninstall-records.ts:33; tests/marketplace/uninstall-records.test.ts"
+    },
+    {
+      "id": "J16.9",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/plugin-hints.ts:20; tests/marketplace/plugin-hints.test.ts",
+      "note": "Matches its judgments row for plugin-hints.ts."
+    },
+    {
+      "id": "J16.25",
+      "file": "16-install.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/session-plugins.ts:76; tests/marketplace/session-plugins.test.ts",
+      "note": "headers: {} and ARCHIVE_LIMITS, as its judgments row."
+    },
+    {
+      "id": "J17.28",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:1",
+      "note": "No earlier-release behaviour is modelled."
+    },
+    {
+      "id": "J17.29",
+      "file": "17-errors.md",
+      "status": "missing",
+      "evidence": "src/format/host-errors.ts:148",
+      "note": "No code handles a path check error code at all (see cli.errors.Path could not be checked), so ESTALE-as-EIO is not applied."
+    },
+    {
+      "id": "J17.30",
+      "file": "17-errors.md",
+      "status": "diverges",
+      "evidence": "src/marketplace/fetch-plan.ts:70; src/marketplace/copy-plan.ts:158",
+      "note": "The `Plugin source path refused` line is as quoted, but the quoted prefix `Cannot install <id>: its marketplace entry path does not stay inside the marketplace directory` is not produced."
+    },
+    {
+      "id": "J17.31",
+      "file": "17-errors.md",
+      "status": "not-applicable",
+      "evidence": "src/format/host-errors.ts:1",
+      "note": "Routing to startup row, stderr or debug log is the host's; the kit returns strings only."
+    }
+  ]
+}

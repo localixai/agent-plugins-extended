@@ -1,0 +1,313 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename+fixes+core",
+  "pass": "r05-core-and-j11-j18",
+  "date": "2026-11-16",
+  "files": [
+    "11-workflows.md",
+    "12-settings.md",
+    "13-permissions.md",
+    "13-trust.md",
+    "14-policy.md",
+    "14-policy-mods.md",
+    "14-policy-org.md",
+    "15-marketplaces.md",
+    "15-marketplace-hosting.md",
+    "16-dependencies.md",
+    "16-install.md",
+    "16-updates.md",
+    "17-cli.md",
+    "17-errors.md",
+    "18-bridge.md"
+  ],
+  "requirements": [],
+  "judgments": [
+    {
+      "id": "J13.34",
+      "status": "conforms",
+      "evidence": "src/rules/specifier-formats.ts:9-11, src/rules/rule-warnings.ts:44-50",
+      "note": "Unchanged since r02: MultiEdit stays unknown (matches no tool) with the file-check warning."
+    },
+    {
+      "id": "J13.35",
+      "status": "conforms",
+      "evidence": "src/settings protected paths (remoteSettingsFiles from the host)",
+      "note": "Unchanged since r02: no guessed prefix."
+    },
+    {
+      "id": "J14.14",
+      "status": "conforms",
+      "evidence": "src/rules/decide/hooks-and-mods.ts:61-77 (REACH.hook keys on ctx.hook.managed), src/rules/decide/context.ts:16-36, src/mods/load/guard.ts:85",
+      "note": "Fixed since r02: overridesDenyRules lifts rule, read-block and non-managed hook outcomes; a managed hook's decision and the permission callback stay."
+    },
+    {
+      "id": "J15.8",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/plugin-source-kinds.ts",
+      "note": "Unchanged since r03."
+    },
+    {
+      "id": "J16.24",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts",
+      "note": "Unchanged since r03."
+    },
+    {
+      "id": "J16.26",
+      "status": "conforms",
+      "evidence": "src/marketplace/remote-plugins.ts:30-60",
+      "note": "Refused characters, control characters, trailing space/dot and reserved device names with or without extension."
+    },
+    {
+      "id": "J17.15",
+      "status": "conforms",
+      "evidence": "src/mods/load/commands/validate.ts:135,158,212,236; src/cli/validate-run.ts:114-115",
+      "note": "Every file result now carries errors, warnings, notes and gatingHooks (empty when none)."
+    },
+    {
+      "id": "J17.29",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:147-148",
+      "note": "ESTALE reported and handled as EIO (REPORTED_AS)."
+    },
+    {
+      "id": "J18.1",
+      "status": "conforms",
+      "evidence": "src/host/session-core-dispatch.ts:30-38,81-85; tests/host/core-hook-results.test.ts",
+      "note": "Claude Code side runs and combines first; core sees updatedInput only under none/allow/ask without a block; core runs after a denial; a core result cannot undo it (combine.ts:82-83)."
+    },
+    {
+      "id": "J18.2",
+      "status": "conforms",
+      "evidence": "src/hooks/core/input.ts:109-127; src/host/session-core-dispatch.ts:86-88",
+      "note": "Core input built from the dispatch's own facts (pre-replacement tool_response or mcpResult); sides run concurrently, both awaited."
+    },
+    {
+      "id": "J18.3",
+      "status": "conforms",
+      "evidence": "src/host/session-core-hooks.ts:50-60; src/hooks/core/combine.ts:30-35,190-191",
+      "note": "Core runs appended after Claude Code runs; packages in load order (corePackages after plugins, host/state.ts:93)."
+    },
+    {
+      "id": "J18.4",
+      "status": "conforms",
+      "evidence": "src/hooks/core/combine.ts:160-175; src/hooks/core/output.ts",
+      "note": "A failed run contributes no decision, only a `<hook name> hook error` notice and a non-blocking-error run record."
+    },
+    {
+      "id": "J18.5",
+      "status": "conforms",
+      "evidence": "src/hooks/core/run.ts:18-24; src/host/session-core-hooks.ts:99-123",
+      "note": "30 s on UserPromptSubmit, 600 s otherwise; contexts capped by limitText and reminder-escaped like a Claude Code hook's."
+    },
+    {
+      "id": "J18.6",
+      "status": "conforms",
+      "evidence": "src/hooks/core/input.ts:26,95-98",
+      "note": "startup/clear/fork only, never in a subagent."
+    },
+    {
+      "id": "J18.7",
+      "status": "conforms",
+      "evidence": "src/hooks/core/input.ts:34-53; src/host/session-core-dispatch.ts:54-60; tests/host/core-hooks.test.ts",
+      "note": "Library: user/sdk/poll_event/absent fire, loop_wakeup/schedule_wakeup skip, a `system` turn needs turnOrigin and the dispatch throws without it when a core UserPromptSubmit handler is selected. Open: the converter's adapter (src/convert/adapters/core-runner-source.ts:11) skips every `system` turn by default, which J18.7 forbids for a component that sees only the Claude Code input; it has no host to ask, so the spec should say what an adapter does with `system` (or the adapter should be documented as losing peer/channel turns, reported by the converter)."
+    },
+    {
+      "id": "J18.8",
+      "status": "conforms",
+      "evidence": "src/hooks/core/input.ts:119-127",
+      "note": "PostToolUseFailure fires the core PostToolUse unless is_interrupt is true."
+    },
+    {
+      "id": "J18.9",
+      "status": "conforms",
+      "evidence": "src/hooks/core/combine.ts:113-134; src/host/session-core-dispatch.ts:86-91",
+      "note": "continuation_active = stop_hook_active; continue:false prevents; one block with Claude Code reason then core reasons; the cap applied once to the combined outcome."
+    },
+    {
+      "id": "J18.10",
+      "status": "conforms",
+      "evidence": "src/host/core-servers.ts:80-84 (mcpServerKey(pluginName, server))",
+      "note": "Registered as plugin:<name>:<server>, same key and normalisation as a Claude Code plugin server."
+    },
+    {
+      "id": "J18.11",
+      "status": "conforms",
+      "evidence": "src/host/core-servers.ts:39-99",
+      "note": "Valid core server becomes a ResolvedMcpServer of the same transport (streamable-http as http, sse as sse, url/headers unexpanded) with no optional field, so Claude Code's defaults and OAuth path apply."
+    },
+    {
+      "id": "J18.12",
+      "status": "conforms",
+      "evidence": "src/host/session-core-hooks.ts:62-71; src/format/core/subprocess.ts:50-61; src/host/core-servers.ts:52-64",
+      "note": "Handlers: plugin hook base minus CLAUDE_PLUGIN_* (case-insensitive on Windows) plus CLAUDE_PROJECT_DIR, then PLUGIN_ROOT/PLUGIN_DATA. Servers: PLUGIN_* and CLAUDE_PROJECT_DIR in environment; stripping inherited CLAUDE_PLUGIN_* from the server base is left to the host (documented on ResolvedMcpServer.core, loading/resolve/mcp.ts:53-59), acceptable for a SHOULD. No PLUGIN_* is set for Claude Code subprocesses."
+    },
+    {
+      "id": "J18.13",
+      "status": "conforms",
+      "evidence": "src/host/core-servers.ts:29-35",
+      "note": "root = locations.pluginRoot(id), data = locations.pluginData(id) (created by the port), the same directories CLAUDE_PLUGIN_ROOT/DATA name."
+    },
+    {
+      "id": "J18.14",
+      "status": "conforms",
+      "evidence": "src/host/core-skills.ts:15-52; src/skills/expand.ts:127-154; tests/host/core-components.test.ts",
+      "note": "Only the six fields act; body as written, ARGUMENTS: appended, no placeholders, variables, injections or @ references."
+    },
+    {
+      "id": "J18.15",
+      "status": "diverges",
+      "evidence": "src/host/session-core-hooks.ts:41-48; src/host/core-view.ts; src/host/state.ts:93-130",
+      "note": "Conforms for id, enablement, managed settings, disableAllHooks and allowManagedHooksOnly. Missing: a marketplace entry's component fields (commands, agents, skills, hooks, mcpServers, lspServers, outputStyles, themes) and strict:false are not reported in a core package's errors; nothing in marketplace/ or loading/ knows an entry resolved to a core package. Code should change."
+    },
+    {
+      "id": "J18.16",
+      "status": "diverges",
+      "evidence": "src/hooks/core/profile-results.ts:82-101 (library conforms); src/convert/adapters/core-profiles-source.ts:91-111",
+      "note": "Library: Read text only from readText, else no profile; notebook likewise; NotebookEdit path absolute; WebSearch string entries give no item. The generated adapter still numbers file.content as `cat -n` (padStart(6) + tab), asserted by tests/convert/core-adapter.test.ts:161-178. J18.16 forbids rebuilding the prefix: the adapter should omit the text profile (it has no host). Code should change."
+    },
+    {
+      "id": "J18.17",
+      "status": "conforms",
+      "evidence": "src/convert/to-claude-code/hooks.ts; src/convert/to-core/hooks.ts; src/convert/adapters/*",
+      "note": "Handlers convert only through the adapters, which translate inputs, results and exit statuses (core failure -> exit 1, never 2)."
+    },
+    {
+      "id": "J18.18",
+      "status": "conforms",
+      "evidence": "src/convert/placeholders.ts:57; src/convert/to-claude-code/mcp.ts:56; src/convert/to-core/mcp.ts",
+      "note": "Bridge entries added both ways; the source's own bridge entries dropped first (impl judgment)."
+    },
+    {
+      "id": "J18.21",
+      "status": "diverges",
+      "evidence": "src/hooks/core/profiles.ts:71-77, src/hooks/core/profile-results.ts:45-51 (library conforms); src/convert/adapters/core-profiles-source.ts:56-60,78-84",
+      "note": "Library: declared name only when `__` occurs once after mcp__; exit 0 only without returnCodeInterpretation. The adapter still splits at the first `__` (ambiguous names get a guessed declared name) and gives exit_code 0 on every PostToolUse even with returnCodeInterpretation set. Code should change (adapter should apply the same two rules)."
+    },
+    {
+      "id": "J18.22",
+      "status": "diverges",
+      "evidence": "src/hooks/core/run.ts:46; src/hooks/core/output.ts:75-116; src/hooks/core/combine.ts:37-42; tests/host/core-hooks.test.ts:190",
+      "note": "Causes and the reason joint now follow (Failed with non-blocking status code / no stderr output, timeout texts, the two invalid-output phrases, empty reasons left out). The label is the resolved command and expanded args (`/plugins/<id>/hooks/check pre /plugins/<id>/policy.json`), not `command` and `args` as written in hooks.json. Code should change: build the label from CoreHookHandler before coreHandlerProcess."
+    },
+    {
+      "id": "§1.2-§1.3 core form",
+      "status": "conforms",
+      "evidence": "src/loading/core/form.ts:37-59, src/loading/core/load-package.ts; tests/loading/core/form.test.ts",
+      "note": "Fixed since r01: form decided before any component by the §1.3 table; a root plugin.json without a canonical core $schema (or not JSON, or a link leaving the root) is an ordinary file; dual loads as Claude Code with `dual: true`; core package loads by loadCorePackage."
+    },
+    {
+      "id": "§18.1",
+      "status": "diverges",
+      "evidence": "src/loading/core/*, src/host/session-core-*.ts, src/host/core-*.ts, src/hooks/core/*",
+      "note": "One client, two forms is implemented: form per root, core loader reading only plugin.json, skills/, mcp.json, hooks.json (extensions not validated by default), one occurrence for both forms, combining, failures, environment, MCP names, skills, policy. Open: J18.22 label as written, J18.15 marketplace entry component fields/strict:false not reported."
+    },
+    {
+      "id": "§18.2",
+      "status": "conforms",
+      "evidence": "src/hooks/core/input.ts, profiles.ts, profile-results.ts; tests/hooks/core-profiles.test.ts",
+      "note": "The client side of every table: common fields only, event fields, results read by closed core shapes, all six profiles with omission where the host does not supply a fact. The converter's adapter copy of the profiles diverges (see §18.4, J18.16, J18.21)."
+    },
+    {
+      "id": "§18.3",
+      "status": "conforms",
+      "evidence": "src/loading/core/form.ts, src/loading/core/dual-check.ts, src/format/core/dual.ts; tests/format/core/dual.test.ts",
+      "note": "Dual detected and loaded as Claude Code only, flagged for details; checkDualPackage reports shared manifest fields that load in one form only, beside validatePlugin."
+    },
+    {
+      "id": "§18.4",
+      "status": "diverges",
+      "evidence": "src/convert/convert-package.ts, to-claude-code/*, to-core/*, adapters/*; tests/convert/*",
+      "note": "Converters both ways: manifest copy, skill checks, MCP table with bridging, losses reported with paths, no renaming (a reserved name stops, impl judgment), never overwrites, validated output, deterministic, runtime named. Divergent: the core adapter's profiles (cat -n Read text, exit 0 regardless of returnCodeInterpretation, first-`__` MCP split) and its default skip of `system` UserPromptSubmit turns."
+    },
+    {
+      "id": "docs:statusline.md | Subagent status lines",
+      "status": "conforms",
+      "evidence": "src/settings/general/subagent-status-line.ts",
+      "note": "Unchanged since r01."
+    },
+    {
+      "id": "docs:settings-reference.md | subagentStatusLine",
+      "status": "conforms",
+      "evidence": "src/settings/general/subagent-status-line.ts",
+      "note": "Unchanged since r01."
+    },
+    {
+      "id": "docs:statusline.md | Task fields",
+      "status": "conforms",
+      "evidence": "src/settings/general/subagent-status-line.ts",
+      "note": "Unchanged since r01."
+    },
+    {
+      "id": "docs:settings-reference.md | Settings index — subagentStatusLine",
+      "status": "conforms",
+      "evidence": "src/settings/general/keys.ts, plugin-defaults.ts",
+      "note": "Unchanged since r01."
+    },
+    {
+      "id": "docs:sandboxing.md | Filesystem isolation",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/sandbox-read-block.ts:53-84",
+      "note": "Fixed since r02: denyWrite holds <common .git>/hooks and /config in a linked worktree."
+    },
+    {
+      "id": "docs:plugins/org.md | Marketplaces hosted on claude.ai",
+      "status": "missing",
+      "evidence": "src/settings/marketplaces/facts.ts, source-kinds.ts",
+      "note": "Still no `claudeai` source kind or claude.ai host in the policy facts, so an allowlist hostPattern for claude.ai neither admits the organisation's and default claude.ai marketplaces nor excludes a member's uploads or unstated scope. Code should change."
+    },
+    {
+      "id": "docs:plugins/install.md | Add a marketplace from claude.ai",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-add.ts, src/marketplace/store-layout.ts:47",
+      "note": "Unchanged since r03."
+    },
+    {
+      "id": "docs:sessions.md | What a resumed session restores",
+      "status": "not-applicable",
+      "note": "The host's session store; the kit's flag plan keeps nothing from earlier launches."
+    },
+    {
+      "id": "docs:agent-view.md | What carries over when you background",
+      "status": "conforms",
+      "evidence": "src/cli/background-session.ts:12-80",
+      "note": "Fixed since r03: the six flags carry over; monitors stop, workflows relaunch, the rest carries; stopping and the dialog are the host's."
+    },
+    {
+      "id": "docs:agent-view.md | Settings, plugins, and MCP servers",
+      "status": "conforms",
+      "evidence": "src/cli/background-session.ts:22-48",
+      "note": "Fixed since r03: agent view applies --settings, --setting-sources, --plugin-dir to itself and passes every configuration flag to dispatched sessions."
+    },
+    {
+      "id": "docs:headless.md | Fail CI when a plugin or MCP server doesn't load",
+      "status": "conforms",
+      "evidence": "src/marketplace/headless-report.ts:39-55",
+      "note": "Fixed since r03: system/init plugins and plugin_errors (with path for a --plugin-dir failure), omitted when empty."
+    },
+    {
+      "id": "docs:headless.md | Track plugin installs",
+      "status": "conforms",
+      "evidence": "src/marketplace/headless-report.ts:68-95",
+      "note": "Fixed since r03: system/plugin_install started/installed/failed/completed with name, error, uuid, session_id."
+    },
+    {
+      "id": "docs:desktop.md | Install plugins",
+      "status": "conforms",
+      "evidence": "src/marketplace/remote-plugins.ts",
+      "note": "Fixed since r03: SSH sessions copy to ~/.claude/remote/plugins/, WSL gets none."
+    },
+    {
+      "id": "docs:desktop.md | Windows remote machines",
+      "status": "conforms",
+      "evidence": "src/marketplace/remote-plugins.ts:30-60",
+      "note": "Fixed since r03: plugins with names Windows cannot store are left out and listed (J16.26)."
+    },
+    {
+      "id": "docs:desktop.md | Files and processes on the remote machine",
+      "status": "conforms",
+      "evidence": "src/marketplace/remote-plugins.ts:11",
+      "note": "Fixed since r03: plugins load from the remote copy; copying is the host's."
+    }
+  ]
+}

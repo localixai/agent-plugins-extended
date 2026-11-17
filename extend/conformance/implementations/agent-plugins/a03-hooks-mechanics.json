@@ -1,0 +1,1626 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a03-hooks-mechanics",
+  "date": "2026-11-16",
+  "files": [
+    "07-hooks/README.md",
+    "07-hooks/configuration.md",
+    "07-hooks/handlers.md",
+    "07-hooks/results.md"
+  ],
+  "requirements": [
+    {
+      "id": "hooks.behavior.Hook lifecycle",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts:45 (cadences, EndConversation skipped by PreToolUse/PostToolUse), :90 firesForTool; src/hooks/select/select.ts:78; tests/hooks/dispatch.test.ts",
+      "note": "Firing at the lifecycle points is the host calling session.dispatch; the library owns the catalog."
+    },
+    {
+      "id": "hooks.guide.How hooks work",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/select.ts:78; src/hooks/handlers/remote/concurrency.ts:30 (runLimited, all in parallel); tests/hooks/dispatch.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.How a hook resolves",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/if-guard.ts:62-63, src/hooks/select/select.ts:64-66 (an unselected handler is never handed to a runner); tests/hooks/dispatch.test.ts",
+      "note": "Silence never approves: an empty outcome leaves effects without permissionDecision (src/hooks/assemble.ts:103)."
+    },
+    {
+      "id": "hooks.guide.Hook input",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts, src/hooks/input/build.ts; tests/hooks/input/common.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hook locations.~/.claude/settings.json",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/host/session-registry.ts:25-49 (SETTINGS_SOURCE.user); src/settings/hooks/session-gates.ts:68; tests/settings/hooks/merge.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hook locations..claude/settings.json",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/host/session-registry.ts:30; tests/settings/hooks/merge.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hook locations..claude/settings.local.json",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/host/session-registry.ts:29; tests/settings/hooks/merge.test.ts",
+      "note": "Adding the file to .gitignore is the settings writer of the host, not the hooks engine."
+    },
+    {
+      "id": "hooks.behavior.Hook locations.Managed policy settings",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/host/session-registry.ts:26 (managed: true); src/hooks/select/gates.ts:15-18; tests/settings/hooks/managed-only.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hook locations.hooks/hooks.json",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/loading/readers-config.ts:65-81 (file and manifest hooks merged); src/hooks/select/gates.ts:43-45 (runs while enabled); tests/host/hooks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hook locations.Skill frontmatter",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/host/session-skill-hooks.ts:17-55 (registered on invocation, kept for the session); tests/host/skill-hooks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hook locations.Subagent frontmatter",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/agents/hooks.ts:25-35, :54, :183; tests/agents/hooks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hook locations",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/settings/hooks/session-gates.ts:68 (every settings file adds its hooks); src/hooks/select/lock-gates.ts:29-75 (allowManagedHooksOnly, plugin-only lock); src/hooks/handlers/remote/http-policy.ts:43-64 (allowlists, every source); src/hooks/select/gates.ts:21,40 (trust holds back every settings file); tests/settings/hooks/merge.test.ts, tests/hooks/select/gates.test.ts",
+      "note": "Item 2 (a cloud session does not read ~/.claude/settings.json) is the host's choice of layers. Item 3 relies on the host dispatching subagent tool events with agent_id/agent_type, which the input builder carries."
+    },
+    {
+      "id": "hooks.guide.Configure hook location",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/host/session-registry.ts:91 (refreshRegistry rebuilds on a settings change); src/host/session-hook-scope.ts (hookEntries listing by source label); tests/settings/hooks/merge.test.ts",
+      "note": "Watching the files is the host's; the library rebuilds the registry when given a new state."
+    },
+    {
+      "id": "hooks.components.Hooks",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-settings.ts:180 (hooks, description, modules), :205; src/marketplace/name-conflicts.ts:124-152 (nameHolder, \"Its hooks.json hooks do not run: <id> holds the name\"); tests/host/hooks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.components.When plugin hooks fire",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/host/session-registry.ts:52-61 (initialRegistry registers every enabled plugin at session load); tests/host/hooks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.troubleshooting.Hook loads but never fires",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-settings.ts:139 (unknown/wrong-case event warned, never registered: src/hooks/register.ts:27); src/hooks/verdict/types.ts:9-20 + src/hooks/handlers/status.ts:31 (observer started/finished with status and exitCode); tests/hooks/troubleshooting-fires.test.ts:133",
+      "note": "The debug log text is the host's; the library gives it which handlers started and each exit code."
+    },
+    {
+      "id": "hooks.troubleshooting.Hooks fail to load",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/loading/readers-config.ts:46-58,76 (\"Failed to load hooks from <path>: <reason>\"); src/format/messages.ts:17-22 (path not found, path escapes plugin directory); tests/hooks/troubleshooting.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.troubleshooting.hook error notices in the transcript",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/run-command.ts:44-64 (Failed to run: Plugin directory does not exist ... — run /plugin to reinstall; the hook does not run); src/marketplace/install-errors.ts:164,228 (once per session per event and command); tests/hooks/troubleshooting.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hooks in skills and agents",
+      "file": "07-hooks/README.md",
+      "status": "diverges",
+      "evidence": "src/host/session-skill-hooks.ts:49 vs src/hooks/select/gates.ts:22-25,41; src/agents/hooks.ts:25-35,59-83; tests/host/skill-hooks.test.ts, tests/hooks/select/gates.test.ts:65",
+      "note": "Item 3: the host registers every invoked skill's hooks with source { kind: \"skill\" } and no scope, so the project-only trust gate (gates.ts projectOnly: scope !== \"project\" passes) never holds back a project skill's frontmatter hooks in an untrusted interactive session. gates.test.ts passes only because it builds the source with scope \"project\" by hand. Found by reading; code should set scope (and managed for a managed-directory skill, which allowManagedHooksOnly otherwise blocks). Items 1, 2 (Stop -> SubagentStop, removal after the agent, once) conform."
+    },
+    {
+      "id": "hooks.behavior.Limits on skill hooks",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/skills/hook-limits.ts:11-80 (1,024 hooks, 16,384 matcher chars per source, counted per hook, built up in order); src/host/session-skill-hooks.ts:29-38 (\"registers none of its hooks\"); src/skills/expand-policy.ts:48-72 (plugin-only lock keeps plugin, bundled, managed skills); tests/host/skill-hooks.test.ts",
+      "note": "The \"registers none of its hooks\" line is a warning issue rather than a debug-log line; it carries the text."
+    },
+    {
+      "id": "hooks.behavior.Configuration",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-settings.ts:161-236 (event map, groups, handlers; the hooks-file wrapper); src/hooks/register.ts:21-40 (an unknown event registers nothing); tests/settings/hooks/merge.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Filter hooks with matchers",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/rules/hook-matcher.ts:31,71-79 (\"*\", \"\", absent match all; case-sensitive); src/hooks/select/matcher-targets.ts:49 (no matcher support ignores it); tests/hooks/select/matcher.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.PreToolUse",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54; src/hooks/select/mcp-tools.ts:67; tests/hooks/select/monitor.test.ts:35",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.PostToolUse",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.PostToolUseFailure",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.PermissionRequest",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54; src/hooks/select/mcp-tools.ts:67; tests/hooks/select/monitor.test.ts:35",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.PermissionDenied",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.SessionStart",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.Setup",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.SessionEnd",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.Notification",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.SubagentStart",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.SubagentStop",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.PreCompact",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.PostCompact",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.PreModelSwitch",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54; src/hooks/select/model-switch.ts",
+      "note": "With no canonical name for to_model, every hook runs (the events chapter's rule)."
+    },
+    {
+      "id": "hooks.matcher.PostModelSwitch",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54; src/hooks/select/model-switch.ts",
+      "note": "With no canonical name for to_model, every hook runs (the events chapter's rule)."
+    },
+    {
+      "id": "hooks.matcher.ConfigChange",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.DirectoryAdded",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.FileChanged",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54; tests/agents/hooks-matcher.test.ts",
+      "note": "Narrow exact-match set (letters, digits, _ and |) and, for FileChanged, the basename."
+    },
+    {
+      "id": "hooks.matcher.StopFailure",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54; tests/agents/hooks-matcher.test.ts",
+      "note": "Narrow exact-match set (letters, digits, _ and |) and, for FileChanged, the basename."
+    },
+    {
+      "id": "hooks.matcher.InstructionsLoaded",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.UserPromptExpansion",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.Elicitation",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.ElicitationResult",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.CwdChanged",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.UserPromptSubmit",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.PostToolBatch",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.Stop",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.TeammateIdle",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.TaskCreated",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.TaskCompleted",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.WorktreeCreate",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.WorktreeRemove",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.matcher.MessageDisplay",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:94-133; src/rules/hook-matcher.ts:26-79; tests/hooks/select/matcher.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Match MCP tools",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/rules/hook-matcher.ts:27 (mcp__memory is exact-only, matches no tool); tests/hooks/config/matching.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.components.Environment, quoting, and matching MCP tools.Matching the plugin's own MCP tools",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/rules/hook-matcher.ts (scoped names are tool names like any other); tests/hooks/handlers/command/host-variables.test.ts:252",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Match Monitor commands",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/mcp-tools.ts:14-78 (Bash matchers on PreToolUse/PermissionRequest; effectsApply false; ws watch excluded); src/hooks/select/if-guard.ts:75 (if reads a Bash call); tests/hooks/config/matching.test.ts, tests/hooks/select/monitor.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.common.if",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/if-guard.ts:55-84 (only on tool events; non-tool event never runs); src/rules (evaluateIf); tests/hooks/select/if-guard.test.ts",
+      "note": "Without an IfEvaluator the handler runs with a warning; the session engine always supplies one (src/host/session-engine.ts:42)."
+    },
+    {
+      "id": "hooks.guide.Filter by tool name and arguments with the if field",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/if-guard.ts:29-46,55-84; tests/hooks/select/if-guard.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.How if patterns match Bash commands",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/if-guard.ts:76 -> src/rules evaluateIf (undecidable input runs the hook); tests/hooks/config/matching.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hook handler fields",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/dedupe.ts:6-21 (settings copies once, first kept); src/hooks/handlers/remote/concurrency.ts:14-54 (12 model hooks at once, rest in order); tests/hooks/select/handler-types.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.How hooks work",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/run-all.ts (all selected run, merge after all settle); tests/hooks/dispatch.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Disable or remove hooks",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/gates.ts:15-18; src/settings/hooks/session-gates.ts:58-61 (value after precedence; managed only by managed); tests/settings/hooks/disable-all.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Hook handler fields",
+      "file": "07-hooks/handlers.md",
+      "status": "diverges",
+      "evidence": "src/hooks/handlers/command/cwd-fallback.ts:17-38; src/hooks/handlers/command/env.ts:46-66; src/hooks/handlers/command/subprocess-env.ts:66-97; tests/hooks/select/handler-types.test.ts",
+      "note": "7.3.2.3 item 2: the hook environment drops OTEL_* and honours CLAUDE_CODE_SUBPROCESS_ENV_SCRUB, but nothing removes Anthropic credentials under the HIPAA configuration (no HIPAA rule in subprocess-env.ts). Code should change. The cwd fallback order and its warning conform (the warning is a plugin issue rather than a debug line)."
+    },
+    {
+      "id": "hooks.guide.How hooks work",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/registry.ts:54 (one runner per type); tests/hooks/dispatch.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.common.type",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-handlers.ts:83-92,152-155; tests/hooks/select/handler-types.test.ts, tests/format/hooks-handlers.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.common.if",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/if-guard.ts:55-84; tests/hooks/select/if-guard.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.common.timeout",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts:13-151; src/format/hooks-handlers.ts:18-22; tests/hooks/handlers/timeouts.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.common.statusMessage",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/status.ts:31-41; src/hooks/handlers/registry.ts:54; tests/hooks/handlers/status.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.common.once",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/source-kind.ts:16,48 (honorsOnce: skill only); src/hooks/select/once.ts:14-49; tests/hooks/select/once.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.command.command",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/hook-command.ts:113-187 (exec and shell form, bare-name warning); tests/hooks/handlers/command/exec-form.test.ts, shell-form.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.command.args",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/hook-command.ts:131-151 (args present, even [], selects exec; plain-string substitution); tests/hooks/handlers/command/exec-form.test.ts",
+      "note": "Spawning without a shell and the Windows .cmd limit are the CommandRunner port's (src/ports/command-runner.ts)."
+    },
+    {
+      "id": "hooks.handler.command.shell",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/shell.ts:10-13; src/loading/resolve/hook-command.ts:21-22,172; tests/hooks/handlers/command/shell-form.test.ts",
+      "note": "The Windows-without-Git-Bash default comes from the host (defaultShell); choosing pwsh.exe over powershell.exe is the runner's."
+    },
+    {
+      "id": "hooks.handler.command.async",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/async.ts:20-94; src/hooks/handlers/timeouts.ts:122-125; src/hooks/verdict/background.ts; tests/hooks/handlers/command/async.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.command.asyncRewake",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/async.ts:38-44 (stderr, else stdout; blank wakes nobody); tests/hooks/handlers/command/async.test.ts",
+      "note": "Waking an idle session is the host's, from BackgroundDelivery.wake."
+    },
+    {
+      "id": "hooks.handler.command.onFailure",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-handlers.ts:35,45; src/hooks/verdict/on-failure.ts:81-193; tests/hooks/verdict/on-failure.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.components.Environment, quoting, and matching MCP tools.Quoting",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/hook-handlers.ts (handlerAdvice: unquoted placeholder warning); src/loading/resolve/hook-command.ts; tests/hooks/handlers/command/host-variables.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.components.Environment, quoting, and matching MCP tools.Environment",
+      "file": "07-hooks/handlers.md",
+      "status": "diverges",
+      "evidence": "src/loading/resolve/hook-command.ts:192-200 (CLAUDE_PROJECT_DIR, CLAUDE_PLUGIN_ROOT, CLAUDE_PLUGIN_DATA, CLAUDE_PLUGIN_OPTION_<KEY>); src/hooks/handlers/command/env.ts; tests/hooks/handlers/command/host-variables.test.ts",
+      "note": "Same paragraph as hooks.behavior.Hook handler fields: the HIPAA credential removal is missing. The exported variables conform."
+    },
+    {
+      "id": "hooks.behavior.Reference scripts by path.${CLAUDE_PROJECT_DIR}",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/hook-command.ts:192-200, substitute.ts; tests/hooks/handlers/command/reference-by-path.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Reference scripts by path.${CLAUDE_PLUGIN_ROOT}",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/hook-command.ts:154-166 (shell-form ${user_config.*} refused before running), :131 (exec form substitutes it); tests/hooks/handlers/command/reference-by-path.test.ts",
+      "note": "A refused shell-form hook ends as a skipped run with the error issue, not a failure, so onFailure: \"block\" does not block it."
+    },
+    {
+      "id": "hooks.behavior.Reference scripts by path.${CLAUDE_PLUGIN_DATA}",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/hook-command.ts:192-200; tests/hooks/handlers/command/reference-by-path.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Reference scripts by path in PowerShell hooks",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/hook-command.ts:66-105 (hook-powershell surface rewrites to ${env:NAME}; bare $CLAUDE_* warned); tests/hooks/handlers/command/reference-by-path.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Configure an async hook",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/async.ts; src/hooks/handlers/timeouts.ts:122; tests/hooks/async-hooks.test.ts",
+      "note": "Killing background hooks at -p teardown is the host's (src/host/background-queue.ts)."
+    },
+    {
+      "id": "hooks.behavior.How async hooks execute",
+      "file": "07-hooks/handlers.md",
+      "status": "diverges",
+      "evidence": "src/hooks/verdict/background.ts:14-45; src/hooks/verdict/stdout-kind.ts:81-88; src/hooks/output/background.ts; tests/hooks/async-hooks.test.ts, tests/host/hook-wiring.test.ts",
+      "note": "Item 3: a field of the wrong type is dropped (textOf) but no debug warning names it. Delivery, last-object reading and multi-line responses conform. Code should add the warning."
+    },
+    {
+      "id": "hooks.behavior.Limitations",
+      "file": "07-hooks/handlers.md",
+      "status": "diverges",
+      "evidence": "src/host/background-queue.ts:32; src/hooks/verdict/background.ts; tests/hooks/async-hooks.test.ts",
+      "note": "Item 7: skipping an async SessionStart response equal to what Claude last received from that hook (and re-sending after a compaction or /clear) is not implemented; the host layer leaves it to the embedder. Items 2, 5, 6 conform. Code (host layer) should implement it."
+    },
+    {
+      "id": "hooks.handler.http.url",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/http.ts:13-52; src/hooks/handlers/remote/http-policy.ts:43-48; tests/hooks/handlers/remote/http.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.http.headers",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/http-env.ts:9-44; tests/hooks/handlers/remote/http.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.http.allowedEnvVars",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/http-env.ts:22-26; src/hooks/handlers/remote/http-policy.ts:50-58 (intersection); tests/hooks/handlers/remote/http.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.http.onFailure",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-handlers.ts:54; src/hooks/verdict/on-failure.ts:43-46; tests/hooks/verdict/on-failure.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.HTTP hooks",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/http.ts; tests/hooks/handlers/remote/http.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.mcp_tool.server",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/mcp-tool.ts:24-129 (waits on blocking events within MCP_TIMEOUT and the hook timeout; unconnected server is a non-blocking error); src/hooks/select/mcp-client.ts (skip at launch/Setup); tests/hooks/handlers/remote/mcp-tool.test.ts",
+      "note": "The skip line is \"... (no MCP client context) and are skipped\": the spec text plus a tail, reported as a warning issue."
+    },
+    {
+      "id": "hooks.handler.mcp_tool.tool",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/interpret.ts:96-100 (text read as exit-0 stdout; isError is a non-blocking error); tests/hooks/handlers/remote/mcp-tool.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.mcp_tool.input",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/mcp-input.ts:14-78; tests/hooks/handlers/remote/mcp-tool.test.ts",
+      "note": "See J7.57 for null."
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.type",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-handlers.ts:66-73; tests/hooks/handlers/remote/prompt.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.prompt",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt-text.ts:8-25; tests/hooks/handlers/remote/prompt.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.prompt.prompt",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt-text.ts:8-25; tests/hooks/handlers/remote/prompt.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.model",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/model-run.ts (modelPreference small-fast when model is unset); tests/hooks/handlers/remote/default-model.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.handler.prompt.model",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/model-run.ts; tests/hooks/handlers/remote/prompt.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.timeout",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts:13-19 (prompt 30); tests/hooks/handlers/timeouts.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.continueOnBlock",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-handlers.ts:71; src/hooks/handlers/remote/ok-false.ts; tests/hooks/handlers/remote/ok-false.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.How prompt-based hooks work",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt.ts, model-run.ts, prompt-response.ts; tests/hooks/handlers/remote/default-model.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Prompt-based hooks",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt.ts; tests/hooks/handlers/remote/prompt.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.How agent hooks work",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/agent.ts:10-31 (Read, Grep, Glob; maxTurns 50; impossible ignored); src/hooks/handlers/remote/ok-false.ts (agent acts as continueOnBlock); tests/hooks/handlers/remote/agent-limits.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Agent hook configuration",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-handlers.ts:75-80 (no continueOnBlock); src/hooks/handlers/timeouts.ts:18 (agent 60); tests/hooks/handlers/remote/agent-limits.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Agent-based hooks",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/agent.ts; tests/hooks/handlers/remote/agent-limits.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Limitations",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts:13-151; tests/hooks/handlers/timeout-semantics.test.ts",
+      "note": "Item 3 of 7.3.10 (no extra sandboxing) is the runner's; the library adds none."
+    },
+    {
+      "id": "hooks.behavior.SessionEnd input",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts:44-103 (1.5 s budget, settings hooks raise it to 60 s, plugin hooks do not, CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS); tests/hooks/input/event-inputs-session.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Prompt-based hooks",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts:27-79 (types per event, matching 7.3.9); src/hooks/select/select.ts:55-57 (skip + warning); tests/hooks/handlers/remote/prompt.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Success",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit-codes.ts:57-62, exited.ts:91-113; tests/hooks/verdict/exit-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Blocking error",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exited.ts:150-184; src/hooks/verdict/exit2.ts:84-137; tests/hooks/verdict/exit-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Non-blocking error",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exited.ts:186-201; src/hooks/verdict/notices.ts:25-33; tests/hooks/verdict/exit-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Exit code output",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit-codes.ts:57-72 (EXIT_TABLE), exited.ts:47-55,170-184 (WorktreeCreate path, missing-file rule), exit2.ts:84-137; tests/hooks/verdict/exit-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Plain text, or nothing",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit-codes.ts:57-72; tests/hooks/verdict/exit-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Hook output",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/plain-stdout.ts:10-16, exited.ts:91-108; tests/hooks/output/dispatch.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Exit code output.WorktreeCreate",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts:130 (anyNonZeroBlocks), exited.ts:187-189; tests/hooks/verdict/exit-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Exit code output.WorktreeRemove",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts:131-134 (blocksUnlessDirectoryGone); tests/hooks/verdict/exit-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Elicitation and ElicitationResult",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts:124-127 (outputOnlyOnExit0), exited.ts:78-89; tests/hooks/verdict/exit-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Exit code 0",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/stdout-kind.ts:38-53, plain-stdout.ts, exited.ts:110-113; tests/hooks/verdict/exit-codes-0-2.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Shell profile output before the JSON",
+      "file": "07-hooks/results.md",
+      "status": "diverges",
+      "evidence": "src/hooks/verdict/stdout-kind.ts:42 (read as plain text); no debug line anywhere in src/hooks",
+      "note": "The reading conforms, but the MUST-record line `Hook output does not start with {, treating as plain text` is never produced (no issue, no observer call). Code should emit it (as a debug-level issue the host logs)."
+    },
+    {
+      "id": "hooks.behavior.Exit code 2",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exited.ts:150-168, src/hooks/assemble.ts:26-53 (a blocking JSON decision's reason replaces stderr), src/hooks/verdict/notices.ts:10-27; tests/hooks/verdict/exit-codes-0-2.test.ts",
+      "note": "Item 2's debug record of a validation failure under exit 2 is not produced; minor."
+    },
+    {
+      "id": "hooks.troubleshooting.A plugin hook blocks a tool call or prompt",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exited.ts:138-148, notices.ts:78-79, src/hooks/source-kind.ts:75-78; tests/hooks/troubleshooting-fires.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Other exit codes",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exited.ts:66-70,186-201, notices.ts:29-33, interpret.ts:74-76 (not started); tests/hooks/verdict/exit-codes-0-2.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.troubleshooting.hook error notices in the transcript",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/notices.ts:25-33, exited.ts:66-70; tests/hooks/troubleshooting.test.ts",
+      "note": "The full stderr in the debug log is the host's (the notice carries the detail)."
+    },
+    {
+      "id": "hooks.behavior.Timeouts",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/interpret.ts:72-73, on-failure.ts:125-155 (PreModelSwitch blocks; PreToolUse only with onFailure: block); tests/hooks/handlers/timeout-semantics.test.ts",
+      "note": "The SDK-callback contract in item 2 is outside the library's hook runner."
+    },
+    {
+      "id": "hooks.behavior.Hooks that start a background process",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/suspect-capture.ts:20-47, exited.ts:237-240; src/hooks/handlers/command/async.ts:46-58 (outputHeldOpen from the runner); tests/hooks/verdict/background-process.test.ts",
+      "note": "Detecting a held-open capture and stopping reading at exit are the CommandRunner port's."
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/on-failure.ts:81-193, notices.ts:35-41; tests/hooks/verdict/failure-blocks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Can't start",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/interpret.ts:74-76; src/hooks/handlers/command/async.ts:64-67; tests/hooks/verdict/failure-blocks.test.ts:94",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Exit code other than 0 or 2",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exited.ts:196-200; tests/hooks/verdict/failure-blocks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.HTTP error",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/http-response.ts:46-55; tests/hooks/verdict/failure-blocks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Timeout",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/interpret.ts:72-73, on-failure.ts:86,114-116; tests/hooks/verdict/failure-blocks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Invalid output",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exited.ts:61-64, http-response.ts:32-43; tests/hooks/verdict/failure-blocks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Background command hooks",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/on-failure.ts:71-84 (async or asyncRewake; Stop, SubagentStop, TaskCompleted, TeammateIdle via ignoresOnFailure); tests/hooks/verdict/failure-blocks.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Failed hooks on Windows without Git Bash",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/on-failure.ts:54-65,113, notices.ts:47-51; tests/hooks/handlers/command/windows-no-git-bash.test.ts",
+      "note": "The fixes of item 2 are advice text a host may show; the error carries the 2.1.309+ sentence."
+    },
+    {
+      "id": "hooks.behavior.PowerShell started no program",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/powershell-no-program.ts:20-47; src/loading/resolve/hook-command.ts:172-173 (not started); tests/hooks/handlers/command/powershell-no-program.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.PowerShell started no program.To print text, such as JSON",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/powershell-no-program.ts:44 (shell named: runs as written); tests/hooks/handlers/command/powershell-no-program.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.PowerShell started no program.To run one .exe at a path without $",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/powershell-no-program.ts:29-32 (fix text); tests/hooks/handlers/command/powershell-no-program.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.PowerShell started no program.To run a script written for Bash",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/powershell-no-program.ts:29-32; tests/hooks/handlers/command/powershell-no-program.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/http-response.ts:7-55; tests/hooks/verdict/http-handling.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.HTTP hooks",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/http-response.ts; tests/hooks/handlers/remote/http.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.2xx with an empty body",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/http-response.ts:34; tests/hooks/verdict/http-handling.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.2xx with a JSON object body",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/http-response.ts:40-43; tests/hooks/verdict/http-handling.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.Non-2xx status",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/http-response.ts:46-50 (\"HTTP <status>\"); tests/hooks/verdict/http-handling.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.Connection failure",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/http-response.ts:52-55; tests/hooks/verdict/http-handling.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.Timeout",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/interpret.ts:72-73; tests/hooks/verdict/http-handling.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Structured JSON output",
+      "file": "07-hooks/results.md",
+      "status": "diverges",
+      "evidence": "src/hooks/output/schemas-common.ts:14-31, src/hooks/output/parse.ts:9,36-41; tests/hooks/output/dispatch.test.ts",
+      "note": "Validation conforms (wrong types, decision other than block, approve on PreToolUse only, misplaced fields ignored). The debug line `Hook JSON output had unrecognized keys` is never produced: unknown keys are dropped silently. Code should emit it."
+    },
+    {
+      "id": "hooks.behavior.Decision control",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/schemas-*.ts, merge-gates.ts, tool-output.ts, worktree-path.ts; tests/hooks/output/decision-control-events.test.ts, decision-control-patterns.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Add context for Claude",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/text-cap.ts:12-70 (10,000 cap, saved file, 2,000 preview), src/hooks/output/reminder-tags.ts (&lt; escape), src/hooks/output/merge.ts:223 (every value kept); tests/hooks/output/add-context.test.ts",
+      "note": "Without a ScratchFiles port the text is cut at the cap with a marker and a warning instead of saved; the port is the host's. Replaying saved context on resume is the host's."
+    },
+    {
+      "id": "hooks.behavior.Emit terminal notifications",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/terminal-sequence.ts:9-64; tests/hooks/output/terminal-notifications.test.ts",
+      "note": "Writing the sequence, interactive only, is the host's from HookOutcome.terminalSequences."
+    },
+    {
+      "id": "hooks.behavior.Add context for Claude.Environment state",
+      "file": "07-hooks/results.md",
+      "status": "not-applicable",
+      "evidence": "tests/hooks/output/add-context.test.ts",
+      "note": "Guidance for the hook author on what to put in additionalContext."
+    },
+    {
+      "id": "hooks.behavior.Add context for Claude.Conditional project rules",
+      "file": "07-hooks/results.md",
+      "status": "not-applicable",
+      "evidence": "tests/hooks/output/add-context.test.ts",
+      "note": "Guidance for the hook author."
+    },
+    {
+      "id": "hooks.behavior.Add context for Claude.External data",
+      "file": "07-hooks/results.md",
+      "status": "not-applicable",
+      "evidence": "tests/hooks/output/data-and-interaction.test.ts",
+      "note": "Guidance for the hook author."
+    },
+    {
+      "id": "hooks.behavior.Response schema.ok",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt-response.ts:9-60; tests/hooks/output/response-schema-gates.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.reason",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt-response.ts:51-53; tests/hooks/output/response-schema-gates.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.impossible",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt-response.ts:57-58, ok-false.ts:103-106; tests/hooks/output/response-schema-gates.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.Stop",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:103-106; tests/hooks/output/response-schema-gates.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.PreToolUse",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:107; tests/hooks/output/response-schema-gates.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.PostToolUse",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:108; tests/hooks/output/response-schema-events.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.PostToolBatch",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:109-111 (alwaysEnds); tests/hooks/output/response-schema-events.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.PostToolUseFailure",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:112-113; tests/hooks/output/response-schema-events.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.TaskCompleted",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:96-99,114; tests/hooks/output/response-schema-events.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.TeammateIdle",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:115; tests/hooks/output/response-schema-events.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.PermissionRequest",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:117; tests/hooks/output/response-schema-events.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Response schema.PermissionDenied",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:118; tests/hooks/output/response-schema-events.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.continueOnBlock",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:84-90,127-139; tests/hooks/handlers/remote/ok-false.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Prompt-based hooks",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts; tests/hooks/handlers/remote/prompt.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.permissionUpdate.addRules",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/permission-update.ts:25-50; src/hooks/output/merge-gates.ts:154; tests/hooks/output/permission-update.test.ts",
+      "note": "The library checks the entry and hands it to the host in effects.updatedPermissions; writing it to the destination is the host's."
+    },
+    {
+      "id": "hooks.permissionUpdate.replaceRules",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/permission-update.ts:25-50; src/hooks/output/merge-gates.ts:154; tests/hooks/output/permission-update.test.ts",
+      "note": "The library checks the entry and hands it to the host in effects.updatedPermissions; writing it to the destination is the host's."
+    },
+    {
+      "id": "hooks.permissionUpdate.removeRules",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/permission-update.ts:25-50; src/hooks/output/merge-gates.ts:154; tests/hooks/output/permission-update.test.ts",
+      "note": "The library checks the entry and hands it to the host in effects.updatedPermissions; writing it to the destination is the host's."
+    },
+    {
+      "id": "hooks.permissionUpdate.setMode",
+      "file": "07-hooks/results.md",
+      "status": "missing",
+      "evidence": "src/hooks/output/permission-update.ts:32-47 (modes, manual -> default); no code applies a setMode entry",
+      "note": "The entry shape conforms, but item 1 (bypassPermissions takes effect only when bypass mode is available, is a no-op under disableBypassPermissionsMode or restricted mode, and is never persisted as defaultMode) is enforced nowhere: the entry is passed through unchanged. The library already knows bypassAvailable (src/settings/permissions/default-mode.ts:243); it should filter or mark such an entry before handing it on."
+    },
+    {
+      "id": "hooks.permissionUpdate.addDirectories",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/permission-update.ts:25-50; src/hooks/output/merge-gates.ts:154; tests/hooks/output/permission-update.test.ts",
+      "note": "The library checks the entry and hands it to the host in effects.updatedPermissions; writing it to the destination is the host's."
+    },
+    {
+      "id": "hooks.permissionUpdate.removeDirectories",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/permission-update.ts:25-50; src/hooks/output/merge-gates.ts:154; tests/hooks/output/permission-update.test.ts",
+      "note": "The library checks the entry and hands it to the host in effects.updatedPermissions; writing it to the destination is the host's."
+    },
+    {
+      "id": "hooks.guide.Combine results from multiple hooks",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/finalize.ts:15-26 (exit 2 or blocking failure ranks as deny, drops updatedInput), merge-gates.ts, merge.ts:223; tests/hooks/output/dispatch.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Limitations",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts (rewrites not merged; one wins by registry order); tests/hooks/handlers/timeout-semantics.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Hooks configured in Claude Code",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/classifier-note.ts:37-47; tests/hooks/output/classifier-note.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.In-process Agent SDK callbacks",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/classifier-note.ts:37-51,80-83 (session kind is application trust; mixed is unverified; restoredNote); tests/hooks/output/classifier-note.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Length",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/classifier-note.ts:14,69-72; tests/hooks/output/classifier-note.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Synchronous responses only",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/background.ts:28-44 (only additionalContext and systemMessage delivered); tests/hooks/output/classifier-note.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Calls that the classifier doesn't record",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/classifier-note.ts:30; tests/hooks/output/classifier-note.test.ts:207",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Interaction with rewrites",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:161-183; tests/hooks/output/classifier-note.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.guide.Hooks and permission modes",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide (hook allow within rules; deny in every mode); tests/rules/decide/hooks-and-mods.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.PreToolUse updatedInput in auto mode",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide; tests/rules/decide/hook-auto-mode.test.ts",
+      "note": "The classifier review itself is the server's."
+    },
+    {
+      "id": "hooks.behavior.PreToolUse ask decisions in auto mode",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide; tests/rules/decide/hook-auto-mode.test.ts",
+      "note": "Telling a subagent up to three times that its report was not delivered is the host's agent loop."
+    },
+    {
+      "id": "hooks.behavior.Tools that require user interaction",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/pre-tool-use-outcome.ts; tests/hooks/output/data-and-interaction.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.behavior.Defer a tool call for later",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/defer.ts:1-60, pre-tool-use-outcome.ts; tests/hooks/output/defer.test.ts, tests/hooks/output/pre-tool-use-outcome.test.ts",
+      "note": "The -p result (stop_reason tool_deferred, resume, retention, CLAUDE_CODE_DROP_UNAVAILABLE_DEFERRED_TOOL) is the -p runner's; the library decides honour or ignore and leaves no hook decision when ignored."
+    },
+    {
+      "id": "hooks.troubleshooting.Hook loads but never fires",
+      "file": "07-hooks/results.md",
+      "status": "diverges",
+      "evidence": "src/hooks/verdict/types.ts:9-20 (observer finished: handlerId, status, exitCode); src/hooks/outcome.ts:16-20; tests/hooks/troubleshooting-fires.test.ts:133",
+      "note": "7.4.12 item 1: the library gives the host status and exit code per run, but not the matched value, the plugin, the duration or the \"finished with status <n>\" / \"timed out after <N>ms\" / \"moved to the background\" / \"failed to start\" wording, so a host cannot write the required line from it alone (duration and matched value are not exposed; the outcome statuses do not tell \"failed to start\" from other non-blocking errors). Code should expose them, or the spec should leave the line to the host."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J7.1",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-settings.ts:180 (description is a file key, never read); src/format/validate/hooks-check.ts (no finding)",
+      "note": ""
+    },
+    {
+      "id": "J7.2",
+      "file": "07-hooks/README.md",
+      "status": "diverges",
+      "evidence": "src/host/session-registry.ts:52-58 (declaredEntries: plugins, then settings); src/settings/hooks/session-gates.ts:26,68 (settings highest precedence first)",
+      "note": "The judgment orders the registry settings files first, then plugins, then frontmatter. The host registers every enabled plugin's hooks before the settings files, and the settings files highest-precedence first. Registry order drives the merge of scalar fields (last wins, merge-gates.ts), the order of systemMessage and additionalContext, and which settings copy dedupe keeps. Code should change (append settings first) or the judgment should be rewritten to the implemented order; agent-plugins' own spec/judgments.md has no row fixing this order."
+    },
+    {
+      "id": "J7.10",
+      "file": "07-hooks/configuration.md",
+      "status": "diverges",
+      "evidence": "src/format/hooks-settings.ts:109-111 (group), src/format/hooks-handlers.ts:101-117 (handler); the validator src/format/validate/hooks-check.ts reports nothing",
+      "note": "The judgment says an unknown group or handler key, or another type's field, is ignored without a warning. The validator agrees, but the plugin loader adds a warning to the plugin's issues (\"Unknown field \\\"x\\\" is ignored\", \"\\\"onFailure\\\" is not a field of a prompt hook and is ignored\"). Minor; code should drop the warning (or demote it to a debug note), unless the spec wants to allow a loader diagnostic."
+    },
+    {
+      "id": "J7.11",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/format/hooks-settings.ts:81-98,134-236 (lenient read, GUARDED_EVENTS reject the plugin, strayGuard); src/format/validate/hooks-check.ts:17-27 (entry ignored at runtime / nothing it sits in is applied); src/loading/readers-config.ts:46-58",
+      "note": ""
+    },
+    {
+      "id": "J7.13",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/rules/hook-matcher.ts:34-39",
+      "note": ""
+    },
+    {
+      "id": "J7.14",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/rules/hook-matcher.ts:44-51; src/format/hooks-settings.ts:46-66 (loads, with a warning)",
+      "note": ""
+    },
+    {
+      "id": "J7.15",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/rules/hook-matcher.ts:76-77",
+      "note": ""
+    },
+    {
+      "id": "J7.16",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/mcp-tools.ts:51-52,76",
+      "note": "The code treats any Monitor input without a string command as not a shell command; it does not look for the ws source. Same result for every input the Monitor schema allows."
+    },
+    {
+      "id": "J7.17",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/dedupe.ts:6-21 (canonical JSON of event, matcher text, handler; settings only via SOURCE_POLICY.mergesCopies)",
+      "note": "Which copy is \"first\" follows the registry order, which diverges from J7.2 (settings highest precedence first)."
+    },
+    {
+      "id": "J7.18",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/concurrency.ts:30-54 (waiting handlers start in order); src/hooks/run-all.ts:73 (cancelled)",
+      "note": ""
+    },
+    {
+      "id": "J7.19",
+      "file": "07-hooks/configuration.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/gates.ts:15-18 (only source.managed survives a non-managed disableAllHooks)",
+      "note": ""
+    },
+    {
+      "id": "J7.50",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/source-kind.ts:30-66 (honorsOnce false for plugin, settings, agent, session)",
+      "note": ""
+    },
+    {
+      "id": "J7.51",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/once.ts:32-49 (take holds, settle releases or spends)",
+      "note": ""
+    },
+    {
+      "id": "J7.52",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/status.ts:31-41; src/hooks/handlers/registry.ts:54 (announced for every run, background included)",
+      "note": ""
+    },
+    {
+      "id": "J7.53",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/stdout-kind.ts:81-88",
+      "note": ""
+    },
+    {
+      "id": "J7.54",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/async.ts:38-44",
+      "note": ""
+    },
+    {
+      "id": "J7.55",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/http.ts:30-38 (header names lower-cased, content-type written last); url sent as written",
+      "note": ""
+    },
+    {
+      "id": "J7.56",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/http-env.ts:9-26",
+      "note": ""
+    },
+    {
+      "id": "J7.57",
+      "file": "07-hooks/handlers.md",
+      "status": "diverges",
+      "evidence": "src/hooks/handlers/remote/mcp-input.ts:27-28 (asText)",
+      "note": "A reference that resolves to null becomes the empty string, not the text \"null\"; item 1 says a non-string value is written as text. Minor: either the spec names null (empty, like a missing path) or the code writes \"null\". The rest (dot paths, array indexes, nested strings, one pass, missing path empty) conforms."
+    },
+    {
+      "id": "J7.58",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt-text.ts:8-25",
+      "note": ""
+    },
+    {
+      "id": "J7.59",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt-response.ts:62-72; src/hooks/handlers/remote/model-run.ts (instruction after the prompt; impossible for prompt hooks only)",
+      "note": ""
+    },
+    {
+      "id": "J7.60",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/agent.ts:13,26-29",
+      "note": ""
+    },
+    {
+      "id": "J7.61",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/select.ts:55-57",
+      "note": "agent-plugins' own spec/judgments.md:121 still quotes the old wording `A <type> hook is not supported on <Event> and is skipped`; the code says `A hook of type <type> ...` as the spec does. Their judgments row should be corrected."
+    },
+    {
+      "id": "J7.62",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/ports/command-runner.ts (the library hands the spec to the host runner and adds no sandbox)",
+      "note": ""
+    },
+    {
+      "id": "J7.30",
+      "file": "07-hooks/results.md",
+      "status": "diverges",
+      "evidence": "src/hooks/output/schemas-common.ts:14-31, parse.ts:9",
+      "note": "Validation boundaries conform; the `Hook JSON output had unrecognized keys` debug line is not produced (see hooks.guide.Structured JSON output)."
+    },
+    {
+      "id": "J7.31",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/stdout-kind.ts:31-33,48-49",
+      "note": ""
+    },
+    {
+      "id": "J7.32",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/notices.ts:10-33",
+      "note": ""
+    },
+    {
+      "id": "J7.33",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/notices.ts:78-79, exited.ts:145-148, blocked-prompt.ts (Original prompt: appended after); src/hooks/source-kind.ts:75-78",
+      "note": ""
+    },
+    {
+      "id": "J7.34",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/suspect-capture.ts:22-47, exited.ts:238",
+      "note": ""
+    },
+    {
+      "id": "J7.35",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/on-failure.ts:161-177",
+      "note": ""
+    },
+    {
+      "id": "J7.36",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/on-failure.ts:126-129",
+      "note": ""
+    },
+    {
+      "id": "J7.37",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/on-failure.ts:56-65 (shell not consulted; args excluded)",
+      "note": ""
+    },
+    {
+      "id": "J7.38",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/powershell-no-program.ts:20-47; src/hooks/verdict/interpret.ts:74-76 (not-started)",
+      "note": ""
+    },
+    {
+      "id": "J7.39",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts:130-134, on-failure.ts:146-148, http-response.ts:46-55",
+      "note": ""
+    },
+    {
+      "id": "J7.40",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/text-cap.ts:12-70",
+      "note": "The replacement adds a \"Preview (first 2000 characters):\" header before the preview; the judgment's wording is a prefix of it."
+    },
+    {
+      "id": "J7.41",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/terminal-sequence.ts:15-64",
+      "note": ""
+    },
+    {
+      "id": "J7.43",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/prompt-response.ts:15-60",
+      "note": ""
+    },
+    {
+      "id": "J7.44",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/permission-update.ts:15-23",
+      "note": ""
+    },
+    {
+      "id": "J7.45",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/finalize.ts:15-26; src/hooks/assemble.ts:34-53",
+      "note": ""
+    },
+    {
+      "id": "J7.47",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/classifier-note.ts:69-72",
+      "note": ""
+    },
+    {
+      "id": "J7.49",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/blocked-prompt.ts (`${message}\\nOriginal prompt: ...`)",
+      "note": ""
+    },
+    {
+      "id": "J7.63",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts:29-35,147-150",
+      "note": ""
+    },
+    {
+      "id": "J7.64",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts:223 (messages.toUser in handler order)",
+      "note": "Handler order is registry order, which diverges from J7.2."
+    },
+    {
+      "id": "J7.65",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/ok-false.ts:109-111",
+      "note": ""
+    }
+  ]
+}

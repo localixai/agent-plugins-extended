@@ -1,0 +1,1352 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a11-marketplaces-updates-deps",
+  "date": "2026-11-16",
+  "files": [
+    "15-marketplaces.md",
+    "16-updates.md",
+    "16-dependencies.md"
+  ],
+  "requirements": [
+    {
+      "id": "marketplace.publish.Add the marketplace file to your repository",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-commands.ts; tests/marketplace/publish-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.create.Write relative paths from the marketplace root",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/add-failures.ts; tests/marketplace/create-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.field.$schema",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/format/marketplace/marketplace-file.test.ts"
+    },
+    {
+      "id": "marketplace.field.name",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/ids.ts; src/format/marketplace/marketplace-name-lists.ts; tests/format/marketplace/ids.test.ts; tests/format/marketplace/marketplace-name-field.test.ts; tests/format/marketplace/marketplace-names.test.ts"
+    },
+    {
+      "id": "marketplace.field.owner",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/format/marketplace/marketplace-file.test.ts"
+    },
+    {
+      "id": "marketplace.field.plugins",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/format/marketplace/marketplace-file.test.ts"
+    },
+    {
+      "id": "marketplace.field.description",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/format/marketplace/marketplace-alternates.test.ts"
+    },
+    {
+      "id": "marketplace.field.version",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/format/marketplace/marketplace-alternates.test.ts"
+    },
+    {
+      "id": "marketplace.field.metadata.description",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/format/marketplace/marketplace-alternates.test.ts"
+    },
+    {
+      "id": "marketplace.field.metadata.version",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/format/marketplace/marketplace-alternates.test.ts"
+    },
+    {
+      "id": "marketplace.field.metadata.pluginRoot",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; src/format/marketplace/plugin-source.ts; tests/format/marketplace/marketplace-alternates.test.ts; tests/format/marketplace/plugin-source-relative.test.ts"
+    },
+    {
+      "id": "marketplace.field.forceRemoveDeletedPlugins",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; src/format/marketplace/types.ts; tests/format/marketplace/marketplace-file.test.ts; tests/marketplace/removal.test.ts"
+    },
+    {
+      "id": "marketplace.field.allowCrossMarketplaceDependenciesOn",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/marketplace/cross-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.field.renames",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "src/format/marketplace/marketplace.ts; src/format/marketplace/types.ts; tests/format/marketplace/renames-validation.test.ts; tests/marketplace/renames.test.ts",
+      "note": "Spec §15.10/J15.11: the chain error reads `chain does not resolve (<reason>)` with reason `target-missing` or `cycle`, and a target is checked against the id grammar only when it names neither an entry nor a renames key (so `\"bad name\"` draws `target-missing`, and a target that is itself a key is accepted). Code writes reasons `cycle: a -> b -> a` and `ends at \"x\", which is not in plugins[]`, and checks the grammar first for every non-null target (src/format/marketplace/renames.ts:45-72). The runtime map (follow chain from oldest, null = removed) conforms. Code should change."
+    },
+    {
+      "id": "marketplace.rule.Reserved names",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-name-lists.ts; tests/format/marketplace/marketplace-names.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Official marketplace names",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-name-lists.ts; tests/format/marketplace/marketplace-names.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Community marketplace names",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-name-lists.ts; tests/format/marketplace/marketplace-names.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Plugin directory names",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-name-lists.ts; tests/format/marketplace/marketplace-names.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Another spelling of a reserved name",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-name-lists.ts; tests/format/marketplace/marketplace-names.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Reserved names.npm, pip, uv, cargo, github, and gh",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "src/format/marketplace/marketplace-name-lists.ts; tests/format/marketplace/marketplace-names.test.ts",
+      "note": "Spec (J15.3): a validator reports the six names in lower case only and leaves other casings to the add-time refusal. Code: validationNameIssues reports any casing (ANY_CASING_NAMES.has(name.toLowerCase())) as a validator error, so `NPM` fails validate. Add-time refusal of every casing conforms. Code should change (or J15.3 relaxed to MAY)."
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Names starting with claudeai-",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-name-lists.ts; tests/format/marketplace/marketplace-names.test.ts"
+    },
+    {
+      "id": "marketplace.entry.name",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; src/format/marketplace/ids.ts; tests/format/marketplace/entries-name.test.ts; tests/format/marketplace/entry-merge-precedence.test.ts; tests/format/marketplace/ids.test.ts"
+    },
+    {
+      "id": "marketplace.entry.source",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/format/marketplace/entries.test.ts"
+    },
+    {
+      "id": "marketplace.entry.description",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entries.test.ts; tests/format/marketplace/entry-merge-precedence.test.ts"
+    },
+    {
+      "id": "marketplace.entry.version",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entries.test.ts; tests/format/marketplace/entry-merge-precedence.test.ts"
+    },
+    {
+      "id": "marketplace.entry.category",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/format/marketplace/entries.test.ts"
+    },
+    {
+      "id": "marketplace.entry.tags",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/format/marketplace/entries.test.ts"
+    },
+    {
+      "id": "marketplace.entry.strict",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; src/index.ts; tests/format/marketplace/entries.test.ts; tests/format/marketplace/entry-merge.test.ts; tests/loading/load-from-entry.test.ts"
+    },
+    {
+      "id": "marketplace.entry.relevance",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/relevance.ts; tests/format/marketplace/entries-relevance.test.ts"
+    },
+    {
+      "id": "marketplace.entry.dependencies",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-schema.ts; tests/format/marketplace/entries-fields.test.ts"
+    },
+    {
+      "id": "marketplace.entry.defaultEnabled",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entries.test.ts; tests/format/marketplace/entry-merge-precedence.test.ts"
+    },
+    {
+      "id": "marketplace.entry.displayName",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entries.test.ts; tests/format/marketplace/entry-merge-precedence.test.ts"
+    },
+    {
+      "id": "marketplace.entry.metadata",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; src/format/marketplace/entry-schema.ts; tests/format/marketplace/entries-fields.test.ts; tests/format/marketplace/entry-merge-precedence.test.ts"
+    },
+    {
+      "id": "marketplace.entry.headers",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-schema.ts; src/format/marketplace/header-names.ts; tests/format/marketplace/entries-fields.test.ts; tests/format/marketplace/entries-headers.test.ts; tests/marketplace/download-headers-entry.test.ts"
+    },
+    {
+      "id": "marketplace.entry.headersHelper",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-schema.ts; src/format/marketplace/header-names.ts; tests/format/marketplace/entries-fields.test.ts; tests/format/marketplace/entries-headers.test.ts; tests/marketplace/download-headers-entry.test.ts"
+    },
+    {
+      "id": "marketplace.create.Keep the entry name and the manifest name the same",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/marketplace/plugin-names.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Metadata precedence.name",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entry-merge-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.How entry fields combine with plugin.json",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entry-merge-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Strict mode.any",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entry-merge-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Strict mode.true",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entry-merge-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Strict mode.false",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entry-merge-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Hooks in an entry",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entry-merge.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Display fields",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/display-fields.ts; tests/format/marketplace/display-fields.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Metadata precedence.defaultEnabled and display fields",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entry-merge-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Metadata precedence.version",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/format/marketplace/entry-merge-rules.test.ts"
+    },
+    {
+      "id": "marketplace.source.Relative path",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "src/format/marketplace/plugin-source.ts; src/format/marketplace/types.ts; tests/format/marketplace/plugin-source-relative.test.ts; tests/marketplace/fetch-plan-git.test.ts; tests/marketplace/submodules.test.ts",
+      "note": "Spec §15.6.1 item 2: a backslash after `./` on macOS/Linux is refused by the client at install/load, and validation does not report it. Code reports it at read/validate time (`Path contains a backslash: <path>. Write the path with forward slashes`, src/format/marketplace/plugin-source.ts:79), dropping the entry. Code should move the check to install/load (the spec follows the oracle)."
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.Relative path",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-git.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.source.github",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/format/marketplace/types.ts; tests/format/marketplace/plugin-source-objects.test.ts; tests/marketplace/fetch-plan-git.test.ts"
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.github",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-git.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.source.url",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/format/marketplace/types.ts; tests/format/marketplace/plugin-source-objects.test.ts; tests/marketplace/fetch-plan-git.test.ts; tests/marketplace/marketplace-file-fetch.test.ts"
+    },
+    {
+      "id": "marketplace.source.git-subdir",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/format/marketplace/types.ts; tests/format/marketplace/plugin-source-objects.test.ts; tests/marketplace/fetch-plan-git.test.ts"
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.git-subdir",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-git.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.source.npm",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/format/marketplace/types.ts; tests/format/marketplace/plugin-source-objects.test.ts; tests/marketplace/fetch-plan-npm-spec.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.npm",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.source.archive",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/format/marketplace/types.ts; tests/format/marketplace/plugin-source-objects.test.ts; tests/marketplace/archive-source.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.archive",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/ports/marketplace.ts; tests/marketplace/archive-source.test.ts"
+    },
+    {
+      "id": "marketplace.source.command",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/format/marketplace/types.ts; tests/format/marketplace/plugin-source-objects.test.ts; tests/marketplace/command-source-modes.test.ts; tests/marketplace/command-source.test.ts"
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.command",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-source.test.ts"
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.url",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-git.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Relative path plugin source.github, git, file, and directory",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; src/format/marketplace/types.ts; tests/marketplace/marketplace-fetch-plan.test.ts; tests/marketplace/install-mode.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Relative path plugin source.url",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; src/format/marketplace/types.ts; tests/marketplace/marketplace-fetch-plan.test.ts; tests/marketplace/install-mode.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Relative path plugin source.settings",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; src/format/marketplace/types.ts; tests/marketplace/marketplace-fetch-plan.test.ts; tests/marketplace/install-mode.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Bare names under pluginRoot",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "src/format/marketplace/plugin-source.ts; tests/format/marketplace/plugin-source-relative.test.ts",
+      "note": "Spec (J15.6): a pluginRoot that climbs out with `..` or is absolute makes bare names fail as `Invalid string: must start with \"./\"`. Code reports its own text `metadata.pluginRoot \"<root>\" must be a relative path inside the marketplace, so \"<name>\" cannot resolve under it` (src/format/marketplace/plugin-source.ts:52). `plugins` without `./` read as `./plugins` conforms. Code should use the spec's message."
+    },
+    {
+      "id": "marketplace.rule.github plugin source",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-git.test.ts"
+    },
+    {
+      "id": "marketplace.rule.url plugin source",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-git.test.ts"
+    },
+    {
+      "id": "marketplace.rule.git-subdir plugin source",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-git.test.ts"
+    },
+    {
+      "id": "marketplace.troubleshooting.Invalid git URL",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-add.ts; src/format/issues.ts; tests/marketplace/add-failures.test.ts; tests/marketplace/marketplace-input.test.ts"
+    },
+    {
+      "id": "marketplace.rule.npm plugin source.package",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-npm-spec.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.rule.npm plugin source.version",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-npm-spec.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.rule.npm plugin source.registry",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-npm-spec.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.rule.npm plugin source",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; src/marketplace/fetch-plan.ts; tests/marketplace/node-deps-spec.test.ts; tests/marketplace/node-deps.test.ts"
+    },
+    {
+      "id": "marketplace.rule.npm plugin source.A tarball link over http",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/fetch-plan-npm-spec.test.ts; tests/marketplace/fetch-plan-packages.test.ts"
+    },
+    {
+      "id": "marketplace.rule.archive plugin source",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "src/ports/marketplace.ts; tests/marketplace/archive-source.test.ts",
+      "note": "Spec §15.6.5: a validator reports a non-https or loopback/link-local/metadata archive url as `Archive URLs must use https:// and must not point at a loopback, link-local, or cloud-metadata host`. Code checks only in the fetch plan/install (src/marketplace/source-safety.ts:223, fetch-plan.ts:175) with other texts (`The archive URL \"<url>\" must use https://`, `... points at a loopback ...`); the entry reader accepts any non-empty url. sha256 pin, 64-hex either case, mismatch refusal conform. Code should add the validator check with the spec's message."
+    },
+    {
+      "id": "marketplace.rule.command plugin source.command",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "tests/marketplace/command-source.test.ts",
+      "note": "Spec (J15.8): one validator message `command must be printable ASCII (letters, digits, punctuation, single spaces) with no runs of 4 or more spaces`. Code emits three kit-worded messages, one per rule (`The command must be printable ASCII, so users can review all of it`, `The command may have at most 500 characters`, `The command may not contain a run of four or more spaces`; src/format/marketplace/plugin-source-kinds.ts:79-91). Rules themselves (ASCII, 500, four spaces) conform. Code should change to the oracle wording."
+    },
+    {
+      "id": "marketplace.rule.command plugin source.timeout",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "tests/marketplace/command-source.test.ts",
+      "note": "Spec (§15.6.7, J15.8): an out-of-range timeout is reported on the field, `plugins.<i>.source.timeout: Too small: expected number to be >0` / `Too big: expected number to be <=600`. Code: readTimeout returns undefined and the whole source is `Invalid input` (src/format/marketplace/plugin-source-kinds.ts:100-117). Range 1..600 and default 60 conform. Code should change."
+    },
+    {
+      "id": "marketplace.rule.command plugin source.mode",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-source-modes.test.ts"
+    },
+    {
+      "id": "marketplace.rule.What the command must do.Shell and working directory",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-source.test.ts"
+    },
+    {
+      "id": "marketplace.rule.What the command must do.Output",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-source.test.ts"
+    },
+    {
+      "id": "marketplace.rule.What the command must do.Directory contents",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-source.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Output that fails the install or update.No plugin content",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Output that fails the install or update.The session's own directory",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Output that fails the install or update.A network path",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Output that fails the install or update.Too large to copy",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-rules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; src/marketplace/install-mode.ts; tests/marketplace/install-link-plan.test.ts; tests/marketplace/install-mode.test.ts; tests/marketplace/install-plan.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.copy",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; src/marketplace/install-mode.ts; tests/marketplace/install-mode.test.ts; tests/marketplace/install-link-plan.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.link",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; src/marketplace/install-mode.ts; tests/marketplace/install-mode.test.ts; tests/marketplace/install-link-plan.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.Keep the directory in place",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; src/marketplace/install-mode.ts; tests/marketplace/install-mode.test.ts; tests/marketplace/install-link-plan.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.Include node_modules",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/node-deps.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.Sessions started inside the directory",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; src/marketplace/install-mode.ts; tests/marketplace/install-mode.test.ts; tests/marketplace/install-link-plan.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.Not on Windows",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; src/marketplace/install-mode.ts; tests/marketplace/install-mode.test.ts; tests/marketplace/install-link-plan.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Invalid input on a source",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "src/format/issues.ts; tests/format/marketplace/plugin-source-objects.test.ts",
+      "note": "Spec: a field present with an invalid value names that field (`plugins.<i>.source.sha: Must be a full 40-character lowercase git commit SHA`, `source.timeout: Too small ...`). Code reports every invalid optional value (sha, sha256, ref, timeout, mode) as `Invalid input` on `plugins[<i>].source` (src/format/marketplace/plugin-source-fields.ts:16-70); the sha message does not exist in src. Unknown type, missing required field, npm `..` and the `unsupported` placeholder conform. Code should change."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.The plugin is inside the submodule",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.The submodule is inside the plugin",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A component directory",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A path in the plugin's configuration",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A symbolic link",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.Text in the plugin's files",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A SKILL.md at the root",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A file Claude Code can't read",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.create.Keep unused submodules out of the clone",
+      "file": "15-marketplaces.md",
+      "status": "not-applicable",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts",
+      "note": "Binds the marketplace author (where to place submodules); the client side is the submodule rule, audited under marketplace.rule.Git submodules in the marketplace repository."
+    },
+    {
+      "id": "marketplace.troubleshooting.A root plugin's files from a git submodule are missing after install",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/submodules.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; src/marketplace/marketplace-catalog.ts; tests/marketplace/marketplace-catalog.test.ts; tests/marketplace/marketplace-file-fetch.test.ts; tests/marketplace/marketplace-source-rows.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.url",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-download.ts; tests/marketplace/marketplace-file-fetch.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.github",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/marketplace/marketplace-source-rows.test.ts; tests/format/marketplace/marketplace-source.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.git",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/marketplace/marketplace-source-rows.test.ts; tests/format/marketplace/marketplace-source.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.npm",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/marketplace/marketplace-source-rows.test.ts; tests/format/marketplace/marketplace-source.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.file",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/marketplace/marketplace-source-rows.test.ts; tests/format/marketplace/marketplace-source.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.directory",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-catalog.ts; tests/marketplace/marketplace-catalog.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.settings",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/marketplace/marketplace-source-rows.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.skills-dir",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/marketplace/marketplace-source-rows.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.hostPattern",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/marketplace/marketplace-source-rows.test.ts; tests/format/marketplace/marketplace-source.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.pathPattern",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/marketplace/marketplace-source-rows.test.ts; tests/format/marketplace/marketplace-source.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.url",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/format/marketplace/marketplace-source.test.ts; tests/marketplace/marketplace-fetch-plan.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.headers",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/archive-source.ts; src/marketplace/credential-variables.ts; tests/marketplace/download-headers-entry.test.ts; tests/marketplace/download-headers.test.ts; tests/marketplace/header-helper.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.headersHelper",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/credential-variables.ts; src/marketplace/download-headers.ts; tests/marketplace/download-headers.test.ts; tests/marketplace/header-helper.test.ts; tests/marketplace/header-policy.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.repo",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/format/marketplace/marketplace-source.ts; tests/format/marketplace/marketplace-source.test.ts; tests/marketplace/marketplace-fetch-plan.test.ts; tests/marketplace/marketplace-input.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.ref",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; src/format/marketplace/types.ts; tests/format/marketplace/marketplace-source.test.ts; tests/marketplace/marketplace-fetch-git.test.ts; tests/marketplace/marketplace-fetch-plan.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.path",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; src/format/marketplace/types.ts; tests/format/marketplace/marketplace-source.test.ts; tests/marketplace/marketplace-fetch-git.test.ts; tests/marketplace/marketplace-fetch-plan.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.sparsePaths",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/format/marketplace/marketplace-source.ts; tests/format/marketplace/marketplace-source.test.ts; tests/marketplace/marketplace-fetch-plan.test.ts; tests/marketplace/marketplace-input.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.skipLfs",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/format/marketplace/marketplace-source.test.ts; tests/marketplace/marketplace-fetch-plan.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.name",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/format/marketplace/marketplace-source-settings.test.ts"
+    },
+    {
+      "id": "marketplace.sourceField.plugins",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-source.ts; tests/format/marketplace/marketplace-source-settings.test.ts; tests/marketplace/marketplace-fetch-plan.test.ts"
+    },
+    {
+      "id": "marketplace.troubleshooting.Invalid marketplace source format",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-add.ts; src/format/issues.ts; tests/marketplace/add-failures.test.ts; tests/marketplace/marketplace-input.test.ts"
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace \"claude-plugins-official\" not found",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-add.ts; src/format/issues.ts; tests/marketplace/add-failures.test.ts; tests/marketplace/marketplace-input.test.ts"
+    },
+    {
+      "id": "marketplace.create.Remove the marketplace to start over",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-remove.ts; tests/cli/marketplace-remove.test.ts"
+    },
+    {
+      "id": "marketplace.relevance.relevance",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "src/format/marketplace/relevance.ts; tests/format/marketplace/entries-relevance.test.ts",
+      "note": "Spec (J15.10): a `hosts` entry with an upper-case letter invalidates the whole entry like one with a scheme. Code accepts upper-case hosts (src/format/marketplace/relevance.ts:24-30) and lower-cases them at match time. Limits in UTF-16 units, unknown keys ignored, not-an-object warning conform. Code should change."
+    },
+    {
+      "id": "marketplace.relevance.Add relevance to a plugin entry",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/relevance.ts; tests/format/marketplace/entries-relevance.test.ts"
+    },
+    {
+      "id": "marketplace.relevance.Working directory matching",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/relevance-match.ts; tests/marketplace/relevance.test.ts"
+    },
+    {
+      "id": "marketplace.relevance.Command name matching",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/relevance-match.ts; tests/marketplace/relevance.test.ts"
+    },
+    {
+      "id": "marketplace.relevance.Manifest dependency matching",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/relevance-match.ts; tests/marketplace/relevance.test.ts"
+    },
+    {
+      "id": "marketplace.relevance.Understand how plugin relevance works.Spinner tip",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/relevance-match.ts; tests/marketplace/relevance.test.ts"
+    },
+    {
+      "id": "marketplace.relevance.Understand how plugin relevance works.Session-start notification",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/relevance-match.ts; tests/marketplace/relevance.test.ts"
+    },
+    {
+      "id": "marketplace.relevance.Understand how plugin relevance works./plugin Discover tab",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/relevance-match.ts; tests/marketplace/relevance.test.ts"
+    },
+    {
+      "id": "marketplace.relevance.Validate your marketplace",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "evidence": "src/format/marketplace/relevance.ts; tests/format/marketplace/entries-relevance.test.ts",
+      "note": "Spec: a bad `hosts` entry is the error `must be a lowercase bare hostname (no scheme, port, or path)` on `plugins.<i>.relevance.signals.hosts.<j>`. Code's text is `Invalid host: use a bare hostname, with no scheme, port, or path` and it rejects only `:` and `/` (src/format/marketplace/relevance.ts:24-30), so `Example.com` passes. Unknown-key and not-an-object warnings and over-limit errors conform. Code should change."
+    },
+    {
+      "id": "marketplace.create.Problems that validation reports",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/add-failures.ts; tests/marketplace/create-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace validation errors.Marketplace has no plugins defined",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/format/marketplace/marketplace-file.test.ts"
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace validation errors.No marketplace description provided",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/format/marketplace/marketplace-alternates.test.ts"
+    },
+    {
+      "id": "marketplace.create.Problems that surface when you add or install",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/add-failures.ts; tests/marketplace/create-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.rule.Failures that validation doesn't catch",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/marketplace/validation-gaps.test.ts"
+    },
+    {
+      "id": "updates.loading.How Claude Code computes the version.github",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/version-hash.ts; src/marketplace/version-resolution.ts; tests/marketplace/version-hash.test.ts; tests/marketplace/version-resolution.test.ts"
+    },
+    {
+      "id": "updates.loading.How Claude Code computes the version.archive",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/version-resolution.ts; tests/marketplace/version-resolution.test.ts"
+    },
+    {
+      "id": "updates.loading.How Claude Code computes the version.npm",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/version-resolution.ts; tests/marketplace/version-resolution.test.ts"
+    },
+    {
+      "id": "updates.loading.How Claude Code computes the version",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; src/marketplace/version-hash.ts; tests/marketplace/update-detection.test.ts; tests/marketplace/version-hash.test.ts; tests/marketplace/version-resolution.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.A plugin installed from a git repository shows version unknown",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/version-resolution.ts; src/marketplace/version-troubleshooting.ts; tests/marketplace/version-resolution.test.ts; tests/marketplace/version-troubleshooting.test.ts"
+    },
+    {
+      "id": "updates.loading.When Claude Code refreshes a marketplace before an install.name@marketplace",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/refresh-before-install.ts; tests/updates/refresh-before-install.test.ts"
+    },
+    {
+      "id": "updates.loading.When Claude Code refreshes a marketplace before an install.name",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/refresh-before-install.ts; tests/updates/refresh-before-install.test.ts"
+    },
+    {
+      "id": "updates.loading.When Claude Code refreshes a marketplace before an install",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/refresh-before-install.ts; tests/updates/refresh-before-install.test.ts"
+    },
+    {
+      "id": "updates.guide.Update plugins now",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/update-targets.ts; tests/updates/update-targets.test.ts"
+    },
+    {
+      "id": "updates.loading.Which marketplaces and plugins auto-update",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/updates/auto-update-precedence.ts; tests/marketplace/version-release.test.ts; tests/updates/auto-update-precedence.test.ts"
+    },
+    {
+      "id": "updates.guide.Turn auto-update on or off for a marketplace",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts; tests/updates/auto-update-toggle.test.ts"
+    },
+    {
+      "id": "updates.hosting.Turn on auto-update",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts; tests/updates/auto-update-precedence.test.ts"
+    },
+    {
+      "id": "updates.org.Turn auto-update on or off per marketplace",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts; tests/updates/auto-update-toggle.test.ts"
+    },
+    {
+      "id": "updates.org.Turn updates off for the whole fleet",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts; tests/updates/auto-update-precedence.test.ts"
+    },
+    {
+      "id": "updates.org.Assign release channels to user groups",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/marketplace/release-channels.test.ts"
+    },
+    {
+      "id": "updates.guide.Auto-update from a private marketplace",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/private-marketplace.ts; tests/updates/private-marketplace.test.ts"
+    },
+    {
+      "id": "updates.loading.When a command source re-runs",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/command-source-rerun.ts; tests/updates/command-source-rerun.test.ts"
+    },
+    {
+      "id": "updates.hosting.Change the command of a command source",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/command-source-rerun.ts; tests/updates/command-source-rerun.test.ts"
+    },
+    {
+      "id": "updates.hosting.Release a new version",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; tests/marketplace/version-release.test.ts"
+    },
+    {
+      "id": "updates.publish.Release a new version",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; tests/marketplace/version-release.test.ts"
+    },
+    {
+      "id": "updates.publish.Ship updates to users",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; tests/marketplace/version-release.test.ts"
+    },
+    {
+      "id": "updates.publish.Tag a release",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/marketplace/hold-version.test.ts"
+    },
+    {
+      "id": "updates.hosting.Hold users on one version",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/marketplace/hold-version.test.ts"
+    },
+    {
+      "id": "updates.hosting.Run release channels",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/marketplace/release-channels.test.ts"
+    },
+    {
+      "id": "updates.publish.Rename or remove a plugin",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts; tests/marketplace/renames-removal.test.ts"
+    },
+    {
+      "id": "updates.hosting.Migrate users with a renames map.Renamed entry",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/marketplace/renames-migration.test.ts"
+    },
+    {
+      "id": "updates.hosting.Migrate users with a renames map.null entry",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/marketplace/renames-migration.test.ts"
+    },
+    {
+      "id": "updates.hosting.Migrate users with a renames map.Enabled in managed settings",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; tests/marketplace/renames-migration.test.ts"
+    },
+    {
+      "id": "updates.hosting.Uninstall removed plugins from users' machines",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/removal.test.ts"
+    },
+    {
+      "id": "updates.key.autoUpdatesChannel",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/claude-code-version-policy.ts; tests/updates/claude-code-version-policy.test.ts"
+    },
+    {
+      "id": "updates.key.minimumVersion",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/claude-code-version-policy.ts; tests/updates/claude-code-version-policy.test.ts"
+    },
+    {
+      "id": "updates.key.requiredMaximumVersion",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/settings/index.ts; tests/updates/claude-code-version-required.test.ts"
+    },
+    {
+      "id": "updates.key.requiredMinimumVersion",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/settings/index.ts; tests/updates/claude-code-version-required.test.ts"
+    },
+    {
+      "id": "dependencies.field.name",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependencies.test.ts"
+    },
+    {
+      "id": "dependencies.field.version",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/format/issues.ts; src/marketplace/dependencies.ts; tests/marketplace/dependencies.test.ts; tests/marketplace/dependency-tags.test.ts"
+    },
+    {
+      "id": "dependencies.field.marketplace",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts; src/marketplace/dependencies.ts; tests/marketplace/cross-marketplace.test.ts; tests/marketplace/dependencies.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Bundle plugins for a team",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest.ts; tests/marketplace/dependency-guide-bundle.test.ts"
+    },
+    {
+      "id": "install.guide.Plugins with dependencies.Install",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "tests/cli/install-dependencies.test.ts"
+    },
+    {
+      "id": "install.guide.Plugins with dependencies.Enable",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependency-enable.ts; tests/marketplace/dependency-graph.test.ts"
+    },
+    {
+      "id": "install.guide.Plugins with dependencies.Disable",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependency-enable.ts; tests/marketplace/dependency-graph.test.ts"
+    },
+    {
+      "id": "install.guide.Plugins with dependencies.Uninstall",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependency-prune.ts; tests/marketplace/dependency-prune.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Constrain a dependency that has a non-git source",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/dependency-guide-sources.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Create a release tag",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/cli/tag-plan.ts; src/format/manifest.ts; tests/cli/tag-plan.test.ts; tests/marketplace/dependency-guide-bundle.test.ts"
+    },
+    {
+      "id": "dependencies.guide.How a constraint resolves against tags",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependency-guide-resolution.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Confirm the resolved version",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependency-guide-resolution.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Constrain a dependency that has a non-git source",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/dependency-guide-sources.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Combine constraints from several plugins.^2.0",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependency-guide-resolution.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Combine constraints from several plugins.~2.1",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependency-guide-resolution.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Combine constraints from several plugins.=2.1.0",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependency-guide-resolution.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Depend on a plugin from another marketplace",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/types.ts; tests/marketplace/dependency-guide-sources.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; src/marketplace/plugin-dir-dependencies.ts; tests/marketplace/dependency-guide-local.test.ts; tests/marketplace/plugin-dir-dependencies.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally.No version needed",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependency-guide-local.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally.Entries that name a marketplace",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependency-guide-local.test.ts"
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally.You disabled the local copy",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependency-guide-local.test.ts"
+    },
+    {
+      "id": "install.troubleshooting.Dependency errors.has an invalid version requirement",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/marketplace/dependencies.test.ts"
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J15.1",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts:206 (description, metadata.description fallback); tests/format/marketplace/marketplace-alternates.test.ts"
+    },
+    {
+      "id": "J15.2",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-names.ts:36-100 (wordsOf, besideOfficial, leadsWithBrand, non-ASCII, spellings excluded); tests/format/marketplace/marketplace-names.test.ts"
+    },
+    {
+      "id": "J15.3",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "note": "Code's `claude-plugin-test` text is `is reserved for plugin tests` (src/format/marketplace/marketplace-name-lists.ts), not `is reserved for plugins loaded by claude plugin test`; and the validator reports the package-manager names in any casing, not only lower case (marketplace-names.ts reservedVariantIssues). Code should change."
+    },
+    {
+      "id": "J15.4",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts:97-138 (completeManifest takes only the six component fields, display/defaultEnabled, version, dependencies); tests/format/marketplace/entry-merge-rules.test.ts"
+    },
+    {
+      "id": "J15.5",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts:105 (dependenciesOf(manifest, entry)); tests/format/marketplace/entry-merge-precedence.test.ts"
+    },
+    {
+      "id": "J15.6",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "note": "`plugins` read as `./plugins` conforms; a climbing or absolute pluginRoot draws a kit message instead of `Invalid string: must start with \"./\"` (src/format/marketplace/plugin-source.ts:52). Code should change."
+    },
+    {
+      "id": "J15.7",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/plugin-source-kinds.ts:33-38 (url: required non-empty only), src/marketplace/source-safety.ts readGitAddress at install; tests/format/marketplace/plugin-source-objects.test.ts"
+    },
+    {
+      "id": "J15.8",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "note": "Code uses three kit messages for the command text rules and folds an out-of-range timeout into `Invalid input` on the source, not `source.timeout: Too small/Too big` (src/format/marketplace/plugin-source-kinds.ts:79-117). Code should change."
+    },
+    {
+      "id": "J15.9",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "note": "Order (path, http(s), SSH, shorthand) and case-insensitive `.json` conform (src/marketplace/marketplace-input.ts). An empty `#ref` on an http(s) git URL (`https://host/r.git#`) silently becomes a `url` source instead of being refused (splitRef undefined -> url, marketplace-input.ts:88-95); on shorthand `owner/repo#` it draws the not-a-valid-shorthand text, not the unrecognized-format one. Code should change."
+    },
+    {
+      "id": "J15.10",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "note": "UTF-16 counting conforms (zod string max); an upper-case `hosts` entry is accepted, and the message is `Invalid host: use a bare hostname, with no scheme, port, or path` (src/format/marketplace/relevance.ts:24-30). Code should change."
+    },
+    {
+      "id": "J15.11",
+      "file": "15-marketplaces.md",
+      "status": "diverges",
+      "note": "Cross-entry gating is a `need not`, so reporting renames always is allowed. Diverges on renames: the grammar check runs before resolution (a renames-key target `bad key` draws PluginIdSchema; `bad name` draws PluginIdSchema instead of target-missing) and reasons are not `target-missing`/`cycle` (src/format/marketplace/renames.ts:45-72). Code should change."
+    },
+    {
+      "id": "J16.10",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/version-resolution.ts (statedVersion, usableVersion, isVersionSegment), src/marketplace/version-hash.ts:18,102; tests/marketplace/version-resolution.test.ts, tests/marketplace/version-hash.test.ts"
+    },
+    {
+      "id": "J16.11",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/version-resolution.ts UNKNOWN_VERSION; tests/marketplace/version-resolution.test.ts"
+    },
+    {
+      "id": "J16.12",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/refresh-before-install.ts:19-150 (30_000 ms exclusive, bare-name drop without refusal); tests/updates/refresh-before-install.test.ts"
+    },
+    {
+      "id": "J16.13",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-pass.ts; tests/updates (auto-update pass tests)"
+    },
+    {
+      "id": "J16.14",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts; tests/updates/auto-update-precedence.test.ts, tests/updates/auto-update-toggle.test.ts"
+    },
+    {
+      "id": "J16.15",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/removal.ts:33; tests/marketplace/removal.test.ts, tests/marketplace/renames-removal.test.ts"
+    },
+    {
+      "id": "J16.16",
+      "file": "16-updates.md",
+      "status": "conforms",
+      "evidence": "src/updates/claude-code-version-policy.ts:18-95; tests/updates/claude-code-version-policy.test.ts"
+    },
+    {
+      "id": "J16.17",
+      "file": "16-dependencies.md",
+      "status": "diverges",
+      "note": "Blank version no constraint, unknown key ignored, invalid range reported at resolution conform (src/marketplace/dependencies.ts). But the validator schema accepts `\"a@b@c\"` (src/format/validate/plugin-fields.ts:34, `z.union([text, looseObject({name})])`), and at load it is refused with the grammar text from pluginIdIssues, and an object without name with `A dependency needs a \"name\"`, not `dependencies.<i>: Invalid input` (dependencies.ts:59-90). Code should change."
+    },
+    {
+      "id": "J16.18",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependency-install-walk.ts, dependency-install-plan.ts; tests/cli/install-dependencies.test.ts"
+    },
+    {
+      "id": "J16.19",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependency-tags.ts:28-40 (releaseTag, parseReleaseTag strict semver); tests/marketplace/dependency-tags.test.ts"
+    },
+    {
+      "id": "J16.20",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependency-install-plan.ts; tests/marketplace/dependency-guide-resolution.test.ts"
+    },
+    {
+      "id": "J16.21",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/semver.ts:41-63 (MAX_COMBINATIONS = 64), dependency-tags.ts:96; tests/marketplace/dependency-guide-resolution.test.ts"
+    },
+    {
+      "id": "J16.22",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/cross-marketplace.ts:59; tests/marketplace/cross-marketplace.test.ts"
+    },
+    {
+      "id": "J16.23",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/cli/uninstall-plan.ts:65,235 (` — warning: required by <names>`, no --force); tests/cli/uninstall-dependents.test.ts"
+    },
+    {
+      "id": "J16.24",
+      "file": "16-dependencies.md",
+      "status": "diverges",
+      "note": "The `is not installed` line is the documented text and guidance is left to the host (conforms). For a disabled local copy the code names it `<name>@inline` (src/marketplace/dependencies.ts:232 uses installed.id; tests/marketplace/dependency-guide-local.test.ts:220 asserts `my-dependency@inline`), where J16.24 (oracle 2.1.325) says it is named as declared. Code should change; the spec's §16.28.1 item 3 sentence about `<name>@inline` also reads against J16.24 and should be reworded."
+    }
+  ]
+}

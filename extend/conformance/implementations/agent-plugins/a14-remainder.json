@@ -1,0 +1,141 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a14-remainder",
+  "date": "2026-11-16",
+  "files": [
+    "16-dependencies.md",
+    "15-marketplaces.md",
+    "08-mcp.md",
+    "10-mods/troubleshooting.md"
+  ],
+  "requirements": [
+    {
+      "id": "install.troubleshooting.Dependency errors.... has no git tag satisfying <range>",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependency-tags.ts:206 (ownRepository); tests/marketplace/dependency-guide-resolution.test.ts:36",
+      "note": "Own-repository dependency with no <name>--v tag in range fails the install with `Dependency \"<dep>\" has no git tag satisfying <ranges>`; a relative-path dependency installs the current copy instead (§16.25)."
+    },
+    {
+      "id": "install.troubleshooting.Dependency errors.Dependency \"<dep>\" is disabled",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts:228 (checkInstalledDependency); tests/marketplace/dependency-errors.test.ts:43",
+      "note": "Exact `Dependency \"<dep>\" is disabled — enable it or remove the dependency`, errorType dependency-unsatisfied; a --plugin-dir copy names itself <name>@inline."
+    },
+    {
+      "id": "install.troubleshooting.Dependency errors.Dependency \"<dep>\" is not installed",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts:225, src/marketplace/dependency-install-plan.ts:42 (reload-plugins among the operations that install missing dependencies); tests/marketplace/dependency-errors.test.ts:30",
+      "note": "Documented text without Claude Code 2.1.322's ` — run claude plugin install ...` suffix, which J16.24 permits a client to add or omit (agent-plugins spec/judgments.md:1315); errorType dependency-unsatisfied."
+    },
+    {
+      "id": "marketplace.troubleshooting.'<source>' is not a valid GitHub owner/repo shorthand.A hosted marketplace.json",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-input.ts:117 (fromShorthand); tests/marketplace/add-failures.test.ts:67",
+      "note": "The refusal names the https:// URL of a hosted marketplace.json, which parses as a url source."
+    },
+    {
+      "id": "marketplace.troubleshooting.'<source>' is not a valid GitHub owner/repo shorthand.A local checkout",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-input.ts:117; tests/marketplace/add-failures.test.ts:77",
+      "note": "The refusal names ./ or an absolute path; both parse as directory sources."
+    },
+    {
+      "id": "marketplace.troubleshooting.'<source>' is not a valid GitHub owner/repo shorthand.A repository on any host",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-input.ts:117; tests/marketplace/add-failures.test.ts:48,57",
+      "note": "github.com/owner/repo, gitlab host/group/project and owner/repo/extra are refused with the heading; the full clone URL parses as a git source."
+    },
+    {
+      "id": "marketplace.troubleshooting.Cannot add marketplace \"<name>\": Claude Code cannot install plugins from a marketplace with this name",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/add-failures.ts:141 (idPartRefusal); tests/marketplace/add-failures.test.ts:169",
+      "note": "Exact refusal, rule and maintainer sentence; concludeMarketplaceAdd registers nothing (declare undefined)."
+    },
+    {
+      "id": "marketplace.troubleshooting.Cannot add marketplace \"<name>\": Claude Code reserves this name and cannot register a marketplace under it",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace-names.ts:176 (memberIssues, in loadNameIssues only), src/format/marketplace/marketplace.ts:57 (validate uses validationNameIssues), src/format/marketplace/marketplace-source.ts:133 (settings-declared); tests/format/marketplace/marketplace-names.test.ts:222",
+      "note": "The seven JavaScript member names pass validation and are refused at add and at settings load with the exact text."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace \"<name>\" not found",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/add-failures.ts:126 (missingMarketplace); tests/marketplace/add-failures.test.ts:147",
+      "note": "The kit gives the exact message and guesses no source (fix only for claude-plugins-official and claudeai- names). Raising it from /plugin install and on the Errors tab for an enabled plugin naming an unadded marketplace is the host's UI; the kit has no load-time producer for the latter."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace file not found at <path>/.claude-plugin/marketplace.json",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/add-failures.ts:32; tests/marketplace/add-failures.test.ts:99",
+      "note": "`Failed to add marketplace: Marketplace file not found at <path>`, the path given by the host (default or the source's path)."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace validation errors.Path contains \"..\": <path>",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/plugin-source.ts:65 (relative); tests/format/marketplace/plugin-source-relative.test.ts:52",
+      "note": "Error at the entry's source path, `Path contains \"..\": <raw>`."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace validation errors.Plugin name \"<name>\" is not kebab-case",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/names.ts:107 (nameKebabIssues), src/loading/validate/marketplace-target.ts:82 (`plugins[<i>] plugin.json → ` prefix); tests/format/validate/names.test.ts:12",
+      "note": "Warning level; the kit appends advice after the documented text."
+    },
+    {
+      "id": "marketplace.troubleshooting.Path does not exist: <path>",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/add-failures.ts:28; tests/marketplace/add-failures.test.ts:86",
+      "note": "Exact text with the host-resolved path; a non-.json file gets `File path must point to a .json file (marketplace.json), but got: <path>`."
+    },
+    {
+      "id": "mcp.troubleshooting.Bundled MCP server \"<name>\" was not started: it needs configuration",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/bundle-scope.ts:12, src/format/mcpb-manifest.ts:111,123; tests/loading/resolve/mcp-troubleshooting-proofs.test.ts:145",
+      "note": "Required setting without a saved value (empty string counts as none) skips that server only, and saved values let it start. Two kit judgments: a required setting with its own default does not block; the bundle's own validation of saved values is the host's (agent-plugins spec/judgments.md:679)."
+    },
+    {
+      "id": "mcp.troubleshooting.Invalid MCP server config for \"<server>\": <error>.has an invalid MCP url",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:170, :125 (helperRefusal); tests/loading/resolve/mcp-troubleshooting-proofs.test.ts:108",
+      "note": "Unparseable resolved url -> `has an invalid MCP url`; headersHelper referencing ${user_config.*} refused too."
+    },
+    {
+      "id": "mcp.troubleshooting.Invalid MCP server config for \"<server>\": <error>.Missing environment variables: <names>",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:76 (unlessMissing); tests/loading/resolve/mcp-troubleshooting-proofs.test.ts:23",
+      "note": "Unset ${VAR} without default in any field keeps a plugin server from starting; names once each, in order, joined with ', '."
+    },
+    {
+      "id": "mcp.troubleshooting.Invalid MCP server config for \"<server>\": <error>.URL is unset or invalid",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:168; tests/loading/resolve/mcp-troubleshooting-proofs.test.ts:80",
+      "note": "A url using an unset ${user_config.*} option -> `URL is unset or invalid`; setting the option resolves it."
+    },
+    {
+      "id": "mods.troubleshoot.the answer for <key> is no value the key can hold",
+      "file": "10-mods/troubleshooting.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/engine-settings.ts:31 (applyAnswer), :23; tests/mods/events/settings-read-change.test.ts:183, tests/mods/api/settings.test.ts:239",
+      "note": "Only the key that fails `fits` (the host's schema port) is refused and keeps its merged value; the exact debug line is written."
+    }
+  ],
+  "judgments": []
+}

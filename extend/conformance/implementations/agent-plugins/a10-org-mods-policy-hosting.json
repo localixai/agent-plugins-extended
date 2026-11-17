@@ -1,0 +1,1402 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a10-org-mods-policy-hosting",
+  "date": "2026-11-16",
+  "files": [
+    "14-policy-org.md",
+    "14-policy-mods.md",
+    "15-marketplace-hosting.md"
+  ],
+  "requirements": [
+    {
+      "id": "policy.org.Which managed source applies on a machine",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts | tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.security.Enforce plugin controls for your organization",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/index.ts | tests/settings/plugins/sync-plugins.test.ts"
+    },
+    {
+      "id": "policy.org.Require a marketplace and its plugins.source",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.org.Require a marketplace and its plugins.autoUpdate",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts, src/settings/marketplaces/source-validate.ts:53 | tests/settings/marketplaces/registry-entries.test.ts"
+    },
+    {
+      "id": "policy.org.Require a marketplace and its plugins.Marketplaces",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.org.Require a marketplace and its plugins.--plugin-dir copies",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/name-conflicts.ts:59 | tests/marketplace/name-conflicts.test.ts"
+    },
+    {
+      "id": "policy.org.Require plugins per repository",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/enabled-plugins.ts | tests/settings/plugins/enabled-plugins.test.ts",
+      "note": "enabledPlugins at session start, trust-gated project extraKnownMarketplaces (RegistryContext.isFolderTrusted, src/settings/marketplaces/registry.ts:66; the host answers -p and hasTrustDialogAccepted), the \"isn't installed here\" message (src/marketplace/install-errors.ts:150) and the main-checkout key (src/loading/workspace-trust.ts:36). Resolving a relative directory/file path against the main checkout is left to the host's location facts (src/settings/locations.ts:19)."
+    },
+    {
+      "id": "policy.org.Restrict what users can install",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/index.ts; src/settings/marketplaces/gate.ts:141 | tests/settings/managed/applicability.test.ts, tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.org.Restrict what users can install.Before a download",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.org.Restrict what users can install.At session start",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.org.Restrict what users can install.The claude.ai admin console",
+      "file": "14-policy-org.md",
+      "status": "not-applicable",
+      "evidence": "src/settings/managed/index.ts | tests/settings/managed/applicability.test.ts",
+      "note": "Binds claude.ai (its own refusal when a member adds a marketplace on claude.ai or in the desktop Customize view), a hosted service. The client side, that only the client enforces lists from other managed sources, is modelled by claudeAiAppliesMarketplaceLists (src/settings/managed/index.ts; tests/settings/managed/applicability.test.ts:93)."
+    },
+    {
+      "id": "policy.rule.Source values valid only in policy lists",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:129, src/settings/marketplaces/host-of.ts:42; src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist-patterns.test.ts, tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.rule.Source objects in settings",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts; src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/registry.test.ts, tests/settings/marketplaces/allowlist.test.ts",
+      "note": "One divergence by letter, not observable: the spec row says an `npm` entry matches nothing on either list; src/settings/marketplaces/match-source.ts:117-127 matches an npm source of the same package (and `@scope/*`). Since no npm marketplace registers, no verdict differs."
+    },
+    {
+      "id": "policy.reference.Allowed source types.github",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.github",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.github owner wildcard",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.reference.Allowed source types.git",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.git",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.reference.Allowed source types.url",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.url",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.reference.Allowed source types.file",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.reference.Allowed source types.directory",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.file and directory",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.reference.Allowed source types.hostPattern",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:129, src/settings/marketplaces/host-of.ts:42 | tests/settings/marketplaces/allowlist-patterns.test.ts"
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.hostPattern",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:129, src/settings/marketplaces/host-of.ts:42 | tests/settings/marketplaces/allowlist-patterns.test.ts"
+    },
+    {
+      "id": "policy.reference.Allowed source types.pathPattern",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:129, src/settings/marketplaces/host-of.ts:42 | tests/settings/marketplaces/allowlist-patterns.test.ts"
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.pathPattern",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:129, src/settings/marketplaces/host-of.ts:42 | tests/settings/marketplaces/allowlist-patterns.test.ts"
+    },
+    {
+      "id": "policy.reference.Allowed source types.skills-dir",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.skills-dir",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.reference.Exact matching",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.org.How entries match",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.org.Lock every source out",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.reference.Owner wildcards.Matching source spellings",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:162, src/settings/marketplaces/git-url.ts:49 | tests/settings/marketplaces/blocklist.test.ts"
+    },
+    {
+      "id": "policy.reference.Owner wildcards.Owner case",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.reference.Owner wildcards.ref",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.reference.Owner wildcards.path",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "policy.org.Blocklist with blockedMarketplaces",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:162, src/settings/marketplaces/git-url.ts:49 | tests/settings/marketplaces/blocklist.test.ts"
+    },
+    {
+      "id": "policy.org.Keep skills-directory plugins loading",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:192; src/settings/marketplaces/gate.ts:141 | tests/settings/customization/skills-dir.test.ts, tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.loading.Skills-directory plugins blocked by managed settings.Customization locked to plugins",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:192 | tests/settings/customization/skills-dir.test.ts"
+    },
+    {
+      "id": "policy.loading.Skills-directory plugins blocked by managed settings.Marketplace sources restricted",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:192 | tests/settings/customization/skills-dir.test.ts"
+    },
+    {
+      "id": "policy.loading.Skills-directory plugins blocked by managed settings.Confirm the cause",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/limits.ts:59 | tests/settings/managed/limits.test.ts"
+    },
+    {
+      "id": "policy.loading.Skills-directory plugins blocked by managed settings.Load the whole plugin",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/limits.ts:59 | tests/settings/managed/limits.test.ts"
+    },
+    {
+      "id": "policy.reference.Allow only the official marketplace",
+      "file": "14-policy-org.md",
+      "status": "missing",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts",
+      "note": "The gate admits only the official repository (src/settings/marketplaces/gate.ts:152, allowlist-gate.test.ts:129) and CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL is read (src/settings/host-switches.ts:13), but nothing decides the official marketplace's own registration: first interactive terminal session only, not -p, not a terminal attached to a cloud session, not a VS-Code-only machine, and no retry after a recorded blocked attempt. Code should add it (a pure verdict over host facts)."
+    },
+    {
+      "id": "policy.org.Allow the official marketplace and your own",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Purpose",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Settings file",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Behavior",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.When enforced",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Can be overridden",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Source format",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Marketplace source types",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/headers-helper.ts:62; src/settings/marketplaces/source-validate.ts; src/settings/marketplaces/registry.ts; src/settings/marketplaces/registry.ts, src/settings/marketplaces/source-validate.ts:53 | tests/settings/marketplaces/registry-headers.test.ts, tests/settings/marketplaces/registry-strict.test.ts, tests/settings/marketplaces/registry.test.ts, tests/settings/marketplaces/registry-entries.test.ts"
+    },
+    {
+      "id": "policy.reference.Marketplace source types.github",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Marketplace source types.git",
+      "file": "14-policy-org.md",
+      "status": "diverges",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts",
+      "note": "Spec: the add or update output reports how many LFS files arrived as pointer files. Code: fetch plans carry lfs: \"pointer-files\" (src/marketplace/fetch-plan.ts:117) and src/marketplace/lfs-pointer.ts warns per component file, but neither src/cli/marketplace-add.ts nor src/cli/marketplace-update.ts reports a count. Any-host git, non-interactive credentials and skipLfs ignored conform. Code should change."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.url",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Marketplace source types.file",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Marketplace source types.directory",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Marketplace source types.settings",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts, src/settings/marketplaces/source-validate.ts:53 | tests/settings/marketplaces/registry-entries.test.ts"
+    },
+    {
+      "id": "policy.reference.Marketplace source types.strict",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/source-validate.ts | tests/settings/marketplaces/registry-strict.test.ts"
+    },
+    {
+      "id": "policy.reference.Marketplace source types.Folder trust",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/registry.ts | tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "policy.reference.Marketplace source types.Header filter",
+      "file": "14-policy-org.md",
+      "status": "diverges",
+      "evidence": "src/settings/marketplaces/headers-helper.ts:62 | tests/settings/marketplaces/registry-headers.test.ts",
+      "note": "Where the filter applies (project, local, --add-dir, catalog entries; not user, --settings, managed) conforms (src/settings/marketplaces/headers-helper.ts:98-100, registry-headers.test.ts). The names it drops diverge: Spec (J15.12): the dropped set is host, cookie, forwarded, x-real-ip, x-client-ip, true-client-ip, client-ip, cf-connecting-ip, fastly-client-ip, x-originating-ip, x-remote-ip, x-remote-addr, x-cluster-client-ip, connection, upgrade, transfer-encoding, content-length, te, trailer, expect, via, and the prefixes x-forwarded-, x-original-, proxy-, with `_` read as `-`. Code drops only host, cookie and x-forwarded-* (src/format/marketplace/header-names.ts:9-16, and a second copy in src/settings/marketplaces/headers-helper.ts:62-65), and does not fold `_`. Code should change (spec has oracle 2.1.325 evidence); the two copies should become one."
+    },
+    {
+      "id": "policy.reference.Marketplace key aliases",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.org.Aliases for the marketplace keys",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Read-only",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts:108 | tests/updates/auto-update-precedence.test.ts"
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Seed entries take precedence",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/seed-registry.ts:30 | tests/marketplace/seed-registry.test.ts"
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Update and remove fail",
+      "file": "14-policy-org.md",
+      "status": "diverges",
+      "evidence": "src/cli/marketplace-update.ts:96 | tests/cli/marketplace-update.test.ts",
+      "note": "Update conforms (src/cli/marketplace-update.ts:96: named update fails naming the seed directory, bulk update skips). Remove does not: src/cli/marketplace-remove.ts has no seed check, so `claude plugin marketplace remove <seed marketplace>` without --scope is not refused. Code should change."
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Policy still applies",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/seed-registry.ts:30 | tests/marketplace/seed-registry.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/customization/surfaces.ts; src/settings/plugins/index.ts; src/settings/plugins/enabled-plugins.ts | tests/settings/customization/surfaces.test.ts, tests/settings/plugins/trust-warning.test.ts, tests/settings/plugins/enabled-plugins.test.ts, tests/settings/plugins/sync-plugins.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.strictKnownMarketplaces",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.blockedMarketplaces",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:152 | tests/settings/marketplaces/blocklist-gate.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.syncClaudeAiPlugins",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/index.ts | tests/settings/plugins/sync-plugins.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.enabledPlugins",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/enabled-plugins.ts | tests/settings/plugins/enabled-plugins.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.disableSideloadFlags",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/plugin-dirs.ts:46 | tests/mods/load/settings-policy.test.ts",
+      "note": "The \"Does not\" column (no effect on .mcp.json, claude mcp add, SDK servers) holds: sideloadVerdict only reads command-line facts. The item-1 divergences are recorded under policy.key.disableSideloadFlags."
+    },
+    {
+      "id": "policy.org.Control matrix.disableCommandPluginSources",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/command-sources.ts | tests/settings/marketplaces/command-sources.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.allowManagedHooksOnly",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/plugin-dirs.ts:46 | tests/mods/load/settings-policy.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.strictPluginOnlyCustomization",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/customization/surfaces.ts | tests/settings/customization/surfaces.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.pluginSuggestionMarketplaces",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/index.ts | tests/settings/plugins/suggestions.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.pluginTrustMessage",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/index.ts | tests/settings/plugins/trust-warning.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.allowedChannelPlugins",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/allowlist.ts | tests/settings/channels/allowlist.test.ts"
+    },
+    {
+      "id": "policy.org.Control matrix.allowManagedModsOnly",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.key.disableSideloadFlags",
+      "file": "14-policy-org.md",
+      "status": "diverges",
+      "evidence": "src/settings/managed/sideload.ts:61 | tests/settings/key-classes/sideload-flags.test.ts",
+      "note": "Spec: each rejected flag on its own line, then `Plugins, custom agents, and MCP servers can only be loaded from sources your administrator has approved.`; the Agent SDK `plugins` option is rejected too. Code: src/settings/managed/sideload.ts:61-72 returns the per-flag lines only, with no closing line; SideloadFacts has no field for the SDK `plugins` option, so it is never refused; the CLI path src/cli/flags/sideload.ts:27-31 words the CLAUDE_CODE_PLUGIN_DIRS refusal without `: unset the variable` (src/settings/managed/sideload.ts:66 has it). The rest (scope, sdk-only --mcp-config, cloud drop, addPlugins refusal) conforms. Code should change."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.disableSideloadFlags",
+      "file": "14-policy-org.md",
+      "status": "diverges",
+      "evidence": "src/settings/managed/sideload.ts:61 | tests/settings/key-classes/managed-only.test.ts",
+      "note": "Managed-only scope conforms (tests/settings/key-classes/managed-only.test.ts, sideload-flags.test.ts \"Scope: Managed\"); the paragraph this id shares diverges: Spec: each rejected flag on its own line, then `Plugins, custom agents, and MCP servers can only be loaded from sources your administrator has approved.`; the Agent SDK `plugins` option is rejected too. Code: src/settings/managed/sideload.ts:61-72 returns the per-flag lines only, with no closing line; SideloadFacts has no field for the SDK `plugins` option, so it is never refused; the CLI path src/cli/flags/sideload.ts:27-31 words the CLAUDE_CODE_PLUGIN_DIRS refusal without `: unset the variable` (src/settings/managed/sideload.ts:66 has it). The rest (scope, sdk-only --mcp-config, cloud drop, addPlugins refusal) conforms. Code should change."
+    },
+    {
+      "id": "policy.relevance.Enable suggestions in managed settings",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/index.ts | tests/settings/plugins/suggestions.test.ts"
+    },
+    {
+      "id": "policy.org.Recommend plugins",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/index.ts | tests/settings/plugins/suggestions.test.ts"
+    },
+    {
+      "id": "policy.overview.Enable channels for your organization",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/allowlist.ts | tests/settings/channels/allowlist.test.ts"
+    },
+    {
+      "id": "policy.overview.Restrict which channel plugins can run",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/allowlist.ts | tests/settings/channels/allowlist.test.ts"
+    },
+    {
+      "id": "policy.troubleshooting.Marketplace source '<source>' is blocked by enterprise policy",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.troubleshooting.Marketplace \"<name>\" is not in the allowed marketplace list",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:141 | tests/settings/marketplaces/allowlist-gate.test.ts"
+    },
+    {
+      "id": "policy.troubleshooting.Plugin \"<name>\" is blocked by your organization's policy and cannot be installed",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/refusal-messages.ts:10 | tests/settings/marketplaces/refusal-messages.test.ts"
+    },
+    {
+      "id": "policy.troubleshooting.--plugin-dir is disabled by your organization's managed settings (disableSideloadFlags)",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/plugin-dirs.ts:46 | tests/mods/load/settings-policy.test.ts"
+    },
+    {
+      "id": "policy.troubleshooting.Plugins from ~/.claude/skills/ are blocked by your organization's managed settings",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/refusal-messages.ts:10 | tests/settings/marketplaces/refusal-messages.test.ts"
+    },
+    {
+      "id": "policy.troubleshooting.Command-sourced plugins are disabled by your organization's managed settings",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/refusal-messages.ts:10 | tests/settings/marketplaces/refusal-messages.test.ts"
+    },
+    {
+      "id": "policy.troubleshooting.Marketplace '<name>' is seed-managed",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-update.ts:96 | tests/cli/marketplace-update.test.ts"
+    },
+    {
+      "id": "policy.org.Plan for what managed settings can't enforce",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/limits.ts:59 | tests/settings/managed/limits.test.ts"
+    },
+    {
+      "id": "policy.org.Troubleshoot policy",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/limits.ts:59 | tests/settings/managed/limits.test.ts"
+    },
+    {
+      "id": "policy.overview.Control mods for your organization",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.No mod a user brings runs its hooks",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.Your organization's mods still run",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.Users can't undo it",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.Users' other customizations keep working",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.Built-in mods keep running",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Know what happens by default",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:129; src/mods/load/guard.ts:27; src/mods/load/guard-notes.ts:27; src/mods/load/guard-protection.ts | tests/mods/load/mod-order.test.ts, tests/mods/load/settings-guard.test.ts, tests/mods/load/managed-protection-notes.test.ts, tests/mods/load/managed-artifact-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know what happens by default.Mods are on",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Know what happens by default.A built-in guard runs first",
+      "file": "14-policy-mods.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/order.ts:129 | tests/mods/load/mod-order.test.ts",
+      "note": "Spec: the guard loads when the machine has managed settings OR a `managed-mcp.json`, or on a Team/Enterprise /login. Code: isManagedContext (src/mods/load/policy-input.ts:76-77, used by guardLoads src/mods/load/policy.ts:79-83) knows only managed settings and the login; ModsPolicyInput has no managed-mcp.json fact, so a machine with only managed-mcp.json gets no guard (and its user may still order mods). Order (guard first) and the OAuth-token exclusion conform (tests/mods/load/settings-guard.test.ts:145). Code should change."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.The guard protects what you manage",
+      "file": "14-policy-mods.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/guard-notes.ts:27; src/mods/load/guard-protection.ts; src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection-notes.test.ts, tests/mods/load/managed-artifact-protection.test.ts, tests/mods/load/managed-protection.test.ts",
+      "note": "Spec (with §13.11 item 2): with the guard, a user mod's approval leaves a `deny` rule refusing and an `ask` rule PROMPTING, unless allowModsToOverrideDenyRules is set. Code: src/mods/load/guard.ts:66-75 turns an approval over an `ask` rule into `{ decision: \"deny\", reason: \"<mod> tried to lift a deny rule ...\" }` instead of the prompt, and keeps that even with the option on; the test \"an ask rule still prompts\" (tests/mods/load/settings-guard.test.ts:227) asserts decision deny, contradicting its own title. Code should change for the prompt; the option's reach over `ask` is ambiguous in the spec (14.9.2 says \"unless set\" for both, 14.9.6 says \"most outcomes ..., a deny rule included\") and the spec should say which. Protection of managed hooks, prompt sections, settings reads and managed MCP tools conforms."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.A user's mod can still skip some prompts",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/auto-mode-approval.ts | tests/mods/load/auto-mode-approval.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Settings hooks keep working",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/tool-flow.ts | tests/mods/load/tool-flow.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Managed hooks run first",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/tool-flow.ts | tests/mods/load/tool-flow.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Network policy covers $.http.fetch",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/index.ts | tests/mods/api/fetch-policy.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Plugin controls cover mods",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/seed-registry.ts:30 | tests/marketplace/seed-registry.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Mods can't change the permission prompt",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts | tests/mods/ui/permission-prompt-site.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Trust prompts come first",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts:95 | tests/mods/load/refusals.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which controls still apply",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/seed-registry.ts:30; src/protocol/mods-ui-names.ts; src/mods/load/policy.ts:95; src/mods/load/tool-flow.ts | tests/marketplace/seed-registry.test.ts, tests/mods/ui/permission-prompt-site.test.ts, tests/mods/load/refusals.test.ts, tests/mods/load/tool-flow.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.classic.<Event>",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-protection.ts, src/mods/load/guard-surfaces.ts:6 | tests/mods/load/guard-protection-lifecycle.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.prompt.compose",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.prompt.section",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.prompt.context",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.prompt.attachment",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.skill.prompt",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.attribution.text",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.session.compact",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.settings.read",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.session.append{door=attachment}",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.session.append{door=hook-context}",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.session.append{door=compaction}",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard-surfaces.ts:4 | tests/mods/load/managed-protection.test.ts"
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order",
+      "file": "14-policy-mods.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts",
+      "note": "The three conditions and \"a copied plugin counts as a user's\" conform (src/mods/load/policy.ts decideModLoad; tests/mods/load/settings-order.test.ts:153). Missing: the debug line starting with the plugin id and `is enabled by managed settings, but` for a managed-enabled plugin that does not count; no such text exists in src/. Code should change."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.enabledPlugins",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.extraKnownMarketplaces",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.prependPlugins",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.appendPlugins",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.The list replaces the default",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.Your own ids must count as yours",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.Repositories can't set either list",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.The same line with tier user",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Set options on the built-in guard.The id has one form here",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Set options on the built-in guard.Only managed settings count",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Set options on the built-in guard.The guard has to load",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Set options on the built-in guard.The guard fails closed",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.allowManagedModsOnly",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.Only your organization's mods",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.allowManagedHooksOnly",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/plugin-dirs.ts:46 | tests/mods/load/settings-policy.test.ts"
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.disableAllHooks",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/plugin-dirs.ts:46 | tests/mods/load/settings-policy.test.ts"
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.disableSideloadFlags",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/plugin-dirs.ts:46 | tests/mods/load/settings-policy.test.ts"
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.Any mod from marketplaces you approve",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27; src/mods/load/policy.ts, src/mods/load/plugin-dirs.ts:46; src/mods/load/order.ts:95 | tests/mods/load/settings-guard.test.ts, tests/mods/load/settings-policy.test.ts, tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.pluginConfigs",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.disableSideloadFlags",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/plugin-dirs.ts:46 | tests/mods/load/settings-policy.test.ts"
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.Your mod",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95 | tests/mods/load/settings-order.test.ts"
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.A mod the user installed",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/guard.ts:27 | tests/mods/load/settings-guard.test.ts"
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.A plugin directory",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/plugin-dirs.ts:46 | tests/mods/load/settings-policy.test.ts"
+    },
+    {
+      "id": "policy.mods.Apply your plugin controls to mods",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/seed-registry.ts:30; src/marketplace/telemetry-names.ts | tests/marketplace/seed-registry.test.ts, tests/marketplace/telemetry-names.test.ts"
+    },
+    {
+      "id": "policy.mods.Apply your plugin controls to mods.See which plugins load across your fleet",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/telemetry-names.ts | tests/marketplace/telemetry-names.test.ts"
+    },
+    {
+      "id": "policy.mods.Apply your plugin controls to mods.Set up CI and containers",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/seed-registry.ts:30 | tests/marketplace/seed-registry.test.ts"
+    },
+    {
+      "id": "policy.mods.Apply your plugin controls to mods.Offer mods your users may install",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/seed-registry.ts:30 | tests/marketplace/seed-registry.test.ts"
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.plugin.register",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/register-call.ts:75 | tests/mods/testing/policy-mods.test.ts"
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.e.tier",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/register-call.ts:75 | tests/mods/testing/policy-mods.test.ts"
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.e.uses.calls",
+      "file": "14-policy-mods.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/register-call.ts:75 | tests/mods/testing/policy-mods.test.ts",
+      "note": "Spec: `namespace.method` without `$.`, sorted and each once (PluginRegisterUses). Code: combineScans (src/mods/load/scan/uses.ts:70) de-duplicates but keeps scan order; nothing sorts. Code should change."
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.tool.call",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/testing/mods/index.ts | tests/mods/testing/policy-audit-mod.test.ts"
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.fs.write",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/testing/mods/index.ts | tests/mods/testing/policy-audit-mod.test.ts"
+    },
+    {
+      "id": "marketplace.publish.Control who can install",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-commands.ts, src/marketplace/marketplace-input.ts | tests/marketplace/publish-marketplace.test.ts",
+      "note": "Mostly guidance to a marketplace author; the client part (the catalog carries no access control, policy lists limit adds) holds: no catalog field gates installs and the gate is src/settings/marketplaces/gate.ts."
+    },
+    {
+      "id": "marketplace.hosting.Register the marketplace for everyone in a repository",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-add.ts | tests/cli/marketplace-add.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Avoid relative-path entries in a URL-hosted marketplace",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/fetch-plan.ts:57, src/marketplace/copy-plan.ts:158 | tests/marketplace/fetch-plan-git.test.ts"
+    },
+    {
+      "id": "marketplace.troubleshooting.Plugins with relative paths fail in URL-based marketplaces",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/fetch-plan.ts:57, src/marketplace/copy-plan.ts:158 | tests/marketplace/fetch-plan-git.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Edit plugins in place on a shared directory",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-mode.ts | tests/marketplace/install-mode.test.ts"
+    },
+    {
+      "id": "marketplace.create.Test an edit to a plugin",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-mode.ts | tests/marketplace/create-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Keep plugin files out of Git LFS",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/fetch-plan.ts:117, src/marketplace/lfs-pointer.ts | tests/marketplace/lfs-pointer.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Share files within a marketplace with symlinks.Within the plugin's own directory",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/copy-plan.ts | tests/marketplace/copy-plan.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Share files within a marketplace with symlinks.Elsewhere within the same marketplace",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/copy-plan.ts | tests/marketplace/copy-plan.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Share files within a marketplace with symlinks.Outside the marketplace",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/copy-plan.ts | tests/marketplace/copy-plan.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Stay within the download limits for hosted files.Entries",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95 | tests/marketplace/archive-source.test.ts (tests at :176, :189, :214, not tagged with this id)"
+    },
+    {
+      "id": "marketplace.hosting.Stay within the download limits for hosted files.File size",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95 | tests/marketplace/archive-source.test.ts (tests at :176, :189, :214, not tagged with this id)"
+    },
+    {
+      "id": "marketplace.hosting.Stay within the download limits for hosted files.Total size",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95 | tests/marketplace/archive-source.test.ts (tests at :176, :189, :214, not tagged with this id)"
+    },
+    {
+      "id": "marketplace.hosting.Stay within the download limits for hosted files.Compression ratio",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95 | tests/marketplace/archive-source.test.ts (tests at :176, :189, :214, not tagged with this id)"
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.GitHub owner/repo",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/git-transport.ts:23 | tests/marketplace/git-transport.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.git@host:path.git",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/git-transport.ts:23 | tests/marketplace/git-transport.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.https://example.com/repo.git",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/git-transport.ts:23 | tests/marketplace/git-transport.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.SSH",
+      "file": "15-marketplace-hosting.md",
+      "status": "diverges",
+      "evidence": "src/marketplace/git-transport.ts:23 | tests/marketplace/git-transport.test.ts",
+      "note": "Spec: SSH runs in batch mode with StrictHostKeyChecking=yes and never accepts a host key. Code: clonePlan (src/marketplace/git-transport.ts:58-64) says only \"ssh-batch-mode\" and carries no StrictHostKeyChecking setting for the host to apply; and when GIT_SSH_COMMAND, GIT_SSH or core.sshCommand names a program it runs that one as configured (tested, tests/marketplace/git-transport.test.ts:38), which the spec does not mention. Code should state StrictHostKeyChecking=yes; the spec should say what happens with a user-configured SSH program (the code cites the docs for it)."
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.HTTPS",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/git-transport.ts:23 | tests/marketplace/git-transport.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Serve users who have no git-host account",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/git-transport.ts:23 | tests/marketplace/git-transport.test.ts"
+    },
+    {
+      "id": "marketplace.troubleshooting.Git clone timed out after 120s",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/add-failures.ts:33, src/settings/host-switches.ts:53 | tests/marketplace/add-failures.test.ts"
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace add fails on a GitHub Enterprise Server host",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-commands.ts, src/marketplace/marketplace-input.ts | tests/marketplace/publish-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/updates/private-marketplace.ts:59 | tests/updates/private-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.SSH remotes",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/updates/private-marketplace.ts:59 | tests/updates/private-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.HTTPS remotes with a stored credential",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/updates/private-marketplace.ts:59 | tests/updates/private-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.The checkout is up to date",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/updates/private-marketplace.ts:59 | tests/updates/private-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.Store a credential",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/updates/private-marketplace.ts:59 | tests/updates/private-marketplace.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.Keep the checkout on failure",
+      "file": "15-marketplace-hosting.md",
+      "status": "diverges",
+      "evidence": "src/updates/private-marketplace.ts:59 | tests/updates/private-marketplace.test.ts",
+      "note": "Spec: with CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE=1 the checkout is kept without re-clone only when it already contains `.claude-plugin/marketplace.json`; a never-cloned or half-cloned marketplace still gets the clone attempt. Code: src/updates/private-marketplace.ts:72-75 keeps the checkout whenever the variable is on and the check failed, with no fact about whether the checkout holds marketplace.json. Code should change."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace updates keep failing offline",
+      "file": "15-marketplace-hosting.md",
+      "status": "diverges",
+      "evidence": "src/updates/private-marketplace.ts:59 | tests/updates/private-marketplace.test.ts",
+      "note": "Spec: with CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE=1 the checkout is kept without re-clone only when it already contains `.claude-plugin/marketplace.json`; a never-cloned or half-cloned marketplace still gets the clone attempt. Code: src/updates/private-marketplace.ts:72-75 keeps the checkout whenever the variable is on and the check failed, with no fact about whether the checkout holds marketplace.json. Code should change."
+    },
+    {
+      "id": "marketplace.hosting.Authenticate archive downloads",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/download-headers.ts, src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95 | tests/marketplace/download-headers-entry.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Add a headersHelper to a plugin entry",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-checks.ts:126 | tests/format/marketplace/entries-headers.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Command text",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-helper.ts, src/marketplace/credential-variables.ts | tests/marketplace/header-helper.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Output",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-helper.ts, src/marketplace/credential-variables.ts | tests/marketplace/header-helper.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Shell and working directory",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-helper.ts, src/marketplace/credential-variables.ts | tests/marketplace/header-helper.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Variables Claude Code removes",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-helper.ts, src/marketplace/credential-variables.ts | tests/marketplace/header-helper.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Variables Claude Code sets",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-helper.ts, src/marketplace/credential-variables.ts | tests/marketplace/header-helper.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-download.ts:20; src/marketplace/download-headers.ts, src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95; src/marketplace/header-helper.ts, src/marketplace/credential-variables.ts; src/marketplace/header-policy.ts | tests/marketplace/marketplace-file-fetch.test.ts, tests/marketplace/download-headers-entry.test.ts, tests/marketplace/header-helper.test.ts, tests/marketplace/header-policy.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output.Command fails",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-helper.ts, src/marketplace/credential-variables.ts | tests/marketplace/header-helper.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output.Redirect leaves the origin",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/marketplace-download.ts:20; src/marketplace/download-headers.ts, src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95 | tests/marketplace/marketplace-file-fetch.test.ts, tests/marketplace/download-headers-entry.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output.Entry sets a routing or identity header",
+      "file": "15-marketplace-hosting.md",
+      "status": "diverges",
+      "evidence": "src/marketplace/download-headers.ts, src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95 | tests/marketplace/download-headers-entry.test.ts",
+      "note": "Case-insensitive drop from headers and command output, Authorization kept, and the validator warning text conform (src/format/marketplace/entry-checks.ts:120). The set diverges: Spec (J15.12): the dropped set is host, cookie, forwarded, x-real-ip, x-client-ip, true-client-ip, client-ip, cf-connecting-ip, fastly-client-ip, x-originating-ip, x-remote-ip, x-remote-addr, x-cluster-client-ip, connection, upgrade, transfer-encoding, content-length, te, trailer, expect, via, and the prefixes x-forwarded-, x-original-, proxy-, with `_` read as `-`. Code drops only host, cookie and x-forwarded-* (src/format/marketplace/header-names.ts:9-16, and a second copy in src/settings/marketplaces/headers-helper.ts:62-65), and does not fold `_`. Code should change (spec has oracle 2.1.325 evidence); the two copies should become one."
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output.Managed settings block the command",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-policy.ts | tests/marketplace/header-policy.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.How users accept a headersHelper command.Terminal session",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-policy.ts | tests/marketplace/header-policy.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.How users accept a headersHelper command.Shell",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/cli/install-start.ts | tests/cli/install-accept.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.How users accept a headersHelper command.VS Code extension",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-policy.ts | tests/marketplace/header-policy.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Installs and updates that refuse a command instead of asking",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-policy.ts | tests/marketplace/header-policy.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.When a marketplace url source's command runs.--settings",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-policy.ts | tests/marketplace/header-policy.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.When a marketplace url source's command runs..claude/settings.json",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-policy.ts | tests/marketplace/header-policy.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.When a marketplace url source's command runs.Server-managed settings",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/header-policy.ts | tests/marketplace/header-policy.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Depend on and recommend other plugins",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-schema.ts | tests/format/marketplace/entries-fields.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153; src/marketplace/download-headers.ts, src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95; src/updates/auto-update-precedence.ts:108; src/format/marketplace/marketplace.ts | tests/settings/marketplaces/allowlist.test.ts, tests/marketplace/download-headers-entry.test.ts, tests/updates/auto-update-precedence.test.ts, tests/format/marketplace/marketplace-file.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do.Restrict what else users install",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:153 | tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do.Mark a plugin deprecated",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/marketplace.ts | tests/format/marketplace/marketplace-file.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do.Turn on auto-update for your users",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts:108 | tests/updates/auto-update-precedence.test.ts"
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do.Carry git credentials",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/download-headers.ts, src/marketplace/fetch-plan.ts:41, src/marketplace/archive-source.ts:95 | tests/marketplace/download-headers-entry.test.ts"
+    },
+    {
+      "id": "marketplace.publish.Prepare your plugin for release",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-commands.ts, src/marketplace/marketplace-input.ts | tests/marketplace/publish-marketplace.test.ts",
+      "note": "Validator side (kebab-case warning, --strict exits 1 on warnings, ./ component paths, homepage URL) and the \"already at the latest version\" line are the library's; the rest is author advice."
+    },
+    {
+      "id": "marketplace.publish.Ship a plugin with your own tool",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/install-commands.ts, src/marketplace/marketplace-input.ts | tests/marketplace/publish-marketplace.test.ts",
+      "note": "The two commands are produced by src/marketplace/install-commands.ts; running them is the author's tool."
+    },
+    {
+      "id": "marketplace.anthropic.Deprecated claude-code-plugins marketplace",
+      "file": "15-marketplace-hosting.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/deprecated-marketplace.ts | tests/marketplace/guidance.test.ts"
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J14.5",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:178-189; tests/settings/marketplaces/blocklist-gate.test.ts:118",
+      "note": "Allowlist wording when an allowlist is set, blocklist wording otherwise. spec/judgments.md records the same reading."
+    },
+    {
+      "id": "J14.6",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/git-url.ts:49-56, src/settings/marketplaces/host-of.ts:15,42-48; tests/settings/marketplaces/blocklist.test.ts:41,210",
+      "note": "Scheme, user, port, trailing slash, .git and #ref ignored; host lower-cased, path case kept; wide host forms host:path, host/path, user@host/path."
+    },
+    {
+      "id": "J14.7",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/match-source.ts:33-40; tests/settings/marketplaces/allowlist-patterns.test.ts:81",
+      "note": "new RegExp(pattern).test(text): ECMAScript, unanchored; a pattern that does not compile matches nothing."
+    },
+    {
+      "id": "J14.8",
+      "file": "14-policy-org.md",
+      "status": "diverges",
+      "evidence": "src/settings/managed/sideload.ts:63-66 (conforms), src/cli/flags/sideload.ts:27-31 (diverges); tests/settings/key-classes/sideload-flags.test.ts",
+      "note": "The mods-load path words the variable `CLAUDE_CODE_PLUGIN_DIRS is disabled ... (disableSideloadFlags): unset the variable`; the CLI session path (src/cli/session-flags.ts:93) uses pluginDirsVariableRefusal, which omits `: unset the variable`. Code should use one wording."
+    },
+    {
+      "id": "J14.9",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/index.ts (trust warning); tests/settings/plugins/trust-warning.test.ts:49,54",
+      "note": "Blank line before the organization text; empty or blank adds nothing."
+    },
+    {
+      "id": "J14.10",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/lists.ts:28; tests/settings/channels/allowlist.test.ts:80",
+      "note": "The code accepts only `plugin@marketplace` with exactly one `@` and strips any other string as invalid instead of splitting at the last `@`. Since plugin names cannot contain `@`, a split entry could never match either, so no verdict differs; only the warning does."
+    },
+    {
+      "id": "J14.11",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/gate.ts:85-96; tests/settings/marketplaces/allowlist-gate.test.ts:138",
+      "note": "All ten labels, settings:<name> and npm:<package> included."
+    },
+    {
+      "id": "J14.12",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:113-129, src/mods/load/policy.ts:79-83; tests/mods/load/settings-order.test.ts:110",
+      "note": "A managed prependPlugins places the guard where it names it and drops it where it does not."
+    },
+    {
+      "id": "J14.13",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:124-127, src/settings/plugins/mod-order.ts:56-57; tests/mods/load/settings-order.test.ts:133",
+      "note": "appendPlugins only reorders decided append-tier mods; the guard id there matches none and is skipped like any id that is not an organization mod."
+    },
+    {
+      "id": "J15.12",
+      "file": "15-marketplace-hosting.md",
+      "status": "diverges",
+      "evidence": "src/format/marketplace/header-names.ts:9-16, src/settings/marketplaces/headers-helper.ts:62-65; tests/format/marketplace/entries-headers.test.ts:83",
+      "note": "Spec (J15.12): the dropped set is host, cookie, forwarded, x-real-ip, x-client-ip, true-client-ip, client-ip, cf-connecting-ip, fastly-client-ip, x-originating-ip, x-remote-ip, x-remote-addr, x-cluster-client-ip, connection, upgrade, transfer-encoding, content-length, te, trailer, expect, via, and the prefixes x-forwarded-, x-original-, proxy-, with `_` read as `-`. Code drops only host, cookie and x-forwarded-* (src/format/marketplace/header-names.ts:9-16, and a second copy in src/settings/marketplaces/headers-helper.ts:62-65), and does not fold `_`. Code should change (spec has oracle 2.1.325 evidence); the two copies should become one. The test asserts the narrow set (\"Host, Cookie and X-Forwarded-* in any casing; nothing else\"), and spec/judgments.md records the narrow reading."
+    }
+  ]
+}

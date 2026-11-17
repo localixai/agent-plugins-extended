@@ -1,0 +1,1907 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a01-packages-env",
+  "date": "2026-11-16",
+  "files": [
+    "01-packages.md",
+    "02-manifest.md",
+    "03-environment.md",
+    "06-styles.md",
+    "11-workflows.md"
+  ],
+  "requirements": [
+    {
+      "id": "layout.Manifest",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/load-plugin.ts:55 (loadManifest: .claude-plugin/plugin.json optional), :118 (nameOf: manifest name, else entry/fallbackName); tests/loading/layout.test.ts:172, tests/loading/load-plugin.test.ts:91",
+      "note": "Manifest optional; without one the name is the marketplace entry's or the host-given directory name (fallbackName). A root plugin.json is never read. The core-form side of §1.2/§1.3 is recorded separately as missing (judgment rows J1.2 and '§1.2-§1.3 core form')."
+    },
+    {
+      "id": "layout.components.Explore the plugin directory",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/format/layout.ts (STANDARD_LAYOUT), src/loading/discover.ts; tests/loading/example-plugin.test.ts:60, tests/loading/layout.test.ts (misplaced() under .claude-plugin/ finds nothing)",
+      "note": "Every kind found from its default location alone; component folders inside .claude-plugin/ are not scanned."
+    },
+    {
+      "id": "layout.Skills",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:180 (skills walker); tests/loading/layout.test.ts:45, tests/loading/discover.test.ts:23",
+      "note": "skills/<name>/SKILL.md; flat skills/x.md is not a skill; root SKILL.md without skills/ is one skill named after the plugin."
+    },
+    {
+      "id": "layout.Commands",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:226; tests/loading/layout.test.ts:64, tests/loading/discover.test.ts:58",
+      "note": ""
+    },
+    {
+      "id": "layout.Agents",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:241 (nested agents); tests/loading/layout.test.ts:75, tests/loading/discover.test.ts:79",
+      "note": "Subfolders become name segments (p:team:reviewer)."
+    },
+    {
+      "id": "layout.Hooks",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/format/layout.ts; tests/loading/layout.test.ts:87, tests/loading/discover.test.ts:141",
+      "note": ""
+    },
+    {
+      "id": "layout.MCP servers",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/format/layout.ts; tests/loading/layout.test.ts:96",
+      "note": "Only .mcp.json; a core-style mcp.json is not read."
+    },
+    {
+      "id": "layout.LSP servers",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/format/layout.ts; tests/loading/layout.test.ts:104, tests/loading/discover.test.ts:156",
+      "note": ""
+    },
+    {
+      "id": "layout.Output styles",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:242; tests/loading/layout.test.ts:112, tests/loading/discover.test.ts:107",
+      "note": "Default location conforms; the subdirectory rule of §6.1.2 (J6.4) does not, see 06-styles.md."
+    },
+    {
+      "id": "layout.Workflows",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:243; tests/loading/layout.test.ts:121, tests/loading/discover.test.ts:119",
+      "note": ""
+    },
+    {
+      "id": "layout.Themes",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:244; tests/loading/layout.test.ts:130, tests/loading/discover.test.ts:130",
+      "note": ""
+    },
+    {
+      "id": "layout.Monitors",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/format/layout.ts; tests/loading/layout.test.ts:139, tests/loading/discover.test.ts:163",
+      "note": ""
+    },
+    {
+      "id": "layout.Executables",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/bin.ts:12 (binPathEntries), :25 (pathWithPluginBins appends after user entries), :50 (distribution: claude.ai/Cowork refuse bin/); tests/loading/bin.test.ts:21, tests/loading/layout.test.ts:148",
+      "note": "The kit decides which directory and its place after the user's PATH; putting it on the Bash/PowerShell tool's PATH (and withholding it from sandboxed PowerShell) is the host's effect: the kit has no input for the PowerShell sandbox distinction. A directory the user already lists keeps its own position (kit judgment), compatible with the no-shadow rule."
+    },
+    {
+      "id": "layout.Settings",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/format/plugin-settings.ts; tests/loading/layout.test.ts:160, tests/format/plugin-settings.test.ts:15",
+      "note": "Only agent and subagentStatusLine are kept."
+    },
+    {
+      "id": "layout.components.Executables",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/bin.ts:25; tests/loading/bin.test.ts:21",
+      "note": "Same as layout.Executables: ordering and hosted-surface refusal are the kit's; the PATH effect and the sandboxed-PowerShell exclusion are the host's."
+    },
+    {
+      "id": "outputStyles.frontmatter.name",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:58 (name ?? fileName, id <plugin>:<name>; YAML error -> file name, no fields, warning); tests/format/output-style.test.ts:33, tests/format/output-style-select.test.ts:28",
+      "note": "Default file name, declared name used for the <plugin>: prefix, broken YAML loads under the file name with no fields (J6.12), misspelt fields ignored. Wrong-type nuance under J6.2."
+    },
+    {
+      "id": "outputStyles.frontmatter.description",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:84, src/format/output-style-select.ts:200 (listOutputStyles); tests/format/output-style.test.ts:89, tests/format/output-style-select.test.ts:45",
+      "note": "Read and listed; the SHOULD fallback to the first body line is not done (see J6.3)."
+    },
+    {
+      "id": "outputStyles.frontmatter.keep-coding-instructions",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:85, src/format/output-style-select.ts:150 (includeCodingInstructions, short prompt has no section); tests/format/output-style.test.ts:105, tests/format/output-style-select.test.ts:89",
+      "note": ""
+    },
+    {
+      "id": "outputStyles.frontmatter.force-for-plugin",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:94 (plugin styles only), src/format/output-style-select.ts:118 (forced wins over setting and command; first in host order); tests/format/output-style.test.ts:119, tests/format/output-style-select.test.ts:111",
+      "note": "'First plugin loaded wins' depends on the host passing styles in load order (documented on OutputStyleRequest.styles)."
+    },
+    {
+      "id": "outputStyles.behavior.Create a custom output style",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:58, src/settings/locations.ts:62 (user and project folders); tests/format/output-style-system.test.ts:18",
+      "note": "File format, levels and unknown-field handling conform. Gaps: §6.1.1 item 7 SHOULD (J6.3) not done; §6.1.2 item 1 subdirectories (J6.4) not read; project folders run to the filesystem root (host-given directories) rather than stopping at the repository root; the managed folder is left to the host."
+    },
+    {
+      "id": "outputStyles.behavior.How output styles work",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style-system.ts:11 (outputStyleSystem), src/format/output-style-select.ts:150; tests/format/output-style-system.test.ts:33",
+      "note": "Instructions appended every request; coding section dropped on the full prompt unless keep-coding-instructions. Fork inheritance vs other subagents is the host's prompt assembly; the kit offers no subagent hook for it."
+    },
+    {
+      "id": "themes.components.Themes and output styles",
+      "file": "06-styles.md",
+      "status": "diverges",
+      "evidence": "src/format/marketplace/entry-merge.ts:121 (entry themes appended to top-level `themes`), src/loading/discover-config.ts (experimental.themes wins); tests/loading/plugin-assets.test.ts:44",
+      "note": "Most of it conforms (manifest key replaces folder, theme format, <plugin>:<name> styles, read-only plugin theme saved as a copy). Diverges on §6.2.2 item 3: with strict unset/true, an entry's `themes` must add to the manifest's, but the kit appends them to the top-level `themes` key, which is then shadowed when plugin.json uses `experimental.themes` (J6.10). Probe: manifest experimental.themes './looks/' + entry themes ['./extra/'] loads only looks/a.json, silently. Kit should change (merge into the key that is read). Also §6.1.2 item 1: output-styles/ subdirectories are not read (J6.4)."
+    },
+    {
+      "id": "themes.config.Create a custom theme.name",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/theme.ts; tests/format/theme.test.ts:83",
+      "note": "Non-string or blank name falls back to the slug (J6.9)."
+    },
+    {
+      "id": "themes.config.Create a custom theme.base",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/theme.ts; tests/format/theme.test.ts:116",
+      "note": "Six presets; others read as dark with a warning."
+    },
+    {
+      "id": "themes.config.Create a custom theme.overrides",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/theme.ts, src/format/theme-tokens.ts (all token groups listed in §6.2.1 present), src/format/theme-write.ts (unknown tokens kept raw in extraOverrides on rewrite); tests/format/theme.test.ts:155, tests/loading/plugin-assets.test.ts:44",
+      "note": "Invalid colours and unknown tokens ignored; unknown tokens survive a copy (§6.2.1 item 4). rgb() is rewritten as #rrggbb on copy (same colour)."
+    },
+    {
+      "id": "workflows.behavior.What the saved script looks like",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/format/workflow-meta.ts:186 (readScriptHead); tests/format/workflow-meta.test.ts:38, tests/agents/workflow/saved.test.ts:195",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Edit a saved script.phases",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/format/workflow-meta.ts:84 (readPhases), src/format/workflow-script.ts:183; tests/format/workflow-script.test.ts:26",
+      "note": "Unmatched phase titles reported; grouping is the host's progress view."
+    },
+    {
+      "id": "workflows.behavior.Edit a saved script.meta block",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/format/workflow-meta.ts:172 (not first), :190 (not a literal), :58 (name/description required), src/host/session-workflows.ts:43 (no command without meta); tests/format/workflow-meta.test.ts:80",
+      "note": "A blank-string name or description also counts as missing (kit's reading of 'a string')."
+    },
+    {
+      "id": "workflows.behavior.Edit a saved script.Body",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/format/workflow-meta.ts:180 (body lexical problems left to the runtime); tests/format/workflow-script.test.ts:83",
+      "note": "The kit does not check the body when listing; the Workflow tool's async_launched-with-error answer is the host's runtime."
+    },
+    {
+      "id": "workflows.behavior.Distribute a workflow in a plugin",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/loading/readers-assets.ts:70 (<plugin>:<meta.name>), src/loading/walk.ts:243 (flat, .js only), src/host/session-workflows.ts:34 (first per name in code-unit listing order); tests/loading/plugin-assets.test.ts:144, tests/host/plugin-workflows.test.ts:30",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Save the workflow for reuse",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/saved.ts:38 (projectBase), :55 (mustNotBeLinks per scope), :94 (refuseLinks), :125 (resolveSavedWorkflows: closest project, then personal); tests/agents/workflow/saved.test.ts:52",
+      "note": "The write, lstat and /reload-skills are the host's; the kit gives the plan and the check."
+    },
+    {
+      "id": "workflows.behavior.Edit a saved script.Timestamps and randomness",
+      "file": "11-workflows.md",
+      "status": "not-applicable",
+      "evidence": "src/format/workflow-script.ts (inspectWorkflowScript reports Date.now/Math.random/new Date() as warnings); tests/format/workflow-script.test.ts:136",
+      "note": "The MUST (they throw inside the script) binds the workflow runtime, which is the host's scheduler (spec/scope-audit.md 'Boundary'; §11.11 'enforced by the runtime'). The kit only detects the calls statically and warns."
+    },
+    {
+      "id": "workflows.behavior.Behavior and limits.import()",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/format/workflow-script.ts (import() is an error before the run); tests/format/workflow-script.test.ts:188",
+      "note": "The error is the kit's gate; refusing to start the run on it is the host's."
+    },
+    {
+      "id": "workflows.behavior.Behavior and limits.parallel()",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/limits.ts:35 (checkFanOut > 4096 rejects whole list), src/agents/workflow/attempts.ts:182 (afterAgentFailure null slot); tests/agents/workflow/limits.test.ts:39",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Pass input to a saved workflow",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/args.ts (workflowArgs); tests/agents/workflow/args.test.ts:14",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Behavior and limits.No mid-run user input",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/limits.ts:70 (interruptRun); tests/agents/workflow/limits.test.ts:59",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Behavior and limits.1,000 agents total per run",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/limits.ts:27 (admitAgent: started < 1000); tests/agents/workflow/limits.test.ts:23",
+      "note": "Restarts not counted is the host's counting, documented on admitAgent."
+    },
+    {
+      "id": "workflows.behavior.Set a size guideline.unrestricted",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/settings/workflows/size.ts:63; tests/settings/workflows/guide.test.ts:26",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Set a size guideline.small",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/settings/workflows/size.ts:50, :61 (Pro default small); tests/settings/workflows/guide.test.ts:40",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Set a size guideline.medium",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/settings/workflows/size.ts:51, :61; tests/settings/workflows/guide.test.ts:65",
+      "note": "Settings file over /config choice, row hidden while a file sets it; 25-agent / 1.5M-token warning, none under ultracode."
+    },
+    {
+      "id": "workflows.behavior.Set a size guideline.large",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/settings/workflows/size.ts:52; tests/settings/workflows/guide.test.ts:81",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/attempts.ts:86 (attemptLabels '(retry 1)', 'attempt 2 (stalled)'), :150 (hasStalled excludes tool and usage-limit waits); tests/agents/workflow/attempts.test.ts:31",
+      "note": "Ending and restarting the agent is the host's scheduler."
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.One agent",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/attempts.ts:125 (stallWindowMs: stallMs first); tests/agents/workflow/attempts.test.ts:158",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.Every agent",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/attempts.ts:125 (CLAUDE_ASYNC_AGENT_STALL_TIMEOUT_MS, then default 600000 or host's raised default); tests/agents/workflow/attempts.test.ts:170",
+      "note": "The raised default under CLAUDE_STREAM_IDLE_TIMEOUT_MS is computed by the host (defaultMs input)."
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.agent stalled on all 6 attempts",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/attempts.ts:63; tests/agents/workflow/attempts.test.ts:103",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.agent lost its reply on all 6 attempts",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/attempts.ts:65; tests/agents/workflow/attempts.test.ts:116",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.agent abandoned after 6 attempts",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/attempts.ts:67 (lists endings in order); tests/agents/workflow/attempts.test.ts:133",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.Awaited directly",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/attempts.ts:176 (afterAgentFailure); tests/agents/workflow/attempts.test.ts:182",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Which agents run again.Completed",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/replay.ts:81 (prompt, then options fingerprint), :118 (planReplay); tests/agents/workflow/replay.test.ts:34",
+      "note": "A, C, B, D after A, B, C, D reruns C, B, D."
+    },
+    {
+      "id": "workflows.behavior.Which agents run again.Still running when you stopped",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/replay.ts:89; tests/agents/workflow/replay.test.ts:142",
+      "note": "Unmarked §11.8.1 rule 'refuse the relaunch while agents of the stopped run have not exited' has no kit decision (relaunch.ts takes no such fact): missing, host-side."
+    },
+    {
+      "id": "workflows.behavior.Which agents run again.Failed",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/replay.ts; tests/agents/workflow/replay.test.ts:119",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Resume after you leave the session",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/relaunch.ts:50 (NOTHING_TO_RESUME), :72 (relaunch: no results, or background + script outside projects -> fail); tests/agents/workflow/relaunch.test.ts:35",
+      "note": "Keeping results under the session directory is the host's storage."
+    },
+    {
+      "id": "workflows.behavior.When a run hits your usage limit",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/usage-limit.ts:35 (24 h), :38 (third hit fails), :65 (interactive, subscription, autoContinue); tests/agents/workflow/usage-limit.test.ts:32",
+      "note": ""
+    },
+    {
+      "id": "workflows.behavior.Turn workflows off",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/settings/workflows/enablement.ts (workflowsDecision: disableWorkflows any file, env=1, org, enableWorkflows false, Pro default; surfaces), src/host/session-workflows.ts:22; tests/settings/workflows/guide.test.ts:106, tests/host/plugin-workflows.test.ts:47",
+      "note": "A run in progress continuing is the host's duty (documented)."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.Invalid JSON syntax: <parse error>",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/read-json.ts:18; src/loading/validate/json-files.ts:47; src/loading/load-plugin.ts:61; tests/loading/manifest-prose.test.ts",
+      "note": "Validator: `Invalid JSON syntax: <reason>` for plugin.json and hooks/hooks.json; client: manifest that is not JSON stops the load with the parser reason. BOM split: see J2.3."
+    },
+    {
+      "id": "manifest.rule.Unrecognized fields",
+      "file": "02-manifest.md",
+      "status": "diverges",
+      "evidence": "src/format/manifest.ts:49; src/format/manifest-schema.ts:7; tests/loading/manifest-prose.test.ts; tests/loading/load-plugin-config.test.ts",
+      "note": "Top-level strip and userConfig/channels unknown keys (manifest fails) conform. Inline `lspServers` and `experimental.monitors` entries with an unknown key: readManifest/validatePlugin report nothing (oracle 2.1.325 reports `lspServers.go: Unrecognized key` and `experimental.monitors.0: Unrecognized key` as errors), and loadPlugin drops only that config/entry while the plugin loads, where §2.1 item 4 says the plugin does not load. Implementation should change (validator certainly; the client drop is a kit judgment the spec does not allow)."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.Unknown field '<key>'",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/unknown-fields.ts:134; tests/loading/manifest-prose.test.ts",
+      "note": "Warning with a `did you mean` suggestion when close."
+    },
+    {
+      "id": "manifest.field.$schema",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.displayName",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.version",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.description",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.repository",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.license",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.keywords",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.metadata",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.icon",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.documentationUrl",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.supportUrl",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.privacyPolicyUrl",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.termsOfServiceUrl",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.defaultEnabled",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.settings",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.types",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.name",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/names.ts:15; src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts; tests/format/name-load.test.ts",
+      "note": "Required; empty, whitespace, @, :, separators, Cc and Bidi_Control refused at load."
+    },
+    {
+      "id": "manifest.field.author",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.homepage",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": "A value that does not parse as a URL fails the manifest."
+    },
+    {
+      "id": "manifest.field.dependencies",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.userConfig",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/user-config.test.ts; tests/loading/load-plugin-settings.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.channels",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:124; tests/format/channels.test.ts",
+      "note": "Strict entries; no spec(id) test under this exact id."
+    },
+    {
+      "id": "manifest.field.skills",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-components.test.ts; tests/loading/combine.test.ts; tests/loading/declared-paths.test.ts",
+      "note": "Both directory shapes and \".\"/\"./\" covered (the fixed text)."
+    },
+    {
+      "id": "manifest.field.commands",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-components.test.ts; tests/loading/combine.test.ts",
+      "note": "Object entry with both source and content fails (probe)."
+    },
+    {
+      "id": "manifest.field.agents",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/format/manifest-components.test.ts; tests/loading/declared-paths.test.ts; tests/loading/combine.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.hooks",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/loading/merge-hooks.ts; tests/loading/load-plugin-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.mcpServers",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-bundles.ts:29; tests/format/manifest-components.test.ts; tests/loading/load-plugin-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.lspServers",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/loading/combine.test.ts; tests/loading/load-plugin-config.test.ts",
+      "note": "Merge order conforms; strictness: see manifest.rule.Unrecognized fields."
+    },
+    {
+      "id": "manifest.field.outputStyles",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/loading/combine.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.workflows",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/loading/combine.test.ts; tests/loading/declared-paths.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.experimental",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:136; tests/format/manifest-fields.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.experimental.themes",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/format/manifest-components.test.ts; tests/loading/combine.test.ts; tests/loading/declared-paths.test.ts",
+      "note": "Top-level `themes` loads with a warning."
+    },
+    {
+      "id": "manifest.field.experimental.monitors",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/format/manifest-components.test.ts; tests/loading/combine.test.ts; tests/loading/load-plugin-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.field.experimental.evals",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:136; tests/format/manifest-components.test.ts",
+      "note": "Typed and exempt from ./; the eval runner (--eval-dir, first entry only, below-root check) is not in the library."
+    },
+    {
+      "id": "manifest.rule.name.claude-",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/names.ts:66; src/format/marketplace/entry-checks.ts:59; tests/format/manifest-rules.test.ts",
+      "note": "Validator error with the exact wording, case-folded and separator-collapsed; load is not refused; official-marketplace exemption (J2.2) held."
+    },
+    {
+      "id": "manifest.rule.name.claude",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/names.ts:66; src/format/marketplace/entry-checks.ts:59; tests/format/manifest-rules.test.ts",
+      "note": "Validator error with the exact wording, case-folded and separator-collapsed; load is not refused; official-marketplace exemption (J2.2) held."
+    },
+    {
+      "id": "manifest.rule.name.official",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/names.ts:66; src/format/marketplace/entry-checks.ts:59; tests/format/manifest-rules.test.ts",
+      "note": "Validator error with the exact wording, case-folded and separator-collapsed; load is not refused; official-marketplace exemption (J2.2) held."
+    },
+    {
+      "id": "manifest.rule.displayName",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/format/manifest-behaviour.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.rule.version",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/version-resolution.ts:7; src/marketplace/update-detection.ts:63; tests/loading/manifest-prose.test.ts; tests/marketplace/version-release.test.ts",
+      "note": "Not semver-checked; command source uses its hash, claude.ai record wins, local-path marketplace loads in place."
+    },
+    {
+      "id": "manifest.rule.metadata",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/format/manifest-rules.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.rule.Directory listing fields",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/unknown-fields.ts; tests/format/manifest-rules.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.rule.defaultEnabled",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/format/manifest-behaviour.test.ts; tests/marketplace/dependency-graph.test.ts; tests/cli/install-dependencies.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.rule.dependencies",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/dependencies.ts; tests/format/manifest-rules.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.rule.settings",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/loading/load-plugin-settings.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.rule.Containment and existence",
+      "file": "02-manifest.md",
+      "status": "diverges",
+      "evidence": "src/format/messages.ts:15; src/loading/validate/plugin-target.ts:15; tests/loading/manifest-prose.test.ts; tests/host/plugin-troubleshooting.test.ts",
+      "note": "Drop behaviour and validator messages conform. Client wording differs: `path not found: <path>` names the path as written, not the absolute path, and carries no \"check the path in the manifest or marketplace entry\" advice (kit judgment, spec/judgments.md row for src/loading/discover-listed.ts); the escape message appends ` — it resolves to <target>, outside the plugin directory`. Implementation should add the advice; the absolute path is a host composition (Locations.pluginRoot), so the spec could say \"the path\"."
+    },
+    {
+      "id": "manifest.troubleshooting.commands path not found: <path>",
+      "file": "02-manifest.md",
+      "status": "diverges",
+      "evidence": "src/format/messages.ts:21; tests/host/plugin-troubleshooting.test.ts",
+      "note": "Same as Containment and existence: relative path, no advice text."
+    },
+    {
+      "id": "manifest.rule.Path-only fields",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/loading/validate/plugin-target.ts:32; tests/format/manifest-rules.test.ts; tests/host/plugin-troubleshooting.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.rule.How each key combines with its default location.Replaces the default",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/messages.ts:34; tests/loading/combine.test.ts",
+      "note": "Default-folder-ignored warning, and none for a path inside the default folder."
+    },
+    {
+      "id": "manifest.rule.How each key combines with its default location.Adds to the default",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/loading/combine.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.rule.How each key combines with its default location.Merges",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/loading/combine.test.ts; tests/loading/load-plugin-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.troubleshooting.Warning: No commands found in plugin <name> custom directory",
+      "file": "02-manifest.md",
+      "status": "diverges",
+      "evidence": "src/loading/command-debug.ts:30; tests/loading/load-debug.test.ts",
+      "note": "Debug line is `Warning: No commands found in plugin <name> custom directory` with no `: <path>. Expected .md files or SKILL.md in subdirectories.` tail; the test asserts the short form. Implementation should change."
+    },
+    {
+      "id": "manifest.rule.hooks",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/loading/merge-hooks.ts; tests/loading/manifest-prose.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.File not found: <path>",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/loading/validate/validate-plugin.ts:32; src/loading/validate/validate-plugin.ts:62; tests/loading/manifest-prose.test.ts",
+      "note": "Follows the deviation: File not found only for a missing path; a manifest-less dir validates components or draws `No manifest found in directory. …`."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.No frontmatter block found",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/component-frontmatter.ts:23; src/loading/validate/marketplace-target.ts:82; tests/loading/manifest-prose.test.ts",
+      "note": "Includes the `plugins[i] plugin.json → ` prefix (the fixed text)."
+    },
+    {
+      "id": "manifest.troubleshooting.--plugin-dir at a marketplace root doesn't load the plugins under plugins/",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/loading/folder-plugin.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.troubleshooting.Files the plugin references outside its directory aren't found",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/loading/manifest-prose.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.troubleshooting.${CLAUDE_PLUGIN_ROOT} shows forward slashes on Windows",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/loading/resolve/windows-plugin-root.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.troubleshooting.Plugin loads but its skills are missing",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/host/plugin-troubleshooting.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.troubleshooting.Skill loads but Claude never invokes the skill",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/host/plugin-troubleshooting.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.troubleshooting.The userConfig dialog never appears",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "tests/cli/configure-dialog.test.ts",
+      "note": ""
+    },
+    {
+      "id": "manifest.troubleshooting.Plugin <name> has conflicting manifests",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts:37; src/format/marketplace/entry-merge.ts:172; tests/format/marketplace/entry-merge.test.ts",
+      "note": "Message lacks the trailing period of the spec quote (cosmetic)."
+    },
+    {
+      "id": "environment.variable.${CLAUDE_PLUGIN_ROOT}",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/variables.ts:25; src/marketplace/store-layout.ts:50 (versionDir); src/ports/locations.ts:13; tests/loading/resolve/variables.test.ts",
+      "note": "The value is the host's Locations.pluginRoot (in-place vs cache is the host's choice); the kit gives the cache layout cache/<marketplace>/<plugin>/<version>/. Not keeping state under the root binds the author."
+    },
+    {
+      "id": "environment.variable.${CLAUDE_PLUGIN_DATA}",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/data-id.ts; src/marketplace/store-layout.ts:19,90; src/loading/resolve/variables.ts:25; src/cli/uninstall-data.ts:50-80; tests/loading/resolve/data-id.test.ts; tests/loading/resolve/variables.test.ts; tests/loading/resolve/components.test.ts:208",
+      "note": "ASCII letters/digits/_/- kept, others -> \"-\", not case-folded; plugins root CACHE_DIR > CONFIG_DIR/plugins > ~/.claude/plugins, empty = unset; folder asked for (host creates) on first reference and on export; uninstall keeps on --keep-data / shared folder / unreadable records. Note: uninstall-data.ts sameFolder compares ids case-insensitively on every file system (it follows the docs' \"differs only in letter case\"), whereas the spec says \"resolves to the same directory\" and J3.19 says two ids share a folder only on a case-insensitive FS: on a case-sensitive FS the kit keeps a folder the spec would delete. Spec wording should cite the docs' case rule, or the kit should ask the host whether the FS folds case."
+    },
+    {
+      "id": "environment.variable.${CLAUDE_PROJECT_DIR}",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/variables.ts:28; src/format/mcp-knobs.ts:215-226 (every stdio server); src/loading/resolve/field-map.ts; tests/loading/resolve/variables.test.ts; tests/hooks/handlers/command/reference-by-path.test.ts:49; tests/format/mcp-knobs.test.ts:209",
+      "note": "Fixed value comes from the host's Locations.projectDir; the worktree test shows it stays while cwd moves."
+    },
+    {
+      "id": "environment.component.Hook commands",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/field-map.ts:47; src/loading/resolve/hook-command.ts:207; tests/loading/resolve/components.test.ts:143; tests/loading/resolve/hook-command.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.component.Monitor commands",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/field-map.ts:48; src/loading/resolve/monitor.ts:64; src/loading/resolve/surfaces.ts:153; tests/loading/resolve/components.test.ts:156; tests/loading/resolve/monitor.test.ts; tests/loading/resolve/monitor-environment-reference.test.ts:113",
+      "note": "Resolves in command, exports nothing of its own. By default (shellPaths environment-reference) the kit leaves ${NAME} in the command and exports only the referenced path variables: the MAY alternative of J3.5; shellPaths \"pasted\" gives the default text form."
+    },
+    {
+      "id": "environment.component.stdio",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/field-map.ts:49; src/loading/resolve/mcp.ts:98-118; tests/loading/resolve/components.test.ts:167; tests/loading/resolve/mcp.test.ts:24",
+      "note": ""
+    },
+    {
+      "id": "environment.component.http",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/field-map.ts:51; src/loading/resolve/headers-helper.ts:39-105; tests/loading/resolve/components.test.ts:176; tests/loading/resolve/mcp.test.ts:91",
+      "note": "headersHelper process gets CLAUDE_PLUGIN_ROOT only for a plugin server, plus SERVER_NAME/URL."
+    },
+    {
+      "id": "environment.component.LSP servers",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/field-map.ts:52; src/loading/resolve/lsp.ts; tests/loading/resolve/components.test.ts:187; tests/loading/resolve/lsp.test.ts:30",
+      "note": ""
+    },
+    {
+      "id": "environment.component.Skill, command, and agent content",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/field-map.ts:53; src/loading/resolve/surfaces.ts:55; src/hooks/handlers/command/subprocess-env.ts:71-84 (Bash kind adds no path variable); tests/loading/resolve/components.test.ts:196; tests/loading/resolve/content.test.ts:53",
+      "note": "The kit never adds the three variables to a Bash/PowerShell tool environment; it does not strip copies inherited from the host environment (not required by the text)."
+    },
+    {
+      "id": "environment.rule.Quoting and path separators",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/loading/resolve/surfaces.ts:76-90; src/loading/resolve/variables.ts:52-60; src/loading/resolve/hook-command.ts:88-101; src/format/validate/shell-command.ts:19-47; src/format/validate/hooks-check.ts:39; src/loading/resolve/exported-environment.ts:24-29; tests/loading/resolve/monitor-environment-reference.test.ts:62; tests/hooks/handlers/command/reference-by-path.test.ts:270; tests/loading/resolve/components.test.ts:215",
+      "note": "Exec form verbatim, bash shell-form keeps ${NAME}, PowerShell rewrite to ${env:NAME} plus bare-$NAME warning, Windows forward slashes in text, validator warning limited to hooks files at hooks.<Event> with the exact wording: conform. Two divergences: (1) the validator lists the variables sorted alphabetically (shell-command.ts:35 toSorted) where the spec (§3.2.3 item 5, J3.20, oracle 2.1.325 re-run) says order of first appearance -> the kit should change; (2) on Windows the exported variables of a Git Bash hook stay native backslashes (exported-environment.ts judgment, components.test.ts:215 asserts native) where §3.2.4/J3.6 say the Git Bash hook sees the forward-slash form in its environment too -> kit should change if the spec's reading of troubleshooting.md stands (unobserved on Windows)."
+    },
+    {
+      "id": "environment.host.CLAUDECODE",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/subprocess-env.ts:44-84; tests/hooks/handlers/command/host-variables.test.ts:89",
+      "note": "1 for hook, bash, powershell, mcp, monitor kinds, replacing an inherited value; tmux, status line and editor terminal are the host's. Note: the kit also sets it for a Monitor, which matches \"every subprocess\" but not §3.3's table row (Monitor: session variables \"—\"); the table should say CLAUDECODE."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SESSION_ID",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/subprocess-env.ts:44-84; tests/hooks/handlers/command/host-variables.test.ts:47",
+      "note": "Hook/bash/powershell/mcp kinds; follows /clear per hook; what id a running MCP server keeps is the host's (it spawns it)."
+    },
+    {
+      "id": "environment.host.CLAUDE_PID",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/subprocess-env.ts:44-84; tests/hooks/handlers/command/host-variables.test.ts:116",
+      "note": "Hook/bash/powershell only; the pkill refusal is §13's, not audited here."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SUBPROCESS_ENV_SCRUB",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/subprocess-scrub.ts:20-70; src/format/credential-env.ts:96-190; src/hooks/handlers/command/subprocess-env.ts:89; tests/hooks/handlers/command/scrub.test.ts:31; tests/loading/resolve/subprocess-scrub.test.ts",
+      "note": "Name and value rules, one rule for every kind, pre-2.1.251 legacy table by version. The Linux PID namespace is documented as a host duty (subprocess-scrub.ts:12): the kit spawns nothing."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.ANTHROPIC_API_KEY",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.AWS_SECRET_ACCESS_KEY",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.NPM_TOKEN",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.DB_PASSWORD",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.DATABASE_URL",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.PIP_INDEX_URL",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": "NPM_CONFIG_REGISTRY too (scrub.test.ts:161)."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.CLAUDE_CONFIG_DIR",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GITHUB_TOKEN",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GH_TOKEN",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GH_ENTERPRISE_TOKEN",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GITHUB_ENTERPRISE_TOKEN",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.HTTP_PROXY",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": "Kept with userinfo."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.HTTPS_PROXY",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GIT_CONFIG_COUNT",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GIT_CONFIG_KEY_<n>",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GIT_CONFIG_VALUE_<n>",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:126-190 (scrubAction); tests/hooks/handlers/command/scrub.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MCP_ALLOWLIST_ENV",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-knobs.ts:183-226; tests/format/mcp-knobs.test.ts:155",
+      "note": "Baseline plus configured env instead of the inherited one. See J3.22 for the plugin path variables."
+    },
+    {
+      "id": "userConfig.field.type",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:17,22; tests/format/user-config.test.ts; tests/loading/resolve/user-config-values.test.ts",
+      "note": ""
+    },
+    {
+      "id": "userConfig.field.title",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:23; tests/format/user-config.test.ts (required loop); tests/loading/resolve/user-config-values.test.ts",
+      "note": ""
+    },
+    {
+      "id": "userConfig.field.description",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:24; tests/format/user-config.test.ts:25 (spec(`userConfig.field.${field}`) loop over type/title/description)",
+      "note": "Proven only through the template-literal spec id; the field is required and kept."
+    },
+    {
+      "id": "userConfig.field.required",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/user-config-values.ts:46-52 ('is required and cannot be empty'); tests/loading/resolve/user-config-values.test.ts",
+      "note": ""
+    },
+    {
+      "id": "userConfig.field.default",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:26; src/loading/resolve/user-config.ts:31-37; tests/format/user-config.test.ts; tests/loading/resolve/user-config-values.test.ts",
+      "note": ""
+    },
+    {
+      "id": "userConfig.field.options",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:27; src/loading/resolve/user-config-values.ts:41-43; src/cli/configure-plan.ts (choices); tests/format/user-config.test.ts; tests/loading/resolve/user-config-values.test.ts",
+      "note": "The value check and picker data conform; the load rules of §3.4.2 diverge (see userConfig.rule.Limit a field to fixed options)."
+    },
+    {
+      "id": "userConfig.field.multiple",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/user-config-values.ts:22-27; tests/loading/resolve/user-config-values.test.ts",
+      "note": "Also accepts arrays for directory/file fields with multiple; the spec says 'for a string field' but states no refusal."
+    },
+    {
+      "id": "userConfig.field.sensitive",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/cli/configure-plan.ts (save.secrets), src/cli/configure-dialog.ts:37 (no sensitive inputs); tests/loading/resolve/user-config-values.test.ts; tests/cli/configure-dialog.test.ts",
+      "note": "Masking is the host dialog's."
+    },
+    {
+      "id": "userConfig.field.min",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/user-config-values.ts:36-38; tests/format/user-config.test.ts; tests/loading/resolve/user-config-values.test.ts",
+      "note": ""
+    },
+    {
+      "id": "userConfig.field.max",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/user-config-values.ts:36-38; tests/format/user-config.test.ts; tests/loading/resolve/user-config-values.test.ts",
+      "note": ""
+    },
+    {
+      "id": "userConfig.rule.Limit a field to fixed options",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/format/manifest-schema.ts:27,42-55; tests/format/user-config.test.ts:80",
+      "note": "Implemented: string-only, not multiple/sensitive, default in the list (exact), default-or-required, 1..64 length. Missing: the list must be non-empty (an empty `options` with required:true loads), no leading/trailing space, no control/invisible/bidi characters, no case-insensitive duplicates. Length is counted in UTF-16 units by zod `.max(64)`, not code points (64 emoji fail). Messages are the kit's own ('\"options\" applies only to a \"string\" field', '\"default\" must be one of the listed \"options\"'...) at path `userConfig.<key>`, not the table's messages and paths. Library should change (oracle 2.1.325 evidence in J3.10)."
+    },
+    {
+      "id": "userConfig.rule.Where values are stored",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/cli/configure-plan.ts (save: {settings, secrets}); src/settings/plugins/plugin-config.ts (whole-entry per id); src/cli/uninstall-data.ts:8-40; tests/cli/configure-dialog.test.ts:57",
+      "note": "The library plans the split and the uninstall deletions; the Keychain and credentials-file writes are the host's."
+    },
+    {
+      "id": "userConfig.rule.Reference a saved value",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/user-config.ts:31-66; src/loading/resolve/field-map.ts:44-52 (CLAUDE_PLUGIN_OPTION_<KEY> for hook-command only); src/loading/resolve/substitute.ts:98,117; src/format/validate/mcp-check.ts:118; tests/loading/resolve/saved-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "userConfig.shell.Shell-form hook commands",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/shell-guard-hook.ts:14; src/loading/resolve/user-config.ts:50 (template read); tests/loading/resolve/hook-command-shell.test.ts",
+      "note": "Message text matches the table."
+    },
+    {
+      "id": "userConfig.shell.Monitor commands",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/shell-guard-monitor.ts:30; src/loading/resolve/field-map.ts:46 (monitor exports nothing); tests/loading/resolve/monitor.test.ts",
+      "note": ""
+    },
+    {
+      "id": "userConfig.shell.headersHelper",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/shell-guard.ts:31-34; src/loading/resolve/mcp.ts:126-127; tests/loading/resolve/mcp-headers-helper.test.ts",
+      "note": "Refused whether or not the plugin declares options, as J3.15 says."
+    },
+    {
+      "id": "userConfig.components.When the configuration dialog appears",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/cli/configure-dialog.ts:5-41; src/cli/user-config-input.ts:105-106; tests/cli/configure-dialog.test.ts:17",
+      "note": "Spec: the dialog opens for every option that has no *saved* value. Kit: `unsetKeys` uses `userConfigValue` (saved else default), so an option with a `default` but nothing saved is not prompted (test asserts keys ['api_url'] while `tone` has only a default). The rest (events, configure shows all, shell install never prompts, sensitive inputs withheld) conforms. Either the kit uses saved values only, or the spec should say 'no value' (§3.4.4) if the docs mean that; not settled against the docs here."
+    },
+    {
+      "id": "environment.components.Install dependencies into the data directory",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/exported-environment.ts; src/loading/resolve/mcp.ts; tests/loading/resolve/data-dependencies.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.CLAUDE_ENV_FILE",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/hooks/env-file/events.ts:7-18; src/hooks/handlers/command/env.ts:27-29; src/hooks/env-file/powershell-reader.ts; src/host/session-environment.ts:87; tests/hooks/env-file/env-file.test.ts; tests/hooks/env-file/powershell-variables.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.behavior.Reload skills that a hook installs",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/ (reloadSkills merge); src/host/session-skills.ts, src/host/session-first-read.ts; tests/hooks/output/session-events.test.ts:111",
+      "note": ""
+    },
+    {
+      "id": "environment.host.Set variables in settings files.~/.claude/settings.json",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/env/resolve-env.ts; src/settings/env/settings-env.ts; tests/settings/env/files-and-precedence.test.ts; tests/settings/env/settings-env.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.Set variables in settings files..claude/settings.json",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/env/resolve-env.ts; src/settings/env/settings-env.ts; tests/settings/env/files-and-precedence.test.ts; tests/settings/env/settings-env.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.Set variables in settings files..claude/settings.local.json",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/env/resolve-env.ts; src/settings/env/settings-env.ts; tests/settings/env/files-and-precedence.test.ts; tests/settings/env/settings-env.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.Set variables in settings files.Managed settings",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/env/resolve-env.ts; src/settings/env/settings-env.ts; tests/settings/env/files-and-precedence.test.ts; tests/settings/env/settings-env.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.Precedence",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/env/resolve-env.ts:23-60 (launchEnvironment wins, NotApplied reasons); src/settings/env/ignored-variables.ts:49,99; tests/settings/env/files-and-precedence.test.ts; tests/settings/env/settings-env.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.CLAUDE_CONFIG_DIR",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/store-layout.ts:19-29; src/settings/env/ignored-variables.ts:49; tests/marketplace/store-layout.test.ts:23",
+      "note": ""
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_CACHE_DIR",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/store-layout.ts:19; tests/marketplace/store-layout.test.ts:23",
+      "note": ""
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_SEED_DIR",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:99-110; tests/settings/host-switches.test.ts",
+      "note": "Registration and cache reuse are the host's (§16); parsing, order and empty entries conform."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_DIRS",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/plugin-dirs.ts:15-24,30-39,62-65; tests/marketplace/session-plugins.test.ts:197",
+      "note": "Spec: each entry MUST be absolute or start with `~`; a relative entry is skipped. Kit: `parsePluginDirs` keeps every non-empty entry and `pluginDirsOf` loads a relative one like a --plugin-dir path. Library should change."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_DIR_WATCH",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/plugin-dirs.ts:84-87; tests/mods/load/plugin-dir.test.ts",
+      "note": "Spec: default on interactive/off otherwise; on turns it on everywhere, off turns it off everywhere. Kit: an interactive session always watches (an off value is ignored), and only exactly `1` turns it on elsewhere. Library should change."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SYNC_PLUGIN_INSTALL",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/settings/host-switches.ts:75-83; tests/settings/host-switches.test.ts",
+      "note": "The variable is read as exactly `1` (after trimming), so `true`, `yes`, `on` in any case do not turn it on, against §3.6.1 item 1 / J3.16; the library's own src/format/env-flag.ts isTruthyEnv does the right thing and should be used. Library should change."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SYNC_PLUGIN_INSTALL_TIMEOUT_MS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:75-83; tests/settings/host-switches.test.ts",
+      "note": "No timeout means unbounded, as the spec says. Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_ENABLE_BACKGROUND_PLUGIN_REFRESH",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/settings/host-switches.ts:35-38; tests/settings/host-switches.test.ts",
+      "note": "The variable is read as exactly `1` (after trimming), so `true`, `yes`, `on` in any case do not turn it on, against §3.6.1 item 1 / J3.16; the library's own src/format/env-flag.ts isTruthyEnv does the right thing and should be used. Library should change."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_TMPDIR",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:115-125; src/settings/env/ignored-variables.ts:49; tests/settings/host-switches.test.ts",
+      "note": "Suffix and project/local ignore conform. The sandboxed-Bash short $TMPDIR fallback and the native-Windows $TMPDIR/%TEMP% rule belong to the host's Bash tool, which the library does not run."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_POLICY_SKILLS",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/settings/host-switches.ts:28-29; tests/settings/host-switches.test.ts",
+      "note": "The variable is read as exactly `1` (after trimming), so `true`, `yes`, `on` in any case do not turn it on, against §3.6.1 item 1 / J3.16; the library's own src/format/env-flag.ts isTruthyEnv does the right thing and should be used. Library should change."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_WORKFLOWS",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/settings/workflows/enablement.ts:17,20,72; tests/settings/workflows/enablement.test.ts",
+      "note": "Effect (same as disableWorkflows) conforms, but the variable is compared with exactly '1' (not trimmed, no true/yes/on), against §3.6.1 / J3.16. Library should change."
+    },
+    {
+      "id": "environment.host.SLASH_COMMAND_TOOL_CHAR_BUDGET",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/skills/listing.ts:23-36; tests/skills/listing-budget.test.ts",
+      "note": "The host parses the variable and passes `chars`."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:53-58; tests/settings/host-switches.test.ts",
+      "note": "Default 120000, above zero required. Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/updates/private-marketplace.ts:74 (isOn); tests/updates/private-marketplace.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_PREFER_HTTPS",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/settings/host-switches.ts:61-62; tests/settings/host-switches.test.ts; tests/marketplace/git-transport.test.ts",
+      "note": "The variable is read as exactly `1` (after trimming), so `true`, `yes`, `on` in any case do not turn it on, against §3.6.1 item 1 / J3.16; the library's own src/format/env-flag.ts isTruthyEnv does the right thing and should be used. Library should change."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/settings/host-switches.ts:13-14; tests/settings/host-switches.test.ts",
+      "note": "Permanence is the host's. The variable is read as exactly `1` (after trimming), so `true`, `yes`, `on` in any case do not turn it on, against §3.6.1 item 1 / J3.16; the library's own src/format/env-flag.ts isTruthyEnv does the right thing and should be used. Library should change."
+    },
+    {
+      "id": "environment.host.DISABLE_AUTOUPDATER",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts:45-57 (isOn); tests/updates/auto-update-precedence.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.DISABLE_UPDATES",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts:45-57; tests/updates/auto-update-precedence.test.ts",
+      "note": "Client self-update is the host's; the kit also stops the plugin auto-update pass with it (unless FORCE_AUTOUPDATE_PLUGINS), which §16 governs; this row is silent on plugins."
+    },
+    {
+      "id": "environment.host.FORCE_AUTOUPDATE_PLUGINS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/updates/auto-update-precedence.ts:54; tests/updates/auto-update-precedence.test.ts",
+      "note": "Kit's FORCE also overrides DISABLE_UPDATES and NONESSENTIAL_TRAFFIC for the plugin pass; the row names only DISABLE_AUTOUPDATER, so that is beyond the row, not against it."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/updates/env-flags.ts:12 (isSet, any non-empty value); src/updates/auto-update-precedence.ts:56; src/updates/command-source-rerun.ts:135; tests/updates/auto-update-precedence.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.DISABLE_TELEMETRY",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:89-90; tests/settings/host-switches.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.DO_NOT_TRACK",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/settings/host-switches.ts:91; tests/settings/host-switches.test.ts",
+      "note": "Read as on only for `1` or `true` (case-insensitive, trimmed); `yes` and `on` do not turn it on, against 'an ordinary on/off variable' (§3.6.1). Library should use isTruthyEnv."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts:45-90; tests/hooks/handlers/timeout-semantics.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_STOP_HOOK_BLOCK_CAP",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/stop-block-cap.ts:27-37; tests/hooks/verdict/stop-block-cap.test.ts; tests/host/hook-wiring.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_PERMISSION_PROMPT_NOTIFY_HOOKS",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/settings/host-switches.ts:21-25; tests/settings/host-switches.test.ts",
+      "note": "canUseTool-only scope conforms. The variable is read as exactly `1` (after trimming), so `true`, `yes`, `on` in any case do not turn it on, against §3.6.1 item 1 / J3.16; the library's own src/format/env-flag.ts isTruthyEnv does the right thing and should be used. Library should change."
+    },
+    {
+      "id": "environment.host.MCP_TIMEOUT",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-knobs.ts:20,103; tests/format/mcp-knobs.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.MCP_TOOL_TIMEOUT",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-knobs.ts:22-26,103-125; tests/format/mcp-knobs.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-knobs.ts:28-29,82-97; tests/format/mcp-idle.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.MCP_CONNECT_TIMEOUT_MS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-knobs.ts:31,127-128; tests/format/mcp-knobs.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.MCP_CONNECTION_NONBLOCKING",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:73-90; tests/format/mcp-startup.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MCP_STARTUP_WAIT_MS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:92-110; tests/format/mcp-startup.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.MCP_SERVER_CONNECTION_BATCH_SIZE",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:13,25; tests/format/mcp-startup.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.MCP_REMOTE_SERVER_CONNECTION_BATCH_SIZE",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:15,26; tests/format/mcp-startup.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:30-56; tests/format/mcp-startup.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_MCP_TASK_BACKGROUND",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:47-55; tests/format/mcp-startup.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.MCP_DISCOVERY_CACHE",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:114-160; tests/format/mcp-startup.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.MCP_DISCOVERY_CACHE_TTL_S",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:114; tests/format/mcp-startup.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.MCP_DISCOVERY_CACHE_MAX_STALE_S",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:116-118; tests/format/mcp-startup.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.MCP_DISCOVERY_CACHE_STRIKES",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:120,155; tests/format/mcp-startup.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.MCP_SDK_GENERATION",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:178-225; tests/format/mcp-startup.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.MCP_PROTOCOL_NEGOTIATION",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:179-200; tests/format/mcp-startup.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.MAX_MCP_OUTPUT_TOKENS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-17; tests/format/mcp-output.test.ts",
+      "note": "Row behaviour (default, bounds) matches; the value is read as plain digits only, so scientific notation and digit separators of §3.6.1 item 2 are not accepted (see J3.17)."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-knobs.ts:146-152 (plain digits only, as the row says); tests/format/mcp-knobs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.MCP_CLIENT_SECRET",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-add-json.ts:17,43; tests/format/mcp-add-json.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.MCP_OAUTH_CALLBACK_PORT",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-add-json.ts:36; tests/format/mcp-add-json.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.ENABLE_CLAUDEAI_MCP_SERVERS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/load-settings.ts:11,42; tests/format/mcp-knobs.test.ts",
+      "note": "Compared with exactly 'false' (not FALSE, 0, no, off); the row documents only `false`, so not bound by J3.16."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SUBAGENT_MODEL",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/agents/launch-model.ts:85-115 (invocation > definition > env > builtin > main; inherit = unset); tests/agents/launch-model.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SUBAGENT_MODEL_FORCE",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/agents/launch-model.ts:35,113-114 (FORCED_ORDER); tests/agents/launch-model.test.ts",
+      "note": "The host turns the variable into `force`; how it reads the spelling is not the library's."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:41-46; tests/settings/host-switches.test.ts",
+      "note": ""
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/spawn.ts:50-62; tests/agents/catalog/spawn-depth-env.test.ts",
+      "note": ""
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J1.1",
+      "file": "01-packages.md",
+      "status": "conforms",
+      "evidence": "src/loading/load-plugin.ts:55 (only .claude-plugin/plugin.json is read); tests/loading/layout.test.ts:172",
+      "note": "A root plugin.json is never read, so it never rejects a plugin (with a fallbackName the components load). Conforms by not reading it, not by checking $schema."
+    },
+    {
+      "id": "J1.2",
+      "file": "01-packages.md",
+      "status": "missing",
+      "evidence": "src/loading/load-plugin.ts:55; tests/loading/layout.test.ts:96 (mcp.json not read)",
+      "note": "The outcome holds by accident (core plugin.json, mcp.json and hooks.json are never read, so nothing loads twice), but there is no dual-package detection: no plugin detail says the package also carries a core manifest (§1.3.1 SHOULD). Needed: a form classifier that sees the root plugin.json with a canonical core $schema and flags `alsoCore` on the loaded plugin."
+    },
+    {
+      "id": "§1.2-§1.3 core form",
+      "file": "01-packages.md",
+      "status": "missing",
+      "evidence": "src/loading/load-plugin.ts:55, src/loading/plugin-folder.ts:29",
+      "note": "agent-plugins does not implement the core Agent Plugins form. A directory with only a root plugin.json carrying a canonical core $schema loads as a Claude Code plugin without a manifest (or not at all without a fallback name) instead of as a core package (§1.2 item 1, §1.3 table row 3). Needed: (1) a form decision before any component read, per the §1.3 table, keyed on the canonical core $schema identifiers (core §5.2); (2) a core loader implementing core §4-§5 (core manifest, mcp.json, hooks.json, core containment §4.1); (3) the dual-package note of J1.2."
+    },
+    {
+      "id": "J6.2",
+      "file": "06-styles.md",
+      "status": "diverges",
+      "evidence": "src/format/frontmatter-values.ts:46 (readFlag: skill spellings), :55 (readText accepts number/boolean); agent-plugins spec/judgments.md:529-530",
+      "note": "Flags take the skill spellings: conforms. But a `name` or `description` that is a number or boolean is read as text ('a number is a name', kit judgment row 529) where the spec says a value of the wrong type is absent. Minor; the docs are silent, so either the spec says 'a scalar is text' or the kit drops non-strings. Lean: spec states what Claude Code does (unverified here)."
+    },
+    {
+      "id": "J6.3",
+      "file": "06-styles.md",
+      "status": "diverges",
+      "evidence": "src/format/output-style.ts:84, src/format/output-style-select.ts:200; tests/format/output-style.test.ts ('the body is not borrowed as a description')",
+      "note": "Spec SHOULD (oracle 2.1.325): without description, show the first non-empty body line. The kit asserts the opposite. Kit should change (it already has the helper in src/format/skill-fields.ts:104)."
+    },
+    {
+      "id": "J6.4",
+      "file": "06-styles.md",
+      "status": "diverges",
+      "evidence": "src/loading/walk.ts:242 (outputStyles: flat), agent-plugins spec/judgments.md:710",
+      "note": "Spec (oracle 2.1.325): output-styles/sub/deep.md loads as <plugin>:deep. Kit reads one folder deep; probe confirmed deep.md is not loaded. Kit should change (its judgment row predates the oracle)."
+    },
+    {
+      "id": "J6.5",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:90; tests/format/output-style.test.ts:33",
+      "note": "Note: Plugin.outputStyles[].qualifiedName from the loader is built from the file name (my-plugin:terse), while the catalog's OutputStyle.id uses the declared name; a host that lists Plugin.outputStyles directly shows the wrong id."
+    },
+    {
+      "id": "J6.6",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style-select.ts:104 (built-ins first, first id wins), src/settings/locations.ts:62 (nearest project first, then user); agent-plugins spec/judgments.md:532, 1139",
+      "note": "Managed-first is left to the host's ordering of `styles` (the kit gives no managed folder)."
+    },
+    {
+      "id": "J6.7",
+      "file": "06-styles.md",
+      "status": "diverges",
+      "evidence": "src/host/catalog.ts:120 (readStyles keeps every file, no per-name dedupe), src/format/output-style-select.ts:118 (first wins)",
+      "note": "Spec (oracle 2.1.325): of two files of one plugin with one name, keep exactly one, the last by UTF-16 path order. Kit keeps both in Plugin/catalog and resolves to the first (probe: terse.md and terse2.md both named Terse, terse.md wins). Kit should change."
+    },
+    {
+      "id": "J6.9",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/theme.ts, src/loading/readers-assets.ts:47; tests/format/theme.test.ts, tests/loading/plugin-assets.test.ts:44; agent-plugins spec/judgments.md:1018, 1022",
+      "note": "A non-object file stays in Plugin.themes with theme undefined and an error issue (the plugin still loads); a host must not list it."
+    },
+    {
+      "id": "J6.10",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/loading/discover-config.ts; agent-plugins spec/judgments.md:716",
+      "note": "See themes.components.Themes and output styles for the entry-merge interaction this precedence causes."
+    },
+    {
+      "id": "J6.11",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/theme-write.ts (copyOfPluginTheme); tests/loading/plugin-assets.test.ts (copy does not overwrite)",
+      "note": ""
+    },
+    {
+      "id": "J6.12",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:64; tests/format/output-style.test.ts:33",
+      "note": "Loads under the file name with no fields; parse error kept as a warning issue with the line."
+    },
+    {
+      "id": "J11.1",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/format/workflow-meta.ts:186; tests/format/workflow-meta.test.ts:80",
+      "note": "Unknown fields kept in `extra` (whenToUse read), not an error."
+    },
+    {
+      "id": "J11.2",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:243 (flat, .js), agent-plugins spec/judgments.md:710 (listed file any extension)",
+      "note": ""
+    },
+    {
+      "id": "J11.3",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/host/session-workflows.ts:34, src/format/listing.ts:14 (byCodeUnit)",
+      "note": "For manifest-listed paths the order is the manifest's, then code-unit within a folder."
+    },
+    {
+      "id": "J11.4",
+      "file": "11-workflows.md",
+      "status": "not-applicable",
+      "evidence": "spec/scope-audit.md (host supplies the agent scheduler)",
+      "note": "Binds the workflow runtime, which the host owns."
+    },
+    {
+      "id": "J11.5",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/args.ts; tests/agents/workflow/args.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J11.6",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/limits.ts:27; tests/agents/workflow/limits.test.ts:23",
+      "note": ""
+    },
+    {
+      "id": "J11.7",
+      "file": "11-workflows.md",
+      "status": "conforms",
+      "evidence": "src/agents/workflow/replay.ts:81-89; tests/agents/workflow/replay.test.ts:142",
+      "note": "Options compared by a host-given fingerprint; without one only the prompt is compared (kit judgment)."
+    },
+    {
+      "id": "J2.1",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/loading/validate/validate-plugin.ts:28; tests/loading/manifest-prose.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J2.2",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-checks.ts:59; src/loading/validate/marketplace-target.ts:214; src/format/names.ts:60; tests/format/marketplace/marketplace-names-judgments.test.ts",
+      "note": "Entries and their manifests exempt under an official name; a plugin dir alone draws the error plus the validate-the-marketplace advice."
+    },
+    {
+      "id": "J2.3",
+      "file": "02-manifest.md",
+      "status": "diverges",
+      "evidence": "src/loading/validate/json-files.ts:47; tests/loading/validate/validate-plugin.test.ts",
+      "note": "Validator conforms (manifest read past BOM; hooks.json BOM is Invalid JSON syntax). The loader reads hooks/hooks.json through readText, which drops the BOM, so the client loads those hooks where §2.1 item 2 says the plugin loads without them. Implementation loader should change, or the spec should limit the BOM rule to the validator (the oracle evidence is validator-only)."
+    },
+    {
+      "id": "J2.4",
+      "file": "02-manifest.md",
+      "status": "diverges",
+      "evidence": "src/loading/validate/components-only.ts:78; src/loading/validate/components.ts:122",
+      "note": "Default-folder-only reading conforms. But a dir with neither manifest counts as having components only for a skills tree (or .claude/{skills,commands,agents}, or a folder itself named skills/commands/agents); a dir holding only agents/a.md or commands/c.md draws No manifest found. Oracle 2.1.325 re-run today agrees with the kit (both draw No manifest found). The spec (§2.11 and J2.4, \"a skill, agent or command file\") is wrong and should change."
+    },
+    {
+      "id": "J3.1",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/store-layout.ts:19-34; tests/marketplace/store-layout.test.ts",
+      "note": "CACHE_DIR wins, empty is no override. agent-plugins spec/judgments.md has the same row."
+    },
+    {
+      "id": "J3.2",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/exported-environment.ts:30-41; src/loading/resolve/variables.ts:25; tests/loading/resolve/components.test.ts:208",
+      "note": "Hook, stdio and LSP export always ask the host for the data folder; the host's pluginData port creates it."
+    },
+    {
+      "id": "J3.3",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/without-plugin.ts; src/loading/resolve/hook-command.ts:73-77,186-194; tests/loading/resolve/hook-command-complete.test.ts",
+      "note": "ofPlugin:false keeps the two plugin variables and user_config, exports only CLAUDE_PROJECT_DIR, no shell-form refusal; PowerShell rewrite still applies."
+    },
+    {
+      "id": "J3.4",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/substitute.ts:20-130,230-250; tests/loading/resolve/content.test.ts:117-173",
+      "note": "One pass, unknown stays silently, option without value stays with a warning at the field path."
+    },
+    {
+      "id": "J3.5",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/surfaces.ts:76-140; src/loading/resolve/shell-exports.ts; tests/loading/resolve/monitor-environment-reference.test.ts",
+      "note": "Bash shell-form hook keeps ${NAME}. For monitor and headersHelper the kit DEFAULTS to the MAY alternative (braced reference + export of the named variables, DEFAULT_SHELL_PATHS environment-reference, surfaces.ts:133); \"pasted\" is opt-in. Allowed by J3.5; worth knowing that the kit's default is not the text form §3.2.3 item 3 names first."
+    },
+    {
+      "id": "J3.6",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/loading/resolve/exported-environment.ts:24-29; tests/loading/resolve/components.test.ts:215; tests/loading/resolve/monitor-environment-reference.test.ts:234",
+      "note": "Kit: forward slashes in command text only, native backslashes in every exported variable, including a Git Bash hook's. Spec: the Git Bash hook's environment carries the forward-slash form. Spec states this difference itself; both unobserved on Windows. Kit should change if the spec's troubleshooting.md reading is kept (a Bash hook reads the path from its environment, J3.5, so the text rule alone never reaches the script)."
+    },
+    {
+      "id": "J3.7",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/subprocess-env.ts:86-97; tests/hooks/handlers/command/host-variables.test.ts:73,98,122,154",
+      "note": "Set variables replace inherited ones and win over settings env."
+    },
+    {
+      "id": "J3.8",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/credential-env.ts:96-190; tests/hooks/handlers/command/scrub.test.ts (judgment tests); tests/hooks/handlers/command/scrub-judgments.test.ts",
+      "note": "Same word list, value shapes, kept names, registry URL list, case-insensitive; fixed names include ANTHROPIC_CUSTOM_HEADERS and the OTEL exporter header variables (kit judgment)."
+    },
+    {
+      "id": "J3.19",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/data-id.ts; tests/loading/resolve/data-id.test.ts",
+      "note": "pluginDataId keeps case. The uninstall shared-folder check folds case on every FS (src/cli/uninstall-data.ts:47), see the CLAUDE_PLUGIN_DATA note."
+    },
+    {
+      "id": "J3.20",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/format/validate/shell-command.ts:19-47; src/format/validate/hooks-check.ts:39,76; tests/hooks/handlers/command/reference-by-path.test.ts:270",
+      "note": "Scope matches (hooks files only, single/double-quoted silent, bare $NAME counted, exec form and powershell silent, at hooks.<Event>). But the variables are named sorted alphabetically (toSorted) instead of in order of first appearance, which the 2.1.325 oracle re-run in the verification ledger shows (${CLAUDE_PROJECT_DIR} before ${CLAUDE_PLUGIN_ROOT}). Kit should change; its comment still cites oracle 2.1.319. The tests assert only toContain(\"without quotes\"), never the order."
+    },
+    {
+      "id": "J3.22",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/format/mcp-knobs.ts:199-226; src/loading/resolve/mcp.ts:102 (ResolvedMcpServer.environment); tests/format/mcp-knobs.test.ts:155-209",
+      "note": "mcpStdioEnvironment under the allowlist adds only CLAUDE_PROJECT_DIR and has no input for the plugin's CLAUDE_PLUGIN_ROOT/CLAUDE_PLUGIN_DATA; they live in ResolvedMcpServer.environment and only survive if the host merges them in itself. The spec (J3.22) records this difference. Kit should change: take the resolved server's exported environment in mcpStdioEnvironment (or document the merge order)."
+    },
+    {
+      "id": "J3.9",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:21-32 (no default/type or min/max cross-check); tests/format/user-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J3.10",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/format/manifest-schema.ts:27,42-55; agent-plugins spec/judgments.md:38",
+      "note": "The kit has its own wording and path for the options messages (its judgment row says so) and lacks the non-empty list, edge-space, control/invisible/bidi and case-insensitive-duplicate rules; length counted in UTF-16 units, not code points. Library should change to the oracle 2.1.325 table."
+    },
+    {
+      "id": "J3.11",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:48-53; tests/format/user-config.test.ts (array default refused; required:true without default loads); agent-plugins spec/judgments.md:38",
+      "note": ""
+    },
+    {
+      "id": "J3.12",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/user-config.ts:31-37,58-66; agent-plugins spec/judgments.md:57; tests/loading/resolve/saved-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J3.13",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/user-config.ts:43-44; agent-plugins spec/judgments.md:57",
+      "note": ""
+    },
+    {
+      "id": "J3.14",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/substitute.ts:98,117; tests/loading/resolve/saved-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J3.15",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/user-config.ts:50-51 + src/format/user-config-refs.ts (USER_CONFIG_KEY); src/loading/resolve/shell-guard.ts:20-28; tests/loading/resolve/hook-command-shell.test.ts, monitor.test.ts, mcp-headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J3.16",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/format/env-flag.ts (correct reader); src/settings/host-switches.ts:10; src/settings/workflows/enablement.ts:20,72; src/mods/load/plugin-dirs.ts:86; src/skills/execution.ts:121; agent-plugins spec/judgments.md:1061",
+      "note": "The kit's judgment claims every reader uses isTruthyEnv, but host-switches.ts (PREFER_HTTPS, SYNC_PLUGIN_INSTALL, BACKGROUND_PLUGIN_REFRESH, POLICY_SKILLS, PERMISSION_PROMPT_NOTIFY_HOOKS, OFFICIAL_MARKETPLACE_AUTOINSTALL), CLAUDE_CODE_DISABLE_WORKFLOWS, CLAUDE_CODE_PLUGIN_DIR_WATCH and CLAUDE_CODE_DISABLE_BACKGROUND_TASKS compare with '1'; DO_NOT_TRACK accepts only 1/true. Library should change."
+    },
+    {
+      "id": "J3.17",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/format/mcp-knobs.ts:13-17; src/format/mcp-startup.ts:41; src/settings/host-switches.ts:44,56,81; src/hooks/handlers/timeouts.ts:70; src/hooks/verdict/stop-block-cap.ts:36",
+      "note": "Every numeric reader takes plain digits only; scientific notation (`2e3`) and digit separators (`64_000`) leave the default instead of being read. The 'unreadable leaves the default' and 'Git/install timeouts above zero' parts conform. Library should change (or the spec, if §3.6.1 item 2 lacks docs evidence)."
+    },
+    {
+      "id": "J3.18",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:99-110; src/mods/load/plugin-dirs.ts:15-24",
+      "note": ""
+    },
+    {
+      "id": "J3.21",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/channel.ts; agent-plugins spec/judgments.md:40; tests/loading/channels.test.ts:105",
+      "note": ""
+    }
+  ]
+}

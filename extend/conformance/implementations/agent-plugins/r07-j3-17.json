@@ -1,0 +1,18 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename+fixes+core+last",
+  "pass": "r07-j3-17",
+  "date": "2026-11-17",
+  "files": [
+    "03-environment.md"
+  ],
+  "requirements": [],
+  "judgments": [
+    {
+      "id": "J3.17",
+      "status": "conforms",
+      "evidence": "src/format/env-number.ts (readNumberEnv, wholeEnv, positiveWholeEnv); used by mcp-tool.ts, timeouts.ts, stop-block-cap.ts, cli/flags/mcp.ts, structured-output.ts, attempts.ts; tests for 2e3 and 64_000",
+      "note": "All six readers now take scientific notation and digit separators; none of their rows says plain digits only; 0 keeps its meaning where the row gives one (stop-hook cap, startup wait). Checked by the owner after the fix."
+    }
+  ]
+}

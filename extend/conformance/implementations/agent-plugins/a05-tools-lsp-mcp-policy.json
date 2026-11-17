@@ -1,0 +1,1546 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a05-tools-lsp-mcp-policy",
+  "date": "2026-11-16",
+  "files": [
+    "07-hooks/tools.md",
+    "09-lsp-monitors-channels.md",
+    "08-mcp-policy.md"
+  ],
+  "requirements": [
+    {
+      "id": "tools.tool.Agent",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-agent.test.ts, tests/agents/tool-table-filters.test.ts, tests/rules/agent.test.ts, tests/rules/tools-catalog.test.ts"
+    },
+    {
+      "id": "tools.tool.Artifact",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.AskUserQuestion",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.Bash",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/parse.test.ts, tests/rules/semantics-bash-background.test.ts, tests/rules/semantics-bash.test.ts, tests/rules/tools-catalog.test.ts"
+    },
+    {
+      "id": "tools.tool.CronCreate",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.CronDelete",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.CronList",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.Edit",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/semantics-edit.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.EndConversation",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-availability.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts",
+      "note": "Availability (deny only when every other tool is removed, exact allow saves it) in src/rules/tools/availability.ts:122. Spec text gap: the kit also drops it for `--tools \"\"` with no MCP tool left, which cli-reference.md (--tools row) documents and §7.6.3 item 4 (\"neither --disallowedTools nor --tools removes it\") omits: the spec should add the exception."
+    },
+    {
+      "id": "tools.tool.EnterPlanMode",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.EnterWorktree",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts, tests/rules/tools-session-facts.test.ts"
+    },
+    {
+      "id": "tools.tool.ExitPlanMode",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.ExitWorktree",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.Glob",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/semantics-grep.test.ts, tests/rules/tools-availability.test.ts, tests/rules/tools-catalog.test.ts"
+    },
+    {
+      "id": "tools.tool.Grep",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/semantics-grep.test.ts, tests/rules/tools-availability.test.ts, tests/rules/tools-catalog.test.ts"
+    },
+    {
+      "id": "tools.tool.ListAgents",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.ListMcpResourcesTool",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.LSP",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts",
+      "note": "Name, No, read-path format match. Note: a Read path rule is applied to LSP as unreadable (deny/ask covers every call, allow none; spec/judgments.md row on file-rules.ts) although §7.6.6 now lists LSP `filePath`; §13 fixes no LSP path field, so not a divergence, but a later edition could name `filePath` as the path a Read rule reads."
+    },
+    {
+      "id": "tools.tool.Monitor",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.NotebookEdit",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.PowerShell",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/bash-powershell.test.ts, tests/rules/semantics-bash-background.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts"
+    },
+    {
+      "id": "tools.tool.PushNotification",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.Read",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/semantics-read-limits.test.ts, tests/rules/semantics-read.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts"
+    },
+    {
+      "id": "tools.tool.ReadMcpResourceTool",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.RemoteTrigger",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.ReportFindings",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.ScheduleWakeup",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.SendFeedback",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.SendMessage",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.SendUserFile",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.ShareOnboardingGuide",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.Skill",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/skill.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.SubagentHandback",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.TaskCreate",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.TaskGet",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.TaskList",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.TaskOutput",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.TaskStop",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.TaskUpdate",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.TodoWrite",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.ToolSearch",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.WaitForMcpServers",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.WebFetch",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/domain.test.ts, tests/rules/semantics-web-fetch.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts"
+    },
+    {
+      "id": "tools.tool.WebSearch",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/semantics-web-search.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.Workflow",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/agents/tool-table-filters.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.tool.Write",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:10, src/rules/tools/catalog.ts:29; tests/rules/semantics-edit.test.ts, tests/rules/tools-catalog.test.ts, tests/rules/tools-permission-required.test.ts, tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/specifier-formats.ts, src/rules/tools/catalog.ts:29, src/rules/path/tools.ts:60; tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Bash(npm run *)",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/specifier-formats.ts, src/rules/tools/catalog.ts:29, src/rules/path/tools.ts:60; tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.PowerShell(Get-ChildItem *)",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/powershell.ts, src/rules/bash/powershell-aliases.ts; tests/rules/tools-rule-formats.test.ts, tests/rules/bash-powershell.test.ts",
+      "note": "Alias canonicalisation and case-insensitive match in src/rules/bash/powershell-aliases.ts, src/rules/bash/powershell.ts."
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Read(~/secrets/**)",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/tools.ts:60, src/rules/path/file-rules.ts; tests/rules/tools-rule-formats.test.ts, tests/rules/path-routing.test.ts",
+      "note": "Read/Grep/Glob path pattern; LSP covered fail-closed (see tools.tool.LSP). Cross-tool reach (Read deny blocks Edit/Write incl. new files; Edit allow grants read) proven in tests/rules/path-routing.test.ts:161."
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Edit(/src/**)",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/tools.ts:60, src/rules/path/file-rules.ts; tests/rules/tools-rule-formats.test.ts, tests/rules/path-routing.test.ts",
+      "note": "Edit/Write/NotebookEdit path; Edit allow grants read, Read deny blocks Edit/Write (tests/rules/path-routing.test.ts:161)."
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Skill(deploy *)",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/specifier-formats.ts, src/rules/tools/catalog.ts:29, src/rules/path/tools.ts:60; tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Agent(Explore)",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/specifier-formats.ts, src/rules/tools/catalog.ts:29, src/rules/path/tools.ts:60; tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.WebFetch(domain:example.com)",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/specifier-formats.ts:117, src/rules/target/domain.ts; tests/rules/tools-rule-formats.test.ts, tests/rules/domain.test.ts",
+      "note": "domain: prefix and WebFetch(domain:*) every domain (tests/rules/domain.test.ts:103)."
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.WebSearch",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/specifier-formats.ts, src/rules/tools/catalog.ts:29, src/rules/path/tools.ts:60; tests/rules/tools-rule-formats.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.command",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/bash-command-field.test.ts, tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.description",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.timeout",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-bash.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.run_in_background",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.PowerShell.command",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/bash-command-field.test.ts, tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.PowerShell.description",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.PowerShell.timeout",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.PowerShell.run_in_background",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Write.file_path",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/path-routing.test.ts, tests/rules/inputs-schemas.test.ts, tests/rules/inputs-file-path.test.ts"
+    },
+    {
+      "id": "tools.input.Write.content",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Edit.file_path",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/path-routing.test.ts, tests/rules/inputs-schemas.test.ts, tests/rules/inputs-file-path.test.ts"
+    },
+    {
+      "id": "tools.input.Edit.old_string",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-edit.test.ts"
+    },
+    {
+      "id": "tools.input.Edit.new_string",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-edit.test.ts"
+    },
+    {
+      "id": "tools.input.Edit.replace_all",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-edit.test.ts"
+    },
+    {
+      "id": "tools.input.Read.file_path",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/path-routing.test.ts, tests/rules/inputs-schemas.test.ts, tests/rules/inputs-file-path.test.ts"
+    },
+    {
+      "id": "tools.input.Read.offset",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-read.test.ts"
+    },
+    {
+      "id": "tools.input.Read.limit",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-read.test.ts"
+    },
+    {
+      "id": "tools.input.Glob.pattern",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Glob.path",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/path-routing.test.ts, tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Grep.pattern",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Grep.path",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/path-routing.test.ts, tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Grep.glob",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Grep.output_mode",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-grep.test.ts"
+    },
+    {
+      "id": "tools.input.Grep.-i",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Grep.multiline",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.WebFetch.url",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/domain.test.ts, tests/rules/semantics-web-fetch.test.ts"
+    },
+    {
+      "id": "tools.input.WebFetch.prompt",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.WebFetch.offset",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-web-fetch.test.ts"
+    },
+    {
+      "id": "tools.input.WebSearch.query",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.WebSearch.allowed_domains",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-web-search.test.ts"
+    },
+    {
+      "id": "tools.input.WebSearch.blocked_domains",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/semantics-web-search.test.ts"
+    },
+    {
+      "id": "tools.input.WebSearch.mode",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/web-search.ts:8, src/rules/tools/inputs/fields.ts:133; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.prompt",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.description",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts, tests/rules/agent.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.subagent_type",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/inputs-schemas.test.ts, tests/rules/agent.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.model",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:98, src/rules/tools/inputs/schemas.ts:5; tests/rules/responses-agent.test.ts, tests/rules/inputs-schemas.test.ts, tests/rules/agent.test.ts",
+      "note": "Kit accepts any string (a full model id too), wider than AgentInput's four aliases; the spec calls it \"a model alias ... in AgentInput\" and a hook must ignore nothing here, so accepting more is compatible."
+    },
+    {
+      "id": "tools.input.AskUserQuestion.questions",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/ask-user-question.ts:33; tests/rules/inputs-ask-user-question.test.ts"
+    },
+    {
+      "id": "tools.input.AskUserQuestion.answers",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/ask-user-question.ts:33; tests/rules/inputs-ask-user-question.test.ts"
+    },
+    {
+      "id": "tools.input.ExitPlanMode.plan",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:150, src/rules/tools/inputs/exit-plan-mode.ts; tests/rules/inputs-exit-plan-mode.test.ts",
+      "note": "Accepted as injected text; the model literal empty input is no issue. The injection itself is the host client's (the kit parses what the host passes); kit marks plan/planFilePath optional where the spec table lists them unmarked, which matches \"the literal input is usually empty\"."
+    },
+    {
+      "id": "tools.input.ExitPlanMode.planFilePath",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:150, src/rules/tools/inputs/exit-plan-mode.ts; tests/rules/inputs-exit-plan-mode.test.ts",
+      "note": "As plan: accepted when injected, optional in the parser; injection is the host's."
+    },
+    {
+      "id": "tools.input.ExitPlanMode.allowedPrompts",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:150, src/rules/tools/inputs/exit-plan-mode.ts; tests/rules/inputs-exit-plan-mode.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.changedFiles",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/bash-edit-diff.ts:45; tests/rules/responses-bash-edit-diff.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.files",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/bash-edit-diff.ts; tests/rules/responses-bash-edit-diff.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.moreFiles",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/bash-edit-diff.ts; tests/rules/responses-bash-edit-diff.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.unavailable",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/bash-edit-diff.ts; tests/rules/responses-bash-edit-diff.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.skipped",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/bash-edit-diff.ts; tests/rules/responses-bash-edit-diff.test.ts"
+    },
+    {
+      "id": "tools.input.Bash.shared",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/bash-edit-diff.ts; tests/rules/responses-bash-edit-diff.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.status",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/agent-response.ts:14; tests/rules/responses-agent.test.ts",
+      "note": "Completed and async_launched shapes typed from AgentOutput; the launched type also admits modelsUsed, which the spec does not list for a background response (an extra optional field, harmless)."
+    },
+    {
+      "id": "tools.input.Agent.agentId",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/agent-response.ts; tests/rules/responses-agent.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.content",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/agent-response.ts; tests/rules/responses-agent.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.resolvedModel",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/agent-response.ts; tests/rules/responses-agent.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.modelsUsed",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/agent-response.ts; tests/rules/responses-agent.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.totalTokens",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/agent-response.ts; tests/rules/responses-agent.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.totalDurationMs",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/agent-response.ts; tests/rules/responses-agent.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.totalToolUseCount",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/agent-response.ts; tests/rules/responses-agent.test.ts"
+    },
+    {
+      "id": "tools.input.Agent.usage",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/agent-response.ts; tests/rules/responses-agent.test.ts"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Teammate",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/agents/ (prompt surface); tests/agents/prompt-surface.test.ts"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Fork",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:114, src/agents/tool-filters.ts:76; tests/agents/tool-filters.test.ts"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Neither field set",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:114, src/agents/tool-filters.ts:76; tests/agents/tool-table-agent.test.ts"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.tools only",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:114, src/agents/tool-filters.ts:76; tests/agents/tool-table-agent.test.ts"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.disallowedTools only",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:114, src/agents/tool-filters.ts:76; tests/agents/tool-table-agent.test.ts"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Both set",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:114, src/agents/tool-filters.ts:76; tests/agents/tool-table-agent.test.ts"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Foreground subagents",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/agents/ (prompt surface), src/agents/tool-filters.ts; tests/agents/prompt-surface.test.ts"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Background subagents",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/agents/ (prompt surface), src/agents/tool-filters.ts; tests/agents/prompt-surface.test.ts"
+    },
+    {
+      "id": "tools.behavior.Bash deny rules also turn off the PowerShell tool",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/availability.ts:111; tests/rules/tools-session-facts.test.ts"
+    },
+    {
+      "id": "tools.behavior.Shell selection in settings, hooks, and skills.\"defaultShell\": \"powershell\"",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/shell-selection.ts:13; tests/rules/tools-shell-selection.test.ts"
+    },
+    {
+      "id": "tools.behavior.Shell selection in settings, hooks, and skills.\"shell\": \"powershell\"",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command (shell form); tests/hooks/handlers/command/shell-form.test.ts",
+      "note": "Shell form honoured whatever CLAUDE_CODE_USE_POWERSHELL_TOOL; ignored with args (exec form); CLAUDE_ENV_FILE handling is in src/hooks/env-file/."
+    },
+    {
+      "id": "tools.behavior.Shell selection in settings, hooks, and skills.shell: powershell",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/shell-selection.ts:13; tests/rules/tools-shell-selection.test.ts"
+    },
+    {
+      "id": "lsp.components.LSP servers",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts, src/loading/resolve/lsp-startup.ts:20; tests/loading/resolve/lsp-startup.test.ts"
+    },
+    {
+      "id": "lsp.intelligence.Add a language without an official plugin",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts, src/loading/resolve/lsp-startup.ts:20; tests/loading/resolve/lsp-startup.test.ts"
+    },
+    {
+      "id": "lsp.field.command",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "diverges",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts",
+      "note": "Value rule conforms (empty or whitespace without leading \"/\" invalid, src/format/lsp-config.ts:69). But (1) the kit's validatePlugin (src/loading/validate/validate-plugin.ts) does not check inline lspServers entries at all: a probe of every row of §9.1.3 (unknown key, \"gopls serve\", \"\", {} map, \"go\" key, tcp, startupTimeout 0, requestTimeout 1.5, maxRestarts -1, env number) gave no finding; (2) the loader's message is the kit's (\"must not contain spaces unless it starts with \\\"/\\\"; put arguments in \\\"args\\\"\"), not `Command should not contain spaces. Use args array for arguments.`; (3) an invalid inline map leaves the plugin loaded (see J9.5). Kit should change (spec text is the 2.1.325 oracle)."
+    },
+    {
+      "id": "lsp.field.extensionToLanguage",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "diverges",
+      "evidence": "src/format/lsp-config.ts:79, src/loading/resolve/lsp-runtime.ts:76; tests/loading/resolve/lsp-runtime.test.ts, tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts",
+      "note": "Value rules conform (at least one entry, keys start with \".\", longest-match routing). The validator reports nothing for {} or a dotless key, and the loader message is the kit's (\"needs at least one entry\") instead of `extensionToLanguage must have at least one mapping`. Kit should change."
+    },
+    {
+      "id": "lsp.field.args",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts"
+    },
+    {
+      "id": "lsp.field.transport",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts",
+      "note": "\"stdio\"|\"socket\" accepted, resolved transport always stdio (src/loading/resolve/lsp.ts:41)."
+    },
+    {
+      "id": "lsp.field.env",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts"
+    },
+    {
+      "id": "lsp.field.initializationOptions",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp-runtime.test.ts, tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts"
+    },
+    {
+      "id": "lsp.field.settings",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp-runtime.test.ts, tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts",
+      "note": "Unset sends nothing (didChangeConfigurationOf), not substituted; when it is sent (once after initialized, again on reload) is the host LSP client's."
+    },
+    {
+      "id": "lsp.field.workspaceFolder",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts",
+      "note": "Substituted like command; unset stays unset in ResolvedLspServer and the host fills the project-root default (planLspStartup takes the host cwd). Compatible with the default the spec names."
+    },
+    {
+      "id": "lsp.field.startupTimeout",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp.test.ts",
+      "note": "Positive integer; unset stays unset (no deadline). Waiting and failing the start are the host LSP client's (kit judgment on lsp.ts)."
+    },
+    {
+      "id": "lsp.field.shutdownTimeout",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp.test.ts",
+      "note": "Positive integer; unset means wait for the shutdown. Terminating is the host's."
+    },
+    {
+      "id": "lsp.field.requestTimeout",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp.test.ts"
+    },
+    {
+      "id": "lsp.field.restartOnCrash",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/lsp.ts:106, src/loading/resolve/lsp-runtime.ts:24; tests/loading/resolve/lsp-runtime.test.ts, tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts"
+    },
+    {
+      "id": "lsp.field.maxRestarts",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:105, src/loading/resolve/lsp-runtime.ts:21; tests/loading/resolve/lsp-runtime.test.ts, tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts"
+    },
+    {
+      "id": "lsp.field.diagnostics",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:91, src/loading/resolve/lsp.ts:14; tests/loading/resolve/lsp.test.ts, tests/format/lsp-config.test.ts"
+    },
+    {
+      "id": "lsp.troubleshooting.Language server doesn't start",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "diverges",
+      "evidence": "src/loading/resolve/lsp-startup.ts:26; tests/loading/resolve/lsp-startup.test.ts",
+      "note": "The kit reports `Executable not found in $PATH: gopls` (src/loading/resolve/lsp-startup.ts:26); the spec and code-intelligence.md / troubleshooting.md quote the binary: `Executable not found in $PATH: \"<binary>\"`. The test only checks the prefix (tests/loading/resolve/lsp-startup.test.ts:63). The debug-log line `LSP server <name> failed to start: <reason>` is the host's. Kit should add the quotes."
+    },
+    {
+      "id": "monitors.field.name",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "diverges",
+      "evidence": "src/format/monitors.ts:52, src/loading/resolve/monitor.ts:50; tests/format/monitors.test.ts",
+      "note": "A repeated name keeps the first entry at runtime (conforms to J9.7), but the kit's message is its own (`name \"m\" is already used by an earlier monitor; names must be unique within the plugin`), and its validatePlugin reports nothing for duplicate names in an inline array (probe), where the spec says the validator reports `Monitor names must be unique within a plugin` and fails. Kit should change."
+    },
+    {
+      "id": "monitors.field.command",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/monitors.ts:52, src/loading/resolve/monitor.ts:50; tests/format/monitors.test.ts"
+    },
+    {
+      "id": "monitors.field.description",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/monitors.ts:52, src/loading/resolve/monitor.ts:50; tests/format/monitors.test.ts"
+    },
+    {
+      "id": "monitors.field.when",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "diverges",
+      "evidence": "src/format/monitors.ts:43, src/loading/resolve/monitor-trigger.ts; tests/loading/resolve/monitor-trigger.test.ts, tests/format/monitors.test.ts",
+      "note": "Parsing conforms (exact \"always\" or \"on-skill-invoke:<non-empty>\", src/format/monitors.ts:43). Messages diverge: the kit reports `when: expected \"always\" or \"on-skill-invoke:<skill>\", got \"<value>\"` from the loader and nothing from validatePlugin (probe), where the spec (fixed in v05 from the 2.1.325 oracle) gives `on-skill-invoke: must specify a skill name` for an empty skill and also `Invalid string: must start with \"on-skill-invoke:\"` for any other value. Kit should change."
+    },
+    {
+      "id": "monitors.components.Monitors.Interactive sessions",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/monitor-trigger.ts; tests/loading/resolve/monitor-lifecycle.test.ts"
+    },
+    {
+      "id": "monitors.components.Monitors.Minimum version",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/monitor-trigger.ts; tests/loading/resolve/monitor-lifecycle.test.ts"
+    },
+    {
+      "id": "monitors.components.Monitors.Disabling mid-session",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/monitor-trigger.ts; tests/loading/resolve/monitor-lifecycle.test.ts"
+    },
+    {
+      "id": "monitors.components.Monitors.No user configuration",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "diverges",
+      "evidence": "src/loading/resolve/shell-guard-monitor.ts:15, src/loading/resolve/monitor.ts:50; tests/loading/resolve/monitor.test.ts",
+      "note": "The refusal conforms exactly: template check before any value, the errors.md message verbatim (src/loading/resolve/shell-guard-monitor.ts:15), no option values exported, validator silent (J9.11). Divergence: with the default SubstitutionScope.shellPaths (`environment-reference`) the resolved monitor's `environment` carries the path variables its command references (src/loading/resolve/monitor.ts:30-36, 60), while §9.2.4 says the path variables are not exported to a monitor (manifest-reference \"Not exported\"). Low impact; either the kit substitutes in place by default, or the spec admits exporting exactly the referenced path variables as an equivalent technique."
+    },
+    {
+      "id": "channels.components.Channels",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/contract.ts, src/settings/channels/verdict.ts, src/settings/channels/allowlist.ts; tests/settings/channels/contract.test.ts"
+    },
+    {
+      "id": "channels.field.server",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts (channel), src/loading/channels.ts, src/loading/resolve/channel.ts:26; tests/loading/channels.test.ts, tests/format/channels.test.ts"
+    },
+    {
+      "id": "channels.field.displayName",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts (channel), src/loading/channels.ts, src/loading/resolve/channel.ts:26; tests/loading/channels.test.ts, tests/format/channels.test.ts"
+    },
+    {
+      "id": "channels.field.userConfig",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts (channel), src/loading/channels.ts, src/loading/resolve/channel.ts:26; tests/loading/channels.test.ts, tests/format/channels.test.ts"
+    },
+    {
+      "id": "channels.reference.Package as a plugin",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/contract.ts, src/settings/channels/verdict.ts, src/settings/channels/allowlist.ts; tests/settings/channels/contract.test.ts",
+      "note": "Registration only through --channels / development flag, allowlist, dev flag ignored when not interactive (src/settings/channels/verdict.ts). Not implemented: §9.3.2 item 5 (a channel server on MCP revision 2026-07-28 is not registered as a channel): no kit code reads the revision for channels; it carries no marker of its own."
+    },
+    {
+      "id": "channels.overview.Security",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/contract.ts, src/settings/channels/verdict.ts, src/settings/channels/allowlist.ts; tests/settings/channels/contract.test.ts"
+    },
+    {
+      "id": "channels.reference.What you need",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/contract.ts, src/settings/channels/verdict.ts, src/settings/channels/allowlist.ts; tests/settings/channels/contract.test.ts"
+    },
+    {
+      "id": "channels.reference.Server options.capabilities.tools",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/contract.ts, src/settings/channels/verdict.ts, src/settings/channels/allowlist.ts; tests/settings/channels/contract.test.ts"
+    },
+    {
+      "id": "channels.reference.Server options.instructions",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/contract.ts, src/settings/channels/verdict.ts, src/settings/channels/allowlist.ts; tests/settings/channels/contract.test.ts"
+    },
+    {
+      "id": "channels.reference.Notification format",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/contract.ts:55-89; tests/settings/channels/contract.test.ts",
+      "note": "<channel source=...> with identifier meta keys kept, non-string values and a `source` key dropped, XML-escaped attributes (src/settings/channels/contract.ts:55-89); the scoped plugin source name is passed in by the host; grouping and drop-unregistered are proven."
+    },
+    {
+      "id": "channels.reference.Expose a reply tool",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/contract.ts, src/settings/channels/verdict.ts, src/settings/channels/allowlist.ts; tests/settings/channels/contract.test.ts"
+    },
+    {
+      "id": "channels.reference.Gate inbound messages",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "not-applicable",
+      "evidence": "src/settings/channels/contract.ts, src/settings/channels/verdict.ts, src/settings/channels/allowlist.ts; tests/settings/channels/contract.test.ts",
+      "note": "Binds the channel server (sender allowlist, drop silently, gate on sender not room); the kit ships a sender-gate helper with tests (tests/settings/channels/contract.test.ts:115), which conforms."
+    },
+    {
+      "id": "channels.reference.How relay works",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/relay.ts; tests/settings/channels/relay.test.ts"
+    },
+    {
+      "id": "channels.reference.Permission request fields",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/relay.ts, src/settings/channels/sanitize.ts:11; tests/settings/channels/relay.test.ts"
+    },
+    {
+      "id": "channels.reference.Permission request fields.request_id",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/relay.ts, src/settings/channels/sanitize.ts:11; tests/settings/channels/relay.test.ts"
+    },
+    {
+      "id": "channels.reference.Permission request fields.tool_name",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/relay.ts, src/settings/channels/sanitize.ts:11; tests/settings/channels/relay.test.ts"
+    },
+    {
+      "id": "channels.reference.Permission request fields.description",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/relay.ts, src/settings/channels/sanitize.ts:11; tests/settings/channels/relay.test.ts"
+    },
+    {
+      "id": "channels.reference.Permission request fields.input_preview",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/relay.ts, src/settings/channels/sanitize.ts:11; tests/settings/channels/relay.test.ts"
+    },
+    {
+      "id": "mcpSettings.behavior.Local scope",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/candidates.ts; tests/settings/mcp/candidates.test.ts"
+    },
+    {
+      "id": "mcpSettings.behavior.Project scope",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/approvals.ts:86-137; tests/settings/mcp/approvals.test.ts, tests/settings/mcp/candidates.test.ts"
+    },
+    {
+      "id": "mcpSettings.behavior.User scope",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/candidates.ts; tests/settings/mcp/candidates.test.ts"
+    },
+    {
+      "id": "mcpSettings.behavior.Scope hierarchy and precedence",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/scope.ts:97, src/format/mcp-endpoint.ts:17; tests/settings/mcp/scope.test.ts"
+    },
+    {
+      "id": "mcpSettings.behavior.Project server approvals and workspace trust",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/approvals.ts:86-137; tests/settings/mcp/approvals.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.enableAllProjectMcpServers",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/approvals.ts:70; tests/settings/mcp/keys.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.enabledMcpjsonServers",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/approvals.ts:70; tests/settings/mcp/keys.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.disabledMcpjsonServers",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/approvals.ts; tests/settings/mcp/keys.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.disableClaudeAiConnectors",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/exclusive.ts; tests/settings/mcp/managed-keys.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.allowedMcpServers",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/entries.ts, src/settings/mcp/allow-deny.ts; tests/settings/mcp/allow-deny-keys.test.ts, tests/settings/mcp/entries.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.deniedMcpServers",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/entries.ts, src/settings/mcp/allow-deny.ts; tests/settings/mcp/allow-deny-keys.test.ts, tests/settings/mcp/entries.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.allowManagedMcpServersOnly",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/lists.ts; tests/settings/mcp/allow-deny-lock.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.managedMcpServers",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/exclusive.ts; tests/settings/mcp/managed-keys.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.allowAllClaudeAiMcps",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/exclusive.ts; tests/settings/mcp/managed-keys.test.ts"
+    },
+    {
+      "id": "mcpSettings.key.allowClaudeInChromeWithManagedMcp",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/exclusive.ts; tests/settings/mcp/managed-keys.test.ts"
+    },
+    {
+      "id": "mcp.behavior.Managed MCP configuration",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed.ts; tests/settings/mcp/managed-keys.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Deploy managed-mcp.json.macOS",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed-file.ts:57; tests/settings/mcp/managed-file.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Deploy managed-mcp.json.Linux and WSL",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed-file.ts:57; tests/settings/mcp/managed-file.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Deploy managed-mcp.json.Windows",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed-file.ts:57; tests/settings/mcp/managed-file.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Disable MCP entirely",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/exclusive.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/managed.ts; tests/settings/mcp/exclusive-sources.test.ts, tests/settings/mcp/exclusive.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Authenticate with per-user credentials",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/exclusive.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/managed.ts; tests/settings/mcp/managed-file.test.ts",
+      "note": "Credential-free env advice binds the organization; the kit supports ${VAR} expansion, headersHelper and per-user headers in managed entries (src/settings/mcp/managed-file.ts)."
+    },
+    {
+      "id": "mcpSettings.managed.Servers passed with --mcp-config or --strict-mcp-config",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/exclusive.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/managed.ts; tests/settings/mcp/exclusive.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How allowlists and denylists apply to the managed set",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/allow-deny.ts, src/settings/mcp/origins.ts; tests/settings/mcp/allow-deny-skips.test.ts, tests/settings/mcp/exclusive-sources.test.ts, tests/settings/mcp/allow-deny.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Allow claude.ai connectors alongside the managed set",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/exclusive.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/managed.ts; tests/settings/mcp/exclusive-sources.test.ts, tests/settings/mcp/exclusive.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Allow Claude in Chrome alongside the managed set",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/exclusive.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/managed.ts; tests/settings/mcp/exclusive.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.What an entry can contain",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed-entry.ts:23; tests/settings/mcp/managed-servers.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How provided servers load",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/exclusive.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/managed.ts; tests/settings/mcp/managed-load.test.ts, tests/settings/mcp/scope.test.ts, tests/settings/mcp/exclusive-sources.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.What users can see and change",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/exclusive.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/managed.ts; tests/settings/mcp/managed-load.test.ts, tests/format/mcp-env.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Where managedMcpServers applies",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/exclusive.ts, src/settings/mcp/managed-servers.ts, src/settings/mcp/managed.ts; tests/settings/mcp/exclusive-sources.test.ts, tests/settings/mcp/managed.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.When provided servers connect",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed-timing.ts; tests/settings/mcp/managed-timing.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.When provided servers connect.Add a server",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed-timing.ts; tests/settings/mcp/managed-timing.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.When provided servers connect.Change a server's entry",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed-timing.ts; tests/settings/mcp/managed-timing.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.When provided servers connect.Remove a server",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed-timing.ts; tests/settings/mcp/managed-timing.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Policy-based control with allowlists and denylists",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/allow-deny.ts:126; tests/settings/mcp/allow-deny.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverName entries match",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/entries.ts, src/settings/mcp/allow-deny.ts:101; tests/settings/mcp/entries.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverCommand entries match",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/command-match.ts; tests/settings/mcp/command-match.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.Hostname written out in full",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://mcp.example.com/*",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://mcp.example.com",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://mcp.example.com:8443/*",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://mcp.example.com:*/*",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://*.example.com/*",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.http://localhost:*/*",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.*://mcp.example.com/*",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://staging.example.com/*",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://staging.example.com:*/*",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.*://staging.example.com:*/*",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/url-pattern.ts:66; tests/settings/mcp/url-pattern.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Environment variables in serverCommand and serverUrl entries",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/entry-env.ts, src/settings/mcp/allow-deny.ts:110; tests/settings/mcp/allow-deny-env.test.ts, tests/settings/mcp/command-match.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Servers that skip the allowlist check",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/origins.ts; tests/settings/mcp/allow-deny-skips.test.ts"
+    },
+    {
+      "id": "mcpSettings.managed.Restrict the allowlist to managed settings only",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/lists.ts; tests/settings/mcp/allow-deny-lock.test.ts"
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J7.200",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "spec/scope-audit.md (agent-plugins): tool I/O, backgrounding, memory, editing are host work",
+      "note": "The kit models only what hooks, rules and skills observe (semantics helpers are pure)."
+    },
+    {
+      "id": "J7.201",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/protocol/tool-names.ts:66 SDK_ONLY_TOOLS; src/rules/tools/catalog.ts KNOWN_TOOLS",
+      "note": "Named so rules draw no typo warning; no behaviour claimed."
+    },
+    {
+      "id": "J7.202",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:78 (unrecognized entries dropped, refusal only when nothing resolves); no matcher/if tool-name validation in src/loading or src/format/validate",
+      "note": "Deny/ask rules alone get the startup warning (src/rules/issues.ts:30), as §13 says."
+    },
+    {
+      "id": "J7.203",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "tests/rules/tools-rule-formats.test.ts bareProbe; spec/judgments.md",
+      "note": "Kit fails closed (allow matches nothing, deny/ask every call), a §13 choice the judgment leaves open."
+    },
+    {
+      "id": "J7.204",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/schemas.ts:5 (z.looseObject passes unknown fields); answerQuestions echoes questions; tests/rules/inputs-schemas.test.ts:152"
+    },
+    {
+      "id": "J7.205",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/fields.ts:91 shell() shared by Bash and PowerShell"
+    },
+    {
+      "id": "J7.206",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/web-search.ts:8 (absent = extended), fields.ts optional mode; tests/rules/inputs-schemas.test.ts:97",
+      "note": "The kit reports a mode other than standard/extended as an input issue; the judgment does not address unknown values."
+    },
+    {
+      "id": "J7.207",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/responses/ (only bashEditDiff and Agent shaped)"
+    },
+    {
+      "id": "J7.208",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/shell-selection.ts:13 interactiveShell; tests/rules/tools-shell-selection.test.ts"
+    },
+    {
+      "id": "J7.209",
+      "file": "07-hooks/tools.md",
+      "status": "conforms",
+      "evidence": "src/rules/tools/inputs/ask-user-question.ts:88 chosen.join(',')"
+    },
+    {
+      "id": "J9.1",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-config.ts:69 (min 1, /\\s/ unless startsWith \"/\")",
+      "note": "Messages differ: see lsp.field.command."
+    },
+    {
+      "id": "J9.2",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/lsp-runtime.ts:21-25 restartsSoFar < maxRestarts, unset unbounded"
+    },
+    {
+      "id": "J9.3",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/lsp.ts:9-13 (unset stays unset); deadline handling is the host LSP client",
+      "note": "Counting a startup timeout toward restarts is the host's; the kit has no code for it."
+    },
+    {
+      "id": "J9.4",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/lsp-runtime.ts:76 languageIdFor (case-sensitive, last segment, longest wins, first among equals), :97 lspExtensionConflicts with plugin-qualified key; spec/judgments.md rows on lsp-runtime.ts"
+    },
+    {
+      "id": "J9.5",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "diverges",
+      "evidence": "src/loading/readers-config.ts:96, src/loading/load-plugin.ts:167; probe: loadPlugin with inline lspServers {go:{command:\"gopls serve\",...}}",
+      "note": "Named file read like .lsp.json: conforms. Inline map: the kit skips the whole map with `Invalid LSP server config for \"lspServers\": ...` and the plugin LOADS (only hooks and mcpServers can reject a plugin), and validatePlugin reports nothing; the judgment says the inline map fails the manifest. The kit's own judgment row (spec/judgments.md, src/format/lsp-config.ts: \"the manifest check rejects the plugin for a bad inline entry anyway\") is not true of its manifest schema (src/format/manifest-schema.ts:14 fileOrInline accepts any object). Kit should change."
+    },
+    {
+      "id": "J9.6",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/lsp-runtime.ts didChangeConfigurationOf (nothing when unset)",
+      "note": "When it is sent and the project-root default are the host's."
+    },
+    {
+      "id": "J9.7",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "diverges",
+      "evidence": "src/loading/discover-config.ts:67 (experimental.monitors replaces top-level), src/format/monitors.ts:110 (first name wins); probe: inline invalid experimental.monitors",
+      "note": "experimental wins, invalid file skipped and reported, repeated name keeps the first: conform. An invalid inline array does not fail the manifest: the kit drops the bad entry (keeps the valid ones) with an error issue and the plugin loads; validatePlugin reports nothing. Kit should change. (The kit also keeps the valid entries of an invalid file, where the judgment says the file is skipped whole: readMonitors returns the valid ones.)"
+    },
+    {
+      "id": "J9.8",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/monitors.ts:43 exact compare; tests/loading/resolve/monitor-trigger.test.ts:154-172 (J-L11)"
+    },
+    {
+      "id": "J9.9",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "tests/loading/resolve/monitor-trigger.test.ts:138-148 (J-L10)"
+    },
+    {
+      "id": "J9.10",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "tests/loading/resolve/monitor-trigger.test.ts:126-132 (interactive flag from the host; SDK runs pass false)"
+    },
+    {
+      "id": "J9.11",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/shell-guard-monitor.ts:15 at resolve time; probe: validatePlugin silent on ${user_config.k} in a monitor command"
+    },
+    {
+      "id": "J9.12",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/channels.ts; probe: `Channel server \"zzz\" is not a key of this plugin's mcpServers` as an error, plugin loads; spec/judgments.md row on src/loading/channels.ts"
+    },
+    {
+      "id": "J9.13",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/channel.ts:26 channelScope (channel options win, bound server only)"
+    },
+    {
+      "id": "J9.14",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/settings/channels/contract.ts:61 (string values only), :87 (key source dropped), :74 escapeAttribute"
+    },
+    {
+      "id": "J9.15",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "not-applicable",
+      "evidence": "—",
+      "note": "States the oracle the spec used; nothing for an implementation to do."
+    },
+    {
+      "id": "J8.19",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-endpoint.ts:17-31 (URL parser lowercases and drops default port, trailing slash on paths >1, command+args as a list, type excluded), src/settings/mcp/scope.ts:122 first held wins"
+    },
+    {
+      "id": "J8.20",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/approvals.ts (project .mcp.json only); tests/settings/mcp/keys.test.ts"
+    },
+    {
+      "id": "J8.21",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/candidates.ts; tests/settings/mcp/exclusive.test.ts"
+    },
+    {
+      "id": "J8.22",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/managed-file.ts:32-60 (unparsable or non-object: no control; bad entries are issues, others stay)"
+    },
+    {
+      "id": "J8.23",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/allow-deny.ts:96 KIND_OF_ENDPOINT (url endpoints incl. ws -> serverUrl), src/settings/mcp/url-pattern.ts:39 ws default port"
+    },
+    {
+      "id": "J8.24",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/allow-deny.ts:110 targetOf (expanded command/URL), tests/settings/mcp/entries.test.ts"
+    },
+    {
+      "id": "J8.25",
+      "file": "08-mcp-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/entry-env.ts, tests/settings/mcp/allow-deny-env.test.ts"
+    }
+  ]
+}

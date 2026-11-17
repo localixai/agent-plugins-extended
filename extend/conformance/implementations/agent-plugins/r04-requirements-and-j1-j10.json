@@ -1,0 +1,451 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename+fixes+core",
+  "pass": "r04-requirements-and-j1-j10",
+  "date": "2026-11-17",
+  "files": [
+    "01-packages.md",
+    "02-manifest.md",
+    "03-environment.md",
+    "04-skills.md",
+    "05-agents.md",
+    "06-styles.md",
+    "07-hooks/handlers.md",
+    "08-mcp.md",
+    "09-lsp-monitors-channels.md",
+    "10-mods/interface.md",
+    "10-mods/reference.md",
+    "12-settings.md",
+    "13-permissions.md",
+    "13-trust.md",
+    "14-policy-mods.md",
+    "15-marketplaces.md",
+    "16-dependencies.md",
+    "17-cli.md",
+    "17-errors.md"
+  ],
+  "requirements": [
+    {
+      "id": "outputStyles.behavior.Create a custom output style",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:47-55; tests/format/output-style.test.ts:171-172",
+      "note": "Item 5 (J6.2) fixed: a list name reads `a,b`, a map `[object Object]`. Items 1-4, 6, 7 as before."
+    },
+    {
+      "id": "manifest.rule.Containment and existence",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/locate.ts:100-110, src/format/messages.ts:30-44; tests/host/plugin-troubleshooting.test.ts:142-158",
+      "note": "Fixed: `<component> path not found: <absolute path>` (plugin root joined) when the host gives `roots`; as written only without them. Escape and `..` messages as before."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.Invalid JSON syntax: <parse error>",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/loading/validate/plugin-target.ts:70; tests/loading/manifest-prose.test.ts:91-114",
+      "note": "Fixed: the validator message now ends with its period; hooks.json tail unchanged."
+    },
+    {
+      "id": "manifest.troubleshooting.commands path not found: <path>",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/locate.ts:100-110; tests/host/plugin-troubleshooting.test.ts:142-158",
+      "note": "Absolute path with the guidance, as Containment and existence."
+    },
+    {
+      "id": "environment.variable.${CLAUDE_PLUGIN_DATA}",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/cli/uninstall-data.ts:35-70; tests/cli/uninstall-data.test.ts:40-55",
+      "note": "Fixed: case folding follows the host fact `caseInsensitiveFileSystem` (default true, keeps the folder); a case twin on a case-sensitive file system has its own folder."
+    },
+    {
+      "id": "agents.behavior.Write subagent files",
+      "file": "05-agents.md",
+      "status": "missing",
+      "evidence": "src/rules (no worktree-isolation check); tests/agents/catalog/scan-skips.test.ts:103",
+      "note": "Items 1-3, 5, 6 conform. Item 4 still missing: nothing refuses a worktree-isolated subagent command whose cwd resolves to the main checkout, git redirected into it, or unprovable git invocations; the spec (J5.18) says a client whose loading is separate still MUST make them where commands run. Library should add a command-decision check (host passes worktree and main-checkout roots)."
+    },
+    {
+      "id": "hooks.behavior.Limitations",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/host (SessionStart repeat skip); tests/host/session-start-repeats.test.ts:55-76",
+      "note": "Fixed: item 7 done: an async SessionStart repeat is skipped, a change delivered, re-sent after compact or /clear, let through after a sync SessionStart added text. Items 2, 5, 6 as before."
+    },
+    {
+      "id": "mods.command.claude plugin validate <directory>",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/commands/scan-lines.ts:28-36; tests/mods/load/validate-325.test.ts:190-225, tests/mods/load/commands.test.ts:51",
+      "note": "Fixed: `adds to $:` and `withholds from $:` lines now printed. Line lead wording: see J10.2."
+    },
+    {
+      "id": "mods.create.Check what Claude Code reads from your mod",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/scan/messages.ts:12-14, src/mods/chain/validate.ts; tests/mods/load/validate-325.test.ts",
+      "note": "Every rule refuses load with the table messages; the issue lead differs (J10.2)."
+    },
+    {
+      "id": "mods.interface.How a pane gets keyboard focus",
+      "file": "10-mods/interface.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/keyboard/focus.ts:33-39",
+      "note": "Fixed: VS Code now needs fromUserAction, an empty prompt and no other focus before its panel conditions."
+    },
+    {
+      "id": "trust.behavior.Project allow rules and workspace trust",
+      "file": "13-trust.md",
+      "status": "conforms",
+      "evidence": "src/loading/background-trust.ts:30-46",
+      "note": "Fixed: item 4: background-session trust check with the three texts word for word."
+    },
+    {
+      "id": "trust.security.Untrusted marketplace sources and failed integrity checks",
+      "file": "13-trust.md",
+      "status": "conforms",
+      "evidence": "src/marketplace/ignored-marketplace.ts:181-189",
+      "note": "Fixed: the source is passed and the middle sentence is the name refusal for that source (non-GitHub/git variant included)."
+    },
+    {
+      "id": "permissions.modes.Protected paths.remote-settings.json",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:182-195; tests/rules/decide-protected.test.ts:134",
+      "note": "Fixed: only the configuration directory file and the host-named kept files; a project remote-settings.json is not protected."
+    },
+    {
+      "id": "permissions.reference.Sandboxed commands under the block",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/sandbox-read-block.ts; tests/settings/permissions/sandbox-read-block.test.ts",
+      "note": "Unchanged, tests pass. The sandboxing.md docs sentence is recorded by the chapter-13 pass."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.The guard protects what you manage",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/context.ts:10-40, src/rules/decide/hooks-and-mods.ts:60-80",
+      "note": "Fixed: ModOutcome.overridesDenyRules and PreToolUseHookOutcome.managed: the option lifts rule outcomes and non-managed hooks, never a managed hook."
+    },
+    {
+      "id": "marketplace.rule.Invalid input on a source",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/plugin-source.ts:30; tests/format/marketplace/plugin-source-objects.test.ts",
+      "note": "Unchanged; tests pass; the unsupported placeholder message is exact."
+    },
+    {
+      "id": "marketplace.rule.Metadata precedence.version",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "src/loading/validate/marketplace-target.ts:108-115; tests/format/marketplace/entry-merge-rules.test.ts",
+      "note": "Fixed: the cross-check parse warning names the entry plugin.json root-relative, under plugins[<i>].source, beside the parse error."
+    },
+    {
+      "id": "marketplace.rule.archive plugin source",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/archive-source.test.ts",
+      "note": "Unchanged; tests pass."
+    },
+    {
+      "id": "marketplace.rule.command plugin source.command",
+      "file": "15-marketplaces.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/command-source.test.ts",
+      "note": "Unchanged; tests pass."
+    },
+    {
+      "id": "cli.errors.Hook needs quotes around a path with a space",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/hook-space-path.ts, src/loading/resolve/hook-command.ts:208-215; tests/loading/resolve/hook-space-path.test.ts",
+      "note": "Fixed: an asyncRewake shell-form hook with an interpreter and an unquoted path placeholder resolving to a spaced path does not run, with the exact notice."
+    },
+    {
+      "id": "cli.errors.MCP server name is reserved",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-reserved.ts, src/format/host-errors.ts; tests/format/mcp-reserved.test.ts",
+      "note": "Wording exact and now applied (see 08-mcp.md)."
+    },
+    {
+      "id": "cli.errors.MCP server rejected the elicitation capability",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-elicitation.ts:39-58; tests/format/mcp-elicitation.test.ts",
+      "note": "Fixed: McpConnection.bareElicitationCapability gives the bare {} (form only). The entry field is read by the host into the connection."
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:165-170, src/format/messages.ts:10-26; tests/format/host-errors-paths.test.ts:17",
+      "note": "Fixed: the `claude plugin` form `Path escapes plugin directory: <path> (<component>)` now has a builder (the host prints it)."
+    },
+    {
+      "id": "cli.errors.Sandbox allow entries are ignored under a managed lock",
+      "file": "17-errors.md",
+      "status": "conforms",
+      "evidence": "src/format/host-errors.ts:190",
+      "note": "Fixed: always `The <N> entries in <file>`."
+    },
+    {
+      "id": "cli.flag.--mcp-config",
+      "file": "17-cli.md",
+      "status": "conforms",
+      "evidence": "src/cli/flags/mcp.ts:78-130",
+      "note": "Fixed: self-hosted stdio-only wait (2 s or CLAUDE_CODE_MCP_STARTUP_WAIT_MS), remote servers with a cached tool list skip the wait. MCP_TIMEOUT parse: see J3.17."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.contents",
+      "file": "17-cli.md",
+      "status": "conforms",
+      "evidence": "src/cli/validate-run.ts:83-115, src/mods/load/commands/validate.ts:135,212,236",
+      "note": "Fixed: every result carries gatingHooks (required in the type, [] when none)."
+    },
+    {
+      "id": "cli.errors.MCP server name is reserved",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-reserved.ts:10-45, src/settings/mcp/candidates.ts:15,59; tests/format/mcp-reserved.test.ts",
+      "note": "Fixed: ~/.claude.json and .mcp.json servers under the five reserved names are skipped with the message; plugin keys not checked."
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Everything else is blocked",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts; tests/settings/key-classes/managed-hooks-only-reference.test.ts:106",
+      "note": "Unchanged; tests pass."
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally.You disabled the local copy",
+      "file": "16-dependencies.md",
+      "status": "conforms",
+      "evidence": "tests/marketplace/dependency-guide-local.test.ts",
+      "note": "Unchanged; tests pass."
+    },
+    {
+      "id": "monitors.components.Monitors.No user configuration",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/monitor.ts:60-66, src/loading/resolve/field-map.ts:46; tests/loading/resolve/monitor.test.ts:128-190",
+      "note": "Unchanged: template refusal, no option values, paths pasted, nothing exported."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J1.2",
+      "status": "conforms",
+      "evidence": "src/loading/core/form.ts:47-58, src/loading/core/load-package.ts; tests/loading/core/form.test.ts",
+      "note": "Fixed: dual packages are detected (`dual: true`) and load through loadPlugin only; core files not read. Dual only when the root plugin.json is a core manifest (J1.1)."
+    },
+    {
+      "id": "§1.2-§1.3 core form",
+      "status": "conforms",
+      "evidence": "src/loading/core/*.ts, src/host/session-core*.ts, src/host/core-servers.ts; tests/loading/core/form.test.ts, load-core.test.ts, tests/host/core-*.test.ts",
+      "note": "Fixed: the §1.3 form table, a core loader (manifest, skills, mcp.json, hooks.json, icons, extensions), PLUGIN_ROOT/PLUGIN_DATA. Not checked here section by section against core §4-§10."
+    },
+    {
+      "id": "J2.4",
+      "status": "conforms",
+      "evidence": "src/loading/validate/components-only.ts:30-35",
+      "note": "Probe: beside a skills tree a broken agents/a.md and commands/c.md are reported; .claude/agents read (test passes)."
+    },
+    {
+      "id": "J2.7",
+      "status": "conforms",
+      "evidence": "src/format/validate/unknown-fields.ts:43, plugin-fields.ts:86",
+      "note": "Fixed (probe): support and privacy_policy draw the many-tools warning."
+    },
+    {
+      "id": "J3.16",
+      "status": "conforms",
+      "evidence": "src/cli/session-flags.ts:90, src/cli/flags/agents.ts:78, src/cli/flags/subagent-prompt.ts:42, src/hooks/interrupt.ts:47",
+      "note": "Fixed: the four readers now use isTruthyEnv."
+    },
+    {
+      "id": "J3.17",
+      "status": "diverges",
+      "evidence": "src/cli/flags/mcp.ts:79-82; src/format/env-number.ts",
+      "note": "Plugin timeouts and mcp-knobs now read digits, 2e3 and 64_000. Still: --mcp-config wait reads MCP_TIMEOUT with Number() (64_000 leaves the default, a fraction is taken). Code should use positiveWholeEnv. Minor."
+    },
+    {
+      "id": "J3.19",
+      "status": "conforms",
+      "evidence": "src/cli/uninstall-data.ts:35-70; tests/cli/uninstall-data.test.ts:49",
+      "note": "Fixed: host fact caseInsensitiveFileSystem."
+    },
+    {
+      "id": "J4.5",
+      "status": "conforms",
+      "evidence": "",
+      "note": "Unchanged since r01."
+    },
+    {
+      "id": "J5.18",
+      "status": "missing",
+      "evidence": "src/rules",
+      "note": "Still no worktree-isolation check in the command decision (see agents.behavior.Write subagent files item 4). Library should add it."
+    },
+    {
+      "id": "J6.2",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:47-55; tests/format/output-style.test.ts:171-172",
+      "note": "Fixed."
+    },
+    {
+      "id": "J7.2",
+      "status": "conforms",
+      "evidence": "",
+      "note": "Unchanged since r02."
+    },
+    {
+      "id": "J7.20",
+      "status": "conforms",
+      "evidence": "tests/loading/validate/hooks-guard-keys.test.ts",
+      "note": "Fixed: guard keys checked beside a hooks object too; any value but null or [] errors, as the judgment now says."
+    },
+    {
+      "id": "J7.211",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/model-switch.ts:28-35; tests/hooks/verdict/model-switch.test.ts",
+      "note": "Both line forms and the reasons returned; placement is the host's."
+    },
+    {
+      "id": "J7.3",
+      "status": "conforms",
+      "evidence": "",
+      "note": "Unchanged since r02."
+    },
+    {
+      "id": "J7.66",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/plan.ts:48-63; tests/hooks/handlers/command/shell-prefix.test.ts",
+      "note": "Fixed: shell-form Bash hooks get `<prefix> '<command>'` with placeholders unexpanded; exec-form and PowerShell untouched; blank prefix ignored."
+    },
+    {
+      "id": "J8.26",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/shell-prefix.ts:28-45, src/loading/resolve/mcp.ts:143; tests/loading/resolve/shell-prefix.test.ts",
+      "note": "Fixed: per-element POSIX quoting, line quoted once more after the prefix, through bash."
+    },
+    {
+      "id": "J8.27",
+      "status": "conforms",
+      "evidence": "src/loading/validate/json-files.ts:122, links.ts:80; tests/loading/validate/links.test.ts:78-92",
+      "note": "Fixed: 1,048,576-byte cap with the exact warning."
+    },
+    {
+      "id": "J8.29",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/shell-prefix.ts:15-45",
+      "note": "mcpStdioStart returns exec or the prefixed bash command; blank prefix is none; the host runs it."
+    },
+    {
+      "id": "J9.17",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/monitor.ts",
+      "note": "Unchanged."
+    },
+    {
+      "id": "J9.5",
+      "status": "conforms",
+      "evidence": "src/loading/readers-config.ts:102",
+      "note": "Unchanged."
+    },
+    {
+      "id": "J10.2",
+      "status": "diverges",
+      "evidence": "src/mods/load/scan/messages.ts, src/mods/load/commands/",
+      "note": "Messages and the adds/withholds lines are now 2.1.325's. Still: an issue is not led by `<plugin>: <file>:<line>:` and lacks the fixed `; $ is always spelled ...` reminder (kit spec/judgments.md:21 says not done). Code should add them (SHOULD)."
+    },
+    {
+      "id": "J10.175",
+      "status": "conforms",
+      "evidence": "src/mods/ui/controls/hotkeys.ts:47-82",
+      "note": "hotkeyTable, digitButton and actionButtons(binding, action) return which button a key presses; the keymap is the host's. keys.ts routes fixed default keys, a helper a host honouring keybindings.json should not use as its keymap."
+    },
+    {
+      "id": "docs:agent-teams.md | Use subagent definitions for teammates",
+      "status": "conforms",
+      "evidence": "src/agents/teammate.ts; tests/agents/teammate.test.ts",
+      "note": "Fixed: teammateSetup per display mode (tools + SendMessage/Task tools, model, disallowedTools, effort, autoCompactWindow, body append/replace, mcpServers split-pane only, plugin ignored) and restoreTeammate with the exact notice."
+    },
+    {
+      "id": "docs:agent-view.md | What carries over when you background",
+      "status": "conforms",
+      "evidence": "src/cli/background-session.ts",
+      "note": "Fixed: carried flags, agent-view own/dispatched flags, work fates (monitors stop) and the confirm dialog flag, for §3.6.3, §9.2 item 6 and §17."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_CODE_FORK_SUBAGENT",
+      "status": "conforms",
+      "evidence": "src/agents/launch.ts:96-115; tests/agents/teammate.test.ts",
+      "note": "Fixed: forkModeOn (off for an off spelling); an interactive main conversation cannot wait while it is on."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/spawn.ts:124-129; tests/agents/teammate.test.ts",
+      "note": "Fixed: agentTeamsOn via isTruthyEnv (host passes the merged env value)."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_CODE_SHELL_PREFIX",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/plan.ts:48-63, src/loading/resolve/shell-prefix.ts",
+      "note": "Hooks and stdio servers wrapped (J7.66, J8.26). Bash tool and status line commands are run by the host; shellPrefixed is exported for them."
+    },
+    {
+      "id": "docs:errors.md | Custom output styles can't be selected over Remote Control",
+      "status": "conforms",
+      "evidence": "src/format/output-style-command.ts:18-70; tests/format/output-style-command.test.ts:21-40",
+      "note": "Fixed: relayed turns list and select built-ins only, with the notice on a list or unknown name."
+    },
+    {
+      "id": "docs:errors.md | Output styles are saved to local settings which this session doesn't load",
+      "status": "conforms",
+      "evidence": "src/format/output-style-command.ts:24,64; tests/format/output-style-command.test.ts:71",
+      "note": "Fixed: refusal when loadsLocalSettings is false."
+    },
+    {
+      "id": "docs:errors.md | Model switch was blocked by a PreModelSwitch hook",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/model-switch.ts, src/hooks/verdict/notices.ts:61-62, on-failure.ts:153",
+      "note": "Fixed: timeout reason names the hook; failed, cancelled, cannot-ask (with the -p suffix) and managed-unchecked reasons; both report forms."
+    },
+    {
+      "id": "docs:keybindings.md | Above-prompt actions",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "The keymap is the presenting client's (J10.175); the library returns which button a key or action binding presses."
+    },
+    {
+      "id": "docs:keybindings.md | Contexts",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "Host keymap (J10.175)."
+    },
+    {
+      "id": "docs:keybindings.md | Pane actions",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "Host keymap (J10.175)."
+    },
+    {
+      "id": "docs:keybindings.md | Unbind default shortcuts",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "Host keymap (J10.175)."
+    },
+    {
+      "id": "docs:mcp.md | Push messages with channels",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:257; tests/format/mcp-channel-revision.test.ts",
+      "note": "Fixed: registersAsChannel(runtime, revision) refuses v2 + 2026-07-28. It is a separate helper, not an input of channelVerdict; the host combines them."
+    }
+  ]
+}

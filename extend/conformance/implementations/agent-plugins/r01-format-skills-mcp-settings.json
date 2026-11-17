@@ -1,0 +1,932 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename+fixes",
+  "pass": "r01-format-skills-mcp-settings",
+  "date": "2026-11-16",
+  "files": [
+    "01-packages.md",
+    "02-manifest.md",
+    "03-environment.md",
+    "04-skills.md",
+    "05-agents.md",
+    "06-styles.md",
+    "08-mcp.md",
+    "08-mcp-policy.md",
+    "09-lsp-monitors-channels.md",
+    "11-workflows.md",
+    "12-settings.md"
+  ],
+  "requirements": [
+    {
+      "id": "manifest.field.author",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": "Probe: a string author stops the load (`Invalid \"author\": Invalid input: expected object, received string`); validator `author: Invalid input: expected object, received string`; an author without name fails at author.name."
+    },
+    {
+      "id": "manifest.field.repository",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts; tests/format/manifest-fields.test.ts",
+      "note": "Probe: an npm-style object stops the load with `expected string, received object`; a non-URL string loads unchecked."
+    },
+    {
+      "id": "manifest.rule.Containment and existence",
+      "file": "02-manifest.md",
+      "status": "diverges",
+      "evidence": "src/format/messages.ts:30-44, src/loading/discover-listed.ts:67,88; tests/host/plugin-troubleshooting.test.ts:137-158, tests/loading/manifest-prose.test.ts:14",
+      "note": "Fixed since a01: the load error now carries the guidance `Check that the path in your manifest or marketplace config is correct`; drop-one-path, escape and `..` messages conform (probe). Still: `<component> path not found: <path>` names the path as the manifest wrote it (`./nope`), where §2.5 item 3 says the absolute path; the kit records this as its judgment (spec/judgments.md row for discover-listed.ts: the loader has no host path, a host prefixes Locations.pluginRoot). Either the spec allows \"the path as written, or absolute when the client knows the root\", or the kit takes the root. Minor."
+    },
+    {
+      "id": "manifest.rule.Path-only fields",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/plugin-paths.ts, src/loading/discover-listed.ts; tests/loading/manifest-prose.test.ts",
+      "note": "Probe: agents ./a.txt fails the manifest with `Invalid string: must end with \".md\"`; skills entries naming a file are dropped with the plugin loading, validator `Path is a file; ... point to the parent directory './s' instead: ./s/SKILL.md` and the plain form for another file. The loader's own message (`skills entries must be directories: <path>`) is the kit's wording; the spec quotes only the validator."
+    },
+    {
+      "id": "manifest.rule.Unrecognized fields",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:122 (lspSourcesSchema), src/format/strict-keys.ts, src/format/validate/inline-sources.ts:24; tests/format/validate/inline-sources.test.ts:28, tests/loading/manifest-prose.test.ts:153",
+      "note": "Fixed since a01: an unknown key in an inline lspServers entry or experimental.monitors entry now fails the manifest (probe: plugin not loaded, `Invalid \"lspServers\": go: Unrecognized key: \"foo\"`) and the validator reports `lspServers.go: Unrecognized key: \"foo\"` / `experimental.monitors.0: ...`. Top-level strip with a warning, userConfig and channels conform. The warning table itself: see J2.7."
+    },
+    {
+      "id": "manifest.rule.name.claude",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/validate (reserved-name check); tests/loading/manifest-prose.test.ts",
+      "note": "Probe: claude, claude_code, Claude--Mods draw the reserved-name error with the full wording and the official-marketplace hint; load not refused."
+    },
+    {
+      "id": "manifest.rule.name.claude-",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "same as manifest.rule.name.claude",
+      "note": "Probe: claude-x, anthropics-y, cc-plugin-z refused."
+    },
+    {
+      "id": "manifest.rule.name.official",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "same as manifest.rule.name.claude",
+      "note": "Probe: official-claude-tools, anthropic-official, my-official-anthropic refused."
+    },
+    {
+      "id": "manifest.troubleshooting.Warning: No commands found in plugin <name> custom directory",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/loading/command-debug.ts:35; tests/loading/load-debug.test.ts:11-24",
+      "note": "Fixed since a01: the debug line now carries `: <path>. Expected .md files or SKILL.md in subdirectories.`"
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.Invalid JSON syntax: <parse error>",
+      "file": "02-manifest.md",
+      "status": "diverges",
+      "evidence": "src/format/read-json.ts:18; tests/loading/manifest-prose.test.ts:91-102, tests/loading/validate/validate-plugin.test.ts:78",
+      "note": "Behaviour conforms: a manifest that is not JSON stops the load with the parser reason; validator error at `json`; BOM read past (J2.3); an invalid hooks/hooks.json loads the plugin without its hooks, `Failed to load hooks from hooks/hooks.json: <reason>`, validator tail `At runtime this breaks the entire plugin load.` (probe). Wording: the manifest message is `Invalid JSON syntax: <reason>` with no trailing period, where §2.1 item 2 (fixed in verification with \"its trailing period\") says `Invalid JSON syntax: <parse error>.`; tests assert only the prefix. Kit should add the period."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.No frontmatter block found",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/component-frontmatter.ts, src/cli/validate-run.ts:31-49; tests/loading/manifest-prose.test.ts",
+      "note": "Warning with the exact text at `frontmatter`; warnings fail only under --strict (validationVerdict). The `.claude/agents/` rows of the §2.11 table are not produced: see J2.4."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.Unknown field '<key>'",
+      "file": "02-manifest.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/unknown-fields.ts; tests/loading/manifest-prose.test.ts:129-150",
+      "note": "Warning, plugin loads with the field stripped; suggestion form when close (probe: versoin, NAME, display_name, theme, hook). Two listed fields draw nothing: see J2.7."
+    },
+    {
+      "id": "manifest.troubleshooting.commands path not found: <path>",
+      "file": "02-manifest.md",
+      "status": "diverges",
+      "evidence": "src/format/messages.ts:30-44; tests/host/plugin-troubleshooting.test.ts:137-158",
+      "note": "Same as Containment and existence: guidance now present, path shown as written rather than absolute (kit judgment). Minor."
+    },
+    {
+      "id": "skills.behavior.Characters a skill name can't hold",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-name.ts:32-90, src/format/host-errors.ts:180; tests/format/skill-name-refused.test.ts:21-56, tests/host/plugin-skills.test.ts",
+      "note": "Fixed since a02: outside a plugin a refused frontmatter `name` is a warning (`[names] <value> is not shown for <skill>`) and the skill loads under its folder name; the 256-code-point limit is applied; refused folder `[names] <name> is not offered`; startup notice text matches (the kit writes `names` for a count other than 1, as errors.md's table row `N skill or command names refused` does; the spec's `<n> skill or command name refused` template could say so)."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Reserved name anthropic-skills",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/lookup.ts:30-50 (CLAIMS_FIRST synced), used by src/host/session-skills.ts:177 and session-skill-catalog.ts:72; tests/skills/lookup.test.ts:18-35",
+      "note": "Fixed since a02: a synced skill claims `anthropic-skills:<name>` before a plugin row, so the synced skill runs; the plugin's other skills keep their commands."
+    },
+    {
+      "id": "skills.behavior.Load skills in monorepos and subdirectories",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts:170-178, src/skills/scan/nested.ts, src/host/session-skills.ts:87-92; tests/host/session-directories.test.ts:47, tests/skills/scan/nested.test.ts",
+      "note": "Parent search, worktree fallback, nested load on first touch, /cd, and the directory-qualified variant whose description names its directory (`(applies to <dir>)`) conform. The instruction to prefer a variant is the host's prompt text, which J4.28 now leaves to the client; the kit produces the listing entries only."
+    },
+    {
+      "id": "agents.behavior.Write subagent files",
+      "file": "05-agents.md",
+      "status": "diverges",
+      "evidence": "src/format/agent.ts, src/agents/catalog/scopes.ts, src/cli/flags/subagent-prompt.ts; tests/agents/catalog/scan-skips.test.ts",
+      "note": "Items 1-3, 5, 6 conform (unchanged). Item 4 still missing: no check refuses a worktree-isolated subagent's Bash/PowerShell/Monitor command whose working directory resolves to the main checkout, nor git redirected into it / unprovable git invocations; src/rules has no such decision (grep: worktree appears only in settings/worktree-block.ts for Edit/Write in background sessions). The spec now says (J5.18) the check belongs where commands are decided, which in this library is src/rules/decide. Kit should add it."
+    },
+    {
+      "id": "agents.frontmatter.maxTurns",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/launch.ts:55-66, src/format/agent-scalars.ts; tests/agents/launch-limits.test.ts, tests/format/agent-fields.test.ts",
+      "note": "Probe: 5 and \"5\" give 5; 0 and 2.5 dropped with a warning; turnLimit marks the result partial."
+    },
+    {
+      "id": "tools.tool.ExitWorktree",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-filters.ts:26-30,75; tests/agents/tool-table-filters.test.ts",
+      "note": "Withheld when SubagentRun.ownWorkingDirectory is true. The host sets that flag; launch.ts does not derive it from `isolation: worktree`."
+    },
+    {
+      "id": "outputStyles.behavior.Create a custom output style",
+      "file": "06-styles.md",
+      "status": "diverges",
+      "evidence": "src/format/output-style.ts:58-96, src/format/output-style-select.ts:155-193, src/settings/locations.ts:62; tests/format/output-style.test.ts, tests/format/output-style-select.test.ts",
+      "note": "Fixed since a01: item 7 (J6.3) the first body line stands in for a missing description in the list. Items 1-4, 6 conform. Item 5 (J6.2) diverges: a list or map `name` falls back to the file name with a warning (`name is not text`) where the spec reads `a,b` and `[object Object]`. User and project folders are given as paths (settingsLocations), their scan is the host's."
+    },
+    {
+      "id": "themes.components.Themes and output styles",
+      "file": "06-styles.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/entry-merge.ts:98-112,139 (withThemes), src/loading/walk.ts:209-226,262 (deep output styles), src/format/output-style.ts:104 (lastPerName); tests/loading/plugin-assets.test.ts",
+      "note": "Fixed since a01: an entry's `themes` now append to `experimental.themes` when the manifest sets it (else the top-level key), and output-styles subfolders are read (J6.4). Replace-not-add, missing path fails validation, theme format, read-only plugin theme saved as a copy conform."
+    },
+    {
+      "id": "environment.host.CLAUDECODE",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/subprocess-env.ts:92; tests/hooks/handlers/command/host-variables.test.ts:89",
+      "note": "1 for hook, bash, powershell, mcp and monitor kinds, replacing an inherited value. Setting it for a Monitor is the MAY of J3.23; tmux, status line and editor terminal are the host's."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:15; tests/settings/host-switches.test.ts:30",
+      "note": "Read through isTruthyEnv (1/true/yes/on, any case, trimmed): src/settings/host-switches.ts:12 isOn; src/format/env-flag.ts. Previous exact-`1` divergence fixed. Tests assert 1 and 0 only (tests/settings/host-switches.test.ts); the spelling set is covered by tests/format/env-flag.test.ts. Permanence of the skip is the host's."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_PERMISSION_PROMPT_NOTIFY_HOOKS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:23; tests/settings/host-switches.test.ts:39",
+      "note": "Read through isTruthyEnv (1/true/yes/on, any case, trimmed): src/settings/host-switches.ts:12 isOn; src/format/env-flag.ts. Previous exact-`1` divergence fixed. Tests assert 1 and 0 only (tests/settings/host-switches.test.ts); the spelling set is covered by tests/format/env-flag.test.ts. canUseTool-only scope conforms."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_POLICY_SKILLS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:30; tests/settings/host-switches.test.ts:54",
+      "note": "Read through isTruthyEnv (1/true/yes/on, any case, trimmed): src/settings/host-switches.ts:12 isOn; src/format/env-flag.ts. Previous exact-`1` divergence fixed. Tests assert 1 and 0 only (tests/settings/host-switches.test.ts); the spelling set is covered by tests/format/env-flag.test.ts."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_WORKFLOWS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/workflows/enablement.ts:71; tests/settings/workflows/enablement.test.ts:28",
+      "note": "Now isTruthyEnv; same effect as disableWorkflows. Previous divergence fixed."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_ENABLE_BACKGROUND_PLUGIN_REFRESH",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:37; tests/settings/host-switches.test.ts:61",
+      "note": "Read through isTruthyEnv (1/true/yes/on, any case, trimmed): src/settings/host-switches.ts:12 isOn; src/format/env-flag.ts. Previous exact-`1` divergence fixed. Tests assert 1 and 0 only (tests/settings/host-switches.test.ts); the spelling set is covered by tests/format/env-flag.test.ts. Non-interactive only, off by default."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_DIRS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/plugin-dirs.ts:20-29; tests/mods/load/settings-order.test.ts:272",
+      "note": "A relative entry is now skipped; absolute or ~ entries kept, empty pieces dropped. Previous divergence fixed."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_DIR_WATCH",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/plugin-dirs.ts:watchesPluginDirs; tests/mods/load/plugin-dir.test.ts:123",
+      "note": "On spelling watches everywhere, off spelling stops it everywhere, unset = interactive default. Previous divergence fixed. The test covers interactive default and =1 only, not an off value in an interactive session."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_PREFER_HTTPS",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:63; tests/settings/host-switches.test.ts:96, tests/marketplace/git-transport.test.ts:52",
+      "note": "Read through isTruthyEnv (1/true/yes/on, any case, trimmed): src/settings/host-switches.ts:12 isOn; src/format/env-flag.ts. Previous exact-`1` divergence fixed. Tests assert 1 and 0 only (tests/settings/host-switches.test.ts); the spelling set is covered by tests/format/env-flag.test.ts."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SYNC_PLUGIN_INSTALL",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:77-85; tests/settings/host-switches.test.ts:105",
+      "note": "Read through isTruthyEnv (1/true/yes/on, any case, trimmed): src/settings/host-switches.ts:12 isOn; src/format/env-flag.ts. Previous exact-`1` divergence fixed. Tests assert 1 and 0 only (tests/settings/host-switches.test.ts); the spelling set is covered by tests/format/env-flag.test.ts. Non-interactive only; no timeout = unbounded wait."
+    },
+    {
+      "id": "environment.host.DO_NOT_TRACK",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/settings/host-switches.ts:91-94; tests/settings/host-switches.test.ts:142",
+      "note": "DO_NOT_TRACK through isTruthyEnv (0 leaves telemetry on); DISABLE_TELEMETRY on for any non-empty value. Previous divergence fixed."
+    },
+    {
+      "id": "environment.rule.Quoting and path separators",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/shell-command.ts:18-47; src/loading/resolve/hook-command.ts:66-85; tests/format/validate/shell-command.test.ts:9, tests/loading/resolve/hook-command.test.ts:160, tests/loading/resolve/windows-plugin-root.test.ts:11",
+      "note": "Both previous divergences fixed: the validator names the placeholders in order of first appearance, and a Git Bash hook on Windows gets the three path variables with forward slashes in its environment, PowerShell and exec form native. Exec form verbatim, bash keeps the reference, PowerShell ${env:NAME} rewrite plus bare-$NAME warning conform as before."
+    },
+    {
+      "id": "environment.variable.${CLAUDE_PLUGIN_DATA}",
+      "file": "03-environment.md",
+      "status": "diverges",
+      "evidence": "src/cli/uninstall-data.ts:47-48 sameFolder; tests/cli/uninstall-data.test.ts:40",
+      "note": "Id rule, plugins root, creation on reference and the uninstall exceptions conform. Item 4 + J3.19: data is kept only when another installed plugin resolves to the same directory, which for ids differing only in case holds only on a case-insensitive file system. sameFolder lowercases on every file system, so on a case-sensitive one uninstalling My-Plugin@m keeps the folder while my-plugin@m is installed, where the spec deletes it. Minor (over-keeps, never loses data). Kit should take the file system's case sensitivity as a host fact."
+    },
+    {
+      "id": "userConfig.components.When the configuration dialog appears",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/cli/user-config-input.ts:97-102 unsetKeys; tests/cli/configure-dialog.test.ts:23",
+      "note": "unsetKeys now counts only saved values, so an option with only a default is prompted (test comment cites §3.4.6). Previous divergence fixed; events, configure-shows-all, shell install never prompting conform."
+    },
+    {
+      "id": "userConfig.field.type",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:26; tests/format/user-config.test.ts:36",
+      "note": "z.enum of the five types; zod 4 gives `Invalid option: expected one of ...` at userConfig.<key>.type, plugin does not load."
+    },
+    {
+      "id": "userConfig.rule.Limit a field to fixed options",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/format/user-config-options.ts:18-97, src/format/manifest-schema.ts:31-43; tests/format/user-config.test.ts:145-205",
+      "note": "Every row of the §3.4.2 table now implemented with the table's messages and paths (options / options.<i> / default): non-empty list, 1-64 code points, edge space, Cc/Cf characters, case-insensitive repeat, default exact, default-or-required; fails the manifest so the plugin does not load. Previous divergence fixed."
+    },
+    {
+      "id": "userConfig.rule.Reference a saved value",
+      "file": "03-environment.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/substitute.ts; tests/loading/resolve/user-config-values.test.ts",
+      "note": "Value = saved else default; set = saved only (matches the new §3.4.4 wording via unsetKeys); CLAUDE_PLUGIN_OPTION_<KEY> to hooks only. Whether ${user_config.*} reaches every MCP string field is the 08-mcp Substitution item, not re-judged here."
+    },
+    {
+      "id": "lsp.field.command",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-schema.ts:17-29, src/format/validate/inline-sources.ts:13-30, src/format/manifest-schema.ts:122; tests/format/validate/inline-sources.test.ts:57-106, tests/format/lsp-config.test.ts",
+      "note": "One schema for loader and validator; validator now checks inline lspServers entry by entry with the oracle messages (`Command should not contain spaces. Use args array for arguments.`, `Too small...`), an invalid inline map fails the manifest. Every §9.1.3 row asserted. Previous divergences fixed (test file run: 10 pass)."
+    },
+    {
+      "id": "lsp.field.extensionToLanguage",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/lsp-schema.ts:18,32-34; tests/format/validate/inline-sources.test.ts:66,88",
+      "note": "`extensionToLanguage must have at least one mapping` at lspServers.go.extensionToLanguage; dotless key is bare Invalid input at lspServers, as the table. Previous divergence fixed."
+    },
+    {
+      "id": "lsp.troubleshooting.Language server doesn't start",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/lsp-startup.ts:26; tests/loading/resolve/lsp-startup.test.ts",
+      "note": "Now `Executable not found in $PATH: \"<binary>\"` with the quotes. Previous divergence fixed. Debug-log line, retry on next edit and PATH reread are the host's."
+    },
+    {
+      "id": "monitors.components.Monitors.No user configuration",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/surfaces.ts:117-125, src/loading/resolve/monitor.ts:26-37,65; tests/loading/resolve/monitor.test.ts, tests/loading/resolve/monitor-environment-reference.test.ts",
+      "note": "The default shellPaths for monitor-command is now `pasted`: paths written into command, environment empty; environment-reference is an explicit host opt-in (the MAY of J9.17). Refusal message and template check as before. Previous divergence fixed."
+    },
+    {
+      "id": "monitors.field.name",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/monitor-schema.ts:17,41-46, src/format/monitors.ts:103-107; tests/format/validate/inline-sources.test.ts:126-142, tests/format/monitors.test.ts",
+      "note": "Validator reports `Monitor names must be unique within a plugin` at the array and an inline duplicate keeps the plugin from loading; at runtime (file source) the first entry is kept with the same text. Previous divergence fixed."
+    },
+    {
+      "id": "monitors.field.when",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "conforms",
+      "evidence": "src/format/monitor-schema.ts:15-34; tests/format/validate/inline-sources.test.ts:109-123, tests/loading/resolve/monitor-trigger.test.ts",
+      "note": "Empty skill: `on-skill-invoke: must specify a skill name`; other values: both `Invalid string: must start with \"on-skill-invoke:\"` and that message, from the validator and loader. Previous divergence fixed."
+    },
+    {
+      "id": "cli.errors.MCP server name is reserved",
+      "file": "08-mcp.md",
+      "status": "missing",
+      "evidence": "src/format/host-errors.ts:136 (message only); src/settings/mcp/candidates.ts:35,56; tests/format/host-errors.test.ts:176",
+      "note": "The message is exact, but nothing applies it: claudeJsonServers/projectFileServers return a user server named workspace, claude-in-chrome, computer-use, Claude Preview or Claude Browser as an ordinary candidate, and the library has no list of the reserved names. The plugin half (scoped keys not checked) holds. Library should add the list and skip those candidates with the message."
+    },
+    {
+      "id": "mcp.behavior.Mark tools that are safe to call twice",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool.ts:86 (readMcpToolHints: safeToRepeat = readOnly || idempotent, parallelWithReadOnly = readOnly, JSON true only); tests/format/mcp-tool.test.ts:66",
+      "note": "The repeat on a new connection is the host's MCP client."
+    },
+    {
+      "id": "mcp.behavior.Override OAuth metadata discovery",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-oauth-schema.ts:18, src/format/mcp-config.ts:47, src/format/validate/mcp-check.ts:23; tests/format/mcp-oauth-entry.test.ts:15",
+      "note": "Fixed since a06: a non-https authServerMetadataUrl now drops the entry in readMcpServer and is a validator error at oauth.authServerMetadataUrl. The scopes_supported replacement is in mcp-oauth.ts (configured discovery)."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.Automatic lifecycle",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:166 (empty url = notConfigured, no issue), src/format/mcp-env.ts:197, src/format/mcp-startup.ts:70 (cache only for http/sse), src/format/mcp-reload.ts; tests/loading/resolve/mcp-troubleshooting-proofs.test.ts:235, tests/loading/resolve/mcp-spec-proofs.test.ts:73",
+      "note": "Both a06 gaps fixed: the empty-url placeholder is listed as not configured with no error (plugin and settings scopes), and only an http or sse server is served from the discovery cache."
+    },
+    {
+      "id": "mcp.components.Server names, tool names, and reloads.Substitution",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:100-125 (command/args/env), 163-180 (url/headers; headersHelper refused on the template); tests/loading/resolve/mcp-components-proofs.test.ts:107",
+      "note": "The spec now narrows §8.4.1 item 3 to the path-placeholder fields (oauth, type, timeout, alwaysLoad not substituted), which is what the code does; the a06 divergence is closed on the spec side."
+    },
+    {
+      "id": "mcp.troubleshooting.Server is configured but never connects",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts:134 (droppedServerLogLine), :164 readMcpServer; src/format/validate/mcp-check.ts; tests/loading/resolve/mcp-connection-proofs.test.ts:18",
+      "note": "The a06 caveat (non-https authServerMetadataUrl neither dropped nor reported) is fixed."
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Everything else is blocked",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/hooks/origin-stops.ts:33 (built-in never stopped), :59 (agent frontmatter blocked), :73 OUR_OWN, :81 MANAGED_DIRECTORY, :92 plugin; src/settings/hooks/custom-commands.ts:43; tests/settings/key-classes/managed-hooks-only-reference.test.ts:106",
+      "note": "Checked against the new text too: built-in mods keep running (test), agent frontmatter hooks blocked from every source, skill frontmatter hooks run only from the managed directory or a force-enabled plugin (bundled and user ones blocked)."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J1.2",
+      "status": "conforms",
+      "evidence": "src/format/layout.ts:59,91,99 (only .claude-plugin/plugin.json, hooks/hooks.json, .mcp.json are read); tests/loading/layout.test.ts",
+      "note": "The decision holds: a root plugin.json, mcp.json and hooks.json are never read, so nothing loads twice. The §1.3.1 SHOULD (plugin details say the package also carries a core manifest) is still not done: there is no form detection."
+    },
+    {
+      "id": "§1.2-§1.3 core form",
+      "status": "missing",
+      "evidence": "grep: no core-manifest or $schema detection in src/loading or src/format",
+      "note": "Unchanged: agent-plugins does not implement the core form. A directory with only a root plugin.json carrying a canonical core $schema is treated as a Claude Code plugin without a manifest. Kit should add a form classifier (§1.3 table) and either load core packages or refuse them explicitly as unsupported."
+    },
+    {
+      "id": "J2.3",
+      "status": "conforms",
+      "evidence": "src/format/read-json.ts, src/loading (hooks reader); tests/loading/validate/validate-plugin.test.ts:257",
+      "note": "Fixed since a01. Probe: a plugin.json opening with a BOM loads; a hooks/hooks.json opening with one loads the plugin without its hooks, `Failed to load hooks from hooks/hooks.json: JSON Parse error: Unrecognized token`, and the validator reports `Invalid JSON syntax` at json."
+    },
+    {
+      "id": "J2.4",
+      "status": "diverges",
+      "evidence": "src/loading/validate/components-only.ts:26-30 (READ_FRONTMATTER.agent false); tests/loading/validate",
+      "note": "Fixed since a01: a manifest-less directory with only agents/, only commands/, only hooks/, only .mcp.json, a skills/ without SKILL.md, or a root SKILL.md draws `No manifest found in directory`; a declared folder is not read; with a skills tree, a broken agents/a.md is reported. Still: in a `.claude/` folder the kit does not read agent frontmatter (READ_FRONTMATTER.agent=false, comment \"oracle 2.1.319\"), so `.claude/agents/a.md` with bad YAML or no description draws nothing (probe), where J2.4 and the §2.11 table (2.1.319 and 2.1.322 observations) give the `.claude/agents/` parse error (\"does not load at all\") and the description warning. Kit should change, or the two oracle readings be reconciled."
+    },
+    {
+      "id": "J2.5",
+      "status": "conforms",
+      "evidence": "src/loading (hooks file reader), src/format/read-json.ts; tests/loading/validate/validate-plugin.test.ts",
+      "note": "Probe: invalid or BOM hooks.json, plugin loads with its skill and no hooks; validator error with the `At runtime this breaks the entire plugin load.` tail."
+    },
+    {
+      "id": "J2.6",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts, src/loading/discover-listed.ts; tests/format/manifest-fields.test.ts",
+      "note": "Probe: repository object, author string, agents not .md, skills without ./ each stop the load with the schema wording; a missing commands path drops only that path (plugin loads, skill kept)."
+    },
+    {
+      "id": "J2.7",
+      "status": "diverges",
+      "evidence": "src/format/validate/plugin-fields.ts:75-91 (UNREAD), src/format/validate/unknown-fields.ts:42-43; tests/loading/manifest-prose.test.ts",
+      "note": "Order and families conform for 40 probed fields (entry warning, user_config, npm, VS Code, MCPB, MCP server, many tools, suggestion, plain). But `support` and `privacy_policy` are in the kit's UNREAD list of accepted keys and draw no warning at all, where J2.7 (oracle 2.1.321 corpus) and the §2.1 table give them `commonly seen in manifests across many tools` (unknown-fields.ts lists them there too, but plugin-fields.ts accepts them first). Kit should remove them from UNREAD (check bugs, privacyPolicy, terms_of_service, screenshots, docs against an oracle too)."
+    },
+    {
+      "id": "J4.5",
+      "status": "conforms",
+      "evidence": "src/format/skill-name.ts:32,64-69; tests/format/skill-name-refused.test.ts, tests/format/skill-name.test.ts",
+      "note": "Fixed since a02: character classes and the hyphen rule unchanged; outside a plugin a refused frontmatter name is unused and the skill loads; the 256-code-point limit applies."
+    },
+    {
+      "id": "J4.6",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts; tests/format/skill-fields.test.ts",
+      "note": "Probe: effort High/light, context inline, shell zsh/Bash, paths 5, user-invocable maybe dropped with a warning; compatibility of 501 kept with a warning; model 7 kept as text \"7\"; a list hooks dropped with a warning."
+    },
+    {
+      "id": "J4.26",
+      "status": "conforms",
+      "evidence": "src/format/validate/component-frontmatter.ts; tests/format/validate",
+      "note": "Probe of every row: name number/boolean/list, description list/map (with the runtime tail), allowed-tools number/map/mixed list, shell number/zsh are errors with the 2.1.325 wording; metadata number/list warnings; nothing for description 42, empty description, empty name, shell Bash, empty metadata, effort light."
+    },
+    {
+      "id": "J4.27",
+      "status": "conforms",
+      "evidence": "src/host/session-skill-catalog.ts:30; tests/host/plugin-command-clash.test.ts:14 (ran: 1 pass)",
+      "note": "The command is listed with its description and its body runs; the skill is not reachable by that name."
+    },
+    {
+      "id": "J4.28",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts:170-178",
+      "note": "The kit produces the variant's name and description as listing entries; the instruction text is left to the host, which is what the judgment allows."
+    },
+    {
+      "id": "J5.2",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts:132-150; tests/host/plugin-agents.test.ts",
+      "note": "A plugin agent without a usable description loads with `Agent from <plugin> plugin` and a warning; names with `:` or a leading `-` kept."
+    },
+    {
+      "id": "J5.5",
+      "status": "conforms",
+      "evidence": "src/format/agent-scalars.ts, src/format/agent-fields.ts; tests/format/agent-fields.test.ts",
+      "note": "Fixed (the spec now allows numeric text): maxTurns \"5\" and \" 5\" give 5; omitClaudeMd \"true\" and background \"false\" read as booleans; color magenta, isolation remote, maxTurns 0 and 2.5, effort High, background yes, and an empty model are each dropped with a warning (probe)."
+    },
+    {
+      "id": "J5.17",
+      "status": "conforms",
+      "evidence": "src/format/validate/component-frontmatter.ts; tests/format/validate",
+      "note": "Probe: a plugin agent with unparsable YAML is an error with the 2.1.325 wording (`... loads with its name taken from the filename ...`)."
+    },
+    {
+      "id": "J5.18",
+      "status": "missing",
+      "evidence": "src/rules/decide (no worktree-isolation check)",
+      "note": "The judgment puts the §5.3 item 4 checks in the client's command decision; this library makes command decisions (src/rules/decide) but has no check that a worktree-isolated subagent's command stays in its worktree. Kit should add one (host passes the worktree and main-checkout roots), or document it as a host duty."
+    },
+    {
+      "id": "J6.2",
+      "status": "diverges",
+      "evidence": "src/format/frontmatter-values.ts (readText), src/format/output-style.ts:82-83",
+      "note": "Probe: name 42 -> \"42\", 1.50 -> \"1.5\", true -> \"true\", empty -> file name, description 7/false -> text, a list description -> absent, flags take the skill spellings: conform. But a list `name` ([a, b]) and a map name ({a: 1}) fall back to the file name with a `name is not text` warning, where J6.2 (oracle 2.1.319/2.1.322) lists them as `<plugin>:a,b` and `<plugin>:[object Object]`. Kit should change (minor)."
+    },
+    {
+      "id": "J6.3",
+      "status": "conforms",
+      "evidence": "src/format/output-style-select.ts:155-163,190; tests/format/output-style-select.test.ts",
+      "note": "Fixed: without a description the list shows the first non-empty body line; the style's own description stays unset."
+    },
+    {
+      "id": "J6.4",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:209-226,262; tests/loading/plugin-assets.test.ts",
+      "note": "Fixed: a plugin's output-styles subfolders are read and the subfolder is not part of the name. User and project folders are scanned by the host from settingsLocations().outputStyles."
+    },
+    {
+      "id": "J6.7",
+      "status": "conforms",
+      "evidence": "src/format/output-style.ts:104-111, src/host/catalog.ts:126; tests/format/output-style.test.ts (ran: 20 pass)",
+      "note": "Fixed: of one plugin's styles with one name, the one whose relative path sorts last by UTF-16 code unit is kept."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_CODE_FORK_SUBAGENT",
+      "status": "missing",
+      "evidence": "src/agents/launch.ts:83-100 (runsInBackground)",
+      "note": "runsInBackground takes `claudeWillWait` from the host and honours background:true and CLAUDE_CODE_DISABLE_BACKGROUND_TASKS, but nothing reads CLAUDE_CODE_FORK_SUBAGENT or applies \"fork mode on: an interactive terminal/VS Code/desktop main conversation cannot wait, -p and the SDK can\". Kit could add the fork-mode reading to that decision; otherwise it is the host's."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS",
+      "status": "missing",
+      "evidence": "src/agents/catalog/spawn.ts:85-120 (namedSubagent)",
+      "note": "The consequence conforms: namedSubagent never launches a teammate when `interactive` is false, and makes nothing addressable without `agentTeams`. But the variable (environment or settings env, =1 on, default off) is read nowhere; `agentTeams` is a host input. Kit could read it through isTruthyEnv; minor."
+    },
+    {
+      "id": "docs:agent-teams.md | Use subagent definitions for teammates",
+      "status": "missing",
+      "evidence": "src/agents/tool-filters.ts:80-108 (teammate background tools only)",
+      "note": "No code applies an agent definition to a teammate by display mode (tools plus SendMessage and Task tools, model, disallowedTools, effort, autoCompactWindow, body appended vs replacing, skills/mcpServers not applied), nor the trust check and `Its agent definition was not restored: ...` result on bringing one back. The kit applies definitions to subagents (launch, tool resolution), so this belongs beside them; else the spec/kit scope should name it host-only."
+    },
+    {
+      "id": "docs:errors.md | Custom output styles can't be selected over Remote Control",
+      "status": "missing",
+      "evidence": "src/format/output-style-select.ts:97-193 (findOutputStyle, listOutputStyles)",
+      "note": "The kit owns the /output-style listing and lookup but has no input for a Remote Control or relayed turn: custom styles are always listed and selectable, and the notice `Custom output styles can't be selected over Remote Control or from a relayed message. ...` exists nowhere in src. Kit should add the gate (or the host filters the list)."
+    },
+    {
+      "id": "docs:errors.md | Output styles are saved to local settings which this session doesn't load",
+      "status": "missing",
+      "evidence": "src/format/output-style-select.ts",
+      "note": "No refusal when the session's setting sources leave out `local`; the message `Output styles are saved to local settings (.claude/settings.local.json), which this session doesn't load, so the style can't be changed here.` exists nowhere in src. Writing the setting is the host's, but the kit could return the refusal from its selection API."
+    },
+    {
+      "id": "J3.6",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/hook-command.ts:66-85; tests/loading/resolve/windows-plugin-root.test.ts:11, tests/loading/resolve/hook-command.test.ts:160",
+      "note": "Git Bash hook's exported path variables now forward-slashed; PowerShell and exec form native; options untouched. Previously diverged, fixed. Unobserved on Windows."
+    },
+    {
+      "id": "J3.10",
+      "status": "conforms",
+      "evidence": "src/format/user-config-options.ts; tests/format/user-config.test.ts:145-205",
+      "note": "The table's rules, messages, paths and order, code-point length, and load failure. Fixed."
+    },
+    {
+      "id": "J3.16",
+      "status": "diverges",
+      "evidence": "src/cli/session-flags.ts:89, src/cli/flags/agents.ts:77, src/hooks/interrupt.ts:46, src/rules/tools/semantics/bash-background.ts:23, src/cli/flags/subagent-prompt.ts:41",
+      "note": "The plugin switches of §3.6 now use isTruthyEnv. Still compared with exactly `1`: CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD, CLAUDE_CODE_SAFE_MODE, CLAUDE_CODE_DISABLE_BACKGROUND_TASKS (two readers) and CLAUDE_CODE_FORWARD_SUBAGENT_TEXT, all documented as \"set to 1\". Kit should use isTruthyEnv there."
+    },
+    {
+      "id": "J3.17",
+      "status": "diverges",
+      "evidence": "src/settings/host-switches.ts:46,58,83; src/cli/flags/mcp.ts:69, src/hooks/handlers/remote/mcp-tool.ts:68",
+      "note": "Unchanged: CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS and CLAUDE_CODE_SYNC_PLUGIN_INSTALL_TIMEOUT_MS accept plain digits only (2e3, 64_000 leave the default) though their rows do not say plain digits; MCP_TIMEOUT uses Number(), which reads 2e3 but not 64_000. No shared numeric-variable reader. Kit should add one (or the spec should mark those rows plain digits if the docs say so)."
+    },
+    {
+      "id": "J3.19",
+      "status": "diverges",
+      "evidence": "src/format plugin data id (not folded); src/cli/uninstall-data.ts:47-48",
+      "note": "The id keeps case (conforms). The uninstall shared-folder test folds case on every file system, so on a case-sensitive one a case-twin keeps the folder where J3.19 says the two have separate directories. Kit should take case sensitivity as a host fact. Minor."
+    },
+    {
+      "id": "J3.20",
+      "status": "conforms",
+      "evidence": "src/format/validate/shell-command.ts:18-47; tests/format/validate/shell-command.test.ts:9",
+      "note": "Order of first appearance now, each once; scope unchanged. Fixed."
+    },
+    {
+      "id": "J3.22",
+      "status": "conforms",
+      "evidence": "src/format/mcp-knobs.ts:199-233; tests/format/mcp-allowlist-paths.test.ts:9",
+      "note": "mcpStdioEnvironment takes `exported` (ResolvedMcpServer.environment) and keeps it under the allowlist, configured env still winning. Fixed."
+    },
+    {
+      "id": "J3.23",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/subprocess-env.ts:44-48",
+      "note": "The kit sets CLAUDECODE for a monitor (allowed MAY) and no session id or pid there; LSP environment is the host's plus the exported paths."
+    },
+    {
+      "id": "J9.5",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:122, src/format/lsp-config.ts:69-100, src/format/validate/inline-sources.ts; tests/format/validate/inline-sources.test.ts:29",
+      "note": "Inline map now part of the manifest schema (fails the manifest, validator reports per path); a named file is skipped whole with `Invalid LSP server config for \"<path>\"` and the plugin loads; validator reads no file. Fixed."
+    },
+    {
+      "id": "J9.7",
+      "status": "conforms",
+      "evidence": "src/format/monitor-schema.ts:41-52, src/format/monitors.ts:91-112; tests/format/validate/inline-sources.test.ts:126-142, tests/format/monitors.test.ts",
+      "note": "experimental wins; an invalid inline array fails the manifest; an invalid monitors file is now skipped whole (no partial keep); runtime duplicate keeps the first. Fixed."
+    },
+    {
+      "id": "J9.16",
+      "status": "not-applicable",
+      "evidence": "src/loading/resolve/lsp-runtime.ts:5-9",
+      "note": "The LSP tool's requests are the host's LSP client; the kit sends no LSP request."
+    },
+    {
+      "id": "J9.17",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/surfaces.ts:117-125, src/loading/resolve/monitor.ts:26-37; tests/loading/resolve/monitor-environment-reference.test.ts, tests/host/shell-paths.test.ts",
+      "note": "Default pasted with empty environment; the reference-and-export alternative is an opt-in, as the judgment allows."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_CODE_CHILD_SESSION",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/subprocess-env.ts:44-48,93; tests/hooks/handlers/command/host-variables.test.ts:107",
+      "note": "1 for hook, bash, powershell and monitor kinds, never for stdio MCP. Status line and the editor terminal are the host's."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_CODE_REMOTE_SESSION_ID",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "Set by the cloud host; the kit only passes the inherited environment through subprocessEnvironment."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_JOB_DIR",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:96-103, src/rules/decide/block-exceptions.ts:81-87; tests/rules/decide-blocks-and-sessions.test.ts:123-126",
+      "note": "Setting the variable is the background host's; the permission half (~/.claude/jobs/<id>/tmp writable, outside the write block and the .claude protection) is the kit's and is done."
+    },
+    {
+      "id": "docs:sessions.md | What a resumed session restores",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "Which launch flags a resumed session restores is the host's session store; the kit takes the session's flags as given."
+    },
+    {
+      "id": "docs:cli-reference.md | CLI flags — --continue / -c",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "Host session restore (see sessions.md entry)."
+    },
+    {
+      "id": "docs:cli-reference.md | CLI flags — --resume / -r",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "Host session restore (see sessions.md entry)."
+    },
+    {
+      "id": "docs:agent-view.md | What carries over when you background",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "Both paragraphs (§3.6.3 plugin dirs carry over; §9.2.3 item 6 monitors stop with the confirm dialog) are the host's backgrounding; the kit has no background-session code."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_CODE_SHELL_PREFIX",
+      "status": "missing",
+      "evidence": "src/ports/command-runner.ts (no prefix input); grep CLAUDE_CODE_SHELL_PREFIX: no reader",
+      "note": "§3.6 table row (03-environment.md) and §8.2.1 (08-mcp.md): the kit builds no process line (its CommandRunner port receives exec or shell form), so nothing wraps a Bash call, shell-form hook, status line or stdio MCP start command as `<prefix> '<command>'` with one POSIX-quoted argument. Same gap as J8.26. Library should add a pure command-line helper the runner uses, or the spec should name the host as owner."
+    },
+    {
+      "id": "docs:tools-reference.md | LSP tool behavior",
+      "status": "not-applicable",
+      "evidence": "src/loading/resolve/lsp-runtime.ts:5-9",
+      "note": "Diagnostics in context, the LSP tool and its requests are the host's LSP client (\"speaking the protocol, are the host's\"); the kit only gates the LSP tool's filePath in permission rules (src/rules/path/tools.ts:70)."
+    },
+    {
+      "id": "docs:sandboxing.md | What runs outside the sandbox",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "The kit starts no process; that LSP, MCP, hooks and monitors run unsandboxed is the host's."
+    },
+    {
+      "id": "docs:settings-reference.md | sandbox",
+      "status": "not-applicable",
+      "evidence": "",
+      "note": "As sandboxing.md: the host decides what the sandbox wraps."
+    },
+    {
+      "id": "docs:mcp.md | Push messages with channels",
+      "status": "missing",
+      "evidence": "src/settings/channels/verdict.ts:91, src/settings/channels/contract.ts:21",
+      "note": "§9.3.x item 5: on the v2 runtime a channel server that negotiated revision 2026-07-28 must not register as a channel. The kit decides channel registration (channelVerdict, channelCapabilities) but neither takes the negotiated revision; nothing refuses it. Kit should add the revision to the verdict input (low impact; the revision is known to src/format/mcp-elicitation.ts:41)."
+    },
+    {
+      "id": "J8.3",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts:56-66 (looseObject), src/format/mcp-oauth-schema.ts:15 (looseObject oauth); tests/format/mcp-oauth-entry.test.ts:35",
+      "note": "Fixed since a06: oauth is type-checked and an unknown oauth key is kept and ignored by loader and validator. Left: readMcpOAuth (src/format/mcp-oauth.ts:70, the add-json / contract reader) still warns on an unknown oauth key and drops it from the value, and a ws entry's oauth is type-checked although §8.2 gives ws no oauth (so it should be an unknown field, kept and ignored). Minor; library should align readMcpOAuth and leave ws oauth unchecked."
+    },
+    {
+      "id": "J8.26",
+      "status": "missing",
+      "evidence": "no code: CLAUDE_CODE_SHELL_PREFIX appears only in tests/fixtures/remote-mcp-env and spec/out-of-scope.json:1959",
+      "note": "The library builds no prefixed command line for a stdio server (nor for hook or status-line commands): no per-element POSIX quoting, no single quoted argument after the prefix. It lists the variable as out of scope (runtime). Library should add a pure helper (command line + prefix -> argv) for the host's runner, or the spec should say the host owns it."
+    },
+    {
+      "id": "J8.27",
+      "status": "diverges",
+      "evidence": "src/format/validate/mcp-check.ts:111 (got <kind> via received.ts kindOf), src/loading/validate/json-files.ts:118, links.ts:75",
+      "note": "Kind names conform (array, string, number, boolean, null) and the link warning is exact. Missing: the validator does not cap a regular MCP file at 1,048,576 bytes and never emits `The file is past the size cap and was not read — ...`; it reads the whole file. Library should change."
+    },
+    {
+      "id": "J8.28",
+      "status": "not-applicable",
+      "evidence": "src/format/mcp-tool.ts:22 (pluginMcpServerName gives plugin:<plugin>:<server>)",
+      "note": "Offering and mentioning resources is the host's MCP client and UI (mcp.md resources sections are in spec/out-of-scope.json, reason ui). The scoped name the host should use is the one the library gives."
+    },
+    {
+      "id": "J12.10",
+      "status": "conforms",
+      "evidence": "src/format/plugin-settings.ts:42-49 (non-object = warning), src/loading/readers-config.ts:158 (unparsable = warning), src/format/manifest-schema.ts:113 (manifest settings must be an object); validator does not read settings.json (src/loading/validate/*); tests/loading/load-plugin-settings.test.ts:51, tests/format/plugin-settings.test.ts:59",
+      "note": "Fixed since a06: a settings.json that does not parse or is not an object is now a warning, the manifest settings apply, and the validator passes it."
+    },
+    {
+      "id": "J12.13",
+      "status": "conforms",
+      "evidence": "src/settings/general/command-lines.ts:48 readCommandLine (narrowed: only a managed holder), :76 readSubagentStatusLine (plugin default only when nothing narrowed or off); src/settings/hooks/custom-commands.ts:49 (narrowed = managedOnly, otherDisable, safeMode); tests/host/session-agent-defaults.test.ts:152",
+      "note": ""
+    },
+    {
+      "id": "J12.16",
+      "status": "conforms",
+      "evidence": "src/settings/general/subagent-status-line.ts:81 readSubagentStatusRows (non-object line and unknown id ignored), :107 runSubagentStatusLine (bash through the CommandRunner, exit 0 only, cancel via signal); tests/settings/general/subagent-status-line.test.ts",
+      "note": "Shell choice on Windows and cancelling the in-flight run on the next tick are the host's through the runner and signal. The CLAUDE_CODE_SHELL_PREFIX wrap is not built by the library (see J8.26)."
+    },
+    {
+      "id": "docs:errors.md | MCP server needs you to sign in again",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (errors.md, runtime); no message in src/format/host-errors.ts",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime. Unlike other errors.md entries, the message text is not offered in host-errors.ts; adding it would be cheap."
+    },
+    {
+      "id": "docs:errors.md | Couldn't read the stored credentials for MCP server",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (errors.md, runtime); no message in src/format/host-errors.ts",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime. Unlike other errors.md entries, the message text is not offered in host-errors.ts; adding it would be cheap."
+    },
+    {
+      "id": "docs:errors.md | Refusing to send credentials to non-https token endpoint",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (errors.md, runtime); no message in src/format/host-errors.ts",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime. Unlike other errors.md entries, the message text is not offered in host-errors.ts; adding it would be cheap."
+    },
+    {
+      "id": "docs:errors.md | MCP server connection closed before the tool call was answered",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (errors.md, runtime); no message in src/format/host-errors.ts",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime. Unlike other errors.md entries, the message text is not offered in host-errors.ts; adding it would be cheap."
+    },
+    {
+      "id": "docs:errors.md | MCP tool call timed out with the server's question unanswered",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (errors.md, runtime); no message in src/format/host-errors.ts",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime. Unlike other errors.md entries, the message text is not offered in host-errors.ts; adding it would be cheap."
+    },
+    {
+      "id": "docs:errors.md | Issuer mismatch in authorization response",
+      "status": "not-applicable",
+      "evidence": "src/format/mcp-startup.ts:232 (checksIssuer only on v2); tests/format/mcp-startup.test.ts:213",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime. The one decision the library models, that only the v2 runtime checks the issuer, conforms."
+    },
+    {
+      "id": "docs:mcp.md | MCP client runtimes",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:232 mcpClientSettings (v1/v2, default v2, unknown value ignored with a warning; negotiation and issuer check v2 only); tests/format/mcp-startup.test.ts:196-232",
+      "note": "The runtime choice and what follows from it are modelled; which transports are probed, tasks and channel registration are the host's MCP client."
+    },
+    {
+      "id": "docs:mcp.md | Notification streams on the v2 runtime",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Automatic backgrounding of long tool calls",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:51 mcpBackgrounding (120000 ms default, 0 off); tests/format/mcp-startup.test.ts:48",
+      "note": "The threshold is modelled; moving the call, /tasks and the notification are the host's."
+    },
+    {
+      "id": "docs:mcp.md | MCP tasks that run on the server",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | What a call needs to become an MCP task",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | MCP tasks for server authors",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Answer the call with a task",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Report status, results, and questions",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Stop an MCP task or get its result",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Answer a question from an MCP task",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Exit, clear, or resume while an MCP task runs",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Status messages on an MCP task",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Time limits on MCP tasks",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Make Claude wait for the result of an MCP task",
+      "status": "conforms",
+      "evidence": "src/format/mcp-startup.ts:51 mcpBackgrounding.waitsForTasks (AUTO_BACKGROUND_MS=0 or DISABLE_MCP_TASK_BACKGROUND on); tests/format/mcp-startup.test.ts:60,67",
+      "note": "CLAUDE_CODE_DISABLE_BACKGROUND_TASKS and bare mode are not inputs, so they do not make Claude wait, as the paragraph says. Esc and cancel are the host's."
+    },
+    {
+      "id": "docs:mcp.md | Use MCP resources",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (ui); src/format/mcp-tool.ts:22",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as ui. See J8.28 for the scoped name."
+    },
+    {
+      "id": "docs:mcp.md | Reference MCP resources",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (ui); src/format/mcp-tool.ts:22",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as ui. See J8.28 for the scoped name."
+    },
+    {
+      "id": "docs:mcp.md | Scale with MCP tool search",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (model); src/format/mcp-config.ts:41 (alwaysLoad read), src/format/mcp-startup.ts:89 (alwaysLoad holds startup)",
+      "note": "Deferral and tool search are the host's tool loop (out of scope, reason model). The library reads alwaysLoad and makes startup wait for it; it does not read _meta[\"anthropic/alwaysLoad\"]."
+    },
+    {
+      "id": "docs:mcp.md | Configure tool search",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (model); src/format/mcp-config.ts:41 (alwaysLoad read), src/format/mcp-startup.ts:89 (alwaysLoad holds startup)",
+      "note": "Deferral and tool search are the host's tool loop (out of scope, reason model). The library reads alwaysLoad and makes startup wait for it; it does not read _meta[\"anthropic/alwaysLoad\"]."
+    },
+    {
+      "id": "docs:mcp.md | Tools that stay deferred below the ENABLE_TOOL_SEARCH=auto threshold",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (model); src/format/mcp-config.ts:41 (alwaysLoad read), src/format/mcp-startup.ts:89 (alwaysLoad holds startup)",
+      "note": "Deferral and tool search are the host's tool loop (out of scope, reason model). The library reads alwaysLoad and makes startup wait for it; it does not read _meta[\"anthropic/alwaysLoad\"]."
+    },
+    {
+      "id": "docs:mcp.md | Exempt a server from deferral",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (model); src/format/mcp-config.ts:41 (alwaysLoad read), src/format/mcp-startup.ts:89 (alwaysLoad holds startup)",
+      "note": "Deferral and tool search are the host's tool loop (out of scope, reason model). The library reads alwaysLoad and makes startup wait for it; it does not read _meta[\"anthropic/alwaysLoad\"]."
+    },
+    {
+      "id": "docs:mcp.md | Defer a server's tools",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (model); src/format/mcp-config.ts:41 (alwaysLoad read), src/format/mcp-startup.ts:89 (alwaysLoad holds startup)",
+      "note": "Deferral and tool search are the host's tool loop (out of scope, reason model). The library reads alwaysLoad and makes startup wait for it; it does not read _meta[\"anthropic/alwaysLoad\"]."
+    },
+    {
+      "id": "docs:mcp.md | Mark a tool to load upfront or stay deferred",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (model); src/format/mcp-config.ts:41 (alwaysLoad read), src/format/mcp-startup.ts:89 (alwaysLoad holds startup)",
+      "note": "Deferral and tool search are the host's tool loop (out of scope, reason model). The library reads alwaysLoad and makes startup wait for it; it does not read _meta[\"anthropic/alwaysLoad\"]."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — ENABLE_TOOL_SEARCH",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "No reader: tool search is the host's tool loop."
+    },
+    {
+      "id": "docs:mcp.md | How Claude learns that a server failed",
+      "status": "not-applicable",
+      "evidence": "spec/out-of-scope.json (runtime)",
+      "note": "The library is not an MCP client (README: the host keeps its MCP client); spec/out-of-scope.json lists this section as runtime."
+    },
+    {
+      "id": "docs:mcp.md | Tool search for MCP server authors",
+      "status": "conforms",
+      "evidence": "src/format/mcp-knobs.ts:144 mcpDescriptionLimits (4096 upfront and instructions, 16384 deferred, CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH replaces both), :154 cutMcpDescription; tests/format/mcp-knobs.test.ts:123-152",
+      "note": "The author SHOULD binds a server author."
+    },
+    {
+      "id": "docs:mcp.md | Change the description length limits",
+      "status": "conforms",
+      "evidence": "src/format/mcp-knobs.ts:144 mcpDescriptionLimits (4096 upfront and instructions, 16384 deferred, CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH replaces both), :154 cutMcpDescription; tests/format/mcp-knobs.test.ts:123-152",
+      "note": "The author SHOULD binds a server author."
+    },
+    {
+      "id": "docs:statusline.md | Subagent status lines",
+      "status": "conforms",
+      "evidence": "src/settings/general/command-lines.ts:76; tests/host/session-agent-defaults.test.ts:152",
+      "note": "A plugin's value never runs while the key is narrowed to managed settings, force-enabled plugin included (J12.13)."
+    },
+    {
+      "id": "docs:settings-reference.md | subagentStatusLine",
+      "status": "conforms",
+      "evidence": "src/settings/general/subagent-status-line.ts:81,107; tests/settings/general/subagent-status-line.test.ts",
+      "note": "Rows rewritten by id, unnamed rows keep the default; drawing the rows is the host's."
+    },
+    {
+      "id": "docs:statusline.md | Task fields",
+      "status": "conforms",
+      "evidence": "src/settings/general/subagent-status-line.ts:17 SubagentStatusTask, subagentStatusLineInput (tokenSamples cut to 16); tests/settings/general/subagent-status-line.test.ts",
+      "note": "Every field of the table with the same optional ones; filling them is the host's."
+    },
+    {
+      "id": "docs:settings-reference.md | Settings index — subagentStatusLine",
+      "status": "conforms",
+      "evidence": "src/settings/general/command-lines.ts:24 commandLine repair, :48 readCommandLine; src/settings/hooks/custom-commands.ts:47-49; tests/settings/general/command-lines.test.ts",
+      "note": "Shape, single value, plugin default below every file, and only the managed value under allowManagedHooksOnly or disableAllHooks outside managed settings."
+    }
+  ]
+}

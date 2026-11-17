@@ -1,0 +1,1172 @@
+{
+ "implementation": "agent-plugins",
+ "revision": "018f293+rename",
+ "pass": "a13-cli-bridge",
+ "date": "2026-11-16",
+ "files": [
+  "17-cli.md",
+  "18-bridge.md"
+ ],
+ "requirements": [
+  {
+   "id": "cli.command.claude plugin",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/command-table.ts:131; tests/cli/command-table.test.ts"
+  },
+  {
+   "id": "cli.plugin.JSON result format.command",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/result.ts:122; tests/cli/result.test.ts"
+  },
+  {
+   "id": "cli.plugin.JSON result format.outcome",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/result.ts:122; tests/cli/result.test.ts"
+  },
+  {
+   "id": "cli.plugin.JSON result format.message",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/result.ts:122; tests/cli/result.test.ts"
+  },
+  {
+   "id": "cli.plugin.JSON result for marketplace commands",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/result.ts:122; tests/cli/marketplace-remove.test.ts; tests/cli/marketplace-update.test.ts; tests/cli/result.test.ts",
+   "note": "Key order command, outcome, marketplace, message matches the example."
+  },
+  {
+   "id": "cli.plugin.Which scope the command updates",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/scope.ts:107; src/cli/update-locate.ts:20; tests/cli/update-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin install",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/install-start.ts:153; src/cli/install-plan.ts:248; tests/cli/install-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin install.-s, --scope <scope>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/install-start.ts:153; src/cli/install-plan.ts:248; tests/cli/install-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin install.--config <key=value>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/install-config.ts:38,100; src/cli/install-plan.ts:160; tests/cli/install-flags.test.ts",
+   "note": "Checked before anything installs (configRefusal, invalid_config with invalidKeys); a key given twice keeps the last value; no = is a usage error (`--config expects key=value`). Matches the fixed text and J17.26."
+  },
+  {
+   "id": "cli.plugin.plugin install.-y, --yes",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/command-acceptance.ts:126; tests/cli/install-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin install.--accept-command <sha256>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/command-acceptance.ts:35,126; tests/cli/install-accept.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin install.--json",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/install-start.ts:153; src/cli/install-plan.ts:248; tests/cli/install-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin install.--marketplace <source>",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/install-start.ts:76; src/cli/install-lookup.ts:60; tests/cli/install-marketplace.test.ts",
+   "note": "Spec: when the fetched catalog's name is a marketplace already added from a different source, the install fails and keeps the existing marketplace (§17.20). Code: InstallFound.addedMarketplace has only alreadyKnown/registered; marketplaceRefusal (install-lookup.ts:60) runs the name rules and the download-folder rule, never a same-name/different-source check. The message exists (src/marketplace/install-errors.ts:220 alreadyAddedFromDifferentSource) but nothing in the install or add plans calls it, and no test covers the case. The implementation should change."
+  },
+  {
+   "id": "manifest.troubleshooting.The userConfig dialog never appears",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/install-config.ts:121,132; tests/cli/configure-dialog.test.ts",
+   "note": "Unset-options line with (M required), undeclared-key line, the bundled-server variant with <server>.<key> keys and the URL-referenced bundle case are all present. Small nuance: the \"or by its bundled MCP servers\" ending is also used when only URL-referenced bundles exist, where the spec conditions it on a bundled server file that declares user_config."
+  },
+  {
+   "id": "cli.plugin.Accept a displayed install command",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/command-acceptance.ts:86,126; src/cli/install-plan.ts:110; tests/cli/install-accept.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin uninstall.-s, --scope <scope>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/uninstall-plan.ts:149,259; tests/cli/uninstall-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin uninstall.--keep-data",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/uninstall-plan.ts:149,259; tests/cli/uninstall-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin uninstall.--prune",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/uninstall-plan.ts:149,259; tests/cli/uninstall-prune.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin uninstall.-y, --yes",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/uninstall-plan.ts:149,259; tests/cli/uninstall-prune.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin uninstall.--json",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/uninstall-plan.ts:149,259; tests/cli/uninstall-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.What an uninstall deletes and keeps",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/uninstall-data.ts:61; src/cli/uninstall-plan.ts:252; tests/cli/uninstall-data.test.ts; tests/cli/uninstall-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin disable.-s, --scope <scope>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/disable-plan.ts:100; src/cli/toggle-target.ts:134; tests/cli/disable-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin disable.-a, --all",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/disable-plan.ts:100; src/cli/toggle-target.ts:134; tests/cli/disable-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin disable.--json",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/disable-plan.ts:100; src/cli/toggle-target.ts:134; tests/cli/disable-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin enable",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/enable-plan.ts:58; src/cli/toggle-target.ts:134; tests/cli/enable-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin disable",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/disable-plan.ts:100; src/cli/toggle-target.ts:134; tests/cli/disable-plan.test.ts",
+   "note": "Neither a name nor --all is returned as a usage error with the quoted reason (disable-plan.ts:106): exit 1, reason on stderr, and with --json no result line; the spec states only the line and exit 1."
+  },
+  {
+   "id": "cli.plugin.Update by bare name",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/update-locate.ts:33; tests/cli/update-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.Retry an unfinished dependency install",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/update-plan.ts:99; tests/cli/update-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin list",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:189; tests/cli/plugin-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin list.--json",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:189; tests/cli/plugin-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin list.--available",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:189; tests/cli/plugin-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin list.--data-size [plugin]",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:189; tests/cli/plugin-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.JSON output.id",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.version",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)",
+   "note": "Host-supplied value (computed version, manifest version or `unknown`), emitted as given."
+  },
+  {
+   "id": "cli.plugin.JSON output.scope",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.enabled",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)",
+   "note": "Host-supplied from the merged settings, emitted always."
+  },
+  {
+   "id": "cli.plugin.JSON output.installPath",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)",
+   "note": "Spec: installPath is always present except for a plugin loaded in place from its marketplace folder, which carries readFromFolder instead. Code: ListedPlugin.installPath is a required string (plugin-list.ts:21) and installedJson always emits it, so a read-from-folder plugin cannot omit it; the test lists installPath among the always-present fields. Make it optional (or drop it when readFromFolder is set)."
+  },
+  {
+   "id": "cli.plugin.JSON output.readFromFolder",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.folderVersion",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.installedAt",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.lastUpdated",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.projectPath",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.mcpServers",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.errors",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.notes",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.errorDetails",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.noteDetails",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.hasUserConfig",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)",
+   "note": "Passed through when the host sets it; the library does not itself drop it for a plugin with load errors (the host computes the field)."
+  },
+  {
+   "id": "cli.plugin.JSON output.projectEnabled",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.dataDirSize",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:121; tests/cli/plugin-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.JSON output.dataDirUnreadable",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:121; tests/cli/plugin-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.JSON output.pluginId",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.name",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.marketplaceName",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.source",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.description",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.JSON output.installCount",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:144,171; tests/cli/plugin-list.test.ts (template `cli.plugin.JSON output.${field}`)"
+  },
+  {
+   "id": "cli.plugin.plugin details.Component inventory",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/plugin-details.ts:85; tests/cli/plugin-details.test.ts",
+   "note": "Spec §17.9 item 1: each kind \"with its count and names\". Code (plugin-details.ts textOf) prints `  Skills: a, b` with no count (2.1.325 prints `Skills (1)  a`, J17.11). The implementation should add the count."
+  },
+  {
+   "id": "cli.plugin.plugin details.Projected token cost",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-details.ts:85; tests/cli/plugin-details.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin details.Per-component (rounded)",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-details.ts:85; tests/cli/plugin-details.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin configure",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/configure-plan.ts:207; tests/cli/configure-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin prune.-s, --scope <scope>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/prune-plan.ts:83; src/marketplace/dependency-prune.ts:82; tests/cli/prune-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin prune.--dry-run",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/prune-plan.ts:83; src/marketplace/dependency-prune.ts:82; tests/cli/prune-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin prune.-y, --yes",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/prune-plan.ts:83; src/marketplace/dependency-prune.ts:82; tests/cli/prune-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin prune.-y",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/prune-plan.ts:83; src/marketplace/dependency-prune.ts:82; tests/cli/prune-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin tag",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/tag-plan.ts:59,93; tests/cli/tag-plan.test.ts",
+   "note": "Refusals for validation, no version, disagreement, dirty tree, existing tag; push failure keeps the tag and exits 1 (finishPluginTag). A marketplace entry without a version counts as a disagreement."
+  },
+  {
+   "id": "cli.plugin.plugin tag.--dry-run",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/tag-plan.ts:59,93; tests/cli/tag-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin tag.--push",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/tag-plan.ts:59,93; tests/cli/tag-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin tag.--remote <name>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/tag-plan.ts:59,93; tests/cli/tag-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin tag.-f, --force",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/tag-plan.ts:59,93; tests/cli/tag-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin tag.-m, --message <msg>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/tag-plan.ts:59,93; tests/cli/tag-plan.test.ts"
+  },
+  {
+   "id": "cli.plugin.Validate a directory..claude-plugin/marketplace.json",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/loading/validate/validate-plugin.ts:27; src/loading/validate/components-only.ts; tests/cli/validate-run.test.ts",
+   "note": "validate-plugin.ts marketplaceReport validates the root plugin too when both manifests exist; test uses `${MARKET}` template id in tests/cli/validate-run.test.ts:31."
+  },
+  {
+   "id": "cli.plugin.Validate a directory",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/loading/validate/validate-plugin.ts:27; src/loading/validate/components-only.ts; tests/cli/validate-run.test.ts",
+   "note": "J17.14 deviation implemented: componentsOnly reads a root skills/<name>/SKILL.md tree (components-only.ts hasSkillsTree)."
+  },
+  {
+   "id": "cli.plugin.Validate a directory.A SKILL.md at the plugin root",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/loading/validate/validate-plugin.ts:27; src/loading/validate/components-only.ts; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Validate a directory.A CLAUDE.md at the plugin root",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/loading/validate/validate-plugin.ts:27; src/loading/validate/components-only.ts; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Validate a directory.Plugin files in a marketplace run",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/loading/validate/validate-plugin.ts:27; src/loading/validate/components-only.ts; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Validate a manifest file",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:155; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.rule.Validate the manifest.Errors",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/format/validate/mcp-check.ts:126; tests/cli/validate-run.test.ts",
+   "note": "Spec: errors for an entry the client would drop, an undeclared ${user_config.KEY}, and a remote `url` that is not a valid absolute URL. Code: dropped entries and undeclared references are errors, but the remote schema types `url` as any string (mcp-check.ts:18) and mcpFindings({a:{type:\"http\",url:\"not a url\"}}) returns no finding. Add the absolute-URL check."
+  },
+  {
+   "id": "cli.rule.Validate the manifest.Warnings",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/format/validate/mcp-check.ts:62; tests/cli/validate-run.test.ts",
+   "note": "Spec: warn on an `http://` or `ws://` URL to a non-loopback host and on a header value that looks like a literal credential. Code: insecureUrl (mcp-check.ts:62) checks only `http:`; no header-credential check exists (a `ws://example.com` server and an `Authorization: Bearer sk-...` header both give no finding). Add both warnings."
+  },
+  {
+   "id": "cli.rule.Validate the manifest.Validation passed",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31; tests/cli/validate-run.test.ts",
+   "note": "validate-run.ts:31 gives the bare line. Note: the mod validator prints `✔ Validation passed` / `✘ Validation failed` with a prefix (mods/load/commands/validate.ts verdict), which is not the quoted line."
+  },
+  {
+   "id": "cli.rule.Validate the manifest.Validation passed with warnings",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.rule.Validate the manifest.Validation failed",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.1",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31,99; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.2",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:58; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.0",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31,99; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.success",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31,99; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.strict",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31,99; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.target",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31,99; tests/cli/validate-run.test.ts",
+   "note": "validationJson takes the resolved path from the host. Note: the mod validator (mods/load/commands/validate.ts) reports `target` as typed, not resolved."
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.manifest",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31,99; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.contents",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/validate-run.ts:31,99; tests/cli/validate-run.test.ts",
+   "note": "Spec: each result carries errors, warnings, notes and `gatingHooks` (module, pattern, hook, hasCatch). The plugin validator report (validate-run.ts ValidationFileResult, :55) has no gatingHooks and always empty notes; only the separate mod validator (src/mods/load/commands/validate.ts:39) emits gatingHooks, and its entries are plain strings, not the {path, message} of J17.15. One report shape should carry both."
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.advice",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31,99; tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "cli.plugin.Advice on the README",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/validate-advice.ts:27,40; tests/cli/validate-advice.test.ts",
+   "note": "Spec item 2: a line pasted with the placeholder `<owner>/<repo>` unchanged does not count, so the advice stays. Code: readmeInstallsPlugin (validate-advice.ts:27) counts any `--marketplace <word>`, so `/plugin install p --marketplace <owner>/<repo>` returns true and clears the advice (checked with bun -e). adviceNeedsSource exists but is not used by the counting. The implementation should change; the test covers only the generated line."
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add.--scope <scope>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add.--sparse <paths...>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add-sources.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add.--claudeai",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add.--json",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add.owner/repo",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add-sources.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add.https://github.com/owner/repo",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add-sources.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add.http://",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add-sources.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add../path",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add-sources.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace add..json",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:97,175; src/marketplace/marketplace-input.ts; tests/cli/marketplace-add-sources.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace list.name",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-list.ts:106,138; tests/cli/marketplace-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace list.source",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-list.ts:106,138; tests/cli/marketplace-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace list.repo",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-list.ts:106,138; tests/cli/marketplace-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace list.url",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-list.ts:106,138; tests/cli/marketplace-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace list.path",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-list.ts:106,138; tests/cli/marketplace-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace list.ref",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-list.ts:106,138; tests/cli/marketplace-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace list.installLocation",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-list.ts:106,138; tests/cli/marketplace-list.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace remove",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-remove.ts:123; tests/cli/marketplace-remove.test.ts"
+  },
+  {
+   "id": "cli.plugin.plugin marketplace update",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-update.ts:109; tests/cli/marketplace-update.test.ts"
+  },
+  {
+   "id": "cli.flag.--plugin-dir",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/plugins.ts:29,40; src/cli/flags/sideload.ts:23; tests/cli/flags-plugins.test.ts",
+   "note": "Note: ARCHIVE = /\\.zip$/i (flags/plugins.ts:17) still compares the extension without regard to case, the reference-only behaviour the verification pass removed from the text; the spec is now silent, so this is not a divergence."
+  },
+  {
+   "id": "cli.flag.--plugin-url",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/plugins.ts:29,40; src/cli/flags/sideload.ts:23; tests/cli/flags-plugins.test.ts"
+  },
+  {
+   "id": "cli.flag.--bare",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/modes.ts:16; src/cli/flags/customizations.ts:26; tests/cli/flags-modes.test.ts",
+   "note": "Bare mode skips hooks as a kind (customizations.ts:26), so hooks from --settings and from flag-loaded plugins do not run; flag-loaded plugins and --add-dir skills still load."
+  },
+  {
+   "id": "cli.flag.--safe-mode",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/modes.ts:23; src/cli/flags/customizations.ts:54; src/cli/flags/agents.ts:106; tests/cli/flags-modes.test.ts"
+  },
+  {
+   "id": "cli.flag.--disable-slash-commands",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/modes.ts:28; tests/cli/flags-modes.test.ts"
+  },
+  {
+   "id": "cli.flag.--restricted",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/modes.ts:38; src/rules/tools/availability.ts:61; tests/cli/flags-modes.test.ts"
+  },
+  {
+   "id": "cli.flag.--setting-sources",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/settings.ts:33; tests/cli/flags-settings.test.ts"
+  },
+  {
+   "id": "cli.flag.--settings",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/settings.ts:47,65; tests/cli/flags-settings.test.ts"
+  },
+  {
+   "id": "cli.flag.--add-dir",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/add-dir.ts:20,65,72; tests/cli/flags-session.test.ts",
+   "note": "ADD_DIR_CONFIGURATION covers skills, commands, agents and the two settings keys; additionalDirectories is file access only. It also lists CLAUDE.md/CLAUDE.local.md behind CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD, which the row does not mention but does not contradict."
+  },
+  {
+   "id": "cli.flag.--agent",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/agents.ts:19; tests/cli/flags-subagents.test.ts"
+  },
+  {
+   "id": "cli.flag.--agents",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/agents.ts:103; tests/cli/flags-subagents.test.ts"
+  },
+  {
+   "id": "cli.flag.--tools",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/session.ts:55; tests/cli/flags-session.test.ts"
+  },
+  {
+   "id": "cli.flag.--permission-mode",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/session.ts:29; tests/cli/flags-session.test.ts"
+  },
+  {
+   "id": "cli.flag.--mcp-config",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/flags/mcp.ts:24,73; tests/cli/flags-channels-mcp.test.ts",
+   "note": "Spec (fixed text): with -p the wait is MCP_TIMEOUT (default 30 s; shorter in a self-hosted environment), except a server with a cached tool list, which connects on first use. Code (flags/mcp.ts:24,67-73) has the 30 s default and MCP_TIMEOUT only: no self-hosted shortening and no cached-tool-list exception. Implementation should change (or report the environment fact through the flag context)."
+  },
+  {
+   "id": "cli.flag.--strict-mcp-config",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/mcp.ts:88,99; tests/cli/flags-channels-mcp.test.ts"
+  },
+  {
+   "id": "cli.flag.--channels",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/channels.ts:65; tests/cli/flags-channels-mcp.test.ts"
+  },
+  {
+   "id": "cli.flag.--dangerously-load-development-channels",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/channels.ts:68; tests/cli/flags-channels-mcp.test.ts"
+  },
+  {
+   "id": "cli.debug.Check resolved settings",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/settings/merge.ts; src/settings/resolve.ts; tests/settings/merge-core/precedence.test.ts"
+  },
+  {
+   "id": "cli.debug.Check hooks",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/format/hooks-settings (readHooksFile); src/hooks (debug log); tests/hooks/troubleshooting-fires.test.ts"
+  },
+  {
+   "id": "cli.debug.Test against a clean configuration",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/clean-configuration.ts:20,33; tests/cli/clean-configuration.test.ts; tests/cli/flags-modes.test.ts"
+  },
+  {
+   "id": "cli.debug.Test against a clean configuration.CLAUDE.md",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/customizations.ts:26,54; tests/cli/flags-modes.test.ts"
+  },
+  {
+   "id": "cli.debug.Test against a clean configuration.Problem gone",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/clean-configuration.ts:20,33; tests/cli/clean-configuration.test.ts"
+  },
+  {
+   "id": "cli.debug.Test against a clean configuration.Problem persists",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/clean-configuration.ts:20,33; tests/cli/clean-configuration.test.ts"
+  }
+ ],
+ "judgments": [
+  {
+   "id": "J17.1",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/command-table.ts:72-89",
+   "note": "init/new, eval, test are table rows only; no 2.1.325 directory checks or restore-set-aside are printed, so nothing changes the 2.1.321 verdict."
+  },
+  {
+   "id": "J17.2",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/result.ts:122,135; tests/cli/result.test.ts"
+  },
+  {
+   "id": "J17.3",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/scope.ts:123; src/cli/command-acceptance.ts:35; src/cli/install-config.ts:44; src/cli/install-start.ts:82; src/cli/uninstall-plan.ts:153; src/cli/disable-plan.ts:103; src/cli/marketplace-add.ts:73-75; src/cli/marketplace-update.ts:122; src/cli/command-table.ts:131",
+   "note": "Every listed usage error exists; the code also makes `disable` with neither name nor --all a usage error, which the list does not name."
+  },
+  {
+   "id": "J17.4",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/*-plan.ts, install-lookup.ts, toggle-target.ts",
+   "note": "Every fixed code is used. The code adds `command_not_accepted` (install-plan.ts:121, update-plan.ts:147) for the displayed-command refusal of §17.4.2-§17.4.3, which the table does not list; allowed as a client code, but the spec could fix it since the failure is one the chapter defines."
+  },
+  {
+   "id": "J17.5",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-ref.ts; src/cli/toggle-target.ts:128; src/cli/uninstall-plan.ts:160; src/cli/update-locate.ts:33"
+  },
+  {
+   "id": "J17.6",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/scope.ts:148-166; src/cli/toggle-target.ts:78; src/cli/disable-plan.ts:89"
+  },
+  {
+   "id": "J17.7",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/marketplace/dependency-prune.ts:98; src/cli/prune-plan.ts:42,95"
+  },
+  {
+   "id": "J17.8",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/command-acceptance.ts:86,126"
+  },
+  {
+   "id": "J17.9",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/plugin-list.ts:87",
+   "note": "SHOULD-level: a session-only plugin should show `Path:` instead of `Scope:`; listText always prints `Scope: <scope>` (and `Status: ✔ enabled`/`✘ disabled`, not `✔ loaded`). Implementation should change."
+  },
+  {
+   "id": "J17.10",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:105-116; tests/cli/plugin-list.test.ts"
+  },
+  {
+   "id": "J17.11",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-details.ts:28",
+   "note": "Rounding is the client's; the headings and order are right (the missing count is recorded on cli.plugin.plugin details.Component inventory)."
+  },
+  {
+   "id": "J17.12",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/configure-plan.ts:72-90"
+  },
+  {
+   "id": "J17.13",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/loading/validate/validate-plugin.ts:31-33; src/cli/validate-run.ts:58",
+   "note": "`File not found` under key `file`, exit 1. Exit 2 for ENOTDIR depends on the PluginFiles port throwing rather than returning undefined; the kit cannot tell the two apart itself."
+  },
+  {
+   "id": "J17.14",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/loading/validate/components-only.ts (hasSkillsTree, componentsOnly); tests/cli/validate-run.test.ts"
+  },
+  {
+   "id": "J17.15",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/validate-run.ts:55,82; src/mods/load/commands/validate.ts:34",
+   "note": "The plugin report entries are {path, message}; the mod validator report entries are plain strings. One shape should hold for both."
+  },
+  {
+   "id": "J17.16",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:126-147"
+  },
+  {
+   "id": "J17.17",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-advice.ts:70-77; tests/cli/validate-advice.test.ts"
+  },
+  {
+   "id": "J17.18",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-list.ts:72-123"
+  },
+  {
+   "id": "J17.19",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-remove.ts:102,134"
+  },
+  {
+   "id": "J17.20",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-update.ts:64-73,96"
+  },
+  {
+   "id": "J17.21",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:98,190-218"
+  },
+  {
+   "id": "J17.22",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/tag-plan.ts:52-56,67-75"
+  },
+  {
+   "id": "J17.23",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/sideload.ts:20; src/cli/flags/session.ts:32,37,56; src/cli/flags/add-dir.ts:68; src/cli/flags/channels.ts:61; src/cli/flags/settings.ts:53,70"
+  },
+  {
+   "id": "J17.24",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/flags/customizations.ts:26-42"
+  },
+  {
+   "id": "J17.26",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/install-config.ts:38-48,100-118; src/cli/install-plan.ts:160"
+  },
+  {
+   "id": "J17.27",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/update-plan.ts:179"
+  },
+  {
+   "id": "J18.1",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "src/hooks/ (Claude Code side only)",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). The PreToolUse ordering (Claude Code handlers and updatedInput first, core after, core runs even after a deny) has no core side to order."
+  },
+  {
+   "id": "J18.2",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No core PostToolUse input built from the pre-replacement result."
+  },
+  {
+   "id": "J18.3",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No handler order across forms."
+  },
+  {
+   "id": "J18.4",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No core failure handling (never blocks, reported as a non-blocking hook error)."
+  },
+  {
+   "id": "J18.5",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). The Claude Code command-hook defaults exist for Claude Code hooks; nothing applies them to core handlers."
+  },
+  {
+   "id": "J18.6",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No mapping of SessionStart sources to the core event."
+  },
+  {
+   "id": "J18.7",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No mapping of UserPromptSubmit origins to the core event."
+  },
+  {
+   "id": "J18.8",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No core PostToolUse from PostToolUseFailure."
+  },
+  {
+   "id": "J18.9",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No shared continuation counter (continuation_active)."
+  },
+  {
+   "id": "J18.10",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). The plugin:<name>:<server> naming exists for Claude Code plugin servers (§8.5), nothing registers a core server under it."
+  },
+  {
+   "id": "J18.11",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No core mcp.json reader or mapping to native server defaults."
+  },
+  {
+   "id": "J18.12",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "src/hooks/handlers/command/env.ts; src/loading/resolve/variables.ts",
+   "note": "Half conforms: Claude Code subprocesses never get PLUGIN_ROOT/PLUGIN_DATA from the kit. The core half (base environment plus PLUGIN_*, no CLAUDE_PLUGIN_*) is missing: agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/)."
+  },
+  {
+   "id": "J18.13",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/)."
+  },
+  {
+   "id": "J18.14",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No core skill exposure without §4.8 expansion."
+  },
+  {
+   "id": "J18.15",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). Policy, trust and disableAllHooks apply by id to Claude Code plugins only; marketplace entry component fields/strict:false are not reported for a core package."
+  },
+  {
+   "id": "J18.16",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/). No tool_profile derivation (shell, file.read, file.modify, WebFetch, WebSearch, mcp)."
+  },
+  {
+   "id": "J18.17",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "No converter or hook adapter."
+  },
+  {
+   "id": "J18.18",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "No converter, so no env bridging."
+  },
+  {
+   "id": "J18.19",
+   "file": "18-bridge.md",
+   "status": "conforms",
+   "evidence": "src/format/names.ts:107-110; src/format/manifest.ts (validateManifest)",
+   "note": "Checked with bun -e: author without name gives `author.name: Invalid input: expected string, received undefined`, homepage `docs.example.com` gives `Invalid URL`, `extensions` warns `Unknown field 'extensions'`; a dotted name draws the `is not kebab-case. Claude Code accepts it` warning through the validator name rules."
+  },
+  {
+   "id": "J18.20",
+   "file": "18-bridge.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-run.ts:31; src/cli/validate-advice.ts",
+   "note": "The validator prints no 2.1.325 plugin directory checks (README_MISSING, ICON_MISSING); verdict lines are the §2.11 ones. The worked example was not re-run through the kit."
+  },
+  {
+   "id": "§18.1",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Core form in one client: missing entirely. Needed: form decision per root (§1.3 table, dual = Claude Code only); a core loader (plugin.json with core $schema, skills/ one level, mcp.json, hooks.json; ignore every Claude Code location and extensions); a core hook runner (exec form, one JSON object on stdin, cwd plugin root, exit 0 + one object or nothing, everything else a non-blocking failure, CC timeouts/caps); occurrence mapping of the five events and the cross-form combination rules (PreToolUse CC-first then core, decision precedence, one Stop continuation, handler order); core subprocess environment; core server registration under plugin:<name>:<server> with core §7.2 validation; settings/policy/permissions/skills by id. Size: large, roughly 1,500-2,500 lines plus tests, mostly new modules beside src/hooks, src/loading and src/settings; the hook engine needs a second handler kind and a combination step."
+  },
+  {
+   "id": "§18.2",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Event and result mapping: missing. Needed: per-event input builders (common fields, SessionStart/UserPromptSubmit/PreToolUse/PostToolUse/Stop fields) and result readers both ways, plus the tool profiles of §18.2.7 (shell, file.read with line-numbered text and binary pages, file.modify incl. NotebookEdit absolute path, WebFetch, WebSearch items, mcp). Size: medium, about 600-1,000 lines of pure tables and tests; shared by §18.1 and the §18.4 adapter."
+  },
+  {
+   "id": "§18.3",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "src/format/names.ts:107; src/format/manifest.ts",
+   "note": "Dual packages: the Claude Code half already behaves (a dual package validates as a plugin; J18.19 messages match). Missing: recognising the root core plugin.json so a dual package loads as Claude Code only and SHOULD be shown as also carrying a core manifest (§1.3.1), and a core validator for a core package (§18.1.5 item 6). Size: small, about 100-300 lines, most of it shared with the §18.1 form decision."
+  },
+  {
+   "id": "§18.4",
+   "file": "18-bridge.md",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Conversion: missing; no converter exists. Needed: core-to-plugin and plugin-to-core converters (manifest copy, skill checks, MCP table with env bridging J18.18, reporting every loss with its path, no renaming, deterministic, dual output by default) and a hook adapter program translating inputs, results and exit statuses by §18.2. Size: large, about 1,000-1,500 lines plus the adapter runtime; it can be a separate entry point (it is a tool, not part of a session)."
+  }
+ ]
+}

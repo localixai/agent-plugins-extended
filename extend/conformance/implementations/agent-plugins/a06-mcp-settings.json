@@ -1,0 +1,1488 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a06-mcp-settings",
+  "date": "2026-11-16",
+  "files": [
+    "08-mcp.md",
+    "12-settings.md"
+  ],
+  "requirements": [
+    {
+      "id": "mcp.components.MCP servers",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-sources.ts:181 (collectMcpServers); tests/loading/resolve/mcp-components-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-sources.ts:181; tests/loading/resolve/mcp-spec-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.source..json",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-sources.ts:44 (loadJsonFile), :80; tests/format/mcp-sources.test.ts",
+      "note": "Wrapper test is J8.1 (src/format/mcp-config.ts isWrapper)."
+    },
+    {
+      "id": "mcp.source.Inline map",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-sources.ts:89 (inline-map, rejectsManifest); tests/format/mcp-sources.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.source.MCP bundle path",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-sources.ts:66, src/format/mcp-bundles.ts:62 (.mcpb/.dxt, .mcpb-cache); tests/format/mcp-sources.test.ts",
+      "note": "Extraction itself is the host's McpBundleReader port."
+    },
+    {
+      "id": "mcp.source.MCP bundle URL",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-sources.ts:72, src/format/mcp-bundles.ts:69; tests/format/mcp-sources.test.ts",
+      "note": "Edge: classification matches https? case-insensitively but the accept check is case-sensitive startsWith('https://'), so HTTPS://x.mcpb is refused. Spec silent on case."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.Multiple transport types",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts SCHEMAS (stdio/sse/http/ws), ALIASES; tests/loading/resolve/mcp-spec-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Add MCP servers from JSON configuration",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-add-json.ts:155 (readMcpServer, same reader as plugin entries); tests/format/mcp-add-json.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Option 3: Add a local stdio server",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:94 resolveStdio + exportedEnvironment (CLAUDE_PROJECT_DIR, CLAUDE_PLUGIN_ROOT, CLAUDE_PLUGIN_DATA); tests/loading/resolve/mcp-transport-proofs.test.ts",
+      "note": "The roots/list answer, list_changed and the SIGINT/SIGTERM/SIGKILL stop sequence are not in the kit: transport clients are host ports (spec/scope-audit.md)."
+    },
+    {
+      "id": "mcp.behavior.Option 1: Add a remote HTTP server",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts SCHEMAS.http; src/format/mcp-knobs.ts:24 (60 s first-byte floor); src/format/mcp-output.ts oversizedMcpMessage; tests/loading/resolve/mcp-transport-proofs.test.ts",
+      "note": "No HTTP-to-SSE fallback for a declared entry, as the spec says."
+    },
+    {
+      "id": "mcp.behavior.Option 2: Add a remote SSE server",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts SCHEMAS.sse; tests/loading/resolve/mcp-transport-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Option 4: Add a remote WebSocket server",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts WsMcpServer, SIGNS_IN_WITH_OAUTH.ws=false; src/format/mcp-output.ts OVERSIZE.ws; tests/loading/resolve/mcp-transport-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.troubleshooting.Server is configured but never connects",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts droppedServerLogLine, readMcpConfig; tests/loading/resolve/mcp-connection-proofs.test.ts",
+      "note": "Validator half: src/format/validate/mcp-check.ts, but see Override OAuth metadata discovery: a non-https authServerMetadataUrl is neither dropped nor reported."
+    },
+    {
+      "id": "mcp.troubleshooting.Server works with --plugin-dir but fails after install",
+      "file": "08-mcp.md",
+      "status": "not-applicable",
+      "evidence": "tests/loading/resolve/mcp-troubleshooting-proofs.test.ts",
+      "note": "Binds the plugin author (write paths with ${CLAUDE_PLUGIN_ROOT}); the kit's substitution is covered under Path placeholders."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.Path placeholders",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:94,148 (command/args/env; url/headers/headersHelper); tests/loading/resolve/mcp-spec-proofs.test.ts, tests/loading/resolve/mcp.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.components.Server names, tool names, and reloads.Substitution",
+      "file": "08-mcp.md",
+      "status": "diverges",
+      "evidence": "src/loading/resolve/mcp.ts:94,148; tests/loading/resolve/mcp.test.ts:30 ('in no other field')",
+      "note": "§8.4.1 item 3 says ${user_config.KEY} is substituted in every string of a server's configuration except headersHelper; the code substitutes options only in the same fields as path placeholders (command/args/env, url/headers), so oauth.clientId and other strings stay literal. Likely the spec is overbroad: docs name substitution in MCP configs without listing other fields; spec should narrow item 3 to those fields."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.User environment access",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/substitute.ts environmentToken; src/format/mcp-env.ts:24; tests/loading/resolve/mcp-spec-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcpSettings.behavior.Example with variable expansion",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-env.ts expandMcpServer; tests/format/mcp-env.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcpSettings.behavior.Unset variables without a default",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-env.ts expandMcpServer (warning, literal); src/loading/resolve/mcp.ts:75 unlessMissing (plugin: Missing environment variables); tests/format/mcp-env.test.ts, tests/loading/resolve/mcp.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcpSettings.behavior.Variables set to an empty string",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-env.ts:184-197 (`'url' is not a valid URL`); tests/format/mcp-env.test.ts",
+      "note": "For a plugin server the same case reads `has an invalid MCP url` (src/loading/resolve/mcp.ts:160), as §8.3 table says for a plugin."
+    },
+    {
+      "id": "mcpSettings.behavior.Credential variables that read as empty",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/remote-mcp-credentials.ts:91, src/format/credential-env.ts:25 (never expanded toward a remote server); tests/format/mcp-env-credentials.test.ts, tests/format/credential-env.test.ts, tests/loading/resolve/mcp.test.ts",
+      "note": "Fixed entry (no missing-variable warning for a covered name) held by the readsAsEmpty policy in resolveEnvReference."
+    },
+    {
+      "id": "mcp.components.Server names, tool names, and reloads.Server name",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:57 mcpServerKey; tests/loading/resolve/mcp-components-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.components.Server names, tool names, and reloads.Tool names",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool.ts:14-27; tests/loading/resolve/mcp-components-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Tools with names longer than 128 characters",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool.ts:30-43 (UTF-16 length, exact log text); tests/format/mcp-tool.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Execute MCP prompts",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-prompts.ts:31-80; tests/format/mcp-prompts.test.ts",
+      "note": "Plugin form follows J8.12 when the host passes the scoped name (normalised to plugin_<plugin>_<server>)."
+    },
+    {
+      "id": "mcp.behavior.Use dynamic headers for custom authentication",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper.ts:37 (10 s), headers-helper-run.ts:39-110 (JSON object, case-insensitive override, Authorization disables OAuth fallback, rejected-Authorization message); tests/loading/resolve/headers-helper.test.ts, headers-helper-run.test.ts, tests/format/helper-headers.test.ts",
+      "note": "The 401/403 rerun-and-retry-once loop is modelled in HelperAttempt (reruns at most one)."
+    },
+    {
+      "id": "mcp.behavior.Use dynamic headers for custom authentication.CLAUDE_CODE_MCP_SERVER_NAME",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper.ts:46, src/loading/resolve/mcp.ts:128 (scoped key); tests/loading/resolve/headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Use dynamic headers for custom authentication.CLAUDE_CODE_MCP_SERVER_URL",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper.ts:47,58-76 (REDACTED); tests/loading/resolve/headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Use dynamic headers for custom authentication.CLAUDE_PLUGIN_ROOT",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper.ts:48; headers-helper-origins.ts providesPluginRoot; tests/loading/resolve/headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Where the helper runs.A plugin",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper-origins.ts ORIGIN_RULES.plugin (plugin-root); tests/loading/resolve/headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Where the helper runs..mcp.json",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper-origins.ts ORIGIN_RULES.project/local; tests/loading/resolve/headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Where the helper runs.mcpServers",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper-origins.ts ORIGIN_RULES.sdk/mcp-config/agent-project; tests/loading/resolve/headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Where the helper runs.--add-dir",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper-origins.ts ORIGIN_RULES.user/managed/connector/agent-add-dir/agent-user/agent-managed/agent-flag; tests/loading/resolve/headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Which variables a helper can read",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper-origins.ts removesCredentials; src/format/credential-env.ts:46-62; tests/loading/resolve/headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Trust a folder before its headersHelper runs.Trust that doesn't count",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper-trust.ts; tests/loading/resolve/headers-helper-trust.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Trust a folder before its headersHelper runs.Until you trust the folder",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper-trust.ts; tests/loading/resolve/headers-helper-trust.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Trust a folder before its headersHelper runs.Trust without a dialog",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper-trust.ts (globalConfigFileOf, hasTrustDialogAccepted); tests/loading/resolve/headers-helper-trust.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Authenticate with remote MCP servers",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-oauth.ts:107 mcpOAuthDiscovery, :227 mcpAuthRejection, :240 storedTokenRecovery; tests/format/mcp-oauth.test.ts, tests/format/mcp-add-oauth.test.ts",
+      "note": "The flow, browser and token store are host work."
+    },
+    {
+      "id": "mcp.behavior.Use a fixed OAuth callback port",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-oauth.ts:90 mcpOAuthRedirectUri (localhost); tests/format/mcp-oauth.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Use pre-configured OAuth credentials",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-oauth.ts:55-63 (clientSecret refused as a config field); tests/format/mcp-oauth.test.ts, tests/format/mcp-add-oauth.test.ts",
+      "note": "The plugin loader keeps the oauth object untouched (looseObject), so an oauth.clientSecret in a plugin's .mcp.json reaches the host unless it reads the block through readMcpOAuth."
+    },
+    {
+      "id": "mcp.behavior.Override OAuth metadata discovery",
+      "file": "08-mcp.md",
+      "status": "diverges",
+      "evidence": "src/format/mcp-config.ts SCHEMAS (oauth unchecked, looseObject); src/format/mcp-oauth.ts:38 (https check only in readMcpOAuth, used by add-json); src/format/validate/mcp-check.ts:21 (oauth schema lacks authServerMetadataUrl); tests/format/mcp-config.test.ts:48",
+      "note": "§8.7.2 item 3 (and J8.3): an entry whose authServerMetadataUrl is not https:// is invalid and dropped (§8.3, validator reports it). The plugin loader (readMcpServer) never reads oauth, so the entry loads; the validator does not report it either. Code should change: validate oauth in readMcpServer (wrong type, non-https metadata URL drop the entry) and in mcp-check."
+    },
+    {
+      "id": "mcp.behavior.Restrict OAuth scopes",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-oauth.ts:128-160 requestedOAuthScopes; tests/format/mcp-oauth.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Use OAuth with a server behind an authenticating proxy",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-oauth.ts planMcpOAuth; tests/format/mcp-oauth.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.components.Server names, tool names, and reloads.Reload",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-reload.ts:31 planMcpReload; tests/loading/resolve/mcp-components-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.Automatic lifecycle",
+      "file": "08-mcp.md",
+      "status": "diverges",
+      "evidence": "src/format/mcp-reload.ts:52-75 (15-min skip, J8.16), src/format/mcp-startup.ts:59-85 (cached, alwaysLoad); src/loading/resolve/mcp.ts:157-162; tests/loading/resolve/mcp-spec-proofs.test.ts",
+      "note": "Mostly conforms. Two gaps against §8.8: (1) item 6 / §8.2 table: an empty url is a `not configured` placeholder, listed and not an error; the kit refuses a plugin server with url \"\" as `has an invalid MCP url` (mcp.ts:157) and drops a settings-scope one as `'url' is not a valid URL` (mcp-env.ts:193) — code should change. (2) the fixed entry limits `cached` to an http/sse server used before; the kit takes `cached` from the host for any transport (minor, host-decided). Skip-retry compares the whole config, not only command/args/env (harmless)."
+    },
+    {
+      "id": "mcp.components.Include a packaged MCPB server",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcpb-manifest.ts:40-52 (platform_overrides), :111-125 (required, empty string no value); src/loading/resolve/bundle-scope.ts:13; tests/loading/resolve/mcp-components-proofs.test.ts",
+      "note": "A required setting with its own default is treated as not needing a value (kit judgment; spec silent)."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Output warning threshold",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-25,51-60,140-170,212-229; tests/format/mcp-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Default limit",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-25,51-60,140-170,212-229; tests/format/mcp-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Configurable limit",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-25,51-60,140-170,212-229; tests/format/mcp-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Scope",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-25,51-60,140-170,212-229; tests/format/mcp-output.test.ts",
+      "note": "Foreground/background distinction is the host's (kit gives the verdict)."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Over the limit",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-25,51-60,140-170,212-229; tests/format/mcp-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Response size from HTTP and SSE servers",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-25,51-60,140-170,212-229; tests/format/mcp-output-results.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Message size from WebSocket servers",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-25,51-60,140-170,212-229; tests/format/mcp-output-results.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Character limit for text results",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-25,51-60,140-170,212-229; tests/format/mcp-output.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Error results",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:13-25,51-60,140-170,212-229; tests/format/mcp-output-results.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Raise the limit for a specific tool",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool.ts:57-66 (ceiling 500,000), src/format/mcp-output.ts:140; tests/format/mcp-tool.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Require approval for a specific tool",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool.ts:59,98 (=== true), :115-125 (permission context); tests/format/mcp-tool.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Mark tools that are safe to call twice",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool.ts:49-96; tests/format/mcp-tool.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Tool input schemas with a root-level combinator",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool-schema.ts; tests/format/mcp-tool-schema.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Tools with invalid input schemas",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-schema-check.ts; tests/format/mcp-tool-schema-rules.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Tools whose input schema the API refuses",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool-schema.ts; tests/format/mcp-tool-schema.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Images in tool results",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:180-210 (mcpImageFiles, persist flag); tests/format/mcp-output-results.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Respond to MCP elicitation requests",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-elicitation.ts:63-80 (8,000 cap, escapes count four), mcp-elicitation-form.ts; tests/format/mcp-elicitation.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Elicitation modes Claude Code declares",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-elicitation.ts:36-56; tests/format/mcp-elicitation.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcpSettings.behavior.Disable a server without removing it",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/settings/mcp/toggles.ts:40-51 (plugin OPT_OUT, builtinDefaultOff OPT_IN); tests/settings/mcp/toggles.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcpSettings.behavior.How references appear in /mcp and CLI output",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-env.ts displayReference/displayHeaders; tests/format/mcp-env.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.stdio server",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-plugin-display.ts redactedStdio, REDACTORS (http/sse not hidden, per the fixed entry); tests/loading/resolve/mcp-spec-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.WebSocket server",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-plugin-display.ts redactedWs; tests/loading/resolve/mcp-spec-proofs.test.ts",
+      "note": ""
+    },
+    {
+      "id": "settingsMerge.settings.Compare the scope of each settings file.~/.claude/settings.json",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/reach.ts:63; tests/settings/merge-core/files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Compare the scope of each settings file.acme-app/.claude/settings.json",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/reach.ts:63; tests/settings/merge-core/files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Compare the scope of each settings file.acme-app/.claude/settings.local.json",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/reach.ts:63; tests/settings/merge-core/files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Compare the scope of each settings file.Managed settings",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/reach.ts:63; tests/settings/merge-core/files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Find or create your settings files.Managed",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/file-locations.ts:70 (WRITE_TARGET), src/settings/general/file-locations.ts:89; tests/settings/merge-core/files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Find or create your settings files.Shared project",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/file-locations.ts:70 (WRITE_TARGET), src/settings/general/file-locations.ts:89; tests/settings/merge-core/files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Find or create your settings files.User",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/file-locations.ts:70 (WRITE_TARGET), src/settings/general/file-locations.ts:89; tests/settings/merge-core/files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Where Claude Code keeps the local file in a git repository",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/file-locations.ts:126, src/settings/general/file-locations.ts:163; tests/settings/merge-core/files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Edit a settings file",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/broken-file.ts:54, src/settings/read-layer.ts:132; tests/settings/merge-core/broken-files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Change a setting for one session.--settings",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:13 (flag scope), src/settings/key-spec.ts:88 (scopeCarries), src/settings/read-layer.ts:117; tests/settings/merge-core/precedence.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Change a setting for one session.A flag for that key",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:13 (flag scope), src/settings/key-spec.ts:88 (scopeCarries), src/settings/read-layer.ts:117; tests/settings/merge-core/session-overrides.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Change a setting for one session.An environment variable",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:13 (flag scope), src/settings/key-spec.ts:88 (scopeCarries), src/settings/read-layer.ts:117; tests/settings/merge-core/session-overrides.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.When edits take effect",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/edit-effect.ts:70; tests/settings/merge-core/edit-effect.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Fix a broken settings file.Settings Error",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/broken-file.ts:54; tests/settings/merge-core/broken-files.test.ts",
+      "note": "Message per J12.5; the start-up dialog is host UI."
+    },
+    {
+      "id": "settingsMerge.settings.Fix a broken settings file.Settings Warning",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/broken-file.ts:54, src/settings/broken-file.ts:78; tests/settings/merge-core/broken-files.test.ts, tests/settings/merge-core/warnings.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Fix a broken settings file.Managed settings",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/broken-file.ts:54, src/settings/broken-file.ts:78; tests/settings/merge-core/broken-files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Fix a broken settings file.Configuration error",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/claude-json.ts:46; tests/settings/merge-core/broken-files.test.ts",
+      "note": "Decision and lines only; the copy and the prompt are the host's."
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.Managed settings",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:13, src/settings/layers.ts:47; tests/settings/merge-core/precedence.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.Command line",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:13, src/settings/layers.ts:47; tests/settings/merge-core/precedence.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.Project local settings",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:13, src/settings/layers.ts:47; tests/settings/merge-core/precedence.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.Shared project settings",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:13, src/settings/layers.ts:47; tests/settings/merge-core/precedence.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.User settings",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:13, src/settings/layers.ts:47; tests/settings/merge-core/precedence.test.ts"
+    },
+    {
+      "id": "settingsMerge.behavior.Settings precedence",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:13, src/settings/layers.ts:47; tests/settings/merge-core/lists.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.disableClaudeAiConnectors",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/managed-exceptions.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.enableArtifact",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/managed-exceptions.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.isolatePeerMachines",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/managed-exceptions.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.permissions.denyInsteadOfPrompting",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/permissions/deny-instead-of-prompting.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.autoMode.classifyAllShell",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/managed-exceptions.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.remoteControlAtStartup",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/managed-exceptions.test.ts, tests/settings/merge-core/remote-control.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.crossSessionInbound",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/managed-exceptions.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.useAutoModeDuringPlan",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/managed-exceptions.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.syncClaudeAiSkills",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/managed-exceptions.test.ts, tests/settings/skills/sync-skills.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.syncClaudeAiPlugins",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/managed-exceptions.test.ts, tests/settings/plugins/sync-plugins.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.maxEffortLevel",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:75, src/settings/general/rows.ts:41; tests/settings/merge-core/effort.test.ts, tests/settings/merge-core/managed-exceptions.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.A value you set is ignored.A higher level sets it",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:52 (REPOSITORY_FILES), src/settings/general/exceptions.ts:75; tests/settings/merge-core/exception-table.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.A value you set is ignored.A security key keeps its strict value",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:52 (REPOSITORY_FILES), src/settings/general/exceptions.ts:75; tests/settings/merge-core/exception-table.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.A value you set is ignored.The file can't set that value",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:52 (REPOSITORY_FILES), src/settings/general/exceptions.ts:75; tests/settings/merge-core/cannot-set.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.A value you set is ignored.The file is broken",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:52 (REPOSITORY_FILES), src/settings/general/exceptions.ts:75; tests/settings/merge-core/broken-files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.A committed key doesn't reach teammates",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:52 (REPOSITORY_FILES), src/settings/general/exceptions.ts:75; tests/settings/merge-core/broken-files.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.A managed change hasn't reached you",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:52 (REPOSITORY_FILES), src/settings/general/exceptions.ts:75; tests/settings/merge-core/edit-effect.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Permission rules combine differently than you expected",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:52 (REPOSITORY_FILES), src/settings/general/exceptions.ts:75; tests/settings/merge-core/lists.test.ts, tests/settings/merge-core/permission-rules.test.ts"
+    },
+    {
+      "id": "settingsMerge.settings.Lists merge instead of overriding",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/merge.ts:44, src/settings/canonical.ts:9; tests/settings/merge-core/effort.test.ts, tests/settings/merge-core/lists.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/drop-in.ts:54, src/settings/managed/drop-in.ts:70; tests/settings/managed/drop-in.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams.Single values",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/drop-in.ts:54, src/settings/managed/drop-in.ts:70; tests/settings/managed/drop-in.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams.Lists",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/drop-in.ts:54, src/settings/managed/drop-in.ts:70; tests/settings/managed/drop-in.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams.Nested blocks",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/drop-in.ts:54, src/settings/managed/drop-in.ts:70; tests/settings/managed/drop-in.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams.fallbackModel",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/drop-in.ts:54, src/settings/managed/drop-in.ts:70; tests/settings/managed/drop-in.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources.Policy key",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts:13, src/settings/managed/compose.ts:251; tests/settings/managed/present.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources.Admin source",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts:13, src/settings/managed/compose.ts:251; tests/settings/managed/present.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts:13, src/settings/managed/compose.ts:251; tests/settings/managed/first-wins.test.ts, tests/settings/managed/merge.test.ts, tests/settings/managed/present.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.When an admin document counts as present",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts:13, src/settings/managed/compose.ts:251; tests/settings/managed/present.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources.\"first-wins\", the default",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts:13, src/settings/managed/compose.ts:251; tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources.\"merge\"",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts:13, src/settings/managed/compose.ts:251; tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts:143, src/settings/managed/cross-source.ts:177; tests/settings/managed/cross-source-keys.test.ts, tests/settings/managed/cross-source-rules.test.ts, tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.sandbox.network.allowManagedDomainsOnly",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts:143, src/settings/managed/cross-source.ts:177; tests/settings/managed/cross-source-rules.test.ts, tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.allowAllClaudeAiMcps",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts:143, src/settings/managed/cross-source.ts:177; tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.allowManagedMcpServersOnly",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts:143, src/settings/managed/cross-source.ts:177; tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.deniedMcpServers",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts:143, src/settings/managed/cross-source.ts:177; tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.sandbox.filesystem.disabled",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts:143, src/settings/managed/cross-source.ts:177; tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.env",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts:143, src/settings/managed/cross-source.ts:177; tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Which managed source supplies login keys",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/login-keys.ts:34; tests/settings/managed/login-keys.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Lists",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/combine.ts:50, src/settings/managed/combine.ts:153; tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Locks",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/combine.ts:50, src/settings/managed/combine.ts:153; tests/settings/managed/merge-keys.test.ts, tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Restriction allowlists",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/combine.ts:50, src/settings/managed/combine.ts:153; tests/settings/managed/merge-keys.test.ts, tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Values taken whole",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/combine.ts:50, src/settings/managed/combine.ts:153; tests/settings/managed/merge-keys.test.ts, tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Provided MCP servers",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/combine.ts:50, src/settings/managed/combine.ts:153; tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.env",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/combine.ts:50, src/settings/managed/combine.ts:153; tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Login keys",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/login-keys.ts:34; tests/settings/managed/login-keys.test.ts"
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Every other key",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/combine.ts:50, src/settings/managed/combine.ts:153; tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "settings.components.Default settings.File over manifest",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/loading/readers-config.ts:164, src/format/plugin-settings.ts:32; tests/settings/general/plugin-defaults.test.ts",
+      "note": "File wins only when it holds an applied key; else the manifest applies. See J12.10 for the severity of a broken file."
+    },
+    {
+      "id": "settings.components.Default settings.User settings over plugin defaults",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/loading/readers-config.ts:164, src/settings/general/plugin-defaults.ts:22, src/settings/general/plugin-defaults.ts:63; tests/host/session-agent-defaults.test.ts, tests/settings/general/plugin-defaults.test.ts"
+    },
+    {
+      "id": "settings.components.Default settings.Two plugins set the same key",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/loading/readers-config.ts:164, src/settings/general/plugin-defaults.ts:22, src/settings/general/plugin-defaults.ts:63; tests/host/session-agent-defaults.test.ts, tests/settings/general/plugin-defaults.test.ts"
+    },
+    {
+      "id": "settings.key.agent",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:84; tests/host/session-agent-defaults.test.ts, tests/settings/general/session-keys.test.ts"
+    },
+    {
+      "id": "settings.key.allowedChannelPlugins",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:118; tests/settings/channels/allowlist.test.ts"
+    },
+    {
+      "id": "settings.key.allowedHttpHookUrls",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:123; tests/settings/hooks/http-urls.test.ts, tests/settings/hooks/parent-settings.test.ts"
+    },
+    {
+      "id": "settings.key.allowManagedHooksOnly",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:107; tests/settings/hooks/managed-only.test.ts"
+    },
+    {
+      "id": "settings.key.appendPlugins",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/mod-order.ts:124, src/settings/key-spec.ts:144; tests/settings/plugins/mod-order-append.test.ts",
+      "note": "The user-scope condition is the host fact `hasManagedSettings` (mod-order.ts:12, 'any admin-controlled source'); the library does not name `managed-mcp.json` in it, so a host must count that file itself."
+    },
+    {
+      "id": "settings.key.blockedMarketplaces",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:147; tests/settings/marketplaces/blocklist-gate.test.ts, tests/settings/marketplaces/blocklist.test.ts"
+    },
+    {
+      "id": "settings.key.channelsEnabled",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:152; tests/settings/channels/channel-gate.test.ts"
+    },
+    {
+      "id": "settings.key.crossSessionInbound",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:109; tests/settings/key-classes/cross-session.test.ts"
+    },
+    {
+      "id": "settings.key.disableAgentView",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:85; tests/settings/general/session-keys.test.ts"
+    },
+    {
+      "id": "settings.key.disableAllHooks",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:159; tests/settings/hooks/disable-all.test.ts, tests/settings/hooks/parent-lock.test.ts, tests/settings/hooks/parent-settings.test.ts"
+    },
+    {
+      "id": "settings.key.disableBundledSkills",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:161; tests/settings/skills/bundled.test.ts"
+    },
+    {
+      "id": "settings.key.disableCommandPluginSources",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:170; tests/settings/marketplaces/command-sources.test.ts"
+    },
+    {
+      "id": "settings.key.disableSkillShellExecution",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:176; tests/host/host-skills.test.ts, tests/settings/skills/shell.test.ts, tests/skills/expand-variables.test.ts"
+    },
+    {
+      "id": "settings.key.disableWorkflows",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:181; tests/settings/workflows/enablement.test.ts"
+    },
+    {
+      "id": "settings.key.enabledPlugins",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:188; tests/settings/plugins/enabled-plugins.test.ts"
+    },
+    {
+      "id": "settings.key.enableWorkflows",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:186; tests/settings/workflows/enablement.test.ts"
+    },
+    {
+      "id": "settings.key.env",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:121; tests/settings/env/settings-env.test.ts, tests/settings/env/shell-interaction.test.ts"
+    },
+    {
+      "id": "settings.key.extraKnownMarketplaces",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:189; tests/settings/marketplaces/registry-entries.test.ts, tests/settings/marketplaces/registry-headers.test.ts, tests/settings/marketplaces/registry.test.ts"
+    },
+    {
+      "id": "settings.key.hooks",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:205; tests/settings/hooks/merge.test.ts, tests/settings/hooks/repair.test.ts"
+    },
+    {
+      "id": "settings.key.httpHookAllowedEnvVars",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:206; tests/settings/hooks/http-env.test.ts, tests/settings/hooks/parent-settings.test.ts"
+    },
+    {
+      "id": "settings.key.isolatePeerMachines",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:124; tests/settings/key-classes/cross-session.test.ts"
+    },
+    {
+      "id": "settings.key.outputStyle",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:87; tests/settings/general/session-keys.test.ts"
+    },
+    {
+      "id": "settings.key.pluginConfigs",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:215; tests/settings/plugins/plugin-config.test.ts"
+    },
+    {
+      "id": "settings.key.pluginSuggestionMarketplaces",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:216; tests/settings/plugins/suggestions.test.ts, tests/settings/resolve.test.ts"
+    },
+    {
+      "id": "settings.key.pluginTrustMessage",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:221; tests/settings/plugins/trust-warning.test.ts"
+    },
+    {
+      "id": "settings.key.prependPlugins",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/mod-order.ts:124, src/settings/key-spec.ts:223; tests/settings/plugins/mod-order.test.ts",
+      "note": "As appendPlugins: `managed-mcp.json` is left to the host's `hasManagedSettings` fact."
+    },
+    {
+      "id": "settings.key.processWrapper",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:89; tests/settings/general/theme-and-wrapper.test.ts"
+    },
+    {
+      "id": "settings.key.skillOverrides",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:224; tests/settings/skills/overrides.test.ts"
+    },
+    {
+      "id": "settings.key.statusLine",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:90; tests/settings/general/command-lines.test.ts"
+    },
+    {
+      "id": "settings.key.strictKnownMarketplaces",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:235; tests/settings/marketplaces/allowlist-gate.test.ts, tests/settings/marketplaces/allowlist-patterns.test.ts, tests/settings/marketplaces/allowlist.test.ts"
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:240; tests/settings/customization/skills-dir.test.ts, tests/settings/customization/surfaces.test.ts"
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization.skills",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:240; tests/host/host-skills.test.ts, tests/settings/customization/skills.test.ts"
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization.agents",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:240; tests/settings/customization/agents.test.ts"
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization.hooks",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:240; tests/settings/customization/hooks.test.ts, tests/settings/resolve.test.ts"
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization.mcp",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:240; tests/settings/customization/mcp.test.ts"
+    },
+    {
+      "id": "settings.key.syncClaudeAiPlugins",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:245; tests/settings/plugins/sync-plugins.test.ts"
+    },
+    {
+      "id": "settings.key.syncClaudeAiSkills",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:251; tests/settings/skills/sync-skills.test.ts"
+    },
+    {
+      "id": "settings.key.teammateMode",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:92; tests/settings/general/session-keys.test.ts"
+    },
+    {
+      "id": "settings.key.theme",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:93; tests/format/theme.test.ts, tests/settings/general/theme-and-wrapper.test.ts"
+    },
+    {
+      "id": "settings.key.workflowKeywordTriggerEnabled",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:263; tests/settings/workflows/keyword.test.ts"
+    },
+    {
+      "id": "settings.key.workflowSizeGuideline",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:264; tests/settings/workflows/size.test.ts"
+    },
+    {
+      "id": "settings.key.worktree",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:209; tests/settings/general/worktree.test.ts"
+    },
+    {
+      "id": "settings.key.worktree.baseRef",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:209; tests/settings/general/worktree.test.ts"
+    },
+    {
+      "id": "settings.key.worktree.symlinkDirectories",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:209; tests/settings/general/worktree.test.ts"
+    },
+    {
+      "id": "settings.key.worktree.sparsePaths",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:209; tests/settings/general/worktree.test.ts"
+    },
+    {
+      "id": "settings.key.worktree.bgIsolation",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:209; tests/settings/general/worktree.test.ts"
+    },
+    {
+      "id": "settings.key.worktree.location",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/rows.ts:209 (scope user); tests/settings/general/worktree.test.ts",
+      "note": "Desktop-only use is outside the library; the scope rule is enforced."
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Managed and SDK hooks run",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/hooks/custom-commands.ts:43, src/settings/hooks/hook-gate.ts, src/settings/general/command-lines.ts:47; tests/settings/key-classes/managed-hooks-only-reference.test.ts"
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Force-enabled plugin hooks run",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/hooks/custom-commands.ts:43, src/settings/hooks/hook-gate.ts, src/settings/general/command-lines.ts:47; tests/settings/key-classes/managed-hooks-only-reference.test.ts"
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Monitors from other plugins are blocked",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/hooks/custom-commands.ts:43, src/settings/hooks/hook-gate.ts, src/settings/general/command-lines.ts:47; tests/settings/key-classes/managed-hooks-only-reference.test.ts"
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Everything else is blocked",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/hooks/custom-commands.ts:43, src/settings/hooks/hook-gate.ts, src/settings/general/command-lines.ts:47; tests/settings/key-classes/managed-hooks-only-reference.test.ts"
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Command-sourced plugins are disabled",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/hooks/custom-commands.ts:43, src/settings/hooks/hook-gate.ts, src/settings/general/command-lines.ts:47; tests/settings/key-classes/managed-hooks-only-reference.test.ts"
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/hooks/custom-commands.ts:43, src/settings/hooks/hook-gate.ts, src/settings/general/command-lines.ts:47; tests/settings/key-classes/managed-hooks-only-reference.test.ts"
+    },
+    {
+      "id": "settings.reference.Status line and file suggestion gates",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/hooks/custom-commands.ts:43, src/settings/hooks/hook-gate.ts, src/settings/general/command-lines.ts:47; tests/host/session-agent-defaults.test.ts, tests/settings/general/command-lines.test.ts"
+    },
+    {
+      "id": "settings.reference.How env values interact with your shell",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/env/ignored-variables.ts:44, src/settings/env/resolve-env.ts; tests/settings/env/settings-env-timing.test.ts, tests/settings/env/shell-interaction.test.ts"
+    },
+    {
+      "id": "settings.reference.When Claude Code applies env values",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/env/ignored-variables.ts:44, src/settings/env/resolve-env.ts; tests/settings/env/settings-env-timing.test.ts, tests/settings/env/timing.test.ts"
+    },
+    {
+      "id": "settings.reference.Variables Claude Code ignores in env",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/env/ignored-variables.ts:44, src/settings/env/resolve-env.ts; tests/settings/env/ignored-variables.test.ts, tests/settings/env/settings-env-ignored.test.ts"
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J8.1",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts isWrapper; tests/format/mcp-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J8.2",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts rejectsManifest, src/format/mcp-sources.ts:94; tests/format/mcp-sources.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J8.3",
+      "file": "08-mcp.md",
+      "status": "diverges",
+      "evidence": "src/format/mcp-config.ts SCHEMAS (looseObject, oauth unchecked); src/format/mcp-oauth.ts readMcpOAuth; tests/format/mcp-config.test.ts:48",
+      "note": "Open object and unknown-field keep: conforms. But the judgment's wrong-type drops include oauth (it is a §8.2 field of type object) and a non-https authServerMetadataUrl; the loader keeps any oauth value. Also readMcpOAuth reports an unknown oauth key as a warning and drops it, where J8.3 says ignored (add-json path only). Code should validate oauth in readMcpServer."
+    },
+    {
+      "id": "J8.4",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts ALIASES, readMcpServer; tests/format/mcp-config.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J8.5",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:75 unlessMissing; src/format/mcp-env.ts expandMcpServer; tests/loading/resolve/mcp.test.ts, tests/format/mcp-env.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J8.6",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/substitute.ts:20-30, environmentToken isVariableName; src/format/mcp-env.ts:24-30",
+      "note": ""
+    },
+    {
+      "id": "J8.7",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/remote-mcp-credentials.ts, src/format/credential-env.ts:46-62; tests/format/mcp-env-credentials.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J8.8",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/headers-helper-run.ts:39-80; tests/loading/resolve/headers-helper-run.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J8.9",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/mcp.ts:128-140 helperServer(key); tests/loading/resolve/headers-helper.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J8.10",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/shell-guard.ts:20-33, src/loading/resolve/mcp.ts:117 (template check before substitution); tests/loading/resolve/mcp.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J8.11",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-tool.ts:36-43; tests/format/mcp-tool.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J8.12",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-prompts.ts:31-48; tests/format/mcp-prompts.test.ts",
+      "note": "The kit has no reserved-name check at all (only the message, src/format/host-errors.ts:136), so a plugin key `workspace` loads as the judgment says; §8.5 item 5 for user configuration is unimplemented (no marker there)."
+    },
+    {
+      "id": "J8.13",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-sources.ts:69-107, src/format/mcp-bundles.ts:62-70; tests/format/mcp-sources.test.ts",
+      "note": "Case edge: HTTPS:// classified as URL then refused."
+    },
+    {
+      "id": "J8.14",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcpb-manifest.ts:40-52, :123-125",
+      "note": ""
+    },
+    {
+      "id": "J8.15",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-config.ts SIGNS_IN_WITH_OAUTH; src/format/mcp-oauth.ts:55",
+      "note": "oauth on ws/stdio is never used for sign-in; but the loader passes an oauth.clientSecret through in the server config (not stripped)."
+    },
+    {
+      "id": "J8.16",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-reload.ts:69-75 (age >= 0 && < 15 min)",
+      "note": ""
+    },
+    {
+      "id": "J8.17",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-output.ts:24,132 (cut when > 11,000), src/format/token-estimate.ts:10",
+      "note": "Estimate counts code points / 4, rounded up."
+    },
+    {
+      "id": "J8.18",
+      "file": "08-mcp.md",
+      "status": "conforms",
+      "evidence": "src/format/mcp-elicitation.ts:36-50 (host flags the user's configuration, plugin servers included)",
+      "note": ""
+    },
+    {
+      "id": "J12.1",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/layers.ts:24 (addDir rank 1), src/settings/key-spec.ts:79 (ONLY_KEYS), src/settings/plugins/enabled-plugins.ts:24; tests/settings/plugins (enabledPlugins)"
+    },
+    {
+      "id": "J12.2",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/canonical.ts:9 (canonical-JSON dedupe, highest first), src/settings/merge.ts:70 (non-list replaces); tests/settings/merge-core/lists.test.ts"
+    },
+    {
+      "id": "J12.3",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts:215,224 (perKeyHighestWins), src/settings/general/rows.ts:95,121,164,209 (deepMerge); tests/settings/merge.test.ts"
+    },
+    {
+      "id": "J12.4",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/plugins/enabled-plugins.ts:50 (`!== false`)"
+    },
+    {
+      "id": "J12.5",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/broken-file.ts:62 (exact text, flag scope labelled `--settings`); tests/settings/merge-core/broken-files.test.ts"
+    },
+    {
+      "id": "J12.6",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/read-layer.ts:117-124 (warning names ~/.claude.json, every scope incl. flag)"
+    },
+    {
+      "id": "J12.7",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/edit-effect.ts:48 (READ_AT_START, the six keys)"
+    },
+    {
+      "id": "J12.8",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/drop-in.ts:54 (byCodeUnit), src/settings/managed/drop-in.ts:70 (later files first in parts); tests/settings/managed/drop-in.test.ts"
+    },
+    {
+      "id": "J12.9",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/combine.ts:45-60 (lock: lower looser value ignored even when highest sets none); tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "J12.10",
+      "file": "12-settings.md",
+      "status": "diverges",
+      "evidence": "src/loading/readers-config.ts:150-156, src/format/plugin-settings.ts:41-43; tests/loading/load-plugin-settings.test.ts:51",
+      "note": "Fallback to the manifest, warnings for dropped keys/invalid values, and an error for a non-object manifest `settings` all conform. But a plugin `settings.json` that does not parse (`{bad`) or is not an object (`[1]`) is reported as an ERROR issue, so the library's validator (src/cli/validate-run.ts:35) fails a plugin the judgment's own oracle (2.1.325 validate) passes. Library should report these as warnings (or silently fall back); spec should also state the severity explicitly, since J12.10 is silent on it."
+    },
+    {
+      "id": "J12.11",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/plugin-defaults.ts:34; tests/settings/general/plugin-defaults.test.ts"
+    },
+    {
+      "id": "J12.12",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/plugin-defaults.ts:22-40 (given order, per key); tests/host/session-agent-defaults.test.ts",
+      "note": "The order is whatever the host passes (session-agents.ts builds it from the loaded plugins)."
+    },
+    {
+      "id": "J12.13",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/command-lines.ts:76-86, src/settings/hooks/custom-commands.ts:43; src/host/session-agents.ts:233"
+    },
+    {
+      "id": "J12.14",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/format/plugin-settings.ts:19 (agent accepted, no deprecation text anywhere in src/format or src/loading)"
+    },
+    {
+      "id": "J12.15",
+      "file": "12-settings.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/exceptions.ts:68-84 (restrictsMore against winning or first rung), src/settings/general/rows.ts:41-55; tests/settings/merge-core/managed-exceptions.test.ts, tests/settings/merge-core/remote-control.test.ts"
+    }
+  ]
+}

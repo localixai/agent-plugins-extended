@@ -1,0 +1,1934 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a04-hook-events",
+  "date": "2026-11-16",
+  "files": [
+    "07-hooks/events.md"
+  ],
+  "requirements": [
+    {
+      "id": "hooks.input.common.session_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts; tests/hooks/input/common.test.ts"
+    },
+    {
+      "id": "hooks.input.common.prompt_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts; tests/hooks/input/common.test.ts"
+    },
+    {
+      "id": "hooks.input.common.transcript_path",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts; tests/hooks/input/common.test.ts"
+    },
+    {
+      "id": "hooks.input.common.cwd",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts; tests/hooks/input/common.test.ts"
+    },
+    {
+      "id": "hooks.input.common.scratchpad_dir",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts; tests/hooks/input/common.test.ts"
+    },
+    {
+      "id": "hooks.input.common.permission_mode",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts:20 (PERMISSION_MODE_EVENTS); src/hooks/input/permission-mode.ts; tests/hooks/input/common.test.ts"
+    },
+    {
+      "id": "hooks.input.common.effort",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts:62 (EFFORT_EVENTS); tests/hooks/input/common.test.ts",
+      "note": "Which level is in force (and the MAY about a level just changed) is the host's session.effort; the library sends it on the J7.103 events only."
+    },
+    {
+      "id": "hooks.input.common.hook_event_name",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts; tests/hooks/input/common.test.ts"
+    },
+    {
+      "id": "hooks.input.common.agent_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts; tests/hooks/input/common.test.ts"
+    },
+    {
+      "id": "hooks.input.common.agent_type",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts (agentFields); tests/hooks/input/common.test.ts",
+      "note": "The subagent type winning over --agent is the host's choice of session.agent; the library forwards it."
+    },
+    {
+      "id": "hooks.output.common.continue",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; src/hooks/output/caps.ts; src/hooks/output/schemas-common.ts; tests/hooks/output/json-fields.test.ts"
+    },
+    {
+      "id": "hooks.output.JSON.continue",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; src/hooks/output/caps.ts; src/hooks/output/schemas-common.ts; tests/hooks/output/json-fields.test.ts"
+    },
+    {
+      "id": "hooks.output.common.stopReason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; src/hooks/output/caps.ts; src/hooks/output/schemas-common.ts; tests/hooks/output/json-fields.test.ts"
+    },
+    {
+      "id": "hooks.output.JSON.stopReason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; src/hooks/output/caps.ts; src/hooks/output/schemas-common.ts; tests/hooks/output/json-fields.test.ts"
+    },
+    {
+      "id": "hooks.output.common.suppressOutput",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; src/hooks/output/caps.ts; src/hooks/output/schemas-common.ts; tests/hooks/output/json-fields.test.ts"
+    },
+    {
+      "id": "hooks.output.JSON.suppressOutput",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; src/hooks/output/caps.ts; src/hooks/output/schemas-common.ts; tests/hooks/output/json-fields.test.ts"
+    },
+    {
+      "id": "hooks.output.common.systemMessage",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/messages.ts (routeMessages); src/hooks/output/caps.ts; tests/hooks/output/json-fields.test.ts"
+    },
+    {
+      "id": "hooks.output.JSON.systemMessage",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/messages.ts (routeMessages); src/hooks/output/caps.ts; tests/hooks/output/json-fields.test.ts"
+    },
+    {
+      "id": "hooks.output.common.terminalSequence",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/terminal-sequence.ts; src/hooks/output/merge.ts:146; src/hooks/dispatch.ts:96 (withTerminal); tests/hooks/output/terminal-sequence.test.ts",
+      "note": "Allowlist, ignore-whole and the -p/SDK exclusion are the library's; \"while its interface is open\" is the host's. tests also: tests/hooks/output/terminal-notifications.test.ts"
+    },
+    {
+      "id": "hooks.output.JSON.terminalSequence",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/terminal-sequence.ts; src/hooks/output/merge.ts:146; src/hooks/dispatch.ts:96 (withTerminal); tests/hooks/output/terminal-sequence.test.ts"
+    },
+    {
+      "id": "hooks.event.SessionStart",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts (LAUNCH: command, mcp_tool); src/hooks/select/mcp-client.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Handler types and the at-launch mcp_tool skip are the library's; background running, holding the first request and dropping stale results after /clear are the host's."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.startup",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.resume",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.clear",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.compact",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.fork",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.input.SessionStart.source",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:11; src/hooks/input/conditional-fields.ts; tests/hooks/input/conditional.test.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.SessionStart.model",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:11; src/hooks/input/conditional-fields.ts; tests/hooks/input/conditional.test.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.SessionStart.agent_type",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:11; src/hooks/input/conditional-fields.ts; tests/hooks/input/conditional.test.ts; tests/hooks/input/fields.test.ts; tests/hooks/input/conditional.test.ts"
+    },
+    {
+      "id": "hooks.input.SessionStart.session_title",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:11; src/hooks/input/conditional-fields.ts; tests/hooks/input/conditional.test.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.SessionStart.seconds_since_last_response",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:11; src/hooks/input/conditional-fields.ts; tests/hooks/input/conditional.test.ts; tests/hooks/input/fields.test.ts",
+      "note": "Dropped (with a warning) for sources other than resume/fork; \"all four together\" and \"only with a response in the transcript\" are not checked, the host supplies them."
+    },
+    {
+      "id": "hooks.input.SessionStart.context_tokens",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:11; src/hooks/input/conditional-fields.ts; tests/hooks/input/conditional.test.ts; tests/hooks/input/fields.test.ts",
+      "note": "Dropped (with a warning) for sources other than resume/fork; \"all four together\" and \"only with a response in the transcript\" are not checked, the host supplies them."
+    },
+    {
+      "id": "hooks.input.SessionStart.prompt_cache_likely_expired",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:11; src/hooks/input/conditional-fields.ts; tests/hooks/input/conditional.test.ts; tests/hooks/input/fields.test.ts",
+      "note": "Dropped (with a warning) for sources other than resume/fork; \"all four together\" and \"only with a response in the transcript\" are not checked, the host supplies them."
+    },
+    {
+      "id": "hooks.input.SessionStart.estimated_cache_write_usd",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:11; src/hooks/input/conditional-fields.ts; tests/hooks/input/conditional.test.ts; tests/hooks/input/fields.test.ts",
+      "note": "Dropped (with a warning) for sources other than resume/fork; \"all four together\" and \"only with a response in the transcript\" are not checked, the host supplies them."
+    },
+    {
+      "id": "hooks.output.SessionStart.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeSessionStart); tests/hooks/output/session-events.test.ts"
+    },
+    {
+      "id": "hooks.output.SessionStart.initialUserMessage",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeSessionStart); tests/hooks/output/limit.test.ts; tests/hooks/output/session-events.test.ts",
+      "note": "Merged (last wins) and handed on in every mode; ignoring it outside -p and the late-plugin rule are the host's."
+    },
+    {
+      "id": "hooks.output.SessionStart.sessionTitle",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeSessionStart); tests/hooks/output/session-events.test.ts"
+    },
+    {
+      "id": "hooks.output.SessionStart.watchPaths",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeSessionStart); tests/hooks/output/session-events.test.ts"
+    },
+    {
+      "id": "hooks.output.SessionStart.reloadSkills",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (anyTrue); src/host/session-first-read.ts; tests/hooks/output/session-events.test.ts"
+    },
+    {
+      "id": "hooks.exit2.SessionStart",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.SessionStart); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts; tests/hooks/verdict/exit2-notices.test.ts"
+    },
+    {
+      "id": "hooks.event.Setup",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/mcp-client.ts (Setup skips mcp_tool always); src/hooks/select/event-catalog.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.matcherValue.Setup.init",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Setup.maintenance",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.behavior.Setup input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:21; tests/hooks/input/event-inputs-session.test.ts"
+    },
+    {
+      "id": "hooks.behavior.Setup decision control",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/caps.ts (Setup discards all but terminalSequence); tests/hooks/output/event-decisions-session.test.ts",
+      "note": "The stream-json hook_response events are the host's."
+    },
+    {
+      "id": "hooks.exit2.Setup",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.Setup); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.InstructionsLoaded",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.file_path",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.memory_type",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.load_reason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.globs",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/conditional.test.ts"
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.trigger_file_path",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/conditional.test.ts"
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.parent_file_path",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/conditional.test.ts"
+    },
+    {
+      "id": "hooks.behavior.InstructionsLoaded decision control",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/caps.ts; tests/hooks/output/event-decisions-session.test.ts"
+    },
+    {
+      "id": "hooks.exit2.InstructionsLoaded",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.InstructionsLoaded); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.UserPromptSubmit",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts (EVENT_DEFAULT_SECONDS 30); src/hooks/verdict/interpret.ts:53 (timedOutDiscarded); src/hooks/verdict/notices.ts:65; src/hooks/verdict/on-failure.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Timeout default, discard notice (hook, timeout, \"output was discarded\"), async exception and onFailure block are the library's. The Agent SDK callback-timeout clause binds Claude Code's SDK, not this library (its sdkHooks are callbacks into Claude Code). Turn sources are the host's."
+    },
+    {
+      "id": "hooks.behavior.Esc during a prompt check",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/interrupt.ts (PROMPT_CHECKS, withInterrupt); src/hooks/dispatch.ts:126; tests/hooks/interrupts.test.ts"
+    },
+    {
+      "id": "hooks.behavior.UserPromptSubmit input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:39; tests/hooks/input/event-inputs-prompt.test.ts"
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.decision",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeUserPrompt); tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.reason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeUserPrompt); tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeUserPrompt); tests/hooks/output/prompt-events.test.ts",
+      "note": "The marked bullet conforms. The unmarked sentence above it (\"injected as a system reminder that starts with the hook's name\") cannot be met from the outcome: HookOutcome.additionalContext is a string[] without the handler that gave each entry."
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.sessionTitle",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeUserPrompt); tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.suppressOriginalPrompt",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeUserPrompt); tests/hooks/output/prompt-events.test.ts",
+      "note": "Merged as any handler (see the divergence on hooks.behavior.What a blocked prompt leaves behind)."
+    },
+    {
+      "id": "hooks.behavior.What a blocked prompt leaves behind",
+      "file": "07-hooks/events.md",
+      "status": "diverges",
+      "evidence": "src/hooks/verdict/blocked-prompt.ts:20; src/hooks/output/merge-simple.ts:50 (mergeUserPrompt anyTrue); tests/hooks/interrupts.test.ts",
+      "note": "Spec: the quote is left out only when a BLOCKING handler set suppressOriginalPrompt. Code: any handler's suppressOriginalPrompt: true (a non-blocking one included) removes the quote, since the flag is merged with anyTrue over all reads. The spec is itself inconsistent (\"Several handlers: ... any suppressOriginalPrompt\" two paragraphs later); settle it in the spec: either drop \"blocking\" (matches the code) or the library should read the flag from the blocking handlers only. Layout (own line) conforms (J7.49)."
+    },
+    {
+      "id": "hooks.exit2.UserPromptSubmit",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.UserPromptSubmit); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.UserPromptExpansion",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.behavior.UserPromptExpansion input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:47; tests/hooks/input/event-inputs-prompt.test.ts"
+    },
+    {
+      "id": "hooks.output.UserPromptExpansion.decision",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeUserPrompt); tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.output.UserPromptExpansion.reason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeUserPrompt); tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.output.UserPromptExpansion.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeUserPrompt); tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.exit2.UserPromptExpansion",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.UserPromptExpansion); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.MessageDisplay",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts (MessageDisplay 10 s); src/hooks/output/merge-simple.ts (mergeDisplay); tests/hooks/select/event-catalog.test.ts",
+      "note": "10 s default and \"failure displays the original\" (no displayContent from a failed run) are the library's; batching, -p once-per-message and display-only are the host's."
+    },
+    {
+      "id": "hooks.input.MessageDisplay.turn_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.MessageDisplay.message_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.MessageDisplay.index",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.MessageDisplay.final",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.MessageDisplay.delta",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.output.MessageDisplay.displayContent",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:66 (mergeDisplay, stringIn keeps \"\"); tests/hooks/output/session-events.test.ts"
+    },
+    {
+      "id": "hooks.exit2.MessageDisplay",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.MessageDisplay); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.PreToolUse",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts (END_CONVERSATION skip); src/hooks/select/matcher.ts (Monitor treatment); tests/hooks/select/event-catalog.test.ts",
+      "note": "EndConversation skip and the Bash-matcher Monitor rule are the library's. The Agent SDK callback hook that times out is a rule of Claude Code's SDK runtime, not of a client built on this library: not applicable to that clause."
+    },
+    {
+      "id": "hooks.behavior.PreToolUse input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-tools.ts:30; src/rules/tools/inputs/tool-path.ts (expandToolInputPath, for the host); tests/rules/inputs-file-path.test.ts; tests/hooks/input/event-inputs-tools.test.ts",
+      "note": "The library offers the expansion as a helper (docs/API.md) rather than applying it when it builds the input; the host must call it."
+    },
+    {
+      "id": "hooks.output.PreToolUse.permissionDecision",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts; src/hooks/output/defer.ts; src/host/session-registry.ts (origin labels [settings], [plugin:<name>], [skill]); tests/hooks/output/pre-tool-use.test.ts",
+      "note": "Prompt bypass exceptions, deny/ask rule evaluation and the prompt itself are the host's rule engine (src/rules/decide/)."
+    },
+    {
+      "id": "hooks.output.PreToolUse.permissionDecisionReason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts; src/hooks/output/defer.ts; tests/hooks/output/pre-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.output.PreToolUse.updatedInput",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts; src/hooks/output/defer.ts; tests/hooks/output/pre-tool-use.test.ts; tests/host/check-tool.test.ts"
+    },
+    {
+      "id": "hooks.output.PreToolUse.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts; src/hooks/output/defer.ts; tests/hooks/output/pre-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.exit2.PreToolUse",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PreToolUse); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts; tests/hooks/dispatch.test.ts; tests/hooks/output/pre-tool-use-outcome.test.ts"
+    },
+    {
+      "id": "hooks.event.PermissionRequest",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts (NO_AGENT, EndConversation); tests/hooks/select/event-catalog.test.ts",
+      "note": "The headless deny-if-no-hook and racing a canUseTool host are the host's."
+    },
+    {
+      "id": "hooks.behavior.PermissionRequest input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-tools.ts:60; tests/hooks/input/event-inputs-tools.test.ts"
+    },
+    {
+      "id": "hooks.output.PermissionRequest.behavior",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts (mergePermissionRequest); tests/hooks/output/permission-request.test.ts"
+    },
+    {
+      "id": "hooks.output.PermissionRequest.updatedInput",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts (mergePermissionRequest); tests/hooks/output/permission-request.test.ts"
+    },
+    {
+      "id": "hooks.output.PermissionRequest.updatedPermissions",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts (mergePermissionRequest); tests/hooks/output/permission-request.test.ts"
+    },
+    {
+      "id": "hooks.output.PermissionRequest.message",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts (mergePermissionRequest); tests/hooks/output/permission-request.test.ts"
+    },
+    {
+      "id": "hooks.output.PermissionRequest.interrupt",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts (mergePermissionRequest); tests/hooks/output/permission-request.test.ts"
+    },
+    {
+      "id": "hooks.exit2.PermissionRequest",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PermissionRequest); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts; tests/hooks/dispatch.test.ts"
+    },
+    {
+      "id": "hooks.event.PostToolUse",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.behavior.PostToolUse after an interrupt.Ctrl+Enter",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/interrupt.ts (ctrl-enter 10 s, queued ! or CLAUDE_CODE_DISABLE_BACKGROUND_TASKS acts as Esc); src/hooks/handlers/timeouts.ts (INTERRUPT_KILLS command only); tests/hooks/interrupts.test.ts"
+    },
+    {
+      "id": "hooks.behavior.PostToolUse after an interrupt.Enter",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/interrupt.ts; tests/hooks/interrupts.test.ts"
+    },
+    {
+      "id": "hooks.behavior.PostToolUse after an interrupt.Esc",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/interrupt.ts; tests/hooks/interrupts.test.ts"
+    },
+    {
+      "id": "hooks.input.PostToolUse.duration_ms",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-tools.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.output.PostToolUse.decision",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergePostToolUse); classifier-note.ts; tool-output.ts; tests/hooks/output/post-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.output.PostToolUse.reason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergePostToolUse); classifier-note.ts; tool-output.ts; tests/hooks/output/post-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.output.PostToolUse.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergePostToolUse); classifier-note.ts; tool-output.ts; tests/hooks/output/limit.test.ts; tests/hooks/output/post-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.output.PostToolUse.classifierContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/classifier-note.ts; src/hooks/output/merge-simple.ts:160; tests/hooks/output/classifier-note.test.ts; tests/hooks/output/post-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.output.PostToolUse.updatedToolOutput",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:139 (rewriteOf); src/hooks/output/tool-output.ts:94; tests/hooks/output/post-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.output.PostToolUse.updatedMCPToolOutput",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:144 (own updatedToolOutput first, updatedMCPToolOutput only for MCP); tests/hooks/output/post-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.exit2.PostToolUse",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PostToolUse); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.PostToolUseFailure",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.PostToolUseFailure.error",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-tools.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PostToolUseFailure.is_interrupt",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-tools.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PostToolUseFailure.duration_ms",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-tools.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.output.PostToolUseFailure.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; tests/hooks/output/post-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.exit2.PostToolUseFailure",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PostToolUseFailure); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.PostToolBatch",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.behavior.PostToolBatch input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-tools.ts:56; tests/hooks/input/event-inputs-tools.test.ts"
+    },
+    {
+      "id": "hooks.output.PostToolBatch.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; tests/hooks/output/post-tool-use.test.ts"
+    },
+    {
+      "id": "hooks.exit2.PostToolBatch",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PostToolBatch); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts; tests/hooks/verdict/exit2-notices.test.ts"
+    },
+    {
+      "id": "hooks.event.PermissionDenied",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.PermissionDenied.reason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-tools.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.behavior.PermissionDenied decision control",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:83 (mergeRetry); src/hooks/output/caps.ts; tests/hooks/output/event-decisions-session.test.ts"
+    },
+    {
+      "id": "hooks.exit2.PermissionDenied",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PermissionDenied); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.Notification",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.permission_prompt",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.idle_prompt",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.auth_success",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.auth_storage_failure",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.elicitation_dialog",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.elicitation_url_dialog",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.elicitation_complete",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.elicitation_response",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.agent_needs_input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.agent_completed",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.quota_auto_resume_fired",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.quota_auto_resume_stale",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.quota_auto_resume_disabled",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.plugin_notification",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.behavior.Notification input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts:13; src/hooks/output/caps.ts; src/hooks/output/merge.ts (CONTEXT_EVENTS excludes Notification); tests/hooks/input/event-inputs-elicitation.test.ts; tests/hooks/input/value-sets.test.ts"
+    },
+    {
+      "id": "hooks.exit2.Notification",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.Notification); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.SubagentStart",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.SubagentStart.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts (CONTEXT_EVENTS); tests/hooks/output/subagent-start.test.ts",
+      "note": "Delivery and the inject-once-per-subagent rule after a re-run or compaction are the host's."
+    },
+    {
+      "id": "hooks.exit2.SubagentStart",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.SubagentStart); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts; tests/hooks/verdict/exit2-notices.test.ts"
+    },
+    {
+      "id": "hooks.event.SubagentStop",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.behavior.SubagentStop input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts:41; tests/hooks/input/event-inputs-agents.test.ts"
+    },
+    {
+      "id": "hooks.exit2.SubagentStop",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.SubagentStop); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.TaskCreated",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.TaskCreated.task_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCreated.task_subject",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCreated.task_description",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCreated.teammate_name",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCreated.team_name",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCreated.agent_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.behavior.TaskCreated decision control",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/caps.ts (TaskCreated discards continue); src/hooks/output/merge.ts (DECISION_BLOCKS); tests/hooks/output/event-decisions-task.test.ts"
+    },
+    {
+      "id": "hooks.exit2.TaskCreated",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.TaskCreated); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.TaskCompleted",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.TaskCompleted.task_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCompleted.task_subject",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCompleted.task_description",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCompleted.teammate_name",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCompleted.team_name",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TaskCompleted.agent_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.behavior.TaskCompleted decision control",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeTaskCompleted); src/hooks/dispatch.ts:106 (withTaskTrigger); tests/hooks/output/event-decisions-task.test.ts"
+    },
+    {
+      "id": "hooks.exit2.TaskCompleted",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.TaskCompleted); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.Stop",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.Stop.id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.type",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.status",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.description",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.command",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.agent_type",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.server",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.tool",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.name",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.schedule",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.recurring",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.input.Stop.prompt",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts; src/hooks/input/facts-agents.ts; tests/hooks/input/background-tasks.test.ts; tests/hooks/input/background-tasks.test.ts"
+    },
+    {
+      "id": "hooks.output.Stop.decision",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeStop); parse.ts; tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.output.Stop.reason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/parse.ts:17 (REASON_REQUIRED); tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.output.Stop.hookSpecificOutput.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; merge-simple.ts (mergeStop); parse.ts; tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.guide.Stop hook hits the block cap",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/stop-block-cap.ts; tests/hooks/verdict/stop-block-cap.test.ts",
+      "note": "Cap 8, env override, 0 removes, feedback counts, per-subagent count, warning on override: conform. Reset is on PreToolUse/PostToolUse/PostToolUseFailure dispatch."
+    },
+    {
+      "id": "hooks.exit2.Stop",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.Stop); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.StopFailure",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.StopFailure.error",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.StopFailure.error_details",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.StopFailure.last_assistant_message",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.exit2.StopFailure",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.StopFailure); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.TeammateIdle",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.TeammateIdle.teammate_name",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TeammateIdle.team_name",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.TeammateIdle.agent_id",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.behavior.TeammateIdle decision control",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/caps.ts (TeammateIdle: no decision); src/hooks/verdict/exit2.ts (stopsTeammate); tests/hooks/output/event-decisions-task.test.ts"
+    },
+    {
+      "id": "hooks.exit2.TeammateIdle",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.TeammateIdle); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.ConfigChange",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.user_settings",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.project_settings",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.local_settings",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.policy_settings",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.skills",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.behavior.ConfigChange input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts:36; tests/hooks/input/event-inputs-session.test.ts"
+    },
+    {
+      "id": "hooks.output.ConfigChange.decision",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts:183 (decisionBlockOf, cannotBlockWhen policy_settings); src/hooks/verdict/exit2.ts (stderr debug); tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.output.ConfigChange.reason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts; src/hooks/verdict/exit2.ts; tests/hooks/output/prompt-events.test.ts"
+    },
+    {
+      "id": "hooks.exit2.ConfigChange",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (ConfigChange: debug, cannotBlockWhen policy_settings); tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.CwdChanged",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/env-file/events.ts; src/hooks/select/event-catalog.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.behavior.CwdChanged input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts:47; tests/hooks/input/event-inputs-session.test.ts"
+    },
+    {
+      "id": "hooks.output.CwdChanged.watchPaths",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeWatchList); src/hooks/select/watch-list.ts; tests/hooks/output/session-events.test.ts",
+      "note": "Replace / [] clears / union across handlers conform; a relative entry is passed through unresolved (see J7.131)."
+    },
+    {
+      "id": "hooks.exit2.CwdChanged",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.CwdChanged); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.DirectoryAdded",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts (600 s default); src/hooks/output/messages.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.matcherValue.DirectoryAdded.slash_command",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.DirectoryAdded.register_repo_root",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.input.DirectoryAdded.directory",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.DirectoryAdded.source",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.exit2.DirectoryAdded",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.DirectoryAdded); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.FileChanged",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/watch-list.ts (fileChangedWatchList); src/host/session-hook-scope.ts:123; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.FileChanged.file_path",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.FileChanged.event",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.output.FileChanged.watchPaths",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeWatchList); src/hooks/select/watch-list.ts; tests/hooks/output/session-events.test.ts",
+      "note": "As CwdChanged: a relative entry is passed through unresolved (see J7.131)."
+    },
+    {
+      "id": "hooks.exit2.FileChanged",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.FileChanged); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.WorktreeCreate",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/output/worktree-path.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Replacing git worktree creation and skipping .worktreeinclude are the host's; the library returns the path to use."
+    },
+    {
+      "id": "hooks.behavior.WorktreeCreate input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts:52; tests/hooks/input/event-inputs-prompt.test.ts"
+    },
+    {
+      "id": "hooks.behavior.WorktreeCreate output",
+      "file": "07-hooks/events.md",
+      "status": "diverges",
+      "evidence": "src/hooks/output/worktree-path.ts:133 (worktreeCandidate), :146 (resolveWorktreePath); tests/hooks/output/worktree-output.test.ts",
+      "note": "ANSI strip, last non-empty line, relative resolution against the hook's directory, refusals naming the component: conform. Several handlers: spec (J7.143) takes the last path in handler order, HTTP worktreePath and command stdout alike; code takes any HTTP hook's worktreePath over every command hook's stdout regardless of order (its own judgment). Library should change (order-based pick across both kinds). \"Not an enterable directory -> exit 1\" is the host's."
+    },
+    {
+      "id": "hooks.exit2.WorktreeCreate",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.WorktreeCreate); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts; tests/hooks/dispatch.test.ts"
+    },
+    {
+      "id": "hooks.event.WorktreeRemove",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (blocksUnlessDirectoryGone); tests/hooks/select/event-catalog.test.ts",
+      "note": "The triggers, the background-session confirmation and the symlink check of the stored path are the host's."
+    },
+    {
+      "id": "hooks.behavior.WorktreeRemove input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts:56; src/hooks/output/caps.ts; src/hooks/verdict/exit2.ts; tests/hooks/input/event-inputs-prompt.test.ts"
+    },
+    {
+      "id": "hooks.exit2.WorktreeRemove",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.WorktreeRemove); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.PreCompact",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.matcherValue.PreCompact.manual",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.PreCompact.auto",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.behavior.PreCompact input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:29; tests/hooks/input/event-inputs-session.test.ts"
+    },
+    {
+      "id": "hooks.behavior.PreCompact output",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergePreCompact); src/hooks/output/limit.ts:80; src/hooks/output/text-cap.ts:79; tests/hooks/output/event-decisions-compact.test.ts"
+    },
+    {
+      "id": "hooks.exit2.PreCompact",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PreCompact); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.PostCompact",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.matcherValue.PostCompact.manual",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.matcherValue.PostCompact.auto",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts; src/hooks/select/matcher-targets.ts; tests/hooks/select/matcher-values.test.ts",
+      "note": "The value and the field matched are the library's; when the client raises the occurrence is the host's."
+    },
+    {
+      "id": "hooks.behavior.PostCompact input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:34; tests/hooks/input/event-inputs-session.test.ts"
+    },
+    {
+      "id": "hooks.exit2.PostCompact",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PostCompact); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.PreModelSwitch",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (timeoutBlocks); src/hooks/handlers/timeouts.ts (30 s); src/hooks/verdict/notices.ts:57; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.from_model",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.to_model",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.requested_model",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.source",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.context_tokens",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.prompt_cache_warm",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.cache_ttl",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.estimated_cache_write_usd",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.pricing",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts; src/hooks/input/build.ts; tests/hooks/input/fields.test.ts"
+    },
+    {
+      "id": "hooks.output.PreModelSwitch.permissionDecision",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts (mergePreModelSwitch); tests/hooks/output/model-switch.test.ts"
+    },
+    {
+      "id": "hooks.output.PreModelSwitch.permissionDecisionReason",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts (mergePreModelSwitch); tests/hooks/output/model-switch.test.ts"
+    },
+    {
+      "id": "hooks.behavior.PreModelSwitch timeouts and other exit codes",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts (mergePreModelSwitch); src/hooks/verdict/exit2.ts (timeoutBlocks); src/hooks/output/messages.ts; tests/hooks/handlers/timeout-semantics.test.ts"
+    },
+    {
+      "id": "hooks.exit2.PreModelSwitch",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PreModelSwitch); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.PostModelSwitch",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.behavior.PostModelSwitch input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-model.ts:27; tests/hooks/input/event-inputs-agents.test.ts"
+    },
+    {
+      "id": "hooks.output.PostModelSwitch.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts (CONTEXT_EVENTS); src/hooks/verdict/plain-stdout.ts; tests/hooks/output/model-switch.test.ts",
+      "note": "The five-second hand-over to the following request and last-target-only delivery are the host's."
+    },
+    {
+      "id": "hooks.exit2.PostModelSwitch",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.PostModelSwitch); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts; tests/hooks/verdict/exit2-notices.test.ts"
+    },
+    {
+      "id": "hooks.event.SessionEnd",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/timeouts.ts:39 (sessionEndLimits, 1.5 s budget, CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS); tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.behavior.SessionEnd input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:25; src/hooks/select/matcher-values.ts:14; tests/hooks/input/event-inputs-session.test.ts; tests/hooks/input/value-sets.test.ts"
+    },
+    {
+      "id": "hooks.exit2.SessionEnd",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.SessionEnd); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.Elicitation",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.behavior.Elicitation input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts:19; tests/hooks/input/event-inputs-elicitation.test.ts"
+    },
+    {
+      "id": "hooks.output.Elicitation.Answer for the user",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeElicitation); tests/hooks/output/elicitation.test.ts"
+    },
+    {
+      "id": "hooks.output.Elicitation.Decline the request",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeElicitation); tests/hooks/output/elicitation.test.ts"
+    },
+    {
+      "id": "hooks.output.Elicitation.Cancel the request",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeElicitation); tests/hooks/output/elicitation.test.ts"
+    },
+    {
+      "id": "hooks.output.Elicitation.Leave the request to the user",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeElicitation); tests/hooks/output/elicitation.test.ts"
+    },
+    {
+      "id": "hooks.behavior.Other ways to decline an elicitation",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:200 (answerOf, decision block declines); src/hooks/verdict/exit2.ts (outputOnlyOnExit0); tests/hooks/output/elicitation-script.test.ts"
+    },
+    {
+      "id": "hooks.behavior.Answer a form request from a script",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeElicitation); tests/hooks/output/elicitation-script.test.ts",
+      "note": "Answering without a dialog conforms; the debug line \"Elicitation resolved by hook: ...\" is not produced by the library (it has no debug-log port) and is left to the host."
+    },
+    {
+      "id": "hooks.exit2.Elicitation",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.Elicitation); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    },
+    {
+      "id": "hooks.event.ElicitationResult",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/select/event-catalog.ts; src/hooks/select/select.ts; tests/hooks/select/event-catalog.test.ts",
+      "note": "Firing at the right moment binds the host; the library selects the handlers (event-catalog, matchers, handler types), builds the input, applies timeouts and merges the outcome."
+    },
+    {
+      "id": "hooks.behavior.ElicitationResult input",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts:28; tests/hooks/input/event-inputs-elicitation.test.ts"
+    },
+    {
+      "id": "hooks.output.ElicitationResult.Let the response through",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeElicitation); tests/hooks/output/elicitation.test.ts"
+    },
+    {
+      "id": "hooks.output.ElicitationResult.Change the submitted values",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeElicitation); tests/hooks/output/elicitation.test.ts"
+    },
+    {
+      "id": "hooks.output.ElicitationResult.Block the response",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeElicitation); tests/hooks/output/elicitation.test.ts"
+    },
+    {
+      "id": "hooks.output.ElicitationResult.Cancel the request",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeElicitation); tests/format/mcp-elicitation.test.ts; tests/hooks/output/elicitation.test.ts"
+    },
+    {
+      "id": "hooks.exit2.ElicitationResult",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (EXIT2_RULES.ElicitationResult); src/hooks/verdict/exited.ts; tests/hooks/verdict/exit2.test.ts"
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J7.100",
+      "status": "conforms",
+      "evidence": "src/hooks/register.ts:18; src/format/validate/hooks-check.ts:65; src/format/hooks-settings.ts:139",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.101",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts:11 (scratchpad_dir as documented extension)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.102",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts:20 (PERMISSION_MODE_EVENTS: exactly the 12 events)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.103",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts:62 (EFFORT_EVENTS: exactly the 8 events)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.104",
+      "status": "conforms",
+      "evidence": "src/hooks/input/common.ts (given(): empty and absent both omitted)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.105",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-agents.ts:52 (error enum includes verification_required); src/hooks/select/matcher-values.ts:53 (documented values, subset check only; a matcher on it is not refused)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.106",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:41 (optional source enum)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.107",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts:40 (UserPromptExpansion uses mergeUserPrompt); src/hooks/verdict/blocked-prompt.ts:13",
+      "note": "The flag is merged for UserPromptExpansion, but an expansion block message never quotes the prompt (QUOTES_PROMPT is UserPromptSubmit only), so it has nothing to remove. The spec does not say whether an expansion block ends with \"Original prompt:\"; J7.107 should say so, or the judgment is vacuous.",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.108",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts:98 (CONTEXT_EVENTS: the 11 events); src/hooks/output/caps.ts (Setup discards specific)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.111",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-rules.ts (lastOf); src/hooks/output/merge-simple.ts (anyTrue, unionOfLists, mergePreCompact, mergePostToolUse winner = last accepted)",
+      "note": "worktreePath is the exception: see J7.143.",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.112",
+      "status": "conforms",
+      "evidence": "src/hooks/assemble.ts:36 (exitBlock first in order, own JSON decision reason replaces stderr) and :70",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.113",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts:120 (mergePermissionRequest)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.114",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:214 (mergeElicitation); src/hooks/verdict/exit2.ts (exit 2 declines)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.115",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts:91 (STOP_OVERRIDES_DECISION); src/hooks/output/merge-simple.ts (mergeStop ignores feedback of a continue:false hook); tests/hooks/output/json-fields.test.ts",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.116",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts:88 (CONTINUE_FALSE_BLOCKS = PostToolBatch)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.117",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-gates.ts:73 (DROPS_REWRITE deny, defer); src/hooks/output/defer.ts (ignored -> no hook decision)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.118",
+      "status": "conforms",
+      "evidence": "src/hooks/output/parse.ts:17,45",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.120",
+      "status": "conforms",
+      "evidence": "src/hooks/output/caps.ts (terminalSequence never discarded)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.121",
+      "status": "conforms",
+      "evidence": "src/hooks/output/caps.ts (NO_DECISION on PermissionRequest, PermissionDenied, SessionStart, SubagentStart, PostModelSwitch, TaskCompleted, TeammateIdle, and the no-decision events)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.122",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:66 (stringIn keeps an empty string; lastOf uses ??)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.123",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (MessageDisplay discarded, WorktreeCreate debug)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.124",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/exit2.ts (PostToolBatch user-and-claude)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.125",
+      "status": "conforms",
+      "evidence": "src/hooks/input/conditional-fields.ts:45 (LOAD_FIELDS)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.126",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-session.ts:13 (model optional for every source; the host supplies it when known)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.127",
+      "status": "conforms",
+      "evidence": "src/hooks/input/background-tasks.ts:20 (capText: code points, marker outside the cap; TASK_FIELDS per type, unlisted type carries none)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.128",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts:16 (notification_type: string); src/hooks/select/matcher-values.ts:32",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.129",
+      "status": "conforms",
+      "evidence": "src/hooks/input/facts-misc.ts:33 (content optional for every action)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.130",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:76 (NO_VERDICT_REASON prefix; Classifier unavailable honours retry)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.131",
+      "status": "diverges",
+      "evidence": "src/hooks/select/watch-list.ts:37 (mergeWatchPaths); src/hooks/output/merge-simple.ts:22",
+      "note": "Absent leaves the list, [] clears it: conform. A relative entry is NOT resolved against the input cwd: it is kept as written (agent-plugins spec/judgments.md row for merge-simple.ts says \"not checked for being absolute ... the kit knows no host's path syntax\"). The library already resolves relative paths for WorktreeCreate (worktree-path.ts resolveRelative), so the library should change.",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.132",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-values.ts:13; src/hooks/input/facts-session.ts:26 (reason enum lacks it)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.135",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts (mergeTaskCompleted stopCondition); src/hooks/dispatch.ts:106 (withTaskTrigger, taskCompletedBy)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.136",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/stop-block-cap.ts (per session:agent_id key, non-hold ends the run, feedback counts)",
+      "note": "\"Any tool event\" is read as PreToolUse, PostToolUse and PostToolUseFailure; PermissionRequest, PermissionDenied and PostToolBatch do not reset. The judgment could name the events.",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.138",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:139 (rewriteOf); src/hooks/output/tool-output.ts:94 (no mirror -> accepted)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.141",
+      "status": "conforms",
+      "evidence": "src/hooks/select/matcher-targets.ts:40,113 (basename, narrow)",
+      "file": "07-hooks/events.md"
+    },
+    {
+      "id": "J7.143",
+      "status": "diverges",
+      "evidence": "src/hooks/output/worktree-path.ts:133 (worktreeCandidate)",
+      "note": "Spec: the last path in handler order, HTTP worktreePath and command stdout counting alike. Code: any HTTP worktreePath beats every command hook's line, whatever the order (agent-plugins judgment). The library should pick the last answering handler in registry order across both kinds.",
+      "file": "07-hooks/events.md"
+    }
+  ]
+}

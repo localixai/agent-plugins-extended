@@ -1,0 +1,1445 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a02-skills-agents",
+  "date": "2026-11-16",
+  "files": [
+    "04-skills.md",
+    "05-agents.md"
+  ],
+  "requirements": [
+    {
+      "id": "skills.behavior.Using skill frontmatter outside Claude Code",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/portable.ts ; tests/tests/skills/portable.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Plugin",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:171-200 ; tests/tests/host/folder-skills-lifecycle.test.ts"
+    },
+    {
+      "id": "skills.components.Skills.Additional directories",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/loading/discover-listed.ts:41-54, src/loading/walk.ts:176-200 ; tests/tests/host/plugin-skills.test.ts"
+    },
+    {
+      "id": "skills.components.Skills.A single skill at the plugin root",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/loading/discover-listed.ts:41-54, src/format/skill-name.ts:163 ; tests/tests/host/plugin-skills.test.ts"
+    },
+    {
+      "id": "skills.behavior.Add supporting files",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/file-references.ts ; tests/tests/skills/supporting-files.test.ts"
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name.skills/",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/host/session-skill-entries.ts:60-121 ; tests/tests/host/plugin-skills.test.ts",
+      "note": "E4a deviation (J4.1): scanned skills list under the folder name, the frontmatter name is a second command and a bare name while free (session-skill-entries.ts:60-121). The bare/declared alias is tested only for a manifest-path skill, not for a scanned one with a `name`."
+    },
+    {
+      "id": "skills.components.Skills.Command name",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/host/session-skill-entries.ts:60-121 ; tests/tests/host/plugin-skills.test.ts"
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name.SKILL.md",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-name.ts:157-168 ; tests/tests/host/plugin-skills.test.ts"
+    },
+    {
+      "id": "skills.components.Skills.Who invokes it",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/invocation.ts, src/settings/skills/overrides.ts:93 ; tests/tests/host/plugin-skills.test.ts"
+    },
+    {
+      "id": "skills.behavior.Characters a skill name can't hold",
+      "file": "04-skills.md",
+      "status": "diverges",
+      "evidence": "src/format/skill-name.ts:22-160, src/format/host-errors.ts:180 ; tests/tests/host/plugin-skills.test.ts",
+      "note": "Spec §4.3 item 2: outside a plugin a refused frontmatter `name` leaves the skill loaded under its directory name (errors.md agrees: 'The skill still loads'). agent-plugins makes it an error that refuses the skill (`strict` in skill-name.ts; probe: project skill `deploy` with `name: \"a<b\"` is absent from the menu; tests/format/skill-name.test.ts asserts blocksLoading). Also missing: the 256-character limit (a 300-character folder name loads) and the `[names]` debug lines (`<name> is not offered`, `<name value> is not shown for <skill>`); only the startup-notice string builder exists. Implementation should change."
+    },
+    {
+      "id": "skills.frontmatter.name",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-name.ts:200-210 ; tests/tests/format/skill-name.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.description",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts:150-176, src/skills/listing.ts:124-131 ; tests/tests/format/skill-field-readers.test.ts tests/tests/skills/listing.test.ts",
+      "note": "E4a deviation (J4.13) implemented: no description and no when_to_use sets `undescribed` and the listing hides it (skill-fields.ts:168, listing.ts:129); when_to_use alone is listed with the first body line."
+    },
+    {
+      "id": "skills.frontmatter.when_to_use",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-field-readers.test.ts tests/tests/skills/listing.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.argument-hint",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-field-readers.test.ts tests/tests/skills/listing.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.arguments",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-field-readers.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.disable-model-invocation",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/invocation.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.user-invocable",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/invocation.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.allowed-tools",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/expand-tools.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.disallowed-tools",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/expand-disallowed.test.ts tests/tests/skills/expand-tools.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.model",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/execution-overrides.test.ts tests/tests/skills/expand-fields.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.effort",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/execution-overrides.test.ts tests/tests/skills/expand-fields.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.context",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/execution.test.ts tests/tests/skills/expand-fields.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.agent",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/execution.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.background",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/execution.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.hooks",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-field-data.test.ts tests/tests/skills/expand-tools.test.ts tests/tests/skills/hook-limits.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.paths",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-field-data.test.ts tests/tests/skills/path-gate.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.shell",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-fields.test.ts tests/tests/skills/execution-overrides.test.ts tests/tests/skills/expand-fields.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.metadata",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-field-data.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.license",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-field-data.test.ts"
+    },
+    {
+      "id": "skills.frontmatter.compatibility",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-readers.ts ; tests/tests/format/skill-field-data.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Enterprise",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/scan.ts, src/skills/scan/locations.ts ; tests/tests/skills/scan/locations.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Personal",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/scan.ts, src/skills/scan/locations.ts ; tests/tests/skills/scan/locations.test.ts tests/tests/skills/scan/file-location.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Project",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/scan.ts, src/skills/scan/locations.ts ; tests/tests/skills/scan/file-location.test.ts tests/tests/skills/scan/locations.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Nested",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/nested.ts ; tests/tests/skills/scan/nested.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Additional directory",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/scan.ts, src/skills/scan/locations.ts ; tests/tests/host/session-directories.test.ts tests/tests/skills/scan/locations.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.claude.ai account",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/scan.ts, src/skills/scan/locations.ts ; tests/tests/skills/scan/locations.test.ts",
+      "note": "Reading ~/.claude/skills/synced/ conforms; downloading and the sync schedule are the host's (sync-skills.ts gives the gating)."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Symlinked folders",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/scan.ts, src/skills/scan/locations.ts ; tests/tests/skills/scan/locations.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Reserved name synced",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-name.ts:65-72 ; tests/tests/skills/scan/locations.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Reserved name anthropic-skills",
+      "file": "04-skills.md",
+      "status": "diverges",
+      "evidence": "src/format/skill-name.ts:65-72 ; tests/tests/skills/scan/locations.test.ts",
+      "note": "Spec: when a plugin named `anthropic-skills` and a synced skill share `<name>`, `/anthropic-skills:<name>` runs the synced skill. agent-plugins lists plugins first (catalogRows, session-skill-catalog.ts:66) so the plugin skill takes the command (probe: expandSkill('anthropic-skills:deploy') returns the plugin body). Saved workflows named `anthropic-skills` are not refused (src/agents/workflow/saved*.ts have no reservation). Folder/name/command reservations and exact case-sensitive match conform. Implementation should change."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Characters in the name",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-name.ts:108-131 ; tests/tests/skills/scan/names-refused.test.ts tests/tests/skills/scan/locations.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Command files",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/scan.ts, src/skills/scan/locations.ts ; tests/tests/skills/scan/file-location.test.ts tests/tests/skills/scan/locations.test.ts"
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Skill folder as a plugin",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/scan.ts, src/skills/scan/locations.ts ; tests/tests/skills/scan/locations.test.ts"
+    },
+    {
+      "id": "skills.behavior.Load skills in monorepos and subdirectories",
+      "file": "04-skills.md",
+      "status": "diverges",
+      "evidence": "src/skills/scan/resolve.ts:170-218, src/skills/scan/nested.ts ; tests/tests/host/session-directories.test.ts tests/tests/skills/scan/nested.test.ts",
+      "note": "Parent-directory search, worktree fallback, nested load on first touch, /cd and the directory-qualified variant whose description names its directory conform (resolve.ts:170-178). Missing: the instruction in Claude's listing to prefer the variant whose directory holds the files being worked on (§4.5.2 item 3); no code emits it. Implementation should add it (or the spec should mark it as the host's prompt text)."
+    },
+    {
+      "id": "skills.behavior.Run a same-named skill from an added directory",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts ; tests/tests/skills/scan/resolve.test.ts"
+    },
+    {
+      "id": "skills.behavior.Edit a skill during a session",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/host/session-folders.ts, src/host/session-skills.ts ; tests/tests/host/folder-skills-lifecycle.test.ts",
+      "note": "The kit never watches: it hands the host the folders to watch and re-reads on reloadSkills (folder-skills-sync-edit tests); the watching itself is the host's."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Two of enterprise, personal, and project",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/host/session-skill-catalog.ts:66-90 ; tests/tests/skills/scan/resolve.test.ts"
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Any of those locations and a bundled skill",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/host/session-skill-catalog.ts:66-90 ; tests/tests/host/session-directories.test.ts tests/tests/host/host-skills.test.ts"
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Any of those locations and a built-in command",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/host/session-skill-catalog.ts:66-90 ; tests/tests/host/session-directories.test.ts"
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name..claude/commands/",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/host/session-skill-catalog.ts:66-90 ; tests/tests/skills/scan/resolve.test.ts"
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.A project-root skill and a nested skill",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/host/session-skill-catalog.ts:66-90 ; tests/tests/skills/scan/nested.test.ts"
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.An enterprise, personal, or project skill and a skill in an added directory outside the project",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/host/session-skill-catalog.ts:66-90",
+      "note": "No spec() block of its own; covered by the tests under 'Run a same-named skill from an added directory' (tests/skills/scan/resolve.test.ts:90-140)."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Two added directories outside the project",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/host/session-skill-catalog.ts:66-90",
+      "note": "No spec() block of its own; covered by tests/skills/scan/resolve.test.ts:90-140 ('two added directories: the skill from the one added first runs')."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.A plugin skill and a skill at any of the locations above",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/host/session-skill-catalog.ts:66-90 ; tests/tests/host/folder-skills.test.ts"
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Any of the above and the short name of a skill synced from your claude.ai account",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/host/session-skill-catalog.ts:66-90 ; tests/tests/host/session-directories.test.ts tests/tests/host/host-skills.test.ts"
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name.~/.claude/skills/",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/format/skill-name.ts ; tests/tests/skills/scan/resolve.test.ts"
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name..claude/skills/",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/format/skill-name.ts ; tests/tests/skills/scan/resolve.test.ts"
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name..claude/commands/",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/format/skill-name.ts ; tests/tests/skills/scan/resolve.test.ts"
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name.Skill synced from claude.ai",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts, src/format/skill-name.ts ; tests/tests/skills/scan/resolve.test.ts"
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Personal or project skill",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/host/session-folders.ts, src/settings/skills/overrides.ts ; tests/tests/host/folder-skills-lifecycle.test.ts"
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Enterprise skill",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/host/session-folders.ts, src/settings/skills/overrides.ts ; tests/tests/host/folder-skills-lifecycle.test.ts"
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Plugin skill",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/host/session-folders.ts, src/settings/skills/overrides.ts ; tests/tests/host/folder-skills-lifecycle.test.ts"
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Skill synced from claude.ai",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/host/session-folders.ts, src/settings/skills/overrides.ts ; tests/tests/host/folder-skills-sync-edit.test.ts"
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Bundled skill",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/host/session-folders.ts, src/settings/skills/overrides.ts ; tests/tests/host/host-skills.test.ts tests/tests/host/folder-skills-lifecycle.test.ts"
+    },
+    {
+      "id": "skills.behavior.Personal skills disappeared",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/settings/skills/sync-skills.ts ; tests/tests/host/folder-skills-lifecycle.test.ts"
+    },
+    {
+      "id": "commands.components.Define commands in the manifest",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/command.ts, src/skills/command-entries.ts, src/loading/discover-listed.ts:57-75 ; tests/tests/host/plugin-skills.test.ts"
+    },
+    {
+      "id": "commands.entry.source",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/command.ts, src/skills/command-entries.ts, src/loading/discover-listed.ts:57-75 ; tests/tests/format/command.test.ts tests/tests/skills/command-entries.test.ts"
+    },
+    {
+      "id": "commands.entry.content",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/command.ts, src/skills/command-entries.ts, src/loading/discover-listed.ts:57-75 ; tests/tests/format/command.test.ts tests/tests/skills/command-entries.test.ts"
+    },
+    {
+      "id": "commands.entry.description",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/command.ts, src/skills/command-entries.ts, src/loading/discover-listed.ts:57-75 ; tests/tests/format/command.test.ts tests/tests/skills/command-entries.test.ts"
+    },
+    {
+      "id": "commands.entry.argumentHint",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/command.ts, src/skills/command-entries.ts, src/loading/discover-listed.ts:57-75 ; tests/tests/format/command.test.ts tests/tests/skills/command-entries.test.ts"
+    },
+    {
+      "id": "commands.entry.model",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/command.ts, src/skills/command-entries.ts, src/loading/discover-listed.ts:57-75 ; tests/tests/format/command.test.ts tests/tests/skills/command-entries.test.ts"
+    },
+    {
+      "id": "commands.entry.allowedTools",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/command.ts, src/skills/command-entries.ts, src/loading/discover-listed.ts:57-75 ; tests/tests/format/command.test.ts tests/tests/skills/command-entries.test.ts"
+    },
+    {
+      "id": "skills.invocation.(default)",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/invocation.ts, src/skills/listing.ts:124-131 ; tests/tests/skills/invocation-mention.test.ts tests/tests/skills/invocation.test.ts tests/tests/skills/mention.test.ts"
+    },
+    {
+      "id": "skills.invocation.disable-model-invocation: true",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/invocation.ts, src/skills/listing.ts:124-131 ; tests/tests/skills/invocation.test.ts"
+    },
+    {
+      "id": "skills.invocation.user-invocable: false",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/invocation.ts, src/skills/listing.ts:124-131 ; tests/tests/skills/invocation.test.ts"
+    },
+    {
+      "id": "skills.behavior.Skill descriptions are cut short",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/listing.ts:80-185 ; tests/tests/skills/listing-budget.test.ts tests/tests/skills/listing.test.ts"
+    },
+    {
+      "id": "skills.behavior.Angle brackets in a skill description show as &lt; and &gt;",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/listing.ts:95-103 ; tests/tests/skills/listing-angle.test.ts"
+    },
+    {
+      "id": "skills.behavior.Override skill visibility from settings.\"on\"",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/visibility.ts, src/settings/skills/overrides.ts:66-95 ; tests/tests/skills/visibility.test.ts"
+    },
+    {
+      "id": "skills.behavior.Override skill visibility from settings.\"name-only\"",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/visibility.ts, src/settings/skills/overrides.ts:66-95 ; tests/tests/skills/visibility.test.ts"
+    },
+    {
+      "id": "skills.behavior.Override skill visibility from settings.\"user-invocable-only\"",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/visibility.ts, src/settings/skills/overrides.ts:66-95 ; tests/tests/skills/visibility.test.ts"
+    },
+    {
+      "id": "skills.behavior.Override skill visibility from settings.\"off\"",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/visibility.ts, src/settings/skills/overrides.ts:66-95 ; tests/tests/skills/visibility.test.ts"
+    },
+    {
+      "id": "skills.behavior.Where you write the skill's name",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/mention.ts ; tests/tests/host/folder-skills-lifecycle.test.ts"
+    },
+    {
+      "id": "skills.behavior.Stack several skills in one message",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/stack.ts, src/skills/mention.ts ; tests/tests/skills/stack.test.ts tests/tests/skills/mention.test.ts"
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.An alias",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/skill-rule.ts:18-52, src/rules/target/skill.ts ; tests/tests/rules/skill-access.test.ts"
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.An unqualified name",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/skill-rule.ts:18-52, src/rules/target/skill.ts ; tests/tests/rules/skill-access.test.ts"
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.A skill synced from claude.ai",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/skill-rule.ts:18-52, src/rules/target/skill.ts ; tests/tests/rules/skill-access.test.ts"
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.The plugin form of a synced skill",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/skill-rule.ts:18-52, src/rules/target/skill.ts ; tests/tests/rules/skill-access.test.ts"
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.A skill in the parameter form",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/skill-rule.ts:18-52, src/rules/target/skill.ts ; tests/tests/rules/skill-access.test.ts"
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.Skill(anthropic-skills:pdf)",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/skill-rule.ts:18-52, src/rules/target/skill.ts ; tests/tests/rules/skill-access.test.ts"
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.Skill(anthropic-skills *)",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/skill-rule.ts:18-52, src/rules/target/skill.ts ; tests/tests/rules/skill-access.test.ts"
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.Skill(anthropic *)",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/skill-rule.ts:18-52, src/rules/target/skill.ts ; tests/tests/rules/skill-access.test.ts"
+    },
+    {
+      "id": "skills.substitution.$ARGUMENTS",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/skills/substitute-arguments.test.ts"
+    },
+    {
+      "id": "skills.substitution.$ARGUMENTS[N]",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/skills/substitute-arguments.test.ts"
+    },
+    {
+      "id": "skills.substitution.$N",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/skills/substitute-arguments.test.ts"
+    },
+    {
+      "id": "skills.substitution.$name",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/skills/substitute-arguments.test.ts"
+    },
+    {
+      "id": "skills.behavior.Pass arguments to skills",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/arguments.ts, src/skills/substitute.ts:160-186 ; tests/tests/skills/arguments-pass.test.ts"
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_SESSION_ID}",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/skills/substitute-variables.test.ts"
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_EFFORT}",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/skills/substitute-variables.test.ts"
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_SKILL_DIR}",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/host/skill-locations.test.ts tests/tests/skills/substitute-variables.test.ts tests/tests/skills/expand-variables.test.ts"
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_PROJECT_DIR}",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/skills/substitute-variables.test.ts"
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_PLUGIN_ROOT}",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/skills/expand-variables.test.ts tests/tests/skills/substitute-plugin-variables.test.ts"
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_PLUGIN_DATA}",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts, src/skills/variables.ts, src/loading/resolve/substitute.ts ; tests/tests/skills/substitute-plugin-variables.test.ts"
+    },
+    {
+      "id": "skills.behavior.Inject dynamic context",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-scan.ts, src/skills/expand-shell.ts ; tests/tests/skills/inject-dynamic.test.ts",
+      "note": "Items 1-3 conform. Item 4 (`ultrathink` requests deeper reasoning) has no code: the content passes through unchanged and the host's model call decides."
+    },
+    {
+      "id": "skills.behavior.How injected commands run.shell: powershell",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-run.ts, src/skills/execution.ts ; tests/tests/skills/inject-run.test.ts"
+    },
+    {
+      "id": "skills.behavior.How injected commands run.shell: bash",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-run.ts, src/skills/execution.ts ; tests/tests/skills/inject-run.test.ts"
+    },
+    {
+      "id": "skills.behavior.How injected commands run",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-run.ts, src/skills/execution.ts ; tests/tests/skills/shell-run.test.ts"
+    },
+    {
+      "id": "skills.behavior.How injected commands run.Working directory",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-run.ts, src/skills/execution.ts ; tests/tests/skills/inject-run.test.ts"
+    },
+    {
+      "id": "skills.behavior.How injected commands run.stderr",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-run.ts, src/skills/execution.ts ; tests/tests/skills/inject-run.test.ts"
+    },
+    {
+      "id": "skills.behavior.How injected commands run.Timeout",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-run.ts, src/skills/execution.ts ; tests/tests/skills/inject-run.test.ts"
+    },
+    {
+      "id": "skills.behavior.How injected commands run.Output size",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-run.ts, src/skills/execution.ts ; tests/tests/skills/inject-run.test.ts"
+    },
+    {
+      "id": "skills.behavior.When an injected command fails",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-run.ts, src/skills/shell-result.ts ; tests/tests/skills/shell-run.test.ts tests/tests/skills/shell-exit.test.ts"
+    },
+    {
+      "id": "skills.behavior.When no shell command was run",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-refusal.ts ; tests/tests/skills/shell-run.test.ts"
+    },
+    {
+      "id": "skills.behavior.Permission checks on injected commands",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-run.ts ; tests/tests/skills/shell-run.test.ts"
+    },
+    {
+      "id": "skills.behavior.Skill content lifecycle",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/lifecycle.ts ; tests/tests/skills/lifecycle.test.ts"
+    },
+    {
+      "id": "skills.behavior.When only managed permission rules apply",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/expand-policy.ts ; tests/tests/skills/inject-policy.test.ts"
+    },
+    {
+      "id": "skills.behavior.When managed settings lock hooks to plugins",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/expand-policy.ts ; tests/tests/skills/inject-policy.test.ts"
+    },
+    {
+      "id": "skills.behavior.Run skills in a subagent",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/fork.ts, src/skills/execution.ts ; tests/tests/skills/fork.test.ts"
+    },
+    {
+      "id": "skills.behavior.Example: Research skill using Explore agent",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/fork.ts ; tests/tests/skills/fork.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope.agents/",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:210-216, src/agents/catalog/resolve.ts:51-87 ; tests/tests/host/agent-catalog.test.ts"
+    },
+    {
+      "id": "agents.components.Organize agents in subfolders",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-name.ts:30-60 ; tests/tests/host/plugin-agents.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/resolve.ts:51-180, src/agents/catalog/scan.ts:136-168, src/agents/catalog/scopes.ts ; tests/tests/agents/catalog/resolve.test.ts tests/tests/agents/catalog/scan.test.ts"
+    },
+    {
+      "id": "agents.behavior.Write subagent files",
+      "file": "05-agents.md",
+      "status": "diverges",
+      "evidence": "src/format/agent.ts, src/agents/catalog/scopes.ts, src/cli/flags/subagent-prompt.ts ; tests/tests/agents/catalog/scan-skips.test.ts",
+      "note": "File format, body as prompt, watched directories (not added dirs, not --disable-slash-commands, not dirs created later) and --append-subagent-system-prompt parsing conform. Missing: §5.3 item 4, refusing a worktree-isolated subagent's Bash/PowerShell/Monitor command whose working directory is the main checkout and git invocations that cannot be proven to stay in the worktree; the kit only decides worktree disposition (launch.ts:140-155). Implementation should add the check to its permission decisions, or the spec should name it a host duty."
+    },
+    {
+      "id": "agents.behavior.Subagent files Claude Code skips",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts, src/format/agent-unrecognized.ts ; tests/tests/agents/catalog/scan-skips.test.ts"
+    },
+    {
+      "id": "agents.behavior.Subagent files Claude Code skips.No name",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts, src/format/agent-unrecognized.ts ; tests/tests/agents/catalog/scan-skips.test.ts"
+    },
+    {
+      "id": "agents.behavior.Subagent files Claude Code skips.A name but no description",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts, src/format/agent-unrecognized.ts ; tests/tests/agents/catalog/scan-skips.test.ts"
+    },
+    {
+      "id": "agents.behavior.Subagent files Claude Code skips.YAML that doesn't parse",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts, src/format/agent-unrecognized.ts ; tests/tests/agents/catalog/scan-skips.test.ts"
+    },
+    {
+      "id": "agents.components.Frontmatter fields in plugin agents.A name longer than 256 characters",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts, src/format/agent-fields.ts ; tests/tests/host/plugin-agents.test.ts"
+    },
+    {
+      "id": "agents.components.Frontmatter fields in plugin agents.Frontmatter that doesn't parse",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts, src/format/agent-fields.ts ; tests/tests/host/plugin-agents.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope.Managed settings",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/resolve.ts:51-180, src/agents/catalog/scan.ts:136-168, src/agents/catalog/scopes.ts ; tests/tests/agents/catalog/scan.test.ts tests/tests/agents/catalog/resolve.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope.--agents",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-flag.ts, src/cli/flags/agents.ts ; tests/tests/agents/catalog/resolve.test.ts tests/tests/format/agent-flag.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope..claude/agents/",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/resolve.ts:51-180, src/agents/catalog/scan.ts:136-168, src/agents/catalog/scopes.ts ; tests/tests/agents/catalog/resolve.test.ts tests/tests/agents/catalog/scan.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope.~/.claude/agents/",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/resolve.ts:51-180, src/agents/catalog/scan.ts:136-168, src/agents/catalog/scopes.ts ; tests/tests/agents/catalog/scan.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.name",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-name.ts ; tests/tests/format/agent-file.test.ts tests/tests/format/agent-name.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.description",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts ; tests/tests/format/agent-file.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.tools",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-list.ts, src/agents/tool-resolution.ts ; tests/tests/agents/tool-resolution.test.ts tests/tests/agents/tool-list.test.ts tests/tests/agents/tool-filters.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.disallowedTools",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts ; tests/tests/agents/tool-disallowed.test.ts tests/tests/agents/tool-list.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.model",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/launch-model.ts, src/agents/model-choice.ts ; tests/tests/agents/launch-model.test.ts tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.permissionMode",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-fields.ts, src/agents/permission-mode.ts ; tests/tests/format/agent-permission-field.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.maxTurns",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/launch.ts, src/format/agent-scalars.ts ; tests/tests/agents/launch-limits.test.ts tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.autoCompactWindow",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-scalars.ts:90-110, src/agents/launch.ts ; tests/tests/agents/launch-limits.test.ts tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.skills",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/preload-skills.ts ; tests/tests/agents/preload-skills.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.mcpServers",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/mcp-scope.ts ; tests/tests/agents/mcp-scope.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.hooks",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/hooks.ts, src/format/agent-hooks-field.ts ; tests/tests/agents/hooks-trust.test.ts tests/tests/format/agent-hooks-field.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.memory",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/memory.ts ; tests/tests/agents/memory.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.background",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-fields.ts, src/agents/launch.ts ; tests/tests/agents/launch-start.test.ts tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.omitClaudeMd",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-fields.ts, src/agents/launch.ts ; tests/tests/agents/launch-start.test.ts tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.effort",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-fields.ts, src/agents/launch.ts ; tests/tests/agents/launch-effort.test.ts tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.isolation",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-fields.ts, src/agents/launch.ts ; tests/tests/agents/launch-start.test.ts tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.color",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-fields.ts, src/agents/launch.ts ; tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.initialPrompt",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-fields.ts, src/agents/launch.ts ; tests/tests/agents/launch-start.test.ts tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.frontmatter.experimental",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-fields.ts, src/agents/launch.ts ; tests/tests/agents/launch-limits.test.ts tests/tests/format/agent-fields.test.ts"
+    },
+    {
+      "id": "agents.components.Frontmatter fields in plugin agents.Supported fields",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts, src/format/agent-fields.ts ; tests/tests/host/plugin-agents.test.ts"
+    },
+    {
+      "id": "agents.components.Frontmatter fields in plugin agents.Ignored fields",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts, src/format/agent-fields.ts ; tests/tests/host/plugin-agents.test.ts"
+    },
+    {
+      "id": "agents.behavior.Available tools.Agent",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-filters.ts:30-110 ; tests/tests/agents/tool-available.test.ts",
+      "note": "Filter 1/2 match the spec. Spec gap: tool-filters.ts:75 also withholds ExitWorktree from a subagent that runs in its own working directory (tools-reference.md, ExitWorktree row: 'Not available to subagents that already run in their own working directory, such as with isolation: worktree'); §5.7.1 does not list it. Spec should add the row."
+    },
+    {
+      "id": "agents.behavior.Available tools.AskUserQuestion",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-filters.ts:30-110 ; tests/tests/agents/tool-available.test.ts"
+    },
+    {
+      "id": "agents.behavior.Available tools.EndConversation",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-filters.ts:30-110 ; tests/tests/agents/tool-available.test.ts"
+    },
+    {
+      "id": "agents.behavior.Available tools.EnterPlanMode",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-filters.ts:30-110 ; tests/tests/agents/tool-available.test.ts"
+    },
+    {
+      "id": "agents.behavior.Available tools.ExitPlanMode",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-filters.ts:30-110 ; tests/tests/agents/tool-available.test.ts"
+    },
+    {
+      "id": "agents.behavior.Available tools.ScheduleWakeup",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-filters.ts:30-110 ; tests/tests/agents/tool-available.test.ts"
+    },
+    {
+      "id": "agents.behavior.Available tools.WaitForMcpServers",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-filters.ts:30-110 ; tests/tests/agents/tool-available.test.ts"
+    },
+    {
+      "id": "agents.behavior.Available tools.Workflow",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-filters.ts:30-110 ; tests/tests/agents/tool-available.test.ts"
+    },
+    {
+      "id": "agents.behavior.Restrict which tools a subagent can use.Withhold one server's tools",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-list.ts:41-80, src/agents/tool-resolution.ts ; tests/tests/agents/tool-available.test.ts"
+    },
+    {
+      "id": "agents.behavior.Restrict which tools a subagent can use.Withhold every MCP tool from any server",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-list.ts:41-80, src/agents/tool-resolution.ts ; tests/tests/agents/tool-available.test.ts"
+    },
+    {
+      "id": "agents.behavior.Restrict which subagents can be spawned",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/spawn.ts, src/agents/tool-list.ts ; tests/tests/agents/catalog/spawn-refusal.test.ts tests/tests/agents/catalog/spawn.test.ts tests/tests/rules/parse-renamed-tool.test.ts"
+    },
+    {
+      "id": "agents.behavior.Disable specific subagents",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/resolve.ts:169-182 ; tests/tests/agents/catalog/disable.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose a model",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/model-choice.ts, src/agents/launch-model.ts ; tests/tests/agents/model-choice.test.ts tests/tests/agents/launch-model.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose a model.Model alias",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/model-choice.ts, src/agents/launch-model.ts ; tests/tests/agents/model-choice.test.ts tests/tests/agents/launch-model.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose a model.Full model ID",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/model-choice.ts, src/agents/launch-model.ts ; tests/tests/agents/model-choice.test.ts"
+    },
+    {
+      "id": "agents.behavior.Choose a model.inherit",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/model-choice.ts, src/agents/launch-model.ts ; tests/tests/agents/model-choice.test.ts"
+    },
+    {
+      "id": "agents.behavior.Run every subagent on one model",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/launch-model.ts ; tests/tests/agents/model-choice.test.ts"
+    },
+    {
+      "id": "agents.behavior.When a subagent has no effort field or parameter",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/launch.ts, src/agents/model-choice.ts ; tests/tests/agents/model-choice.test.ts"
+    },
+    {
+      "id": "agents.permissionMode.default",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/permission-mode.ts, src/agents/permission-baseline.ts ; tests/tests/agents/permission-mode.test.ts"
+    },
+    {
+      "id": "agents.permissionMode.acceptEdits",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/permission-mode.ts, src/agents/permission-baseline.ts ; tests/tests/agents/permission-mode.test.ts"
+    },
+    {
+      "id": "agents.permissionMode.auto",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/permission-mode.ts, src/agents/permission-baseline.ts ; tests/tests/agents/permission-mode.test.ts"
+    },
+    {
+      "id": "agents.permissionMode.dontAsk",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/permission-mode.ts, src/agents/permission-baseline.ts ; tests/tests/agents/permission-mode.test.ts"
+    },
+    {
+      "id": "agents.permissionMode.bypassPermissions",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/permission-mode.ts, src/agents/permission-baseline.ts ; tests/tests/agents/permission-mode.test.ts"
+    },
+    {
+      "id": "agents.permissionMode.plan",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/permission-mode.ts, src/agents/permission-baseline.ts ; tests/tests/agents/permission-mode.test.ts"
+    },
+    {
+      "id": "agents.behavior.Preload skills into subagents",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/host/session-skill-preload.ts, src/agents/preload-skills.ts ; tests/tests/host/preload-skills.test.ts"
+    },
+    {
+      "id": "agents.behavior.Scope MCP servers to a subagent",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/mcp-scope.ts ; tests/tests/agents/mcp-scope-behavior.test.ts"
+    },
+    {
+      "id": "agents.behavior.Trust required for inline MCP servers",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/mcp-scope.ts ; tests/tests/agents/mcp-scope-behavior.test.ts"
+    },
+    {
+      "id": "agents.behavior.Trust required for inline MCP servers.Trust that doesn't count",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/mcp-scope.ts ; tests/tests/agents/mcp-scope-behavior.test.ts"
+    },
+    {
+      "id": "agents.behavior.Trust required for inline MCP servers.Until then",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/mcp-scope.ts ; tests/tests/agents/mcp-scope-behavior.test.ts"
+    },
+    {
+      "id": "agents.behavior.Trust required for inline MCP servers.--add-dir directories",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/mcp-scope.ts ; tests/tests/agents/mcp-scope-behavior.test.ts"
+    },
+    {
+      "id": "agents.hookEvent.PreToolUse",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/hooks.ts ; tests/tests/agents/hooks.test.ts"
+    },
+    {
+      "id": "agents.hookEvent.PostToolUse",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/hooks.ts ; tests/tests/agents/hooks.test.ts"
+    },
+    {
+      "id": "agents.hookEvent.Stop",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/hooks.ts ; tests/tests/agents/hooks-stop.test.ts"
+    },
+    {
+      "id": "agents.behavior.Conditional rules with hooks",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/hooks.ts ; tests/tests/host/agent-conditional-rules.test.ts"
+    },
+    {
+      "id": "agents.behavior.Project-level hooks for subagent events",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/hooks.ts, src/agents/catalog/resolve.ts ; tests/tests/agents/catalog/subagent-hooks.test.ts"
+    },
+    {
+      "id": "agents.behavior.Let subagents spawn their own subagents",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/spawn.ts ; tests/tests/agents/catalog/spawn.test.ts"
+    },
+    {
+      "id": "agents.behavior.Built-in subagents",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/builtin.ts, src/agents/builtin-model.ts ; tests/tests/agents/catalog/builtin.test.ts tests/tests/agents/catalog/builtin-model.test.ts tests/tests/agents/catalog/resolve.test.ts"
+    },
+    {
+      "id": "agents.behavior.Subagent names",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/spawn.ts ; tests/tests/agents/catalog/spawn.test.ts"
+    },
+    {
+      "id": "agents.behavior.Invoke subagents explicitly.Natural language",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/invoke.ts ; tests/tests/agents/catalog/invoke.test.ts"
+    },
+    {
+      "id": "agents.behavior.Invoke subagents explicitly.@-mention",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/invoke.ts ; tests/tests/agents/catalog/invoke.test.ts"
+    },
+    {
+      "id": "agents.behavior.Invoke subagents explicitly.Session-wide",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/invoke.ts ; tests/tests/agents/catalog/invoke.test.ts"
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J4.1",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/host/session-skill-entries.ts:60-121, src/format/skill-name.ts:157-168 ; tests/host/plugin-skills.test.ts",
+      "note": "Scanned skill listed by folder, declared name and bare name also invoke it; manifest-path and root skills self-named. Bare-name alias of a scanned skill is untested."
+    },
+    {
+      "id": "J4.2",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:176-200 ; tests/loading/command-skill-folders.test.ts"
+    },
+    {
+      "id": "J4.3",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/loading/walk.ts:221-235 ; tests/loading/command-skill-folders.test.ts",
+      "note": "Spec is silent on a plugin-local clash between a command and a skill of one command name; agent-plugins lets the command win (session-skill-entries.ts:98, oracle 2.1.319). Worth a spec sentence."
+    },
+    {
+      "id": "J4.4",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-name.ts:157-168 ; tests/format/skill-name.test.ts"
+    },
+    {
+      "id": "J4.5",
+      "file": "04-skills.md",
+      "status": "diverges",
+      "evidence": "src/format/skill-name.ts:22-160 ; tests/format/skill-name.test.ts",
+      "note": "Character classes (Cc, Cf, Co, Cn, Cs, Z except one inner space, < >) and the plugin hyphen rule conform. Outside a plugin a refused frontmatter name refuses the skill instead of being unused (see 'Characters a skill name can't hold'); the 256-character limit is not applied."
+    },
+    {
+      "id": "J4.6",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts, src/format/skill-field-data.ts ; tests/format/skill-fields.test.ts tests/format/skill-field-data.test.ts"
+    },
+    {
+      "id": "J4.7",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts ; tests/format/skill-fields.test.ts tests/format/skill-field-data.test.ts",
+      "note": "agent-plugins also keeps a parenthesised group whole in `paths` (its own judgment); compatible."
+    },
+    {
+      "id": "J4.8",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-field-readers.ts ; tests/format/skill-field-readers.test.ts"
+    },
+    {
+      "id": "J4.9",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-name.ts:65-72 ; tests/format/skill-name.test.ts"
+    },
+    {
+      "id": "J4.10",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/scan/resolve.ts:220-230 ; tests/skills/scan/resolve.test.ts"
+    },
+    {
+      "id": "J4.11",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/command.ts, src/skills/command-entries.ts ; tests/format/command.test.ts tests/skills/command-entries.test.ts"
+    },
+    {
+      "id": "J4.12",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/listing.ts:80-103, 106-114 ; tests/skills/listing.test.ts tests/skills/listing-budget.test.ts"
+    },
+    {
+      "id": "J4.13",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/skill-fields.ts:160-170, src/skills/listing.ts:124-131 ; tests/skills/listing.test.ts"
+    },
+    {
+      "id": "J4.14",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/listing.ts:116-131 ; tests/skills/path-gate.test.ts"
+    },
+    {
+      "id": "J4.15",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/mention.ts, src/skills/invocation.ts ; tests/skills/invocation-mention.test.ts"
+    },
+    {
+      "id": "J4.16",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/skill-rule.ts:18-27 ; tests/rules/skill-access.test.ts"
+    },
+    {
+      "id": "J4.17",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/substitute.ts:98 ; tests/skills/expand-base-directory.test.ts"
+    },
+    {
+      "id": "J4.18",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/arguments.ts:41 ; tests/skills/arguments.test.ts"
+    },
+    {
+      "id": "J4.19",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/substitute.ts:160-186 ; tests/skills/substitute-arguments.test.ts"
+    },
+    {
+      "id": "J4.20",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/shell-scan.ts:73 ; tests/skills/shell-scan.test.ts"
+    },
+    {
+      "id": "J4.21",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/execution.ts ; tests/skills/execution-overrides.test.ts tests/skills/expand-fields.test.ts"
+    },
+    {
+      "id": "J4.22",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/lifecycle.ts ; tests/skills/lifecycle.test.ts"
+    },
+    {
+      "id": "J4.23",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/skills/fork.ts ; tests/skills/fork.test.ts"
+    },
+    {
+      "id": "J4.24",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/component-frontmatter.ts:14-90 ; tests/format/validate",
+      "note": "The validator also reports `name must be a string`, `allowed-tools must be a string or array of strings`, a non-map `metadata` and a missing description (oracle 2.1.319); §4.10 says a wrong-type value is not reported and does not mention the description warning that J4.13 itself cites from 2.1.325. The spec text should be checked against 2.1.325 and corrected."
+    },
+    {
+      "id": "J4.25",
+      "file": "04-skills.md",
+      "status": "conforms",
+      "evidence": "src/format/frontmatter.ts:78-136 ; tests/format"
+    },
+    {
+      "id": "J5.1",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts:161 ; tests/format/agent-file.test.ts",
+      "note": "Probe: `name:`/blank is silent documentation, a list is skipped with an error, 3000 and true load as text."
+    },
+    {
+      "id": "J5.2",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent.ts ; tests/host/plugin-agents.test.ts",
+      "note": "Probe: no description gives `Agent from my-plugin plugin` (with a warning), `has:colon` and `-dash` kept."
+    },
+    {
+      "id": "J5.3",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/resolve.ts:67-70, 144-166 ; tests/agents/catalog/resolve.test.ts"
+    },
+    {
+      "id": "J5.4",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/agent-unrecognized.ts:51 ; tests/format/agent-fields.test.ts",
+      "note": "Probe: five fields kept in file order with suggestions (maxTurn->maxTurns, Tools->tools); plugin agents too; observer is unrecognized. The words `does not recognize or apply` are the host's to log; the kit returns the list."
+    },
+    {
+      "id": "J5.5",
+      "file": "05-agents.md",
+      "status": "diverges",
+      "evidence": "src/format/agent-scalars.ts, src/format/agent-fields.ts ; tests/format/agent-fields.test.ts",
+      "note": "color magenta, isolation remote, maxTurns 0, effort huge/High/3 and background yes are dropped with a warning. But a quoted `maxTurns: \"5\"` (a YAML string, the wrong type) is accepted as 5, and an empty `model` is dropped without a log. Minor: either the spec should allow numeric text for maxTurns (as it does for autoCompactWindow) or the kit should drop it."
+    },
+    {
+      "id": "J5.6",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/scan.ts:136-157 ; tests/agents/catalog/scan.test.ts"
+    },
+    {
+      "id": "J5.7",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/resolve.ts, src/agents/catalog/builtin.ts ; tests/agents/catalog/resolve.test.ts tests/agents/catalog/builtin.test.ts"
+    },
+    {
+      "id": "J5.8",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-list.ts:41-80 ; tests/agents/tool-judgments.test.ts"
+    },
+    {
+      "id": "J5.9",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/tool-resolution.ts:60-100, 204 ; tests/agents/tool-disallowed.test.ts tests/agents/tool-resolution.test.ts"
+    },
+    {
+      "id": "J5.10",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/resolve.ts:169-182 ; tests/agents/catalog/disable.test.ts tests/agents/catalog/spawn-refusal.test.ts"
+    },
+    {
+      "id": "J5.11",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/launch-model.ts ; tests/agents/launch-model.test.ts tests/agents/model-choice.test.ts"
+    },
+    {
+      "id": "J5.12",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/launch.ts ; tests/agents/launch-effort.test.ts"
+    },
+    {
+      "id": "J5.13",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/memory.ts:95-110 ; tests/agents/memory.test.ts"
+    },
+    {
+      "id": "J5.14",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/hooks.ts:59-82 ; tests/agents/hooks-trust.test.ts"
+    },
+    {
+      "id": "J5.15",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/spawn.ts ; tests/agents/catalog/spawn.test.ts"
+    },
+    {
+      "id": "J5.16",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/agents/catalog/invoke.ts:150-170 ; tests/agents/catalog/invoke.test.ts"
+    },
+    {
+      "id": "J5.17",
+      "file": "05-agents.md",
+      "status": "conforms",
+      "evidence": "src/format/validate/component-frontmatter.ts:15-20, 84-88 ; tests/format/validate"
+    }
+  ]
+}

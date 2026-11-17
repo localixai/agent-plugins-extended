@@ -1,0 +1,592 @@
+{
+ "implementation": "agent-plugins",
+ "revision": "018f293+rename+fixes",
+ "pass": "r03-marketplaces-install-cli-bridge",
+ "date": "2026-11-16",
+ "files": [
+  "01-packages.md",
+  "15-marketplace-hosting.md",
+  "15-marketplaces.md",
+  "16-dependencies.md",
+  "16-install.md",
+  "16-updates.md",
+  "17-errors.md",
+  "17-cli.md",
+  "18-bridge.md"
+ ],
+ "requirements": [
+  {
+   "id": "install.guide.Add a private marketplace.SSH",
+   "file": "15-marketplace-hosting.md",
+   "status": "conforms",
+   "evidence": "src/marketplace/git-transport.ts:68-75 (clonePlan); tests/marketplace/git-transport.test.ts:32,128",
+   "note": "A program named by GIT_SSH_COMMAND, GIT_SSH or core.sshCommand is `user-configured`, its command line gets no option added (J15.14), the no-prompt environment stays; git itself applies its own order since the host runs git. The SSH probe is the host-supplied sshAuthenticates."
+  },
+  {
+   "id": "marketplace.hosting.Grant access to a private marketplace.SSH",
+   "file": "15-marketplace-hosting.md",
+   "status": "conforms",
+   "evidence": "src/marketplace/git-transport.ts:57-62 (OWN_SSH_OPTIONS BatchMode=yes, StrictHostKeyChecking=yes); tests/marketplace/git-transport.test.ts:116",
+   "note": "Fixed since a10: the client's own ssh runs with both options, a user-named program is left as configured (the next paragraph of the spec)."
+  },
+  {
+   "id": "marketplace.hosting.What background auto-update does with credentials.Keep the checkout on failure",
+   "file": "15-marketplace-hosting.md",
+   "status": "conforms",
+   "evidence": "src/updates/private-marketplace.ts:68-91 (checkoutHoldsCatalog); tests/updates/private-marketplace.test.ts:40",
+   "note": "Fixed since a10: kept only when the checkout holds .claude-plugin/marketplace.json; otherwise the re-clone is attempted."
+  },
+  {
+   "id": "marketplace.troubleshooting.Marketplace updates keep failing offline",
+   "file": "15-marketplace-hosting.md",
+   "status": "conforms",
+   "evidence": "src/updates/private-marketplace.ts:68-91; tests/updates/private-marketplace.test.ts:40",
+   "note": "Same fix as Keep the checkout on failure."
+  },
+  {
+   "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output.Entry sets a routing or identity header",
+   "file": "15-marketplace-hosting.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/header-names.ts:11-40 (the J15.12 set, `_` as `-`); src/marketplace/download-headers.ts:83-117 and header-policy.ts:94-116 (entry headers and command output of catalog entries); src/format/marketplace/entry-checks.ts:113-121 (warning text); tests/format/marketplace/entries-headers.test.ts, tests/marketplace/download-headers-entry.test.ts:49",
+   "note": "One set read by the validator, the download and the settings-file filter; Authorization kept."
+  },
+  {
+   "id": "marketplace.field.renames",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/renames.ts:44-75; tests/format/marketplace/renames-validation.test.ts, tests/marketplace/renames.test.ts",
+   "note": "Reasons are `target-missing`/`cycle`; plugins checked before keys, a key target is followed, so `bad name` draws target-missing and the PluginIdSchema row is never printed (J15.11)."
+  },
+  {
+   "id": "marketplace.relevance.Validate your marketplace",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/relevance.ts:28-33; tests/format/marketplace/entries-relevance.test.ts",
+   "note": "Message `must be a lowercase bare hostname (no scheme, port, or path)` on the field path."
+  },
+  {
+   "id": "marketplace.relevance.relevance",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/relevance.ts:28-48; tests/format/marketplace/entries-relevance.test.ts",
+   "note": "Upper case invalidates the entry (J15.10). The code also refuses a space, underscore or non-ASCII letter (oracle 2.1.325, its own judgment); the spec lists scheme, port, path and upper case and does not say the rest are valid."
+  },
+  {
+   "id": "marketplace.rule.Bare names under pluginRoot",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/plugin-source.ts:41-60; tests/format/marketplace/plugin-source-relative.test.ts",
+   "note": "A climbing or absolute pluginRoot now draws `Invalid string: must start with \"./\"` (J15.6)."
+  },
+  {
+   "id": "marketplace.rule.Invalid input on a source",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/plugin-source-fields.ts:19-106, plugin-source-kinds.ts; tests/format/marketplace/plugin-source-field-errors.test.ts (13 pass)",
+   "note": "Missing or wrong-typed required fields and npm `..` are the bare Invalid input; a present invalid sha/sha256/timeout names its field, sha with the quoted message."
+  },
+  {
+   "id": "marketplace.rule.Metadata precedence.version",
+   "file": "15-marketplaces.md",
+   "status": "diverges",
+   "evidence": "src/format/marketplace/entry-checks.ts:161-196 (version warning, conforms); src/loading/validate/marketplace-target.ts:18,107-113 (parse warning)",
+   "note": "The version-mismatch warning names the entry's plugin.json from the marketplace root as the spec says. The cross-check parse warning always says `Could not parse .claude-plugin/plugin.json for version cross-check` (fixed ENTRY_MANIFEST), where the spec gives the same root-relative <path> (`plugins/formatter/.claude-plugin/plugin.json`). The only oracle case (claude-voice-cue) is a root entry `./`, so it cannot decide; the code should reuse the version warning's path. Untested."
+  },
+  {
+   "id": "marketplace.rule.Reserved names.npm, pip, uv, cargo, github, and gh",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-names.ts:96-114,216-224; tests/format/marketplace/marketplace-names.test.ts:178",
+   "note": "validate reports `npm` and passes `NPM` (checked with bun -e); add/load refuse every casing."
+  },
+  {
+   "id": "marketplace.rule.archive plugin source",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/archive-url.ts:11-29, plugin-source-kinds.ts:66-74; tests/marketplace/archive-source.test.ts",
+   "note": "Validator reports `Invalid URL` and the https/host message on source.url."
+  },
+  {
+   "id": "marketplace.rule.command plugin source.command",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/plugin-source-kinds.ts:76-96; tests/marketplace/command-source.test.ts",
+   "note": "The two J15.8 messages on source.command, both when both break."
+  },
+  {
+   "id": "marketplace.rule.command plugin source.timeout",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/plugin-source-kinds.ts:98-114; tests/marketplace/command-source.test.ts",
+   "note": "Range errors on source.timeout; default 60. A non-integer timeout is the bare Invalid input."
+  },
+  {
+   "id": "marketplace.source.Relative path",
+   "file": "15-marketplaces.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/plugin-source.ts:61-87 (REFUSES_BACKSLASH load-only); src/marketplace/fetch-plan.ts:91-98; tests/format/marketplace/plugin-source-relative.test.ts",
+   "note": "A backslash after ./ on posix is refused at load and install, not reported by validate (§15.6.1 item 2)."
+  },
+  {
+   "id": "dependencies.guide.Test a plugin and its dependency locally.You disabled the local copy",
+   "file": "16-dependencies.md",
+   "status": "conforms",
+   "evidence": "src/marketplace/dependencies.ts:219-240; tests/marketplace/dependency-guide-local.test.ts:209",
+   "note": "Named by the id the entry resolves to (`my-dependency@m`), bare when no marketplace is implied, never @inline (J16.24)."
+  },
+  {
+   "id": "cli.errors.Claude Code refuses the marketplace name",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/marketplace/refused-name.ts:40-53; src/format/host-errors.ts:65-70; tests/marketplace/refused-name.test.ts",
+   "note": "refusedMarketplaceName gives the marketplace line, the per-plugin line and the settings steps for a `settings` source; the host calls it on every catalog read."
+  },
+  {
+   "id": "cli.errors.Hook needs quotes around a path with a space",
+   "file": "17-errors.md",
+   "status": "missing",
+   "evidence": "src/format/host-errors.ts:96 (builder only)",
+   "note": "Still no hook runner detects a shell-form asyncRewake command with an interpreter and an unquoted placeholder resolving to a path with a space, nor skips it. Implementation should add it."
+  },
+  {
+   "id": "cli.errors.Is not matched by file permission checks",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/rules/rule-warnings.ts:44-85, src/rules/issues.ts:38-66, src/format/host-errors.ts:104-116; tests/rules/rule-warnings.test.ts",
+   "note": "Write/NotebookEdit/MultiEdit -> Edit, Glob -> Read (as §13.5.2 says), Glob silent in --allowedTools, bare names and Tool(*) not warned; banner row for deny/ask only."
+  },
+  {
+   "id": "cli.errors.MCP server name is reserved",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/format/host-errors.ts:136; tests/format/host-errors.test.ts",
+   "note": "Wording only; which names are reserved is the client's (no list in the spec). The builder is not called anywhere in src."
+  },
+  {
+   "id": "cli.errors.MCP server rejected the elicitation capability",
+   "file": "17-errors.md",
+   "status": "diverges",
+   "evidence": "src/format/mcp-elicitation.ts:48-51; src/format/host-errors.ts:140",
+   "note": "Unchanged: `bareElicitationCapability: true` is read nowhere; declaredElicitation offers {form, url} to a user-configured server regardless, where the spec offers form mode only. Implementation should change (an McpConnection flag)."
+  },
+  {
+   "id": "cli.errors.Marketplace entry path does not stay inside the marketplace directory",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/marketplace/fetch-plan.ts:57-98 (entryPathRefusal); src/format/marketplace/plugin-source.ts:25-27,80-83; tests/marketplace/entry-path-refusal.test.ts, tests/cli/errors-messages.test.ts",
+   "note": "The `Cannot install <id>: its marketplace entry path does not stay inside the marketplace directory (...)` prefix now exists; the load line as quoted."
+  },
+  {
+   "id": "cli.errors.Path could not be checked",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/ports/files.ts:24-31 (FileStat.checkFailed); src/format/locate.ts:56-62; src/loading/manifest-gate.ts:44-52; src/format/host-errors.ts:148-156; tests/loading/path-check-failed.test.ts (8 pass)",
+   "note": "A default location fails alone, the plugin directory stops the whole plugin, a missing path draws nothing. The kit quotes the path as written (`skills`), the host maps it to the absolute path; the `claude plugin list` form is the builder pathCouldNotBeCheckedInList."
+  },
+  {
+   "id": "cli.errors.Path could not be checked.ELOOP",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/format/locate.ts:56-62; tests/loading/path-check-failed.test.ts:15"
+  },
+  {
+   "id": "cli.errors.Path could not be checked.EIO",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/format/locate.ts:56-62; tests/loading/path-check-failed.test.ts:34",
+   "note": "The host-given code is passed through; ESTALE is not folded into EIO (see J17.29)."
+  },
+  {
+   "id": "cli.errors.Path could not be checked.EACCES",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/format/locate.ts:56-62 (ancestors checked too); tests/loading/path-check-failed.test.ts:48"
+  },
+  {
+   "id": "cli.errors.Path escapes plugin directory",
+   "file": "17-errors.md",
+   "status": "diverges",
+   "evidence": "src/format/messages.ts:10-27, src/format/path-escape.ts:70; tests/loading/path-escape-own-files.test.ts:31",
+   "note": "Fixed: the backslash tail is now added. Still missing: the `claude plugin` form `Path escapes plugin directory: <path> (<component>)` is produced nowhere in src (no builder, unlike pathCouldNotBeCheckedInList). Implementation should add it."
+  },
+  {
+   "id": "cli.errors.Plugin not loaded: its manifest was not read",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/loading/manifest-gate.ts:32-90, src/format/host-errors.ts:159-161; tests/loading/path-check-failed.test.ts:84",
+   "note": "Nothing loads; reason `it resolves to <real>, outside the plugin directory[ and its marketplace directory]` or `it could not be checked (<code>)`."
+  },
+  {
+   "id": "cli.errors.Plugin was not uninstalled",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/cli/uninstall-refusal.ts:16-37, src/cli/uninstall-plan.ts:103,186-190; tests/cli/uninstall-plan.test.ts",
+   "note": "The four middles as quoted, `Failed to uninstall plugin \"<name>\": \"<name>\" was not uninstalled: ...`, failureCode settings_still_on. The repair sentence for unreadable/not-read files is the kit's judgment (the spec quotes only the switched-on form's)."
+  },
+  {
+   "id": "cli.errors.Sandbox allow entries are ignored under a managed lock",
+   "file": "17-errors.md",
+   "status": "diverges",
+   "evidence": "src/format/host-errors.ts:163-177",
+   "note": "Unchanged: one entry prints `The 1 entry in <file>`; the spec quotes `The <N> entries in <file>`. Minor; the code should drop the singular unless an oracle shows it."
+  },
+  {
+   "id": "cli.errors.Skill or command name refused",
+   "file": "17-errors.md",
+   "status": "conforms",
+   "evidence": "src/format/skill-name.ts:64-92 (256 code points, not offered / not shown for), src/format/host-errors.ts:180-181; tests/format/skill-name-refused.test.ts",
+   "note": "Fixed since a12: a refused frontmatter name is a warning and the skill loads under its folder name; the 256 limit exists."
+  },
+  {
+   "id": "cli.flag.--mcp-config",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/flags/mcp.ts:23-24,67-86",
+   "note": "Unchanged: 30 s default and MCP_TIMEOUT only; no shorter wait in a self-hosted environment and no exception for a server with a cached tool list. Implementation should change (facts for both through FlagContext)."
+  },
+  {
+   "id": "cli.plugin.Accept a displayed install command",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/command-acceptance.ts:47,124-135; tests/cli/install-accept.test.ts"
+  },
+  {
+   "id": "cli.plugin.Advice on the README",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/validate-advice.ts:9-35; tests/cli/validate-advice.test.ts",
+   "note": "Fixed: a source still holding `<owner>/<repo>` does not count."
+  },
+  {
+   "id": "cli.plugin.JSON output.installPath",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:21-23,167",
+   "note": "installPath optional and omitted when readFromFolder is set."
+  },
+  {
+   "id": "cli.plugin.Output and exit codes.contents",
+   "file": "17-cli.md",
+   "status": "diverges",
+   "evidence": "src/cli/validate-run.ts:72-116 (plugin report conforms); src/mods/load/commands/validate-report.ts:26, validate.ts:130,201",
+   "note": "The plugin report now carries all four arrays with {path,message} entries. The mod validator still omits gatingHooks on some file results (a module that fails to read, line 130; the mod.json result, line 201), and FileReport.gatingHooks is optional, where every result carries all four arrays. Implementation should always emit `gatingHooks: []` (or share ValidationFileResult)."
+  },
+  {
+   "id": "cli.plugin.Validate a directory",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/loading/validate/validate-plugin.ts, components-only.ts (hasSkillsTree), plugin-contents.ts; tests/cli/validate-run.test.ts:31",
+   "note": "J17.14 deviation implemented."
+  },
+  {
+   "id": "cli.plugin.plugin details.Component inventory",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-details.ts:43-61",
+   "note": "Each kind printed `<Label> (<count>)  <names>`."
+  },
+  {
+   "id": "cli.plugin.plugin disable",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/disable-plan.ts:31-106, src/cli/toggle-target.ts:143-153"
+  },
+  {
+   "id": "cli.plugin.plugin install.--marketplace <source>",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/cli/install-lookup.ts:62-92; src/marketplace/install-errors.ts:217-224; tests/cli/install-marketplace.test.ts",
+   "note": "Fixed: a catalog whose name is a marketplace added from another source keeps the existing one and installs nothing (failureCode invalid_source, a kit judgment)."
+  },
+  {
+   "id": "cli.rule.Validate the manifest.Errors",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/format/validate/mcp-remote-checks.ts:12-36, mcp-check.ts:124,144",
+   "note": "A url that does not parse is an error. Nuance: a url holding a `${` reference is skipped entirely rather than checked with references set aside."
+  },
+  {
+   "id": "cli.rule.Validate the manifest.Warnings",
+   "file": "17-cli.md",
+   "status": "conforms",
+   "evidence": "src/format/validate/mcp-remote-checks.ts:15-70",
+   "note": "http:// and ws:// to a non-loopback host, and literal-credential header values, warn (oracle 2.1.325 wording)."
+  }
+ ],
+ "judgments": [
+  {
+   "id": "J15.3",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:54, marketplace-names.ts:96-114",
+   "note": "Lower case only in validate; `is reserved for plugins loaded by claude plugin test`."
+  },
+  {
+   "id": "J15.6",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/plugin-source.ts:41-60"
+  },
+  {
+   "id": "J15.8",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/plugin-source-kinds.ts:76-114, archive-url.ts"
+  },
+  {
+   "id": "J15.9",
+   "status": "conforms",
+   "evidence": "src/marketplace/marketplace-input.ts:44-49,86-118; tests/marketplace/marketplace-input.test.ts:176",
+   "note": "An empty #ref is the unrecognized-format refusal on http(s), SSH and shorthand."
+  },
+  {
+   "id": "J15.10",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/relevance.ts:21-48"
+  },
+  {
+   "id": "J15.11",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/renames.ts:44-75"
+  },
+  {
+   "id": "J15.12",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/header-names.ts:11-40"
+  },
+  {
+   "id": "J16.17",
+   "status": "conforms",
+   "evidence": "src/format/manifest-schema.ts:70-81, src/format/validate/plugin-fields.ts:35; tests/format/manifest-rules.test.ts:124",
+   "note": "`a@b@c` and an object without name are `dependencies.<i>: Invalid input`; a bad range and an extra key pass."
+  },
+  {
+   "id": "J16.24",
+   "status": "conforms",
+   "evidence": "src/marketplace/dependencies.ts:219-240; tests/marketplace/dependency-guide-local.test.ts:220"
+  },
+  {
+   "id": "J17.9",
+   "status": "conforms",
+   "evidence": "src/cli/plugin-list.ts:88-108",
+   "note": "Session-only: `Path:` and `Status: ✔ loaded`."
+  },
+  {
+   "id": "J17.15",
+   "status": "diverges",
+   "evidence": "src/cli/validate-run.ts:72-116; src/mods/load/commands/validate.ts:130,201",
+   "note": "Entry shapes now agree ({path,message}, string notes, four-field gating hooks), but the mod validator omits gatingHooks on some file results; J17.15 says every result carries all four arrays. Code should change."
+  },
+  {
+   "id": "J17.29",
+   "status": "diverges",
+   "evidence": "src/ports/files.ts:24-31, src/format/locate.ts:56-62",
+   "note": "ESTALE is refused like EIO but reported under its own name (the host code is passed through). Either fold ESTALE into EIO in locate/manifest-gate, or relax J17.29 to \"handled as EIO\"; the docs list \"EIO or ESTALE\" as causes and give no reported spelling, so the spec's \"reported as EIO\" is the weaker side."
+  },
+  {
+   "id": "J17.30",
+   "status": "conforms",
+   "evidence": "src/marketplace/fetch-plan.ts:57-63"
+  },
+  {
+   "id": "J1.2",
+   "status": "missing",
+   "evidence": "src/loading/load-plugin.ts",
+   "note": "Unchanged: no dual-package detection, so nothing marks a loaded plugin as also carrying a core manifest (§1.3.1 SHOULD). Size: small (about 100-300 lines with the §18.3 work)."
+  },
+  {
+   "id": "§1.2-§1.3 core form",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. Needed, as before: a form decision per the §1.3 table keyed on the canonical core $schema, a core loader (core §4-§5), and the J1.2 note. Size: large, shared with §18.1."
+  },
+  {
+   "id": "J18.1",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. The PreToolUse ordering (Claude Code handlers and updatedInput first, core after, core runs even after a deny) has no core side to order."
+  },
+  {
+   "id": "J18.2",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No core PostToolUse input built from the pre-replacement result."
+  },
+  {
+   "id": "J18.3",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No handler order across forms."
+  },
+  {
+   "id": "J18.4",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No core failure handling (never blocks, reported as a non-blocking hook error)."
+  },
+  {
+   "id": "J18.5",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. The Claude Code command-hook defaults exist for Claude Code hooks; nothing applies them to core handlers."
+  },
+  {
+   "id": "J18.6",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No mapping of SessionStart sources to the core event."
+  },
+  {
+   "id": "J18.7",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No mapping of UserPromptSubmit origins to the core event."
+  },
+  {
+   "id": "J18.8",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No core PostToolUse from PostToolUseFailure."
+  },
+  {
+   "id": "J18.9",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No shared continuation counter (continuation_active)."
+  },
+  {
+   "id": "J18.10",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. The plugin:<name>:<server> naming exists for Claude Code plugin servers (§8.5), nothing registers a core server under it."
+  },
+  {
+   "id": "J18.11",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No core mcp.json reader or mapping to native server defaults."
+  },
+  {
+   "id": "J18.12",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. Half conforms: Claude Code subprocesses never get PLUGIN_ROOT/PLUGIN_DATA from the kit. The core half (base environment plus PLUGIN_*, no CLAUDE_PLUGIN_*) is missing: agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/)."
+  },
+  {
+   "id": "J18.13",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. agent-plugins has no core-package form: nothing decides the form of a root (§1.3), reads a root plugin.json with a core $schema, mcp.json or hooks.json, or runs a core handler (no PLUGIN_ROOT/PLUGIN_DATA anywhere in src/)."
+  },
+  {
+   "id": "J18.14",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No core skill exposure without §4.8 expansion."
+  },
+  {
+   "id": "J18.15",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. Policy, trust and disableAllHooks apply by id to Claude Code plugins only; marketplace entry component fields/strict:false are not reported for a core package."
+  },
+  {
+   "id": "J18.16",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No tool_profile derivation (shell, file.read, file.modify, WebFetch, WebSearch, mcp)."
+  },
+  {
+   "id": "J18.17",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No converter or hook adapter."
+  },
+  {
+   "id": "J18.18",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes: no form decision, no core loader, no PLUGIN_ROOT/PLUGIN_DATA (only CLAUDE_PLUGIN_* in src), no core handler. No converter, so no env bridging."
+  },
+  {
+   "id": "§18.1",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes. Core form in one client: missing entirely. Needed: form decision per root (§1.3 table, dual = Claude Code only); a core loader (plugin.json with core $schema, skills/ one level, mcp.json, hooks.json; ignore every Claude Code location and extensions); a core hook runner (exec form, one JSON object on stdin, cwd plugin root, exit 0 + one object or nothing, everything else a non-blocking failure, CC timeouts/caps); occurrence mapping of the five events and the cross-form combination rules (PreToolUse CC-first then core, decision precedence, one Stop continuation, handler order); core subprocess environment; core server registration under plugin:<name>:<server> with core §7.2 validation; settings/policy/permissions/skills by id. Size: large, roughly 1,500-2,500 lines plus tests, mostly new modules beside src/hooks, src/loading and src/settings; the hook engine needs a second handler kind and a combination step."
+  },
+  {
+   "id": "§18.2",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes. Event and result mapping: missing. Needed: per-event input builders (common fields, SessionStart/UserPromptSubmit/PreToolUse/PostToolUse/Stop fields) and result readers both ways, plus the tool profiles of §18.2.7 (shell, file.read with line-numbered text and binary pages, file.modify incl. NotebookEdit absolute path, WebFetch, WebSearch items, mcp). Size: medium, about 600-1,000 lines of pure tables and tests; shared by §18.1 and the §18.4 adapter."
+  },
+  {
+   "id": "§18.3",
+   "status": "missing",
+   "evidence": "src/format/names.ts:107; src/format/manifest.ts",
+   "note": "Confirmed still missing at 018f293+rename+fixes. Dual packages: the Claude Code half already behaves (a dual package validates as a plugin; J18.19 messages match). Missing: recognising the root core plugin.json so a dual package loads as Claude Code only and SHOULD be shown as also carrying a core manifest (§1.3.1), and a core validator for a core package (§18.1.5 item 6). Size: small, about 100-300 lines, most of it shared with the §18.1 form decision."
+  },
+  {
+   "id": "§18.4",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Confirmed still missing at 018f293+rename+fixes. Conversion: missing; no converter exists. Needed: core-to-plugin and plugin-to-core converters (manifest copy, skill checks, MCP table with env bridging J18.18, reporting every loss with its path, no renaming, deterministic, dual output by default) and a hook adapter program translating inputs, results and exit statuses by §18.2. Size: large, about 1,000-1,500 lines plus the adapter runtime; it can be a separate entry point (it is a tool, not part of a session)."
+  },
+  {
+   "id": "docs:plugins/org.md | Marketplaces hosted on claude.ai",
+   "status": "missing",
+   "evidence": "src/settings/marketplaces/facts.ts:55-80 (no claudeai kind)",
+   "note": "The policy lists cannot match a claude.ai marketplace: source facts have no `claudeai` kind and no host `claude.ai`, so an allowlist hostPattern for claude.ai neither admits the organisation's and default ones nor excludes a member's own uploads or one of unstated scope. Implementation should add the kind with its scope."
+  },
+  {
+   "id": "docs:plugins/install.md | Add a marketplace from claude.ai",
+   "status": "conforms",
+   "evidence": "src/cli/marketplace-add.ts:41-77 (--claudeai, by name, no settings declaration, not with --scope/--sparse), src/cli/marketplace-list.ts:91-97 (source claudeai); tests/cli/marketplace-add.test.ts, tests/cli/marketplace-list.test.ts"
+  },
+  {
+   "id": "docs:desktop.md | Install plugins",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Nothing in src plans copying the user's plugins to ~/.claude/remote/plugins/ for a remote SSH session, or gives a WSL session no plugins. Conditional on a client offering remote sessions; the copy is I/O, but the selection could be a pure plan."
+  },
+  {
+   "id": "docs:desktop.md | Windows remote machines",
+   "status": "missing",
+   "evidence": "—",
+   "note": "No filter for plugins holding a name Windows cannot store (such as `:`), and no list of the plugins left out."
+  },
+  {
+   "id": "docs:desktop.md | Files and processes on the remote machine",
+   "status": "missing",
+   "evidence": "—",
+   "note": "Same: no remote plugin location or loading from it."
+  },
+  {
+   "id": "docs:sessions.md | What a resumed session restores",
+   "status": "not-applicable",
+   "evidence": "src/cli/flags/types.ts:74-77",
+   "note": "What a resumed session restores is the host's session store; the kit's flag plan is computed from the current launch's values only and keeps no record of earlier launches, so it restores nothing."
+  },
+  {
+   "id": "docs:agent-view.md | What carries over when you background",
+   "status": "missing",
+   "evidence": "—",
+   "note": "No plan that carries --plugin-dir, --mcp-config, --strict-mcp-config, --settings, --setting-sources and --add-dir into a background session, nor which work (monitors) stops."
+  },
+  {
+   "id": "docs:agent-view.md | Settings, plugins, and MCP servers",
+   "status": "missing",
+   "evidence": "—",
+   "note": "No agent-view plan (which flags it applies to itself, which it passes to dispatched sessions)."
+  },
+  {
+   "id": "docs:headless.md | Fail CI when a plugin or MCP server doesn't load",
+   "status": "missing",
+   "evidence": "—",
+   "note": "No system/init `plugins` / `plugin_errors` builder (plugin, type, message, path for a --plugin-dir failure)."
+  },
+  {
+   "id": "docs:headless.md | Track plugin installs",
+   "status": "missing",
+   "evidence": "src/settings/host-switches.ts:74-85 (only the wait decision)",
+   "note": "No system/plugin_install events (started/completed/installed/failed with name, error, uuid, session_id)."
+  }
+ ]
+}

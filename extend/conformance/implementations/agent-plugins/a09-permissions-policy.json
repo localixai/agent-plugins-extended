@@ -1,0 +1,1733 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a09-permissions-policy",
+  "date": "2026-11-16",
+  "files": [
+    "13-permissions.md",
+    "14-policy.md"
+  ],
+  "requirements": [
+    {
+      "id": "permissions.behavior.Permission system.Read-only",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/approval-memory.ts; tests/host/saved-approval.test.ts, tests/rules/decide/permission-system.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Permission system.Bash commands",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/approval-memory.ts; tests/host/saved-approval.test.ts, tests/rules/decide/permission-system.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Permission system.File modification",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/approval-memory.ts; tests/host/saved-approval.test.ts, tests/rules/decide/permission-system.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Permission system.Web fetch",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/approval-memory.ts; tests/host/saved-approval.test.ts, tests/rules/decide/permission-system.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Permission system.Web search",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/approval-memory.ts; tests/host/saved-approval.test.ts, tests/rules/decide/permission-system.test.ts"
+    },
+    {
+      "id": "permissions.reference.Permission rule syntax.Bash",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/parse.ts:114; tests/rules/parse.test.ts, tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-limits.test.ts, tests/rules/param.test.ts, tests/rules/parse.test.ts"
+    },
+    {
+      "id": "permissions.rule.Read",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-depth.test.ts, tests/rules/parse.test.ts"
+    },
+    {
+      "id": "permissions.rule.WebFetch",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/domain.test.ts, tests/rules/parse.test.ts, tests/rules/domain-sandbox.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(npm run build)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.reference.Permission rule syntax.Bash(npm run *)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/parse.ts:114; tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.rule.Read(./.env)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-depth.test.ts"
+    },
+    {
+      "id": "permissions.reference.Permission rule syntax.Read(./.env)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/parse.ts:114; tests/rules/path-depth.test.ts"
+    },
+    {
+      "id": "permissions.rule.WebFetch(domain:example.com)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/domain.test.ts"
+    },
+    {
+      "id": "permissions.reference.Permission rule syntax.WebFetch(domain:example.com)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/parse.ts:114; tests/rules/domain.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Tool name wildcards",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/parse.ts:45; src/rules/issues.ts:16; tests/rules/tool-pattern.test.ts",
+      "note": "Whole-name `*` glob, glob-with-specifier error and the stderr text `Permission deny rule \"<rule>\" matches no known tool — check for typos.` are produced (src/rules/issues.ts:16); the interactive row is a format helper (src/format/host-errors.ts:120). Routing of the warning (row, stderr, debug log in background/json/stream-json) is the host's output surface, not the library's."
+    },
+    {
+      "id": "permissions.rule.Agent(model:opus)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/param.test.ts"
+    },
+    {
+      "id": "permissions.rule.Agent(isolation:worktree)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/param.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(run_in_background:true)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/param.test.ts"
+    },
+    {
+      "id": "permissions.setting.allowManagedPermissionRulesOnly",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/locks.test.ts, tests/host/saved-approval.test.ts, tests/host/host-skills.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(npm run *)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(git log * main)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(git * main)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(* --version)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(ls *)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(ls*)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(* --help *)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-wildcard.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Compound commands",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/split.ts; tests/rules/hostile-heredoc.test.ts, tests/rules/hostile-comments.test.ts, tests/rules/decide-modes.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Wrappers",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/wrappers.ts:153; tests/rules/bash-wrappers.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Exec wrappers and find actions",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/exec-wrappers.ts:10; tests/rules/bash-wrappers.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(curl *)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-limits.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(rm *)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-limits.test.ts, tests/rules/hostile-deny-spellings.test.ts"
+    },
+    {
+      "id": "permissions.rule.Bash(git push *)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/bash-limits.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Read-only commands",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts; tests/rules/decide-redirections.test.ts, tests/rules/decide-read-only-set.test.ts, tests/rules/decide-modes.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.docker pointed at another daemon",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts; tests/rules/decide-read-only-set.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.file with path-opening flags",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts; tests/rules/decide-read-only-set.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.Network paths on Windows",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts; tests/rules/decide-read-only-set.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.Writes to special shell variables",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts; tests/rules/decide-read-only-set.test.ts, tests/rules/decide-modes.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.Commands the analysis can't parse",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts; tests/rules/decide-modes.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.cd with git",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts; tests/rules/decide-modes.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.cd with a redirect",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts; tests/rules/decide-redirections.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Redirections",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/redirects.ts; tests/rules/bash-file-targets.test.ts, tests/rules/decide-redirections.test.ts, tests/rules/hostile-redirects.test.ts"
+    },
+    {
+      "id": "permissions.behavior.PowerShell",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/powershell.ts; tests/rules/hostile-comments.test.ts, tests/rules/bash-powershell.test.ts, tests/rules/hostile-powershell.test.ts"
+    },
+    {
+      "id": "permissions.behavior.What Read and Edit rules cover",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/tools.ts:133; tests/rules/hostile-file-commands.test.ts, tests/rules/path-routing.test.ts, tests/rules/bash-file-targets.test.ts",
+      "note": "Coverage (Read deny refuses Edit/Write/MultiEdit, not NotebookEdit) conforms; the refusal text `File is covered by a Read deny rule ... cannot be edited` / `cannot be written` is not produced by the library (decide returns a reason code; the host writes the tool result)."
+    },
+    {
+      "id": "permissions.behavior.Write(path), Glob(path), and Grep(path) rules don't match",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/rules/path/tools.ts:133; src/rules/parse.ts:114; src/format/host-errors.ts:100; tests/rules/path-routing.test.ts",
+      "note": "Matching conforms (Write/NotebookEdit/MultiEdit/Glob/Grep path rules never match; Read(docs/**) ask covers Grep/Glob on the path, not a search above it). But the spec's MUST to keep and warn about a Write/NotebookEdit/MultiEdit/Glob path rule from every source is not done: parseRule and ruleIssues (src/rules/issues.ts:37) emit no issue for such a rule; fileToolRuleBannerRow/fileToolRuleWarning exist only as text helpers used by tests/format/host-errors.test.ts. Implementation should change: emit the warning issue (deny/ask with row, allow without; Glob row uses Read; --allowedTools Glob silent)."
+    },
+    {
+      "id": "permissions.rule.//path",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-anchors.test.ts"
+    },
+    {
+      "id": "permissions.rule.~/path",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-anchors.test.ts, tests/rules/hostile-tilde-path.test.ts"
+    },
+    {
+      "id": "permissions.rule./path",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-anchors.test.ts, tests/rules/path-sources.test.ts"
+    },
+    {
+      "id": "permissions.rule.path",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-anchors.test.ts"
+    },
+    {
+      "id": "permissions.rule../path",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-anchors.test.ts"
+    },
+    {
+      "id": "permissions.rule.Edit(src/**)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-depth.test.ts"
+    },
+    {
+      "id": "permissions.rule.Edit(/src/**)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-depth.test.ts"
+    },
+    {
+      "id": "permissions.rule.Edit(**/src/**)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-depth.test.ts"
+    },
+    {
+      "id": "permissions.rule.Read(.env)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-depth.test.ts"
+    },
+    {
+      "id": "permissions.rule.Read(**/.env)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-depth.test.ts"
+    },
+    {
+      "id": "permissions.rule.Read(//**/.env)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/evaluate.ts; tests/rules/path-depth.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Special characters and ! negation",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/file-rules.ts; tests/rules/path-negation.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Network paths.Allow rules",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:116; tests/rules/decide-auto.test.ts, tests/rules/decide/modes-prompts.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Network paths.PreToolUse hooks",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:116; tests/rules/decide/modes-prompts.test.ts, tests/rules/decide/hooks-and-mods.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Network paths.Auto mode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:116; tests/rules/decide-auto.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Network paths.Windows",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:116; tests/rules/path-windows.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Network paths.macOS and Linux",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:116; tests/rules/path-routing.test.ts, tests/rules/hostile-network-path.test.ts, tests/rules/path-windows.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Allow or deny every fetch",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/domain.ts:121; tests/rules/domain-sandbox.test.ts",
+      "note": "Artifact read covered by a deny/ask domain: rule for claude.ai or the content host, bare WebFetch never (src/rules/target/domain.ts:121). That the denial names the rule is host message text."
+    },
+    {
+      "id": "permissions.behavior.MCP.mcp__puppeteer",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/mcp.ts:57; tests/rules/mcp.test.ts"
+    },
+    {
+      "id": "permissions.behavior.MCP.mcp__puppeteer__*",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/mcp.ts:57; tests/rules/mcp.test.ts"
+    },
+    {
+      "id": "permissions.behavior.MCP.mcp__puppeteer__puppeteer_navigate",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/mcp.ts:57; tests/rules/mcp.test.ts"
+    },
+    {
+      "id": "permissions.behavior.MCP",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/mcp.ts:57; tests/rules/mcp.test.ts"
+    },
+    {
+      "id": "permissions.behavior.MCP.Servers that a plugin provides",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/mcp.ts:57; tests/rules/mcp.test.ts"
+    },
+    {
+      "id": "permissions.behavior.MCP.A <server> that contains __ or ends in _",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/mcp.ts:57; tests/rules/mcp.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Agent (subagents).Agent(Explore)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/agent.ts; tests/rules/agent.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Agent (subagents).Agent(Plan)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/agent.ts; tests/rules/agent.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Agent (subagents).Agent(my-custom-agent)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/agent.ts; tests/rules/agent.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Cd.Cd(~/code/*)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/cd.ts; tests/rules/path-routing.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Cd.Cd(~/code/**)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/cd.ts; tests/rules/path-routing.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Cd.Cd(**/node_modules)",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/cd.ts; tests/rules/path-routing.test.ts"
+    },
+    {
+      "id": "permissions.mode.default",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:117; tests/rules/decide-read-block.test.ts, tests/rules/decide-protected.test.ts, tests/rules/decide-precedence.test.ts"
+    },
+    {
+      "id": "permissions.mode.acceptEdits",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:117; tests/rules/decide-read-block.test.ts, tests/rules/decide-powershell-edits.test.ts, tests/rules/decide-accept-edits.test.ts"
+    },
+    {
+      "id": "permissions.mode.plan",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:117; tests/rules/decide-plan.test.ts"
+    },
+    {
+      "id": "permissions.mode.auto",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/rules/decide/auto-dropped.ts:33; src/rules/decide/modes.ts:135; tests/rules/decide-auto.test.ts, tests/rules/decide-critical.test.ts, tests/rules/decide-blocks-and-sessions.test.ts",
+      "note": "Spec §13.9.4.2-3 (fixed in v09): (a) a shell command carrying per-command allowed domains goes to the classifier even when an allow rule matches - nothing in src/rules/decide reads such domains; (b) auto mode suspends wildcarded shell-wrapper prefixes (bash/sh/zsh and -c forms, J13.24) - isDroppedInAuto drops only interpreters python/python3/node/ruby/perl, package-manager run and bare Bash/PowerShell/Agent/Monitor. Implementation should change. Symlink-resolved protected-path prompt conforms (decide.ts:121 VIA_LINK)."
+    },
+    {
+      "id": "permissions.mode.dontAsk",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:117; tests/rules/decide-hooks.test.ts, tests/rules/decide-dontask-bypass.test.ts"
+    },
+    {
+      "id": "permissions.mode.bypassPermissions",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:117; tests/rules/decide-critical.test.ts, tests/rules/decide-dontask-bypass.test.ts, tests/rules/decide-blocks-and-sessions.test.ts"
+    },
+    {
+      "id": "permissions.modes.Which mode a session starts in",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/default-mode.ts; tests/settings/permissions/start-notices.test.ts, tests/settings/permissions/start-mode.test.ts"
+    },
+    {
+      "id": "permissions.modes.Which mode a session starts in.disableAutoMode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/default-mode.ts; tests/settings/permissions/start-mode.test.ts"
+    },
+    {
+      "id": "permissions.modes.Which mode a session starts in.claude -p",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/default-mode.ts; tests/settings/permissions/start-mode.test.ts"
+    },
+    {
+      "id": "permissions.modes.Start in a different permission mode.One session you're about to start",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/default-mode.ts; tests/settings/permissions/start-mode.test.ts"
+    },
+    {
+      "id": "permissions.modes.Tool calls denied in claude -p and Agent SDK runs",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/host/permission-session.ts:130; tests/settings/permissions/start-mode.test.ts, tests/rules/decide/modes-bypass-and-print.test.ts"
+    },
+    {
+      "id": "permissions.modes.Auto-approve file edits with acceptEdits mode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/fs-operands.ts; src/rules/decide/powershell-edits.ts; tests/rules/hostile-accept-edits.test.ts, tests/rules/decide/modes-edits-and-plan.test.ts",
+      "note": "Item 1 (seven commands, PowerShell cmdlets, quote rule) conforms. Item 3 of the same section (Remove-Item system-path and wildcard deny in every mode, the cmd rd/del case, CLAUDE_CODE_DISABLE_POWERSHELL_CMD_RM_DENY) is not modelled: src/rules/decide/powershell-edits.ts:117 only withholds acceptEdits approval (its own spec/judgments.md:333); see the bypassPermissions row."
+    },
+    {
+      "id": "permissions.modes.Analyze before you edit with plan mode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:108; tests/rules/decide/modes-edits-and-plan.test.ts"
+    },
+    {
+      "id": "permissions.modes.Set plan mode as the default",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/default-mode.ts; tests/settings/permissions/start-mode.test.ts"
+    },
+    {
+      "id": "permissions.modes.Allow only pre-approved tools with dontAsk mode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:149; tests/rules/decide/modes-prompts.test.ts"
+    },
+    {
+      "id": "permissions.modes.Skip all checks with bypassPermissions mode",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/rules/decide/modes.ts:158; src/rules/decide/powershell-edits.ts:117; tests/settings/permissions/bypass-start.test.ts, tests/rules/decide/modes-bypass-and-print.test.ts",
+      "note": "Spec (fixed in v09): bypassPermissions still applies the Remove-Item denies of §13.9.2 (system path, wildcard target, cmd rd/rmdir/del/erase) and never reads another organisation's public artifact. The library has no deny reason for Remove-Item (bypass baseline allows it) and no artifact-owner check. Implementation should change. Plan-mode-with-bypass and ask/critical-path behaviour conform."
+    },
+    {
+      "id": "permissions.modes.Bypass permissions ignored in a background session",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/default-mode.ts:89; tests/settings/permissions/bypass-start.test.ts"
+    },
+    {
+      "id": "permissions.modes.Actions no mode auto-approves",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:99; tests/rules/decide/modes-prompts.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths.default",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/hostile-windows-case.test.ts, tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths.acceptEdits",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/hostile-windows-case.test.ts, tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths.plan",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths.auto",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths.dontAsk",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths.bypassPermissions",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/hostile-windows-case.test.ts, tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/hostile-windows-case.test.ts, tests/rules/protected-path-ids.test.ts",
+      "note": "Mode table and symlinked-settings-target rule (prompt in classifier-routing modes unless the target is itself a settings file's path, isSymlinkTargetOnly + VIA_LINK) conform; see the remote-settings.json row for the companion-file gap."
+    },
+    {
+      "id": "permissions.modes.Protected paths..git",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/hostile-windows-case.test.ts, tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..config/git",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..vscode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..idea",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..husky",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..cargo",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..devcontainer",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..yarn",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..mvn",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..claude",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths.~/.claude/dev-mods/",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..gitconfig",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..bashrc",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/hostile-windows-case.test.ts, tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..npmrc",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..bazelrc",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..pre-commit-config.yaml",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths.gradle-wrapper.properties",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..devcontainer.json",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..ripgreprc",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths..mcp.json",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:203; src/rules/decide/modes.ts:97; tests/rules/protected-path-ids.test.ts"
+    },
+    {
+      "id": "permissions.modes.Protected paths.remote-settings.json",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/rules/decide/protected-paths.ts:61; tests/rules/protected-path-ids.test.ts",
+      "note": "Spec: remote-settings.json in the configuration directory with the signature, sync and consent files kept beside it. FILES has only `remote-settings.json` (matched by name anywhere, which is broader); the companion files are not protected. Implementation should add them (names per errors.md / settings-reference)."
+    },
+    {
+      "id": "permissions.behavior.Precedence among rules, hooks, and mods",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:75; tests/rules/decide/hooks-and-mods.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Hook approvals in plan mode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:114; tests/rules/decide/modes-edits-and-plan.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Working directories.During startup",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/host/permission-session.ts; tests/cli/flags-session.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Working directories.During session",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/host/permission-session.ts; tests/host/session-directories.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Working directories.Persistent configuration",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/host/permission-session.ts; tests/settings/permissions/rules.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Where output styles, hooks, and local settings load from.User-level configuration",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/sources.ts; tests/settings/permissions/locations.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Where output styles, hooks, and local settings load from.Plugins",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/sources.ts; tests/settings/permissions/locations.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Where output styles, hooks, and local settings load from.Launch from the config directory",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/sources.ts; tests/settings/permissions/locations.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Move the session to another directory",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/host/session-directories.ts; tests/host/session-directories.test.ts"
+    },
+    {
+      "id": "permissions.behavior.Block file-tool reads and writes outside the working directories",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/rules/decide/block-exceptions.ts:88; src/rules/tools/availability.ts:148; tests/settings/permissions/blocks.test.ts, tests/rules/decide-blocks-and-sessions.test.ts",
+      "note": "Refusal behaviour, worktree-tool removal and the readable ~/.claude parts conform. Neither refusal text (`<path> is outside <dirs>; the permissions.blockWritesOutsideWorkingDirectories setting blocks writes ...` nor the alternative `<path>: Writes outside the working directories are blocked ...`) exists in src; decide returns only the reason code `outside-working-directory`. The library owns comparable texts (no-approval-surface.ts), so it should export these."
+    },
+    {
+      "id": "permissions.reference.Let one directory through the read or write block",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/settings/permissions/managed-only.ts:115; src/settings/context.ts:30; tests/rules/block-working-directory.test.ts",
+      "note": "Spec (fixed in v09): a .claude/settings.local.json counts for the blocks only when git reports it untracked; a tracked local file, or one outside a git repository, is repository settings. REPOSITORY_FILE.local is `localSettingsTracked === true`, so a local file outside a git repository counts as the user's. Implementation should change (the context needs an in-repository fact)."
+    },
+    {
+      "id": "permissions.reference.What the write block refuses and what stays writable",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/rules/decide/block-exceptions.ts:27; tests/rules/decide-blocks-and-sessions.test.ts",
+      "note": "isSettingsFile covers settings.json/settings.local.json in .claude or the config dir and managed-settings.json only; the J13.28 list also names --agents and --mcp-config files, the stored server-managed settings (remote-settings.json and its kept files) and any .json while managed-settings.d cannot be resolved. The refusal text (with its last sentence) is not produced. Worktree, repository-only-directory and auto-memory cases not verified in code. Implementation should change."
+    },
+    {
+      "id": "permissions.reference.Sandboxed commands under the block",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/settings/permissions/sandbox-read-block.ts:47; tests/settings/permissions/sandbox-read-block.test.ts",
+      "note": "Roots, exemptions, git config re-open with include files (host-supplied), writable-file exclusion and denyRead precedence conform. Missing: in a linked git worktree the repository's common .git stays readable and writable to sandboxed commands; session worktrees/temp/~/.claude parts are not in the returned shape. Implementation should change."
+    },
+    {
+      "id": "permissions.setting.permissions",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/rules.test.ts, tests/settings/permissions/blocks.test.ts, tests/settings/permissions/locks.test.ts"
+    },
+    {
+      "id": "permissions.setting.permissions.allow",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/rules.test.ts"
+    },
+    {
+      "id": "permissions.setting.permissions.ask",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/rules.test.ts"
+    },
+    {
+      "id": "permissions.setting.permissions.deny",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/rules.test.ts, tests/settings/permissions/deny-instead-of-prompting.test.ts"
+    },
+    {
+      "id": "permissions.setting.permissions.additionalDirectories",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/rules.test.ts"
+    },
+    {
+      "id": "permissions.setting.permissions.defaultMode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/start-mode.test.ts"
+    },
+    {
+      "id": "permissions.setting.permissions.disableBypassPermissionsMode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/locks.test.ts"
+    },
+    {
+      "id": "permissions.setting.disableAutoMode",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/settings/permissions/default-mode.ts; tests/settings/permissions/start-mode.test.ts",
+      "note": "Start-mode and cycle effects conform; a running auto session leaving auto when the value arrives from an admin source, showing `auto mode disabled by settings`, is not implemented (no such text or transition in src). Implementation should change."
+    },
+    {
+      "id": "permissions.setting.permissions.blockReadsOutsideWorkingDirectories",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/blocks.test.ts"
+    },
+    {
+      "id": "permissions.setting.permissions.blockWritesOutsideWorkingDirectories",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/blocks.test.ts"
+    },
+    {
+      "id": "permissions.setting.permissions.denyInsteadOfPrompting",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/deny-instead-of-prompting.test.ts"
+    },
+    {
+      "id": "permissions.setting.autoMode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/auto-mode.test.ts"
+    },
+    {
+      "id": "permissions.setting.autoMode.classifyAllShell",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/auto-mode.test.ts"
+    },
+    {
+      "id": "permissions.setting.useAutoModeDuringPlan",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/auto-mode.test.ts"
+    },
+    {
+      "id": "permissions.setting.skipAutoPermissionPrompt",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/auto-mode.test.ts"
+    },
+    {
+      "id": "permissions.setting.skipDangerousModePermissionPrompt",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/read.ts; src/settings/key-spec.ts; tests/settings/permissions/auto-mode.test.ts"
+    },
+    {
+      "id": "permissions.reference.What else denyInsteadOfPrompting stops.Question and plan tools",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/no-approval-surface.ts; src/rules/decide/modes.ts:88; tests/rules/deny-instead-of-prompting.test.ts"
+    },
+    {
+      "id": "permissions.reference.What else denyInsteadOfPrompting stops.MCP elicitation",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/no-approval-surface.ts; src/rules/decide/modes.ts:88; tests/format/mcp-elicitation-unprompted.test.ts"
+    },
+    {
+      "id": "permissions.reference.What else denyInsteadOfPrompting stops.Permission hosts",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/no-approval-surface.ts; src/rules/decide/modes.ts:88; tests/host/deny-instead-of-prompting.test.ts"
+    },
+    {
+      "id": "permissions.reference.Messages from denyInsteadOfPrompting",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/no-approval-surface.ts:11; tests/rules/deny-instead-of-prompting.test.ts"
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.Server-managed settings",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:29; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.MDM or OS-level policy",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:29; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.File-based",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:29; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.HKCU registry, Windows and WSL",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:29; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.Server-managed",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:74; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.macOS configuration profile",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:74; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.Windows HKLM registry",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:74; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.Windows HKCU registry",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:74; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.File-based",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:74; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Deploy a managed settings file.macOS",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:119; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Deploy a managed settings file.Linux and WSL",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:119; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Deploy a managed settings file.Windows",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts:119; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Surfaces",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/applicability.ts; tests/settings/managed/applicability.test.ts"
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Cloud sessions",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/applicability.ts; tests/settings/managed/applicability.test.ts"
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Claude Tag sessions",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/applicability.ts; tests/settings/managed/applicability.test.ts"
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Cowork sessions",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/applicability.ts; tests/settings/managed/applicability.test.ts"
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Running sessions",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/applicability.ts; tests/settings/managed/applicability.test.ts"
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Changes that need approval",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/applicability.ts; tests/settings/managed/approval.test.ts"
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Long-lived sessions",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/applicability.ts; tests/settings/managed/approval.test.ts"
+    },
+    {
+      "id": "policy.server.Settings precedence",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/compose.ts; tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "policy.key.managedSourcesBehavior",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/combine.ts; tests/settings/managed/keys.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.managedSourcesBehavior",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Compute the policy with a helper program",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/policy-helper.ts; tests/settings/managed/helper-run.test.ts"
+    },
+    {
+      "id": "policy.key.policyHelper",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/policy-helper.ts:15; tests/settings/managed/helper-key.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.policyHelper",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.key.policyHelper.path",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/policy-helper.ts:15; tests/settings/managed/helper-key.test.ts"
+    },
+    {
+      "id": "policy.key.policyHelper.timeoutMs",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/policy-helper.ts:15; tests/settings/managed/helper-key.test.ts"
+    },
+    {
+      "id": "policy.key.policyHelper.refreshIntervalMs",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/policy-helper.ts:15; tests/settings/managed/helper-key.test.ts"
+    },
+    {
+      "id": "policy.reference.Write the helper output",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/policy-helper.ts:137; src/settings/managed/helper-run.ts:84; tests/settings/managed/helper-run.test.ts"
+    },
+    {
+      "id": "policy.reference.Helper failures",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/policy-helper.ts:137; src/settings/managed/helper-run.ts:84; tests/settings/managed/helper-failures.test.ts"
+    },
+    {
+      "id": "policy.managed.Let an embedding host add policy",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/parent.ts; tests/settings/managed/parent.test.ts, tests/settings/merge-core/admin-tier.test.ts"
+    },
+    {
+      "id": "policy.key.parentSettingsBehavior",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/parent.ts; tests/settings/managed/parent.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.parentSettingsBehavior",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keep Cowork folder access when only managed rules apply",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/managed-only.ts; tests/settings/key-classes/cowork-rules-only.test.ts",
+      "note": "Rule dropping and the managed restore conform; that Cowork cannot show the prompt (each write reported as blocked) is the host surface: the library asks, and a host that cannot prompt sets cannotPrompt (src/host/permission-session.ts:130)."
+    },
+    {
+      "id": "policy.key.wslInheritsWindowsSettings",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/wsl-chain.ts; tests/settings/managed/wsl.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.wslInheritsWindowsSettings",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.server.Current limitations",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts; tests/settings/managed/helper-key.test.ts"
+    },
+    {
+      "id": "policy.server.Managed-only settings",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.key.forceRemoteSettingsRefresh",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/applicability.ts:264; tests/settings/managed/keys.test.ts, tests/settings/managed/applicability.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.forceRemoteSettingsRefresh",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.server.Enforce fail-closed startup",
+      "file": "14-policy.md",
+      "status": "diverges",
+      "evidence": "src/settings/managed/applicability.ts:264; tests/settings/managed/keys.test.ts",
+      "note": "forceRemoteSettingsRefresh blocking, auth exemption and gateway wait conform. Item 3: a gateway 401 on an attended interactive launch with the key off prints `Cloud gateway session expired — run /login to reconnect.` and opens signed out; startupFetchOf makes every gateway failure an exit and the text is absent. Implementation should change."
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Shell command settings",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/approval.ts; tests/settings/managed/approval.test.ts"
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Sandbox binary settings",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/approval.ts; tests/settings/managed/approval.test.ts"
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Sandbox network and isolation settings",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/approval.ts; tests/settings/managed/approval.test.ts"
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Custom environment variables",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/approval.ts; tests/settings/managed/approval.test.ts"
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Hook configurations",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/approval.ts; tests/settings/managed/approval.test.ts"
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.Cross-source lock keys",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts; src/settings/managed/combine.ts; src/settings/managed/login-keys.ts; tests/settings/managed/cross-source-keys.test.ts"
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.The env block",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts; src/settings/managed/combine.ts; src/settings/managed/login-keys.ts; tests/settings/managed/first-wins.test.ts"
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.allowedProviders",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts; src/settings/managed/combine.ts; src/settings/managed/login-keys.ts; tests/settings/managed/merge-keys.test.ts"
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.First-party sign-in keys",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts; src/settings/managed/combine.ts; src/settings/managed/login-keys.ts; tests/settings/managed/login-keys.test.ts"
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.Gateway sign-in keys",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/cross-source.ts; src/settings/managed/combine.ts; src/settings/managed/login-keys.ts; tests/settings/managed/login-keys.test.ts"
+    },
+    {
+      "id": "policy.server.Invalid entries in delivered settings",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/limits.ts; tests/settings/managed/limits.test.ts"
+    },
+    {
+      "id": "policy.managed.Find entries Claude Code dropped",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts; src/settings/repair/; tests/settings/managed/drop-in.test.ts, tests/settings/managed/present.test.ts, tests/settings/managed/helper-run.test.ts"
+    },
+    {
+      "id": "policy.managed.Find entries Claude Code dropped.Managed settings file or drop-in file",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts; src/settings/repair/; tests/settings/managed/drop-in.test.ts, tests/settings/managed/present.test.ts, tests/settings/managed/unreadable.test.ts"
+    },
+    {
+      "id": "policy.managed.Find entries Claude Code dropped.MDM plist",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts; src/settings/repair/; tests/settings/managed/present.test.ts, tests/settings/managed/unreadable.test.ts"
+    },
+    {
+      "id": "policy.managed.Find entries Claude Code dropped.HKLM registry value",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/admin-source.ts; src/settings/repair/; tests/settings/managed/present.test.ts, tests/settings/managed/unreadable.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts, tests/settings/key-classes/fail-closed-section.test.ts, tests/settings/key-classes/fail-closed-special.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.allowedMcpServers",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.allowedProviders",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.allowedHttpHookUrls",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.httpHookAllowedEnvVars",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.allowedChannelPlugins",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.strictKnownMarketplaces",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.availableModels",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.availableModelsMatch",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.forceLoginOrgUUID",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.gatewayInternalNetworks",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-special.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.crossSessionInbound",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-special.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.deniedMcpServers",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.deniedModels",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.blockedMarketplaces",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.sandbox",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-special.test.ts, tests/settings/key-classes/sandbox-credentials.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.sandbox.credentials",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-special.test.ts, tests/settings/key-classes/sandbox-credentials.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.strictPluginOnlyCustomization",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-plugin-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.enabledPlugins",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/repair/values.ts:24; src/settings/permissions/read.ts:208; tests/settings/key-classes/fail-closed-lists.test.ts"
+    },
+    {
+      "id": "policy.managed.Invalid values inside sandbox",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/general/sandbox-fields.ts; tests/settings/key-classes/sandbox-invalid.test.ts"
+    },
+    {
+      "id": "policy.managed.What a developer can change.The model for a session",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts; tests/settings/managed/developer-change.test.ts"
+    },
+    {
+      "id": "policy.managed.What a developer can change.The auto-compact window for a session",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts; tests/settings/managed/developer-change.test.ts"
+    },
+    {
+      "id": "policy.managed.What a developer can change.Local admin rights",
+      "file": "14-policy.md",
+      "status": "not-applicable",
+      "evidence": "src/settings/managed/delivery.ts; tests/settings/managed/limits.test.ts",
+      "note": "States a fact about machine administrators; binds no client behaviour the library owns."
+    },
+    {
+      "id": "policy.managed.What a developer can change.The server-managed cache",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/delivery.ts; tests/settings/managed/delivery.test.ts"
+    },
+    {
+      "id": "policy.managed.What a developer can change.Other tools",
+      "file": "14-policy.md",
+      "status": "not-applicable",
+      "evidence": "src/settings/managed/delivery.ts; tests/settings/managed/limits.test.ts",
+      "note": "States that managed settings bind the client only; nothing for the library to do."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowAllClaudeAiMcps",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowedChannelPlugins",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowManagedHooksOnly",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowManagedMcpServersOnly",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts, tests/settings/merge-core/admin-tier.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowManagedPermissionRulesOnly",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.blockedMarketplaces",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.channelsEnabled",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.disableCommandPluginSources",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.disableSideloadFlags",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.forceRemoteSettingsRefresh",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.managedMcpServers",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.pluginSuggestionMarketplaces",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.pluginTrustMessage",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.sandbox.network.allowManagedDomainsOnly",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/merge-core/admin-tier.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.strictKnownMarketplaces",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.strictPluginOnlyCustomization",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; tests/settings/key-classes/managed-only.test.ts"
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J13.1",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/parse.ts:35-138 (error: malformed, mcp__ parens in settings, glob+specifier; warning: primary field, unanchored allow glob); tests/rules/parse.test.ts"
+    },
+    {
+      "id": "J13.2",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/tool-pattern.ts; tests/rules/parse.test.ts"
+    },
+    {
+      "id": "J13.3",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/param.ts; tests/rules/param.test.ts"
+    },
+    {
+      "id": "J13.4",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/param.ts; tests/rules/param.test.ts"
+    },
+    {
+      "id": "J13.5",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/param.ts; src/rules/specifier-formats.ts; src/rules/parse.ts:80; tests/rules/param.test.ts"
+    },
+    {
+      "id": "J13.6",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/wildcard-warning.ts; tests/rules/bash-warning.test.ts"
+    },
+    {
+      "id": "J13.7",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/split.ts; src/rules/bash/scanner.ts; tests/rules/bash-compound.test.ts"
+    },
+    {
+      "id": "J13.8",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/safe-env.ts; src/rules/bash/wrappers.ts:75; tests/rules/bash-wrappers.test.ts"
+    },
+    {
+      "id": "J13.9",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/exec-wrappers.ts:10-28; tests/rules/bash-judgments.test.ts"
+    },
+    {
+      "id": "J13.10",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts:109-122; tests/rules/decide-read-only-set.test.ts"
+    },
+    {
+      "id": "J13.11",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/read-only-set.ts:147-164; tests/rules/decide-read-only-set.test.ts"
+    },
+    {
+      "id": "J13.12",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:55-65; src/rules/decide/redirects.ts; tests/rules/decide-redirections.test.ts"
+    },
+    {
+      "id": "J13.13",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/bash/powershell-aliases.ts; tests/rules/hostile-powershell.test.ts"
+    },
+    {
+      "id": "J13.14",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/anchor.ts; tests/rules"
+    },
+    {
+      "id": "J13.15",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/anchor.ts; tests/rules"
+    },
+    {
+      "id": "J13.16",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/path/depth.ts; src/rules/path/glob.ts; tests/rules"
+    },
+    {
+      "id": "J13.17",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/domain.ts; tests/rules/domain.test.ts"
+    },
+    {
+      "id": "J13.18",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/domain.ts; tests/rules/domain.test.ts"
+    },
+    {
+      "id": "J13.19",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/mcp.ts:57; tests/rules"
+    },
+    {
+      "id": "J13.20",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/target/agent.ts; tests/rules/agent.test.ts"
+    },
+    {
+      "id": "J13.21",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/default-mode.ts; tests/settings/permissions/start-mode.test.ts, tests/settings/permissions/bypass-start.test.ts"
+    },
+    {
+      "id": "J13.22",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:108-114; tests/rules/decide-plan.test.ts"
+    },
+    {
+      "id": "J13.23",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/classifier.ts; tests/rules/decide-auto.test.ts"
+    },
+    {
+      "id": "J13.24",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/rules/decide/auto-dropped.ts:13-49",
+      "note": "Decision: auto mode also drops wildcarded shell-wrapper allow rules (bash, sh, zsh and their -c forms). The implementation drops only the interpreters, package-manager run commands and bare Bash/PowerShell/Agent/Monitor; Bash(bash -c *) or Bash(sh *) stays in force in auto mode. classifyAllShell part conforms. Implementation should change (settings-reference.md, autoMode.classifyAllShell, names shell-wrapper prefixes)."
+    },
+    {
+      "id": "J13.25",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:88 (interactive asks, else denies); src/host/permission-session.ts:126; tests/rules/decide-critical.test.ts"
+    },
+    {
+      "id": "J13.26",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/modes.ts:97; tests/rules/decide-protected.test.ts"
+    },
+    {
+      "id": "J13.27",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:75-147 (gate order matches the judgment); tests/rules/decide-precedence.test.ts, tests/rules/decide-hooks.test.ts"
+    },
+    {
+      "id": "J13.28",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/rules/decide/block-exceptions.ts:13-39",
+      "note": "Decision lists --agents and --mcp-config files, the stored server-managed settings and its kept files, and any .json while managed-settings.d cannot be resolved; isSettingsFile knows only settings.json/settings.local.json under .claude or the config dir and managed-settings.json. Implementation should change (errors.md lists these files)."
+    },
+    {
+      "id": "J13.32",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/fs-operands.ts; src/rules/decide/critical-removal.ts; tests/rules/decide-accept-edits.test.ts"
+    },
+    {
+      "id": "J14.1",
+      "file": "14-policy.md",
+      "status": "diverges",
+      "evidence": "src/settings/managed/drop-in.ts:70; src/settings/canonical.ts:9; src/settings/merge.ts:73",
+      "note": "Dedupe is by canonical JSON equality, as decided, but the order is the later file's entries first (unionOf([above, below]); its own spec/judgments.md:966 says so), whereas J14.1 keeps the first occurrence's position in file order (managed-settings.json, then drop-ins alphabetically). One side must change; the spec reading (concatenate, keep first) matches \"lists concatenate\" and is what I would keep."
+    },
+    {
+      "id": "J14.3",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/compose.ts:137-142 (labels joined with \" + \" in ranking order, \", merged\" when several are used under merge); tests/settings/managed/merge.test.ts"
+    },
+    {
+      "id": "J14.4",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/policy-helper.ts:122-156 (only managedSettings read; bare object applies nothing); tests/settings/managed/helper-run.test.ts"
+    }
+  ]
+}

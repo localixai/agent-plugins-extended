@@ -1,0 +1,1961 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename",
+  "pass": "a07-mods-reference",
+  "date": "2026-11-16",
+  "files": [
+    "10-mods/README.md",
+    "10-mods/reference.md",
+    "10-mods/events.md"
+  ],
+  "requirements": [
+    {
+      "id": "mods.overview.How a mod works.plugin.json",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:123 (types: path); src/mods/load/prepare.ts:98; tests/mods/load/how-a-mod-works.test.ts:167",
+      "note": "The manifest is the ordinary one; a mod adds no required field; `types` is an optional path."
+    },
+    {
+      "id": "mods.overview.How a mod works.hooks.json",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/format/mod-files.ts:91 readHooksJsonModules; src/mods/load/prepare.ts:98-106; tests/mods/load/how-a-mod-works.test.ts:152",
+      "note": "`modules` path resolved relative to hooks.json (./mods/main.js -> hooks/mods/main.js); no `modules` loads nothing."
+    },
+    {
+      "id": "mods.overview.How a mod works.register.js",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/register-call.ts; tests/mods/load/how-a-mod-works.test.ts:115",
+      "note": "register called once per load with `on`; each `on` registers a hook."
+    },
+    {
+      "id": "mods.overview.How a mod works",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "tests/mods/load/how-a-mod-works.test.ts:81 (the page's register.js, three tool calls give suffix ' · tool calls: 3…')",
+      "note": "Library runs both hooks with shared module state and returns the rewritten Spinner props; drawing the spinner text itself is the host app's renderer."
+    },
+    {
+      "id": "mods.overview.What a hook can do with an event.Observe",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/; tests/mods/chain/events-guide.test.ts:170",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.What a hook can do with an event.Rewrite",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/; tests/mods/chain/events-guide.test.ts:190",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.What a hook can do with an event.Answer",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/; tests/mods/chain/events-guide.test.ts:207",
+      "note": ""
+    },
+    {
+      "id": "mods.gallery.See where a mod can draw.Pane and band",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/panes/registry.ts, src/mods/ui/sites/band.ts, src/mods/ui/ui-api.ts:128-160; tests/mods/ui/panes.test.ts, tests/mods/ui/sites.test.ts",
+      "note": "No spec(id) test; the places are covered by the §10.21/§10.25 tests."
+    },
+    {
+      "id": "mods.gallery.See where a mod can draw",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/sites/registry.ts (render sites); tests/mods/ui/sites.test.ts, tests/mods/ui/render.test.ts",
+      "note": "No spec(id) test; own-row sites are the §10.21.1 table."
+    },
+    {
+      "id": "mods.gallery.See where a mod can draw.Toast, status line, and log line",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/ui-api.ts:97-106,166 (toast, status, log); src/mods/ui/toast.ts; tests/mods/ui/toast.test.ts, tests/mods/ui/api.test.ts",
+      "note": "No spec(id) test."
+    },
+    {
+      "id": "mods.gallery.See where a mod can draw.Question dialog",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/ui-api.ts:42-83 ($.ui.ask), src/mods/ui/sites/ask-question.ts; tests/mods/ui/permission-prompt-site.test.ts:14",
+      "note": "No spec(id) test."
+    },
+    {
+      "id": "mods.overview.Where mods run.claude",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/where-mods-run.ts:68; tests/mods/load/where-mods-run.test.ts:19",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.Where mods run.A WSL session in the Desktop app",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/where-mods-run.ts:70-74; tests/mods/load/where-mods-run.test.ts:40",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.Where mods run.The VS Code extension's chat panel",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/where-mods-run.ts:56-65; tests/mods/load/where-mods-run.test.ts:103-119",
+      "note": "2.1.299, 2.1.304 without feature flags. No spec(id) test; an unknown extension version draws nothing (library judgment)."
+    },
+    {
+      "id": "mods.overview.Where mods run.claude -p",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/where-mods-run.ts:76; tests/mods/load/where-mods-run.test.ts:29",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.Where mods run.A cloud session",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/where-mods-run.ts:79-86; tests/mods/load/where-mods-run.test.ts:80",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.Turn mods on or off",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts; tests/mods/load/turn-on-off.test.ts:26 (on by default, disableAllHooks, built-ins kept, CLAUDE_CODE_ENABLE_FUNCTION_HOOKS ignored)",
+      "note": "Reporting the version (`claude --version`, /status) is the host app's UI."
+    },
+    {
+      "id": "mods.overview.Turn mods on or off.Terminal",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/where-mods-run.ts:95-109; tests/mods/load/where-mods-run.test.ts:153",
+      "note": "v2.1.287."
+    },
+    {
+      "id": "mods.overview.Turn mods on or off.Desktop app",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/where-mods-run.ts:95; tests/mods/load/where-mods-run.test.ts:163",
+      "note": "v2.1.286."
+    },
+    {
+      "id": "mods.overview.Turn mods on or off.One mod",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "tests/mods/load/per-mod.test.ts:42",
+      "note": "The /plugin Installed tab is the host's UI; the library honours the disabled plugin."
+    },
+    {
+      "id": "mods.overview.Turn mods on or off.Every installed mod, for one session",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts; tests/mods/load/turn-on-off.test.ts:77",
+      "note": "--safe-mode stops installed mods, not built-in ones."
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Act on your machine as you",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/fs.ts, src/mods/api/exec.ts, src/mods/api/http.ts; tests/mods/api/guide-reach.test.ts:31",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Read your secrets",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/env.ts, src/mods/api/settings.ts; tests/mods/api/guide-reach.test.ts:77",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.What a mod can reach.See your session",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/session.ts; tests/mods/api/guide-reach.test.ts:114",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Change your session",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/prompt.ts, src/mods/api/session.ts; tests/mods/api/guide-reach.test.ts:150",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Act without asking you",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/tool-flow.ts; tests/mods/api/guide-reach-spend.test.ts:21",
+      "note": ""
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Spend your usage",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/model.ts; tests/mods/api/guide-reach-spend.test.ts:54",
+      "note": ""
+    },
+    {
+      "id": "mods.file..claude-plugin/plugin.json",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/format/manifest-schema.ts:123; tests/format/mod-files.test.ts:25",
+      "note": ""
+    },
+    {
+      "id": "mods.file.hooks/hooks.json",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/format/mod-files.ts:91; tests/format/mod-files.test.ts:38",
+      "note": ""
+    },
+    {
+      "id": "mods.file.hooks/register.js",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/scan/register-export.ts:24; tests/mods/load/scan.test.ts:138",
+      "note": ""
+    },
+    {
+      "id": "mods.file.types/index.d.ts",
+      "file": "10-mods/reference.md",
+      "status": "diverges",
+      "evidence": "src/format/mod-files.ts:39; src/mods/load/types-decl.ts:27-40; tests/format/mod-files.test.ts:112",
+      "note": "Spec (§10.3.2.4, J10.3): a mod that adds a namespace without a types file SHOULD NOT be refused. Code refuses any module hooking engine.create without the file (\"...so <file> must declare the namespace it adds\"), recorded as its own judgment in agent-plugins spec/judgments.md (row src/mods/load/loader.ts). The spec has oracle 2.1.325 evidence: the library should change. Default-path reading and the $.state requirement conform."
+    },
+    {
+      "id": "mods.file..test.ts",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/format/mod-files.ts; tests/format/mod-files.test.ts:102",
+      "note": ""
+    },
+    {
+      "id": "mods.create.Check what Claude Code reads from your mod",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/scan/rules.ts, src/mods/load/scan/file-rules.ts:12-16,65, src/mods/chain/validate.ts:21-58; tests/mods/load/check-reads.test.ts:62",
+      "note": "Every rule of the table refuses load (the generator, duplicate-on and telemetry rules at registration, src/mods/chain/validate.ts, not in the static scan); require refused (J10.5). Message wording differs: see J10.2."
+    },
+    {
+      "id": "mods.hookArgument.$",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/build.ts; src/protocol/mods-api-names.ts:81; tests/mods/chain/hook-argument.test.ts:14",
+      "note": ""
+    },
+    {
+      "id": "mods.hookArgument.e",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/foundation/freeze.ts; tests/mods/chain/hook-argument.test.ts:109",
+      "note": ""
+    },
+    {
+      "id": "mods.hookArgument.next(e)",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/next.ts:114; tests/mods/chain/next-argument.test.ts:13",
+      "note": ""
+    },
+    {
+      "id": "mods.hookArgument.next.signal",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/linger.ts; src/protocol/mods-limits.ts:16; tests/mods/chain/next-argument.test.ts:106",
+      "note": ""
+    },
+    {
+      "id": "mods.hookArgument.next.origin",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/next.ts; tests/mods/chain/next-argument.test.ts:148",
+      "note": ""
+    },
+    {
+      "id": "mods.hookArgument.next.budget",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/next.ts; tests/mods/chain/limits-time.test.ts:127",
+      "note": ""
+    },
+    {
+      "id": "mods.hookArgument.next.to(e, tier)",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/tiers.ts:23-26; tests/mods/chain/next-tier.test.ts:39",
+      "note": "user target from a prepend hook allowed (J10.6), tests/mods/chain/next-trace.test.ts:123."
+    },
+    {
+      "id": "mods.hookArgument.next.error",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/failure.ts; src/mods/chain/reentry.ts:29; tests/mods/chain/failure.test.ts:98",
+      "note": "Deviation (J10.7) implemented: kinds throw|timeout only; a re-entry skip asks no handler and reports nothing."
+    },
+    {
+      "id": "mods.hookArgument.next.called",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/failure.ts; tests/mods/chain/failure.test.ts:98",
+      "note": ""
+    },
+    {
+      "id": "mods.hookArgument.next.error.cause",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/reentry.ts:18-35; src/mods/chain/invoke.ts:254; tests/mods/chain/failure.test.ts:208",
+      "note": "Deviation (J10.7) implemented: no cause; own-hook skip when the chain follows the caller, all of the mod's hooks for a call outside hooks."
+    },
+    {
+      "id": "mods.api.$.plugin",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/misc.test.ts:17",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.ui",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/ui/panes.test.ts:127",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.theme",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/theme.test.ts:43",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.command",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/registries.test.ts:23",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.tool",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/registries.test.ts:127",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.agent",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/registries.test.ts:199",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.model",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/model.test.ts:42",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.prompt",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/prompt-config.test.ts:26",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.turn",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/prompt-config.test.ts:103",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.session",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/session.test.ts:53",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.config",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/prompt-config.test.ts:121",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.settings",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/settings.test.ts:36",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.env",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/misc.test.ts:60",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.fs",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/fs.test.ts:55",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.store",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/store-state.test.ts:24",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.state",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/ui/redraw.test.ts:115",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.clock",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/clock.test.ts:18",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.http",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/http.test.ts:17",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.process",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/process.test.ts:40",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.mcp",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/misc.test.ts:102",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.audio",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/audio.test.ts:11",
+      "note": ""
+    },
+    {
+      "id": "mods.api.$.telemetry",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts:1-101; src/mods/api/; tests/mods/api/misc.test.ts:215",
+      "note": ""
+    },
+    {
+      "id": "mods.create.Sessions where a mod Claude writes can't load.Nobody is there to approve",
+      "file": "10-mods/reference.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/written-mods.ts; tests/mods/load/written-mods.test.ts:21",
+      "note": "Spec and create.md: a claude -p run loads a written mod in auto and bypassPermissions modes. Code refuses every non-interactive session regardless of mode (src/mods/load/written-mods.ts noApprover: !isInteractive || dontAsk). Library should change."
+    },
+    {
+      "id": "mods.create.Sessions where a mod Claude writes can't load.The workspace isn't trusted",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/written-mods.ts; tests/mods/load/written-mods.test.ts:41",
+      "note": ""
+    },
+    {
+      "id": "mods.create.Sessions where a mod Claude writes can't load.Mods are disabled",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/written-mods.ts; tests/mods/load/written-mods.test.ts:52",
+      "note": ""
+    },
+    {
+      "id": "mods.site.Pane",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12; tests/mods/ui/sites.test.ts:115",
+      "note": ""
+    },
+    {
+      "id": "mods.site.AbovePrompt",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12; tests/mods/ui/render.test.ts:194",
+      "note": "RENDER_SITES lists no isCollapsed; the list is metadata (props come from the host)."
+    },
+    {
+      "id": "mods.site.Placed",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12; tests/mods/ui/placed.test.ts:154",
+      "note": ""
+    },
+    {
+      "id": "mods.site.Backdrop",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12; tests/mods/ui/backdrop.test.ts:20",
+      "note": ""
+    },
+    {
+      "id": "mods.site.UserMessage",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": "RENDER_SITES lists no onScreen; metadata only."
+    },
+    {
+      "id": "mods.site.AssistantMessage",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": ""
+    },
+    {
+      "id": "mods.site.ToolUse",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": ""
+    },
+    {
+      "id": "mods.site.ToolResult",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": ""
+    },
+    {
+      "id": "mods.site.ToolGroup",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": ""
+    },
+    {
+      "id": "mods.site.CommandOutput",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": "RENDER_SITES lists no args, isErrored, onScreen; metadata only."
+    },
+    {
+      "id": "mods.site.AskUserQuestion",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12; tests/mods/ui/render.test.ts:166",
+      "note": ""
+    },
+    {
+      "id": "mods.site.ToolProgress",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": "RENDER_SITES lists no tool_use_id, hint; metadata only."
+    },
+    {
+      "id": "mods.site.Spinner",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12; tests/mods/ui/render.test.ts:28",
+      "note": ""
+    },
+    {
+      "id": "mods.site.TurnDuration",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": "RENDER_SITES lists no isExpanded, waitingFor, onScreen; metadata only."
+    },
+    {
+      "id": "mods.site.InfoNotice",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": "RENDER_SITES lists no onScreen; metadata only."
+    },
+    {
+      "id": "mods.site.SessionMode",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": ""
+    },
+    {
+      "id": "mods.site.PromptHint",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:60-104 (surfaces), src/mods/ui/sites/registry.ts:12",
+      "note": "RENDER_SITES lists no tail; metadata only."
+    },
+    {
+      "id": "mods.element.Box",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/box.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements.test.ts:36",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Text",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/text.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements.test.ts:37",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Button",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/button.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements-controls.test.ts:29",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Link",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/link.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements.test.ts:39",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Code",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/code.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements-media.test.ts:82",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Markdown",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/markdown.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements.test.ts:41",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Input",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/input.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements-controls.test.ts:210",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Select",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/select.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements.test.ts:43",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Svg",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/svg.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements-media.test.ts:131",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Client",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/client.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements-media.test.ts:160",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Raster",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/raster.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements-media.test.ts:193",
+      "note": ""
+    },
+    {
+      "id": "mods.element.Image",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/image.ts; src/protocol/mods-ui-names.ts (element surfaces); tests/mods/ui/elements.test.ts:47",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'single'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'double'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'round'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'bold'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'singleDouble'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'doubleSingle'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'classic'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'arrow'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'dashed'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box border styles.'quote'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts BORDER_STYLES",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'xs'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts SPACING_STEPS",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'sm'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts SPACING_STEPS",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'md'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts SPACING_STEPS",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'lg'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts SPACING_STEPS",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'xl'",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts SPACING_STEPS",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Replace bold with weight",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/text.ts; tests/mods/ui/elements.test.ts:225",
+      "note": ""
+    },
+    {
+      "id": "mods.limit..catch",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/chain/limits-time.test.ts:179",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.session.end",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/chain/limits-group.test.ts:26",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.process.run",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/process.test.ts:204",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.stdout",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/process.test.ts:229",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.stderr",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/process.test.ts:229",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.model.complete",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/model.test.ts:203",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.maxTokens",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/model.test.ts:203",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.fs.read",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/fs.test.ts:202",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.fs.write",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/fs.test.ts:218",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.http.fetch",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/http-limits.test.ts:21",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.drop",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/events/reasons.test.ts:18",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.Text in one tree",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/limits.test.ts:133",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.Code",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/limits.test.ts:35",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.Link",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/limits.test.ts:67",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.Nesting depth of one tree",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/limits.test.ts:175",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.Elements and text children in one tree",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/limits.test.ts:151",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.Raster",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/limits.test.ts:82",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.Image",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/limits.test.ts:118",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.store",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/store-state.test.ts:91",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.session.messages()",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/api/session.test.ts:205",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.ui.invalidate('ui.render')",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/redraw.test.ts:36",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.ui.toast",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/toast.test.ts:23",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.A pane opened without the user asking",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/panes.test.ts:38",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.$.ui.place",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/placed.test.ts:123",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.Nesting depth of a mods API call's arguments",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/chain/limits-nesting.test.ts:16",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.next",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/chain/limits-nesting.test.ts:20",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.ui.render",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/chain/limits-nesting.test.ts:59",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.Scopes, such as functions, blocks, and loops, nested inside one another in one file of a hooks module",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/load/scan.test.ts:39",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.id",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/ui/panes.test.ts:195",
+      "note": ""
+    },
+    {
+      "id": "mods.limit.claude plugin test",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-limits.ts:8-71; tests/mods/testing/limits.test.ts:47",
+      "note": ""
+    },
+    {
+      "id": "mods.setting.prependPlugins",
+      "file": "10-mods/reference.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/settings-order.test.ts:72",
+      "note": "Spec: user-settings lists count only with no managed settings AND no managed-mcp.json AND no Team/Enterprise /login. Code (src/mods/load/policy-input.ts:76 isManagedContext) ignores managed-mcp.json; ModsPolicyInput has no field for it. Library should change (also affects where the guard loads, §14)."
+    },
+    {
+      "id": "mods.setting.appendPlugins",
+      "file": "10-mods/reference.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/settings-order.test.ts:77",
+      "note": "As prependPlugins: managed-mcp.json does not close the user-settings home (src/mods/load/policy-input.ts:76). Library should change."
+    },
+    {
+      "id": "mods.setting.allowManagedModsOnly",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/settings-guard.test.ts:26",
+      "note": ""
+    },
+    {
+      "id": "mods.setting.allowModsToOverrideDenyRules",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/settings-guard.test.ts:173",
+      "note": ""
+    },
+    {
+      "id": "mods.setting.allowManagedHooksOnly",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/settings-policy.test.ts:95",
+      "note": ""
+    },
+    {
+      "id": "mods.setting.disableAllHooks",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/settings-policy.test.ts:27",
+      "note": ""
+    },
+    {
+      "id": "mods.setting.disableSideloadFlags",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/settings-policy.test.ts:129",
+      "note": ""
+    },
+    {
+      "id": "mods.setting.pluginConfigs",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/options.test.ts:59",
+      "note": ""
+    },
+    {
+      "id": "mods.setting.CLAUDE_CODE_PLUGIN_DIRS",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/settings-order.test.ts:23",
+      "note": ""
+    },
+    {
+      "id": "mods.setting.CLAUDE_CODE_PLUGIN_DIR_WATCH",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/load/policy-input.ts; tests/mods/load/settings-order.test.ts:56",
+      "note": ""
+    },
+    {
+      "id": "mods.command./plugin",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/commands/active-line.ts; tests/mods/load/commands.test.ts:212",
+      "note": ""
+    },
+    {
+      "id": "mods.command.claude plugin validate <directory>",
+      "file": "10-mods/reference.md",
+      "status": "diverges",
+      "evidence": "src/mods/; tests/mods/load/commands.test.ts:51",
+      "note": "Errors, hooks:, calls:, env/state lines, gating lines, --strict and --json conform (src/mods/load/commands/scan-lines.ts:14-36, validate.ts). Missing lines of §10.4.3: answers its own command:, state of other plugins not checked, adds to $:/withholds from $:, hooks telemetry for:, types <path> declares on $:/state:. Gating set (src/mods/load/scan/event-names.ts:7) lacks the telemetry events and globs/negations selecting a gating event. Library should change."
+    },
+    {
+      "id": "mods.command.claude plugin test [directory]",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/testing/mods/runner.ts; tests/mods/testing/policy-mods.test.ts:46",
+      "note": ""
+    },
+    {
+      "id": "mods.command.claude --plugin-dir <directory>",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/plugin-dirs.ts; tests/mods/load/plugin-dir.test.ts:61",
+      "note": ""
+    },
+    {
+      "id": "mods.command./reload-plugins",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/host.ts (reload); tests/mods/load/reload.test.ts:10",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Observe an event",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/; tests/mods/chain/events-guide.test.ts:18",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Rewrite an event",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/; tests/mods/chain/events-guide.test.ts:73",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Answer an event",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/; tests/mods/chain/events-guide.test.ts:127",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Filter which events a hook handles",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/matcher.ts, src/mods/chain/select.ts, src/mods/chain/validate.ts:45-58; tests/mods/chain/events-filter.test.ts:12",
+      "note": ""
+    },
+    {
+      "id": "mods.events.The order mods run in",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:95-142, src/mods/chain/registry.ts:69; tests/mods/load/mod-order.test.ts:35",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Where settings hooks run in the order",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/load/tool-flow.test.ts:13",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.It failed before calling next",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/failure.ts, src/mods/chain/invoke.ts:218-260; tests/mods/chain/failure-guide.test.ts:58",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.It failed after next resolved",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/failure.ts, src/mods/chain/invoke.ts:218-260; tests/mods/chain/failure-guide.test.ts:75",
+      "note": "Failed-before-resolved keeps the latest call's result (J10.14): src/mods/chain/invoke.ts:218-220."
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.guard failed before it called next",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/failure.ts, src/mods/chain/invoke.ts:218-260; tests/mods/chain/failure-guide.test.ts:134",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.guard failed after it called next",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/failure.ts, src/mods/chain/invoke.ts:218-260; tests/mods/chain/failure-guide.test.ts:177",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.tool.check",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-check.test.ts:199",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.plugin.register",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/failure.ts, src/mods/chain/invoke.ts:218-260; tests/mods/chain/failure-guide.test.ts:238",
+      "note": ""
+    },
+    {
+      "id": "mods.event.tool.call",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool.test.ts:15",
+      "note": ""
+    },
+    {
+      "id": "mods.event.tool.check",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool.test.ts:127 tests/mods/events/tool-check-merge.test.ts:17",
+      "note": ""
+    },
+    {
+      "id": "mods.event.tool.describe",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool.test.ts:205",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Guard or change a tool call.Change the call",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-call.test.ts:26",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Guard or change a tool call.Retry the call",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-call.test.ts:55",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Guard or change a tool call.Answer the call yourself",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-call.test.ts:97",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Guard or change a tool call.Withhold the result from Claude",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-call.test.ts:119",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Hold a tool call until the user decides.The user picks Run it",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-call.test.ts:184",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Hold a tool call until the user decides.The user picks Refuse",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-call.test.ts:202",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Hold a tool call until the user decides.The user types an answer",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-call.test.ts:212",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Hold a tool call until the user decides.Nobody answers",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-call.test.ts:222",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.When tool.check fires",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/load/tool-flow.test.ts:12",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/load/tool-flow.test.ts:12 tests/mods/load/tool-flow.test.ts:84",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.Arguments",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-check.test.ts:136",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Agent and organization fields on tool.check",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-check-fields.test.ts:163",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.The e.isReadOnly field on tool.check",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-check-fields.test.ts:130",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.What await next(e) gives you",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/load/tool-flow.test.ts:84 tests/mods/events/tool-check.test.ts:117",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.What to return",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-check.test.ts:84",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.On main",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-check.test.ts:62",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.The hook throws or times out",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/events/tool-check.test.ts:157",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Check whether a tool call is read-only",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/load/tool-flow.test.ts:109 tests/mods/events/tool-check-fields.test.ts:31",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Filter a tool.check hook by whether the call is read-only",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool.ts, src/mods/events/tool-check-merge.ts, src/mods/events/read-only.ts; tests/mods/chain/events-filter.test.ts:117",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Send a changed system prompt section or tool description with breakPromptCache",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt-cache.ts; tests/mods/events/prompt-cache.test.ts:23",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.submit",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt.test.ts:14",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.fill",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt.test.ts:114",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.suggest",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt.test.ts:114",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.edit",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt.test.ts:142",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.autocomplete",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt.test.ts:168",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.compose",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt-system.test.ts:25",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.section",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt-system.test.ts:52",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.context",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt-system.test.ts:73",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.attachment",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt-system.test.ts:91",
+      "note": ""
+    },
+    {
+      "id": "mods.event.prompt.mention",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt-system.test.ts:112",
+      "note": ""
+    },
+    {
+      "id": "mods.event.skill.prompt",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/skill.test.ts:27",
+      "note": ""
+    },
+    {
+      "id": "mods.event.attribution.text",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/attribution.ts; tests/mods/events/prompt-system.test.ts:145",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Rewrite or add to a prompt",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt-rewrite.test.ts:26 tests/mods/events/prompt-rewrite.test.ts:83",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Rewrite or add to a prompt.Stop the prompt from being sent",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/prompt-rewrite.test.ts:83",
+      "note": ""
+    },
+    {
+      "id": "mods.skillPrompt.e.source",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/skill.test.ts:87",
+      "note": ""
+    },
+    {
+      "id": "mods.skillPrompt.e.pluginName",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/skill.test.ts:122",
+      "note": ""
+    },
+    {
+      "id": "mods.skillPrompt.e.path",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/skill.test.ts:133",
+      "note": ""
+    },
+    {
+      "id": "mods.skillPrompt.e.frontmatter",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/skill.test.ts:142 tests/mods/events/skill.test.ts:174",
+      "note": ""
+    },
+    {
+      "id": "mods.skillPrompt.e.frontmatterProblem",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/prompt.ts, src/mods/events/reasons.ts; tests/mods/events/skill.test.ts:174",
+      "note": ""
+    },
+    {
+      "id": "mods.event.command.run",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/command.ts; tests/mods/events/command.test.ts:23",
+      "note": ""
+    },
+    {
+      "id": "mods.event.command.describe",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/command.ts; tests/mods/events/command.test.ts:58",
+      "note": ""
+    },
+    {
+      "id": "mods.event.config.set",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/config.ts; tests/mods/events/command.test.ts:76",
+      "note": ""
+    },
+    {
+      "id": "mods.event.config.describe",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/config.ts; tests/mods/events/command.test.ts:114",
+      "note": ""
+    },
+    {
+      "id": "mods.event.settings.read",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/api/settings.test.ts:110",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.Settings hook events",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/events/classic.test.ts:23",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Handle the settings hook events",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/events/classic.test.ts:52",
+      "note": ""
+    },
+    {
+      "id": "mods.events.What a settings.read hook receives",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/events/settings-read.test.ts:22 tests/mods/api/engine-layer-reader.test.ts:10",
+      "note": ""
+    },
+    {
+      "id": "mods.reference.e.layers and e.source on settings.read",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/events/settings-read.test.ts:91",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Tell Claude Code's own read from a mod's read",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/events/settings-read.test.ts:125",
+      "note": ""
+    },
+    {
+      "id": "mods.events.What next(e) gives a settings.read hook",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/events/settings-read.test.ts:215",
+      "note": ""
+    },
+    {
+      "id": "mods.events.What a settings.read hook can return",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/events/settings-read.test.ts:167",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Change one setting from a settings.read hook",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/settings.ts, src/mods/api/engine-settings.ts; tests/mods/events/settings-read-change.test.ts:25",
+      "note": ""
+    },
+    {
+      "id": "mods.event.turn.start",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/turn.ts; tests/mods/events/turn.test.ts:29",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Follow a turn.turn.start",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/turn.ts; tests/mods/events/follow-a-turn.test.ts:26",
+      "note": ""
+    },
+    {
+      "id": "mods.event.turn.step",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/turn.ts; tests/mods/events/turn.test.ts:71",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Follow a turn.turn.step",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/turn.ts; tests/mods/events/follow-a-turn.test.ts:52",
+      "note": ""
+    },
+    {
+      "id": "mods.event.turn.complete",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/turn.ts; tests/mods/events/turn.test.ts:152",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Follow a turn.turn.complete",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/turn.ts; tests/mods/events/follow-a-turn.test.ts:167",
+      "note": ""
+    },
+    {
+      "id": "mods.events.Send a request to a different model",
+      "file": "10-mods/events.md",
+      "status": "not-applicable",
+      "evidence": "src/mods/events/turn.ts; tests/mods/events/follow-a-turn.test.ts:218",
+      "note": "The chain passes the model as the hook wrote it (tests/mods/events/follow-a-turn.test.ts:219); resolving an alias such as haiku to a full id is the host's model transport behind the turn.step core, which the library does not own. No resolver is offered."
+    },
+    {
+      "id": "mods.event.session.start",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts; tests/mods/events/session-observed.test.ts:78 tests/mods/events/session.test.ts:37",
+      "note": ""
+    },
+    {
+      "id": "mods.event.session.end",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts; tests/mods/events/session-observed.test.ts:154 tests/mods/events/session.test.ts:58",
+      "note": ""
+    },
+    {
+      "id": "mods.event.session.compact",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts; tests/mods/events/session.test.ts:69",
+      "note": ""
+    },
+    {
+      "id": "mods.event.session.receive",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts; tests/mods/events/session.test.ts:92",
+      "note": ""
+    },
+    {
+      "id": "mods.event.session.send",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts; tests/mods/events/session.test.ts:136",
+      "note": ""
+    },
+    {
+      "id": "mods.event.session.append",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts; tests/mods/events/session.test.ts:193",
+      "note": ""
+    },
+    {
+      "id": "mods.event.session.attach",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts; tests/mods/events/session-observed.test.ts:114 tests/mods/events/session.test.ts:43",
+      "note": ""
+    },
+    {
+      "id": "mods.event.session.detach",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts; tests/mods/events/session-observed.test.ts:131 tests/mods/events/session.test.ts:43",
+      "note": ""
+    },
+    {
+      "id": "mods.event.session.measure",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts; tests/mods/events/session-observed.test.ts:148 tests/mods/events/session.test.ts:50",
+      "note": ""
+    },
+    {
+      "id": "mods.event.agent.offer",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/agent.ts; tests/mods/events/agent.test.ts:12",
+      "note": ""
+    },
+    {
+      "id": "mods.event.agent.spawn",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/agent.ts; tests/mods/events/agent.test.ts:38",
+      "note": "The SendMessage text `a plugin declined the resume: ` is the host tool's; the library refuses the run and ignores a changed event for a resumed run (src/mods/events/agent.ts:10-16)."
+    },
+    {
+      "id": "mods.event.ui.render",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/render.test.ts:28 tests/mods/ui/render.test.ts:105",
+      "note": ""
+    },
+    {
+      "id": "mods.event.ui.resolve",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/resolve.test.ts:16",
+      "note": ""
+    },
+    {
+      "id": "mods.event.ui.press",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/controls.test.ts:34",
+      "note": ""
+    },
+    {
+      "id": "mods.event.ui.input",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/controls.test.ts:112",
+      "note": ""
+    },
+    {
+      "id": "mods.event.ui.select",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/controls.test.ts:162",
+      "note": ""
+    },
+    {
+      "id": "mods.event.ui.focus",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/controls-events.test.ts:28",
+      "note": ""
+    },
+    {
+      "id": "mods.event.ui.scroll",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/controls-events.test.ts:28",
+      "note": ""
+    },
+    {
+      "id": "mods.event.ui.close",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/controls-events.test.ts:132",
+      "note": ""
+    },
+    {
+      "id": "mods.event.ui.message",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/controls-events.test.ts:60",
+      "note": ""
+    },
+    {
+      "id": "mods.event.ui.fault",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/, src/protocol/mods-events.ts; tests/mods/ui/controls-events.test.ts:85",
+      "note": ""
+    },
+    {
+      "id": "mods.event.plugin.register",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/api/engine-create.ts; tests/mods/load/register.test.ts:58",
+      "note": ""
+    },
+    {
+      "id": "mods.event.engine.create",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts, src/mods/api/engine-create.ts; tests/mods/api/engine-create.test.ts:35 tests/mods/api/engine-create-host.test.ts:17",
+      "note": ""
+    },
+    {
+      "id": "mods.event.telemetry.log",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/telemetry.ts:52-75, src/mods/chain/validate.ts:11-43, src/mods/chain/select.ts:10-15",
+      "note": "Filter { to: \"collector\" } required of prepend/user/append telemetry hooks at registration (J10.19); * and negations never select telemetry. No spec(id) test; tests/mods/chain/telemetry.test.ts, tests/mods/chain/patterns.test.ts. Validation message differs (J10.2)."
+    },
+    {
+      "id": "mods.event.telemetry.mark",
+      "file": "10-mods/events.md",
+      "status": "diverges",
+      "evidence": "src/mods/api/telemetry.ts:52-75, src/mods/chain/validate.ts:11-43, src/mods/chain/select.ts:10-15",
+      "note": "Spec (J10.20, declarations TelemetryMarkInput): a mark carries no `to`, so a { to: \"collector\" } hook never runs on it and the client MUST NOT add a `to`. Code fires telemetry.mark with `to: \"collector\"` added (src/mods/api/telemetry.ts:35,67; agent-plugins judgment D6, tests/support/declared-differences.ts:9) so installed mods' filtered hooks see marks. Library should change."
+    },
+    {
+      "id": "mods.reference.Mods API calls",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/call.ts:103-120, src/mods/chain/reentry.ts; tests/mods/api/guide-reference.test.ts:83",
+      "note": ""
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J10.1",
+      "file": "10-mods/README.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/order.ts:133-140 (builtin tier after append; guard in prepend)",
+      "note": "The library ships no built-in feature mods except the guard; candidates flagged built-in sit in the builtin tier."
+    },
+    {
+      "id": "J10.2",
+      "file": "10-mods/reference.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/scan/file-rules.ts:12-16, src/mods/load/scan/rules.ts:209, src/mods/load/scan/state-sources.ts:89, src/mods/chain/validate.ts:25,41,52, src/format/mod-files.ts:98-105",
+      "note": "SHOULD use 2.1.325's wording; several differ: second modules entry (\"modules\" must list exactly one hooks module, found N), no `not named like code` message for imported files (only the entry suffix is checked), dynamic import lacks `, as in import { name } from \"./file.js\"`, bare import (`imports \"x\": a hooks module imports only files inside the plugin directory...`), `$.ui is used as a value` without the parenthetical, `is registered twice` without `; the first is at`, generator rule (`takes an async generator hook`), telemetry rule, `is not declared` without its tail; no `<plugin>: <file>:<line>:` lead or fixed reminder. Matches the docs' quoted ones. Library should change (SHOULD)."
+    },
+    {
+      "id": "J10.3",
+      "file": "10-mods/reference.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/types-decl.ts:37-39; agent-plugins spec/judgments.md row src/mods/load/loader.ts",
+      "note": "Library refuses a module hooking engine.create without a types file; spec says SHOULD NOT refuse (oracle 2.1.325 loads it). Library should change."
+    },
+    {
+      "id": "J10.4",
+      "file": "10-mods/reference.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/options.ts:79-95; tests/mods/load/options.test.ts",
+      "note": "Absent field left out and a misfit value refusing load conform. But a field with `required: true` and neither value nor default refuses the mod (`<key> is required and has no value`), where the spec leaves it out. Small; library should drop it, or the spec should say so if an oracle shows it (§3.4 `required` binds only the dialog)."
+    },
+    {
+      "id": "J10.5",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/scan/file-rules.ts:16,65; tests/mods/load/check-reads.test.ts:199",
+      "note": ""
+    },
+    {
+      "id": "J10.6",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/tiers.ts:23-26; tests/mods/chain/next-trace.test.ts:123",
+      "note": "A test title in tests/mods/chain/next-tier.test.ts:61 still says `append, builtin or core`; the behaviour allows user."
+    },
+    {
+      "id": "J10.7",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/reentry.ts:18-35; tests/mods/chain/failure.test.ts:208-235",
+      "note": ""
+    },
+    {
+      "id": "J10.8",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-api-names.ts DECLARED_API_MEMBERS; tests/mods/api/declared-members.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J10.9",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/registry.ts:69, src/mods/load/order.ts:35; tests/mods/chain/registry.test.ts:239",
+      "note": ""
+    },
+    {
+      "id": "J10.10",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/nesting.ts:6, src/protocol/mods-limits.ts:69; tests/mods/chain/limits-nesting.test.ts:21,181",
+      "note": ""
+    },
+    {
+      "id": "J10.11",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/commands/active-line.ts; tests/mods/load/refusals.test.ts:229",
+      "note": ""
+    },
+    {
+      "id": "J10.12",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/matcher.ts, src/mods/chain/match-local.ts:18-30; tests/mods/chain/events-filter.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J10.13",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/select.ts:10-15; tests/mods/chain/patterns.test.ts:51",
+      "note": ""
+    },
+    {
+      "id": "J10.14",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/invoke.ts:218-220",
+      "note": "No dedicated test for a failure while next is in flight found."
+    },
+    {
+      "id": "J10.15",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/tool-check-merge.ts:11-61; tests/mods/events/tool-check-merge.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J10.16",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-events.ts:75-78; tests/mods/api/declared-members.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J10.17",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/events/session.ts:18-27",
+      "note": ""
+    },
+    {
+      "id": "J10.18",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/call.ts:50,103-120",
+      "note": "Also resolves (not rejects) a deny for session.append, config.set and session.identity, per their declarations."
+    },
+    {
+      "id": "J10.19",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/chain/validate.ts:11-43; tests/mods/chain/telemetry.test.ts",
+      "note": ""
+    },
+    {
+      "id": "J10.20",
+      "file": "10-mods/events.md",
+      "status": "diverges",
+      "evidence": "src/mods/api/telemetry.ts:30-35,67; tests/support/declared-differences.ts:9 (D6)",
+      "note": "Library adds to: 'collector' to every mark so filtered hooks of installed mods run on it; spec forbids adding a `to`. Library should change (its own D6 marks it as a difference from the declarations)."
+    }
+  ]
+}

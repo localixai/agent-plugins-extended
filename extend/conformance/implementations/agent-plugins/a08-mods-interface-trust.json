@@ -1,0 +1,1465 @@
+{
+ "implementation": "agent-plugins",
+ "revision": "018f293+rename",
+ "pass": "a08-mods-interface-trust",
+ "date": "2026-11-16",
+ "files": [
+  "10-mods/interface.md",
+  "10-mods/api.md",
+  "10-mods/troubleshooting.md",
+  "13-trust.md"
+ ],
+ "requirements": [
+  {
+   "id": "mods.interface.Pick where to draw",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/registry.ts; tests/mods/ui/guide-redraw.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.UserMessage",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.AssistantMessage",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.ToolUse",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.ToolResult",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.ToolGroup",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.CommandOutput",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.AskUserQuestion",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts",
+   "note": "Exactly-once rule enforced in foldRender (src/mods/ui/sites/fold.ts:47-50); 'nothing below it' (declarations) is not checked: a tree with elements below the reference is drawn. The spec states no consequence for that, so not counted as a divergence."
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.Spinner",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.ToolProgress",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.TurnDuration",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.InfoNotice",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.SessionMode",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.Change what Claude Code already draws.PromptHint",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:39, src/protocol/mods-ui-names.ts; tests/mods/ui/sites.test.ts"
+  },
+  {
+   "id": "mods.interface.When Claude Code redraws without being asked",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/redraw/unasked.ts; tests/mods/ui/guide-redraw.test.ts"
+  },
+  {
+   "id": "mods.interface.Redraw when your data changes",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/redraw/invalidate.ts, src/mods/api/clock.ts; tests/mods/ui/redraw.test.ts"
+  },
+  {
+   "id": "mods.interface.Redraw on a timer",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/redraw/invalidate.ts, src/mods/api/clock.ts; tests/mods/ui/guide-redraw.test.ts"
+  },
+  {
+   "id": "mods.interface.How often a site can redraw",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/redraw/gate.ts:26; tests/mods/ui/redraw.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Box",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Text",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Button",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Link",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Code",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Markdown",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Input",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Select",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Svg",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Client",
+   "file": "10-mods/interface.md",
+   "status": "diverges",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts",
+   "note": "Spec (J10.104, declarations' per-surface Elements tables): Client is drawn by the terminal and the Desktop app only; the mobile app has no Client. The kit maps mobile to the Desktop column (src/protocol/mods-ui-names.ts:25, ELEMENT_COLUMN_OF.mobile = 'desktop'), so a Client validates on mobile. Implementation should change (a mobile column, or exclude Client for mobile)."
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Raster",
+   "file": "10-mods/interface.md",
+   "status": "diverges",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts",
+   "note": "Spec: cells are little-endian u32 and MUST decode to exactly columns x rows x 3 numbers or the tree does not validate (J10.105). RASTER.check (src/mods/ui/elements/raster.ts:12) checks columns, rows and that cells is text only; no base64 decode or length check. Implementation should change."
+  },
+  {
+   "id": "mods.interface.Build a tree from elements.Image",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/*.ts, src/protocol/mods-ui-names.ts:147; tests/mods/ui/elements.test.ts"
+  },
+  {
+   "id": "mods.interface.Link in the Desktop app and VS Code.Scheme and host",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/link.ts (drawsAsLink); tests/mods/ui/elements-media.test.ts"
+  },
+  {
+   "id": "mods.interface.Link in the Desktop app and VS Code.No @",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/link.ts (drawsAsLink); tests/mods/ui/elements-media.test.ts"
+  },
+  {
+   "id": "mods.interface.Link in the Desktop app and VS Code.Spelling",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/link.ts (drawsAsLink); tests/mods/ui/elements-media.test.ts"
+  },
+  {
+   "id": "mods.interface.Draw a grid of colored cells",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/ui-api.ts:273 (blit passes to the host port); tests/mods/ui/elements-media.test.ts",
+   "note": "$.ui.blit is a pass-through to the host's interface port, which decides { deny } (not mounted, size, decode); the kit resolves {} when the host answers nothing."
+  },
+  {
+   "id": "mods.interface.When a Client fails",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/client.ts, src/mods/ui/runtime.ts:128; tests/mods/ui/controls-events.test.ts, tests/mods/ui/elements-media.test.ts",
+   "note": "Dim line and ui.fault as specified; note the kit redraws after ui.fault whether or not the mod handles it (runtime.ts:128-130), an extra redraw the spec does not forbid."
+  },
+  {
+   "id": "mods.interface.Open a pane at the right time.title",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/open.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/panes.test.ts"
+  },
+  {
+   "id": "mods.interface.Open a pane at the right time.focus",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/open.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/panes.test.ts"
+  },
+  {
+   "id": "mods.interface.Open a pane at the right time.closeOnEscape",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/open.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/panes.test.ts"
+  },
+  {
+   "id": "mods.interface.Open a pane at the right time.holdToasts",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/open.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/panes.test.ts"
+  },
+  {
+   "id": "mods.interface.Open a pane at the right time.rows",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/open.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/panes.test.ts"
+  },
+  {
+   "id": "mods.interface.Open a pane at the right time.columns",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/open.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/panes.test.ts"
+  },
+  {
+   "id": "mods.interface.Hold toasts behind a dialog",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/toast.ts:75; tests/mods/ui/panes.test.ts"
+  },
+  {
+   "id": "mods.interface.When a pane waits for a wider terminal",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/placement.ts:24-40; tests/mods/ui/panes.test.ts"
+  },
+  {
+   "id": "mods.interface.Draw in the VS Code extension.Panes",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/vscode.ts, src/mods/ui/keyboard/focus.ts; tests/mods/ui/vscode.test.ts"
+  },
+  {
+   "id": "mods.interface.Draw in the VS Code extension.Toasts and status lines",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/vscode.ts, src/mods/ui/keyboard/focus.ts; tests/mods/ui/vscode.test.ts"
+  },
+  {
+   "id": "mods.interface.Draw in the VS Code extension.Labels",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/vscode.ts, src/mods/ui/keyboard/focus.ts; tests/mods/ui/vscode.test.ts"
+  },
+  {
+   "id": "mods.interface.Draw in the VS Code extension.Keyboard",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/vscode.ts, src/mods/ui/keyboard/focus.ts; tests/mods/ui/vscode.test.ts"
+  },
+  {
+   "id": "mods.interface.Draw in the VS Code extension.Keyboard focus",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/vscode.ts, src/mods/ui/keyboard/focus.ts; tests/mods/ui/vscode.test.ts"
+  },
+  {
+   "id": "mods.interface.Draw in the VS Code extension.The question dialog",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/vscode.ts, src/mods/ui/keyboard/focus.ts; tests/mods/ui/vscode.test.ts"
+  },
+  {
+   "id": "mods.interface.Draw in the VS Code extension.Prompt suggestions",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/vscode.ts, src/mods/ui/keyboard/focus.ts; tests/mods/ui/vscode.test.ts"
+  },
+  {
+   "id": "mods.interface.Draw in the VS Code extension.Text limits",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/vscode.ts, src/mods/ui/keyboard/focus.ts; tests/mods/ui/vscode.test.ts"
+  },
+  {
+   "id": "mods.interface.Place a row in the transcript.The result",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/placed/rows.ts; tests/mods/ui/placed.test.ts"
+  },
+  {
+   "id": "mods.interface.Place a row in the transcript.A second call with the same id",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/placed/rows.ts; tests/mods/ui/placed.test.ts"
+  },
+  {
+   "id": "mods.interface.Place a row in the transcript.When the row goes away",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/placed/rows.ts; tests/mods/ui/placed.test.ts"
+  },
+  {
+   "id": "mods.interface.Put a backdrop behind the conversation.The backdrop fields",
+   "file": "10-mods/interface.md",
+   "status": "diverges",
+   "evidence": "src/mods/api/theme.ts, src/mods/api/registries.ts:91-115, src/mods/ui/sites/backdrop.ts; tests/mods/api/theme.test.ts",
+   "note": "Spec (fixed against RenderPropsOf Backdrop): glass is { blur, tint, opacity } or false, and the Backdrop site's e.props always carry glass with its defaults filled in, or false. The kit takes glass as z.unknown() (src/mods/api/theme.ts:23, so glass: true passes, tests/mods/api/theme.test.ts:74), passes it through unchanged and leaves it out when not given (theme.ts:37, sites/backdrop.ts). Implementation should change."
+  },
+  {
+   "id": "mods.interface.Put a backdrop behind the conversation.Whether the backdrop is drawn",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/theme.ts, src/mods/api/registries.ts:91-115, src/mods/ui/sites/backdrop.ts; tests/mods/api/theme.test.ts"
+  },
+  {
+   "id": "mods.interface.Put a backdrop behind the conversation.One backdrop for each session",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/theme.ts, src/mods/api/registries.ts:91-115, src/mods/ui/sites/backdrop.ts; tests/mods/api/theme.test.ts"
+  },
+  {
+   "id": "mods.interface.Which controls need a key",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/controls/keys.ts, src/mods/ui/elements/validate.ts, src/mods/ui/elements/plain.ts; tests/mods/ui/elements-controls.test.ts"
+  },
+  {
+   "id": "mods.interface.How a pane gets keyboard focus",
+   "file": "10-mods/interface.md",
+   "status": "diverges",
+   "evidence": "src/mods/ui/keyboard/focus.ts:27; tests/mods/ui/keyboard.test.ts",
+   "note": "Minor. Spec: focus: true is granted only from a command or a press, while the prompt is empty and nothing else has focus; VS Code adds its conditions. grantsFocus (src/mods/ui/keyboard/focus.ts:32) on vscode checks only the panel conditions and the empty prompt, ignoring fromUserAction and otherHasFocus, so a timer-opened pane can take focus in the panel. Terminal/Desktop path conforms. Implementation should change."
+  },
+  {
+   "id": "mods.interface.What each key does.Tab",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts, src/mods/ui/keyboard/band.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.What each key does.Up and Down",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts, src/mods/ui/keyboard/band.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.What each key does.Enter",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts, src/mods/ui/keyboard/band.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.What each key does.A button's hotkey",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts, src/mods/ui/keyboard/band.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.What each key does.Page Up, Page Down, Home, and End",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts, src/mods/ui/keyboard/band.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.What each key does.Ctrl+X then an arrow key",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts, src/mods/ui/keyboard/band.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.What each key does.Ctrl+X then X",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts, src/mods/ui/keyboard/band.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.What each key does.Ctrl+X then Ctrl+A",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts, src/mods/ui/keyboard/band.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.What each key does.Esc",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts, src/mods/ui/keyboard/band.ts, src/mods/ui/keyboard/pane-size.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.Set a hotkey and the first focus",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/button.ts:7, src/mods/ui/keyboard/focus.ts (initialFocus), src/mods/ui/controls/hotkeys.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.When the user collapses the band",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/band.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.interface.Declare the values",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/scan/top-level.ts:89, src/mods/load/types-decl.ts; tests/mods/load/guide-declare.test.ts"
+  },
+  {
+   "id": "mods.interface.Point the manifest at the declaration",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/types-decl.ts; tests/mods/load/guide-declare.test.ts"
+  },
+  {
+   "id": "mods.interface.Define, read, and write a value",
+   "file": "10-mods/interface.md",
+   "status": "diverges",
+   "evidence": "src/mods/api/state.ts:63, src/mods/ui/redraw/subscribe.ts:30, src/mods/load/scan/top-level.ts:54; tests/mods/load/guide-declare.test.ts, tests/mods/api/guide-state.test.ts",
+   "note": "Spec item 4 (declarations state.set, J10.112): a client MUST refuse a $.state.set made while a ui.render hook draws: not written, nothing redrawn. The kit writes the value (src/mods/api/state.ts:63) and only suppresses the redraw for a value the drawing read (src/mods/ui/redraw/subscribe.ts:30); tests/mods/ui/redraw.test.ts:140 asserts the kit's behaviour. The validator half (listed under state writes, no error) conforms (tests/mods/load/guide-declare.test.ts:212). Implementation should change."
+  },
+  {
+   "id": "mods.interface.Load a saved value again after /clear",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/state.ts (reset); tests/mods/api/guide-state.test.ts"
+  },
+  {
+   "id": "mods.interface.Save from more than one session",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/store.ts; tests/mods/api/guide-state-reset.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Add a command",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/command.ts:38-49; tests/mods/api/registries.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Add a tool",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/tool.ts; tests/mods/api/registries.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Send one prompt",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/model.ts; tests/mods/api/model.test.ts",
+   "note": "Shape and defaults conform; API failures resolve as the model port answers. Note: maxTokens above the cap is clamped (model.ts modelCall) rather than rejected as a 'bad cap'; non-integer/negative values reject."
+  },
+  {
+   "id": "mods.apiGuide.Use prompt caching",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/model-blocks.ts, src/mods/api/model.ts; tests/mods/api/model.test.ts",
+   "note": "Blocks and breakpoints reach the model port (sentBlocks); the TTL from subagentPromptCacheTtl, the four-breakpoint limit and DISABLE_PROMPT_CACHING are the host model port's (no code in the kit)."
+  },
+  {
+   "id": "mods.apiGuide.Choose between prompt and system",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/model-blocks.ts; tests/mods/api/model.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.What a model.complete hook receives.e.prompt",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/model-blocks.ts (eventText, sentBlocks); tests/mods/api/model.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.What a model.complete hook receives.e.system",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/model-blocks.ts (eventText, sentBlocks); tests/mods/api/model.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.What a model.complete hook receives.e.promptBlocks and e.systemBlocks",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/model-blocks.ts (eventText, sentBlocks); tests/mods/api/model.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Stop background work",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/clock.ts, src/mods/load/host.ts; tests/mods/api/background-work.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Show something without starting a turn.$.ui.status(text)",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/ui-api.ts:47-106, src/mods/ui/toast.ts:14; tests/mods/ui/api.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Show something without starting a turn.$.ui.toast(text)",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/ui-api.ts:47-106, src/mods/ui/toast.ts:14; tests/mods/ui/toast.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Show something without starting a turn.$.ui.log(text)",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/ui-api.ts:47-106, src/mods/ui/toast.ts:14; tests/mods/ui/api.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Show something without starting a turn.$.ui.notify(text)",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/ui-api.ts:47-106, src/mods/ui/toast.ts:14; tests/mods/ui/api.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Show something without starting a turn.disabled",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/ui-api.ts:47-106, src/mods/ui/toast.ts:14; tests/mods/ui/notify-reasons.test.ts",
+   "note": "The reason is the host notify port's; the kit passes { isSent: false, reason } through unchanged (tests/mods/ui/notify-reasons.test.ts:21)."
+  },
+  {
+   "id": "mods.apiGuide.Show something without starting a turn.no-channel",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/ui-api.ts:47-106, src/mods/ui/toast.ts:14; tests/mods/ui/notify-reasons.test.ts",
+   "note": "Host-supplied reason passed through unchanged."
+  },
+  {
+   "id": "mods.apiGuide.Show something without starting a turn.no-surface",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/ui-api.ts:47-106, src/mods/ui/toast.ts:14; tests/mods/ui/notify-reasons.test.ts",
+   "note": "Host-supplied reason passed through unchanged."
+  },
+  {
+   "id": "mods.apiGuide.Show something without starting a turn.refused",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/ui-api.ts:47-106, src/mods/ui/toast.ts:14; tests/mods/ui/api.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Start a turn from a background job",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/prompt.ts; tests/mods/api/background-work.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.What refused calls return.$.prompt.submit",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts, src/mods/api/refusal.ts; tests/mods/api/refused-calls.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.What refused calls return.$.command.run",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts, src/mods/api/refusal.ts; tests/mods/api/refused-calls.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.What refused calls return.$.agent.spawn",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts, src/mods/api/refusal.ts; tests/mods/api/refused-calls.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.What refused calls return.$.session.send",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts, src/mods/api/refusal.ts; tests/mods/api/refused-calls.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.What refused calls return.$.tool.call",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts, src/mods/api/refusal.ts; tests/mods/api/refused-calls.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Work your mod started before the interruption.$.prompt.submit",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts:36-57; tests/mods/api/queued-calls.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Work your mod started before the interruption.$.command.run",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts:36-57; tests/mods/api/queued-calls.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Work your mod started before the interruption.An event from a monitor your mod started",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts:36-57; tests/mods/api/guide-interruption.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Work your mod started before the interruption.$.session.send",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts:36-57; tests/mods/api/guide-interruption.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Work your mod started before the interruption.$.tool.call",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts:36-57; tests/mods/api/queued-calls.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Retry a refused or dropped call",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/scan/rules.ts:153 (handlePassed), src/mods/api/gate.ts; tests/mods/api/retry-refused.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Calls refused in claude -p runs and Agent SDK sessions",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts:10-13,123; tests/mods/api/run-limits.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.A claude -p run with your mod never exits",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts:123; tests/mods/api/run-limits.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Send and receive messages between sessions.Another of your sessions",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/session.ts; tests/mods/api/session.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Send and receive messages between sessions.A subagent or teammate",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/session.ts; tests/mods/api/session.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Send and receive messages between sessions.The sender of a message you received",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/session.ts; tests/mods/api/session.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/process.test.ts, tests/mods/api/guide-globals.test.ts, tests/mods/api/http.test.ts, tests/mods/api/misc.test.ts, tests/mods/api/fs.test.ts, tests/mods/api/settings.test.ts, tests/mods/api/store-state.test.ts, tests/mods/api/session.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.fs",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/fs.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.process",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/process.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.http",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/http.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.store",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/store-state.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.env",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/misc.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.settings",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/settings.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.session",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/session.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.mcp",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/misc.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.Paths",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/fs.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.fs.list",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/fs.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.process.run",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/process.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Reach files, processes, and the network.$.http.fetch",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/fs.ts, exec.ts, http.ts, http-redirects.ts, store.ts, env.ts, settings.ts, session.ts, mcp.ts; src/protocol/mods-limits.ts; tests/mods/api/http.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Read all settings, one source, or one key.$.settings.read()",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/settings.ts:29-55; tests/mods/api/guide-settings-sources.test.ts, tests/mods/api/settings.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Read all settings, one source, or one key.$.settings.read({ source: 'policy' })",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/settings.ts:29-55; tests/mods/api/settings.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Read all settings, one source, or one key.user",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/settings.ts:29-55; tests/mods/api/guide-settings-sources.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Read all settings, one source, or one key.project",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/settings.ts:29-55; tests/mods/api/guide-settings-sources.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Read all settings, one source, or one key.local",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/settings.ts:29-55; tests/mods/api/guide-settings-sources.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Read all settings, one source, or one key.flag",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/settings.ts:29-55; tests/mods/api/guide-settings-sources.test.ts"
+  },
+  {
+   "id": "mods.apiGuide.Read all settings, one source, or one key.policy",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/settings.ts:29-55; tests/mods/api/guide-settings-sources.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Check whether mods can load.no hooks module to load",
+   "file": "10-mods/troubleshooting.md",
+   "status": "diverges",
+   "evidence": "src/mods/load/policy.ts:190, src/testing/mods/runner.ts:171-185; tests/mods/load/check-load.test.ts",
+   "note": "Minor wording. Spec quotes 2.1.325: `claude plugin test: <dir>: no hooks module to load; there is no hooks/hooks.json naming one in \"modules\"`, exit 0. Kit prints `claude plugin test: no hooks module to load` (src/testing/mods/runner.ts:185); exit 0 conforms and the phrase is included. Implementation should adopt the full line."
+  },
+  {
+   "id": "mods.troubleshoot.Check whether mods can load.hooks modules are turned off here",
+   "file": "10-mods/troubleshooting.md",
+   "status": "diverges",
+   "evidence": "src/mods/load/policy.ts:190, src/testing/mods/runner.ts:171-185; tests/mods/load/check-load.test.ts",
+   "note": "Spec (fixed, oracle 2.1.325): `claude plugin test: hooks modules are turned off here (disableAllHooks, allowManagedHooksOnly or a policy)`, exit 1. Kit prints `...turned off here: disableAllHooks in managed settings|in your settings` (src/mods/load/policy.ts:194-197) and does not treat allowManagedHooksOnly or a policy as off. Exit 1 conforms. Implementation should change."
+  },
+  {
+   "id": "mods.troubleshoot.hook skipped",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/chain/failure.ts, src/mods/chain/invoke.ts; tests/mods/load/hook-skipped.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.no command.run hook answered it",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/events/command.ts; tests/mods/events/command.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.it crashed the hooks worker",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/health.ts:33; tests/mods/load/crash.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.mods that run in the hooks worker are off for this session",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/health.ts:13-36, src/mods/load/crash-recovery.ts; tests/mods/load/crash.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.its session.start ran again in a fresh copy",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/replay.ts, src/mods/load/crash-recovery.ts; tests/mods/api/replay.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.This mod's change didn't load or the earlier version is no longer running",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/change-notice.ts; tests/mods/load/written-mods.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.$.agent.register refused: the hooks module that made the call is no longer loaded",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/call.ts; tests/mods/api/refused-calls.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Your version is too old",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/where-mods-run.ts; tests/mods/load/where-mods-run.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.The mods active line doesn't name the mod",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/mod-set.ts; tests/mods/load/refusals.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A claude -p run prints hooks module not loaded",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/line-channel.ts:43; tests/mods/load/refusal-channels.test.ts, tests/mods/load/where-mods-run.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Refusal messages.disableAllHooks in managed settings",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/policy.ts, src/mods/load/order.ts; tests/mods/load/refusals.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Refusal messages.another plugin of that name loads first",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/policy.ts, src/mods/load/order.ts; tests/mods/load/refusals.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Messages from the built-in guard",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/guard.ts, src/mods/load/line-channel.ts:60; tests/mods/load/guard-per-mod.test.ts, tests/mods/load/refusals-guard.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.validate passes and lists no hooks line",
+   "file": "10-mods/troubleshooting.md",
+   "status": "diverges",
+   "evidence": "src/loading/validate/json-files.ts:83, src/mods/load/commands/validate.ts:246; tests/mods/load/troubleshoot.test.ts",
+   "note": "Spec (J10.174, 2.1.321 docs): a hooks.json with no modules key (or misspelt) validates and lists no hooks line. The mods validator validateMod does so (tests/mods/load/troubleshoot.test.ts:112), but the CLI's plugin validator (validate-plugin -> plugin-contents -> src/loading/validate/json-files.ts:83) errors `hooks.json must have hooks ... or modules ..., or both` when neither key is present, i.e. it follows oracle 2.1.325. Either side could move: the spec's own judgment notes the oracle differs."
+  },
+  {
+   "id": "mods.troubleshoot.hooks module did not load",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/loader.ts; tests/mods/load/troubleshoot.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.options do not fit plugin.json userConfig",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/options.ts; tests/mods/load/troubleshoot.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.code nested too deep to scan: more than 2000 scopes",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/scan/index.ts:30; tests/mods/load/troubleshoot.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.the engine ran out of stack linking the file and its imports",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/engine-faults.ts; tests/mods/load/troubleshoot-judgments.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.the parser stopped or the engine ran out of stack loading the file",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/format/js-parse.ts, src/mods/load/engine-faults.ts; tests/mods/load/troubleshoot.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.No mod loads in a directory you opened for the first time",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/policy.ts; tests/mods/load/refusals.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.No installed plugin loads at all",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/settings/context.ts; tests/mods/load/refusals.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Claude Code stops asking to enable hot reloading",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/change-notice.ts; tests/mods/load/written-mods.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.a hook changed this call's input after the model wrote it",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/events/input-review.ts; tests/mods/load/tool-flow-review.test.ts, tests/mods/load/tool-flow.test.ts, tests/mods/events/stopped-turn.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A message about the deny rules in your settings",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/guard.ts; tests/mods/load/refusals-guard.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Stopped: type a message to continue; a mod cannot resume work after Stop",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts:28-32,166; tests/mods/load/stopped-calls.test.ts, tests/mods/events/stopped-turn.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Another mod's band shows and yours doesn't",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/chain/invoke.ts:240, src/mods/ui/sites/band.ts; tests/mods/ui/render.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A pane or band is empty or shows Claude Code's usual content",
+   "file": "10-mods/troubleshooting.md",
+   "status": "diverges",
+   "evidence": "src/mods/ui/rules.ts, src/mods/ui/elements/validate.ts; tests/mods/ui/render.test.ts",
+   "note": "The hook skipped line with `returned the wrong shape (<reason>)` conforms; the debug-log line holding the whole reason after `a hook returned a tree that does not validate` is not written anywhere in src/. Implementation should add it."
+  },
+  {
+   "id": "mods.troubleshoot.A ui.render line says refused",
+   "file": "10-mods/troubleshooting.md",
+   "status": "diverges",
+   "evidence": "src/mods/ui/sites/fold.ts:30,52; tests/mods/ui/limits.test.ts",
+   "note": "The transcript line `[hooks: ]ui.render (<site>) refused: <reason>` conforms (src/mods/ui/sites/fold.ts:30); the debug-log line `ui.render (<site>): the chain settled on a tree that does not validate` is not written anywhere in src/. Implementation should add it."
+  },
+  {
+   "id": "mods.troubleshoot.A ui.render line says threw while drawn",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/draw-fault.ts; tests/mods/ui/guide-redraw.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.the module failed without a message",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/client.ts:16; tests/mods/ui/client-fault.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.needs a key, is drawn twice, or key each once",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/validate.ts, src/mods/ui/controls/route.ts; tests/mods/ui/elements-controls.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.$.ui.open runs and no pane appears",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/placement.ts; tests/mods/ui/guide-redraw.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A toast doesn't appear.The line for the call is missing",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/toast.ts, src/mods/ui/ui-api.ts:97-106; tests/mods/ui/toast.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A toast doesn't appear.A pane is holding toasts",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/toast.ts, src/mods/ui/ui-api.ts:97-106; tests/mods/ui/toast.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A toast doesn't appear.The toast is under the prompt",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/toast.ts, src/mods/ui/ui-api.ts:97-106; tests/mods/ui/toast.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A toast doesn't appear.Your mod raised a newer toast",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/toast.ts, src/mods/ui/ui-api.ts:97-106; tests/mods/ui/toast.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A toast doesn't appear.The toast ran out of time undrawn",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/toast.ts, src/mods/ui/ui-api.ts:97-106; tests/mods/ui/toast.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.The band shows plugin panel hidden",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/band.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Hotkeys do nothing.No keyboard focus",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/controls/hotkeys.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Hotkeys do nothing.The button is in a collapsed band",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/controls/hotkeys.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Hotkeys do nothing.In the VS Code extension",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/controls/hotkeys.ts; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A drawing works in the terminal and not in the Desktop app or VS Code",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/protocol/mods-ui-names.ts; tests/mods/ui/guide-redraw.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.Your edits don't take effect",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/plugin-dirs.ts; tests/mods/load/plugin-dir.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A value resets when the module reloads",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/state.ts; tests/mods/load/crash.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A value resets after /clear, /resume, or /branch",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/state.ts; tests/mods/api/guide-state-reset.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A key your settings.read hook returns doesn't take effect.settings.read hook skipped",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/engine-settings.ts, src/mods/chain/invoke.ts:240; tests/mods/events/settings-read-change.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A key your settings.read hook returns doesn't take effect.answered settings.read without next()",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/engine-settings.ts, src/mods/chain/invoke.ts:240; tests/mods/events/settings-read-change.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.A key your settings.read hook returns doesn't take effect.settings.read: refused to the engine",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/engine-settings.ts, src/mods/chain/invoke.ts:240; tests/mods/events/settings-read-change.test.ts"
+  },
+  {
+   "id": "mods.troubleshoot.settings.read: refused to the engine",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/engine-settings.ts; tests/mods/events/settings-read-change.test.ts"
+  },
+  {
+   "id": "trust.behavior.Project allow rules and workspace trust",
+   "file": "13-trust.md",
+   "status": "diverges",
+   "evidence": "src/loading/workspace-trust.ts, src/loading/trust-gates.ts; tests/loading/workspace-trust.test.ts",
+   "note": "Items 1-3 and 5 conform (workspace-trust.ts, trust-gates.ts; tests/loading/workspace-trust.test.ts). Item 4 (fixed): the background-session trust check and its messages (`Workspace not trusted. Run \\`claude\\` in <path> once...`, `The home directory is trusted one session at a time`, `<path> could not be resolved on disk`) appear nowhere in src/. If the kit's hosts start background sessions this is missing; otherwise it binds the CLI host. Implementation should add the messages as a helper."
+  },
+  {
+   "id": "trust.behavior.Workspace trust",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/workspace-trust.ts:113 (settingsHooksMayRun); tests/loading/workspace-trust.test.ts"
+  },
+  {
+   "id": "trust.behavior.When your local settings file needs trust",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/local-settings-trust.ts, src/loading/workspace-trust.ts:135; tests/settings/merge-core/permission-rules.test.ts, tests/loading/local-settings-trust.test.ts"
+  },
+  {
+   "id": "trust.behavior.What runs before you trust a folder.env",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/trust-gates.ts:87-140; tests/settings/env/timing.test.ts, tests/loading/trust-gates.test.ts"
+  },
+  {
+   "id": "trust.behavior.What runs before you trust a folder.permissions.allow",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/trust-gates.ts:87-140; tests/loading/trust-gates.test.ts"
+  },
+  {
+   "id": "trust.behavior.What runs before you trust a folder.@skills-dir",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/trust-gates.ts:87-140; tests/loading/trust-gates.test.ts"
+  },
+  {
+   "id": "trust.behavior.What runs before you trust a folder.mcpServers",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/trust-gates.ts:87-140; tests/loading/trust-gates.test.ts"
+  },
+  {
+   "id": "trust.behavior.What runs before you trust a folder..mcp.json",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/trust-gates.ts:87-140; tests/loading/trust-gates.test.ts"
+  },
+  {
+   "id": "trust.behavior.What runs before you trust a folder.headersHelper",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/trust-gates.ts:87-140; tests/loading/trust-gates.test.ts"
+  },
+  {
+   "id": "trust.behavior.What runs before you trust a folder",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/trust-gates.ts:87-140; tests/loading/workspace-trust.test.ts, tests/loading/trust-gates.test.ts"
+  },
+  {
+   "id": "trust.loading.Trust check and component limits for repository plugins",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/repository-trust.ts, src/loading/repository-limits.ts; tests/loading/repository-limits.test.ts, tests/loading/repository-trust.test.ts"
+  },
+  {
+   "id": "trust.loading.Check why a repository plugin didn't load",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/repository-trust.ts:111-140, src/loading/repository-messages.ts; tests/loading/repository-trust.test.ts, tests/loading/repository-messages.test.ts"
+  },
+  {
+   "id": "trust.loading.Check why a repository plugin didn't load.In a subdirectory",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/repository-trust.ts:111-140, src/loading/repository-messages.ts; tests/loading/repository-trust.test.ts, tests/loading/repository-messages.test.ts"
+  },
+  {
+   "id": "trust.loading.Check why a repository plugin didn't load.From the desktop app, in a worktree",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/repository-trust.ts:111-140, src/loading/repository-messages.ts; tests/loading/repository-trust.test.ts, tests/loading/repository-messages.test.ts"
+  },
+  {
+   "id": "trust.loading.Check why a repository plugin didn't load.In a folder you haven't trusted",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/repository-trust.ts:111-140, src/loading/repository-messages.ts; tests/loading/repository-trust.test.ts, tests/loading/repository-messages.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.claude-plugins-official",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.claude-code-marketplace",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.claude-code-plugins",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.anthropic-marketplace",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.anthropic-plugins",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.agent-skills",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.anthropic-agent-skills",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.life-sciences",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.knowledge-work-plugins",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.claude-for-legal",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.claude-for-financial-services",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.financial-services-plugins",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.first-party-plugins",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Official marketplace names.claude-tag-plugins",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/format/marketplace/marketplace-name-lists.ts:6, src/format/marketplace/marketplace-names.ts:154; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Trust warning before you install",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/settings/plugins/trust-warning.ts; tests/settings/plugins/trust-standard.test.ts"
+  },
+  {
+   "id": "trust.security.Untrusted marketplace sources and failed integrity checks",
+   "file": "13-trust.md",
+   "status": "diverges",
+   "evidence": "src/marketplace/ignored-marketplace.ts:175, src/marketplace/install-failures.ts:15; tests/marketplace/security-refusals.test.ts",
+   "note": "Minor. The integrity message conforms (src/marketplace/install-failures.ts:15). The runtime refusal untrustedSourceMessage (src/marketplace/ignored-marketplace.ts:175) always uses `Only repositories from 'github.com/anthropics/' can use this name.`; the spec's variant for a non-GitHub/git source (`can only be used with GitHub sources from the 'anthropics' organization`) exists only in the validator (marketplace-names.ts:163). Implementation should change."
+  }
+ ],
+ "judgments": [
+  {
+   "id": "J10.100",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/elements/plain.ts (splitHandlers/joinHandlers); tests/mods/ui/elements-plain.test.ts"
+  },
+  {
+   "id": "J10.101",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/band.ts:44; tests/mods/ui/render.test.ts"
+  },
+  {
+   "id": "J10.102",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/sites/fold.ts:47-50 (falls back to the engine reference, no skip line); tests/mods/ui/render.test.ts",
+   "note": "\"nothing below it\" is not checked."
+  },
+  {
+   "id": "J10.103",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/redraw/gate.ts:26-44; tests/mods/ui/redraw.test.ts"
+  },
+  {
+   "id": "J10.104",
+   "file": "10-mods/interface.md",
+   "status": "diverges",
+   "evidence": "src/protocol/mods-ui-names.ts:25,156-157; tests/mods/ui/mobile.test.ts",
+   "note": "Mobile follows the Desktop column, so it draws Client (should not) while Svg is right. Implementation should change."
+  },
+  {
+   "id": "J10.105",
+   "file": "10-mods/interface.md",
+   "status": "missing",
+   "evidence": "src/mods/ui/elements/raster.ts:8-18",
+   "note": "No decode of cells and no columns x rows x 3 size check in tree validation."
+  },
+  {
+   "id": "J10.106",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/open.ts:21-63; tests/mods/ui/panes.test.ts:137",
+   "note": "Note: backgroundColor is accepted and dropped from the request (looseObject), not refused."
+  },
+  {
+   "id": "J10.107",
+   "file": "10-mods/interface.md",
+   "status": "diverges",
+   "evidence": "src/mods/ui/toast.ts:75-130; tests/mods/ui/panes.test.ts:174",
+   "note": "Held toasts do not spend time (conforms); the cap of 50 waiting toasts with the oldest leaving is not implemented. Implementation should add it."
+  },
+  {
+   "id": "J10.108",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/panes/placement.ts:30-34; tests/mods/ui/panes.test.ts"
+  },
+  {
+   "id": "J10.109",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/placed/rows.ts:26-84; tests/mods/ui/placed.test.ts"
+  },
+  {
+   "id": "J10.110",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/focus.ts:27-43; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "J10.111",
+   "file": "10-mods/interface.md",
+   "status": "conforms",
+   "evidence": "src/mods/ui/keyboard/keys.ts:53-63,99; tests/mods/ui/keyboard.test.ts"
+  },
+  {
+   "id": "J10.112",
+   "file": "10-mods/interface.md",
+   "status": "diverges",
+   "evidence": "src/mods/ui/redraw/subscribe.ts:30, src/mods/api/state.ts:63; tests/mods/ui/redraw.test.ts:140, tests/mods/load/guide-declare.test.ts:212",
+   "note": "The validator half conforms (state writes listed, no error); at run time the kit writes the value and only skips the redraw, where the judgment refuses the write. agent-plugins spec/judgments.md keeps its own contrary judgment. Implementation should change."
+  },
+  {
+   "id": "J10.140",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/command.ts:38-49; tests/mods/api/registries.test.ts"
+  },
+  {
+   "id": "J10.141",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/model-blocks.ts (sentBlocks); tests/mods/api/model.test.ts"
+  },
+  {
+   "id": "J10.142",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/gate.ts (no release gating); tests/mods/api/run-limits.test.ts"
+  },
+  {
+   "id": "J10.143",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/http-redirects.ts:33-70; tests/mods/api/http.test.ts"
+  },
+  {
+   "id": "J10.144",
+   "file": "10-mods/api.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/settings.ts:49-51; tests/mods/api/guide-settings-sources.test.ts"
+  },
+  {
+   "id": "J10.170",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/line-channel.ts:43-47; tests/mods/load/where-mods-run.test.ts"
+  },
+  {
+   "id": "J10.171",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/events/command.ts; tests/mods/load/troubleshoot.test.ts"
+  },
+  {
+   "id": "J10.172",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/load/health.ts:3-60; tests/mods/load/crash.test.ts, tests/mods/load/crash-judgments.test.ts"
+  },
+  {
+   "id": "J10.173",
+   "file": "10-mods/troubleshooting.md",
+   "status": "conforms",
+   "evidence": "src/mods/api/replay.ts; tests/mods/load/crash.test.ts, tests/mods/load/mod-set-crash.test.ts"
+  },
+  {
+   "id": "J10.174",
+   "file": "10-mods/troubleshooting.md",
+   "status": "diverges",
+   "evidence": "src/loading/validate/json-files.ts:83, src/mods/load/commands/validate.ts:246; tests/mods/load/troubleshoot.test.ts:112",
+   "note": "validateMod follows the judgment; the CLI plugin validator errors on a hooks.json with neither key (oracle 2.1.325 behaviour)."
+  },
+  {
+   "id": "J13.29",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/workspace-trust.ts:71-85 (port answers boolean; unknown = false), src/settings/context.ts (least-granting facts); tests/loading/workspace-trust.test.ts"
+  },
+  {
+   "id": "J13.30",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/loading/repository-trust.ts:111-140; tests/loading/repository-messages.test.ts:26"
+  },
+  {
+   "id": "J13.31",
+   "file": "13-trust.md",
+   "status": "conforms",
+   "evidence": "src/settings/plugins/trust-warning.ts:7-22; tests/settings/plugins/trust-standard.test.ts:40"
+  }
+ ]
+}

@@ -1,0 +1,642 @@
+{
+  "implementation": "agent-plugins",
+  "revision": "018f293+rename+fixes",
+  "pass": "r02-hooks-mods-permissions-policy",
+  "date": "2026-11-16",
+  "files": [
+    "07-hooks/README.md",
+    "07-hooks/events.md",
+    "07-hooks/handlers.md",
+    "07-hooks/results.md",
+    "10-mods/events.md",
+    "10-mods/interface.md",
+    "10-mods/reference.md",
+    "10-mods/troubleshooting.md",
+    "13-permissions.md",
+    "13-trust.md",
+    "14-policy-mods.md",
+    "14-policy-org.md",
+    "14-policy.md"
+  ],
+  "requirements": [
+    {
+      "id": "hooks.behavior.Hooks in skills and agents",
+      "file": "07-hooks/README.md",
+      "status": "conforms",
+      "evidence": "src/host/session-skill-hooks.ts:50-56,70-77 (SKILL_HOOK_SOURCE: project skill scope 'project', managed-directory skill managed: true); src/hooks/select/gates.ts:22-42; tests/host/skill-hook-trust.test.ts:72, tests/agents/hooks.test.ts",
+      "note": "Fixed since a03: a project skill's hooks now carry scope 'project', so the trust gate holds them in an untrusted interactive session (-p counts as trusted). Items 1, 2, 5 conform."
+    },
+    {
+      "id": "hooks.behavior.Hook handler fields",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/command/cwd-fallback.ts:17-38; src/hooks/handlers/command/subprocess-env.ts:78-117 (OTEL_*, scrub, HIPAA Anthropic credentials); src/hooks/handlers/command/env.ts:46-63 (hipaa from the run context); tests/hooks/handlers/command/subprocess-env.test.ts:83, tests/hooks/select/handler-types.test.ts",
+      "note": "Fixed since a03: the HIPAA configuration (HostOptions.hipaa) removes ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and CLAUDE_CODE_OAUTH_TOKEN from the hook environment."
+    },
+    {
+      "id": "hooks.components.Environment, quoting, and matching MCP tools.Environment",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/loading/resolve/hook-command.ts:192-200; src/hooks/handlers/command/subprocess-env.ts:105-117; tests/hooks/handlers/command/host-variables.test.ts, tests/hooks/handlers/command/subprocess-env.test.ts:83",
+      "note": "CLAUDE_CODE_REMOTE and CLAUDE_CODE_BRIDGE_SESSION_ID are the host's environment, inherited as given."
+    },
+    {
+      "id": "hooks.behavior.How async hooks execute",
+      "file": "07-hooks/handlers.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/background.ts:24-33 (droppedField warning naming the field), :50-70; src/hooks/verdict/stdout-kind.ts; tests/hooks/async-hooks.test.ts:131",
+      "note": "Fixed since a03: a wrong-typed delivered field now draws `The async hook response field <field> is not a string and is dropped`."
+    },
+    {
+      "id": "hooks.behavior.Limitations",
+      "file": "07-hooks/handlers.md",
+      "status": "diverges",
+      "evidence": "src/host/background-queue.ts:30-32 (every delivery handed over, repeats included); tests/hooks/async-hooks.test.ts:131",
+      "note": "Item 7 still not done: skipping an async SessionStart response equal to what Claude last received from that hook (unless a sync SessionStart added text since; re-sent after compaction or /clear) is left to the embedder by a written judgment. The spec says the client MUST; the library's host layer should implement it (or the spec should assign it to the embedding host). Items 2, 5, 6 conform."
+    },
+    {
+      "id": "hooks.guide.Shell profile output before the JSON",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/debug-lines.ts:11,19-20 (plainTextNote); tests/hooks/output/dispatch.test.ts:178",
+      "note": "Fixed since a03: the line is a warning of the run for the host's debug log."
+    },
+    {
+      "id": "hooks.guide.Structured JSON output",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/schemas-common.ts:14-31; src/hooks/output/parse.ts:74; src/hooks/verdict/debug-lines.ts:14,23-29; tests/hooks/output/dispatch.test.ts:200",
+      "note": "Fixed since a03: `Hook JSON output had unrecognized keys: <keys>` is now produced."
+    },
+    {
+      "id": "hooks.permissionUpdate.setMode",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/hook-permission-updates.ts:37-40,61-69; src/host/session-permission-updates.ts:11-33; tests/host/hook-set-mode.test.ts:41, tests/hooks/output/permission-update.test.ts",
+      "note": "Fixed since a03: a setMode to bypassPermissions is dropped when bypass is not available (launch, disableBypassPermissionsMode and --restricted folded into bypassAvailable) and otherwise kept with destination 'session', never persisted."
+    },
+    {
+      "id": "hooks.troubleshooting.Hook loads but never fires",
+      "file": "07-hooks/results.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/types.ts:13-39 (RunEnding, RunFacts: matchedValue, handler, plugin, ending, exitCode, timeoutMs, durationMs); src/hooks/run-facts.ts:10-64; src/hooks/run-all.ts:146-157; tests/hooks/troubleshooting-fires.test.ts:139",
+      "note": "Fixed since a03: the facts of item 2 (J7.67) are exposed on HookObserver.finished; the line's wording is the host's."
+    },
+    {
+      "id": "hooks.behavior.What a blocked prompt leaves behind",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/blocked-prompt.ts:21-35; src/hooks/output/merge-simple.ts:50-67 (only blocking reads); tests/hooks/interrupts.test.ts:237,259",
+      "note": "Fixed since a04: only a blocking handler's suppressOriginalPrompt counts (J7.144)."
+    },
+    {
+      "id": "hooks.behavior.WorktreeCreate output",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:107-122 (last answer in handler order, both kinds); src/hooks/output/worktree-path.ts:138-175; tests/hooks/output/contract-judgments.test.ts:53, tests/hooks/output/worktree-output.test.ts",
+      "note": "Fixed since a04. \"Not an enterable directory -> exit 1\" is the host's."
+    },
+    {
+      "id": "hooks.guide.Stop hook hits the block cap",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/stop-block-cap.ts:27-47; tests/hooks/verdict/stop-block-cap.test.ts",
+      "note": ""
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.suppressOriginalPrompt",
+      "file": "07-hooks/events.md",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:57-61; tests/hooks/output/prompt-events.test.ts:96, tests/hooks/interrupts.test.ts:259",
+      "note": "A non-blocking handler's flag has no effect (J7.144)."
+    },
+    {
+      "id": "mods.command.claude plugin validate <directory>",
+      "file": "10-mods/reference.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/commands/scan-lines.ts:36-62,68-86; src/mods/load/scan/event-names.ts:10-22; tests/mods/load/validate-325.test.ts:41,64,80",
+      "note": "Fixed since a07: answers its own command, hooks telemetry for, state of other plugins, types <path> declares on $/state, gating set with telemetry events and globs/negations. Still missing: the `adds to $:` and `withholds from $:` lines (§10.4.3); nothing in src/mods/load tracks what an engine.create hook adds or withholds. Library should change."
+    },
+    {
+      "id": "mods.create.Sessions where a mod Claude writes can't load.Nobody is there to approve",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/written-mods.ts:42-55 (LOADS_UNATTENDED auto, bypassPermissions); tests/mods/load/written-mods.test.ts:22,34",
+      "note": "claude -p loads in auto and bypassPermissions, refuses otherwise; dontAsk refuses."
+    },
+    {
+      "id": "mods.file.types/index.d.ts",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/types-decl.ts:27-37; tests/mods/load/guide-declare.test.ts:232",
+      "note": "Only $.state use requires the file; an engine.create namespace without it loads (J10.3)."
+    },
+    {
+      "id": "mods.setting.prependPlugins",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy-input.ts:47,85-89,99; tests/mods/load/managed-mcp-context.test.ts",
+      "note": "managed-mcp.json now closes the user-settings home (ModsPolicyInput.managedMcp, set by the host)."
+    },
+    {
+      "id": "mods.setting.appendPlugins",
+      "file": "10-mods/reference.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy-input.ts:47,85-89,99; tests/mods/load/managed-mcp-context.test.ts",
+      "note": "As prependPlugins."
+    },
+    {
+      "id": "mods.event.telemetry.mark",
+      "file": "10-mods/events.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/telemetry.ts:40-66 (no `to` added); tests/mods/api/misc.test.ts:232",
+      "note": "D6 dropped: a { to: 'collector' } hook never runs on a mark."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Client",
+      "file": "10-mods/interface.md",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:163-178 (NOT_DRAWN_BY.mobile = Client, drawsElement), src/mods/ui/elements/validate.ts:18; tests/mods/ui/mobile.test.ts:21,29",
+      "note": ""
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Raster",
+      "file": "10-mods/interface.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/raster.ts:8-43 (cellsProblem: base64 of exactly columns x rows x 12 bytes); tests/mods/ui/elements-media.test.ts:193-204",
+      "note": "Endianness cannot be checked by length; the size rule is."
+    },
+    {
+      "id": "mods.interface.Define, read, and write a value",
+      "file": "10-mods/interface.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/state.ts:83-91,108-115,137-138 (set refused while drawing), src/mods/ui/redraw/subscribe.ts:40 (state.drawing); tests/mods/ui/redraw.test.ts:140-158, tests/mods/load/guide-declare.test.ts:212",
+      "note": "Write refused at run time, not written, nothing redrawn; the validator lists it under state writes with no error."
+    },
+    {
+      "id": "mods.interface.How a pane gets keyboard focus",
+      "file": "10-mods/interface.md",
+      "status": "diverges",
+      "evidence": "src/mods/ui/keyboard/focus.ts:30-37; tests/mods/ui/keyboard.test.ts",
+      "note": "Unchanged since a08. Spec item 2: focus: true only from a command or press, prompt empty, nothing else focused; VS Code adds its conditions. grantsFocus on vscode checks only the panel conditions and the empty prompt, ignoring fromUserAction and otherHasFocus. Minor; library should change."
+    },
+    {
+      "id": "mods.interface.Put a backdrop behind the conversation.The backdrop fields",
+      "file": "10-mods/interface.md",
+      "status": "conforms",
+      "evidence": "src/mods/api/theme.ts:20-67 (glassFields union of false or {blur,tint,opacity} with defaults; glassOf), src/mods/ui/sites/backdrop.ts:23; tests/mods/api/theme.test.ts, tests/mods/ui/backdrop.test.ts",
+      "note": "glass: true is now refused; the site's props always carry glass with defaults, or false."
+    },
+    {
+      "id": "mods.troubleshoot.A pane or band is empty or shows Claude Code's usual content",
+      "file": "10-mods/troubleshooting.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/rules.ts:41 (shapeDebug), src/mods/chain/judge.ts:42-43; tests/mods/ui/limits.test.ts:224-234",
+      "note": "The debug line with the whole reason is now written."
+    },
+    {
+      "id": "mods.troubleshoot.A ui.render line says refused",
+      "file": "10-mods/troubleshooting.md",
+      "status": "conforms",
+      "evidence": "src/mods/ui/sites/fold.ts:30, src/mods/ui/runtime.ts:126-131; tests/mods/ui/limits.test.ts:196-203",
+      "note": "Transcript and debug-log lines both written."
+    },
+    {
+      "id": "mods.troubleshoot.Check whether mods can load.hooks modules are turned off here",
+      "file": "10-mods/troubleshooting.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts:203-220 (TURNED_OFF_HERE, managed allowManagedHooksOnly counted), src/testing/mods/runner.ts; tests/mods/load/check-load.test.ts",
+      "note": "2.1.325 line verbatim, exit 1."
+    },
+    {
+      "id": "mods.troubleshoot.Check whether mods can load.no hooks module to load",
+      "file": "10-mods/troubleshooting.md",
+      "status": "conforms",
+      "evidence": "src/testing/mods/runner.ts:175; tests/mods/load/check-load.test.ts",
+      "note": "Full 2.1.325 line with <dir>, exit 0."
+    },
+    {
+      "id": "mods.troubleshoot.validate passes and lists no hooks line",
+      "file": "10-mods/troubleshooting.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/commands/validate.ts:33-38,214, src/loading/validate/json-files.ts:83; tests/mods/load/troubleshoot.test.ts:122,135,145",
+      "note": "The spec now takes the oracle side (deviates marker, J10.174): hooks without modules passes with no hooks line; neither key fails at root with the quoted error. Both validators agree."
+    },
+    {
+      "id": "trust.behavior.Project allow rules and workspace trust",
+      "file": "13-trust.md",
+      "status": "diverges",
+      "evidence": "src/loading/workspace-trust.ts; tests/loading/workspace-trust.test.ts:43",
+      "note": "Items 1-3, 5 and 6 conform. Item 4 still missing: no background-session trust check and none of its texts (`Workspace not trusted. Run `claude` in <path> once ...`, `The home directory is trusted one session at a time`, `<path> could not be resolved on disk`) exist in src/, though the library models background sessions elsewhere (src/settings/permissions/default-mode.ts). Implementation should add a pure verdict with these texts."
+    },
+    {
+      "id": "trust.security.Untrusted marketplace sources and failed integrity checks",
+      "file": "13-trust.md",
+      "status": "diverges",
+      "evidence": "src/marketplace/ignored-marketplace.ts:175; src/marketplace/install-failures.ts:15; tests/marketplace/ignored-marketplace.test.ts:176",
+      "note": "Integrity message conforms. untrustedSourceMessage(name) still takes no source and always says `Only repositories from 'github.com/anthropics/' can use this name.`; the non-GitHub/git variant (`can only be used with GitHub sources from the 'anthropics' organization`) is only in the validator (src/format/marketplace/marketplace-names.ts:173-174). Implementation should change: pass the source and pick the sentence as the validator does."
+    },
+    {
+      "id": "permissions.behavior.Block file-tool reads and writes outside the working directories",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/write-block-messages.ts:30 (writeBlockRefusal, writeBlockShortRefusal); src/rules/decide/block-exceptions.ts:107; tests/rules/write-block-settings-files.test.ts (spec block for this id)",
+      "note": "Both refusal texts are now exported verbatim; refusal in every mode and worktree-tool removal as before."
+    },
+    {
+      "id": "permissions.behavior.Precedence among rules, hooks, and mods",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:75-135 (hook veto, deny, ask, protected/critical/interaction/connector/network steps with reach 'never'); tests/rules/decide/hooks-and-mods.test.ts",
+      "note": ""
+    },
+    {
+      "id": "permissions.behavior.Tool name wildcards",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/rule-warnings.ts:34 (matchesNoTool as a value, J13.33); src/rules/issues.ts:35; src/rules/parse.ts; tests/rules/rule-warnings.test.ts:77, tests/rules/tool-pattern.test.ts",
+      "note": "The warning is returned as a value (rule, behavior, source, kind); MultiEdit not exempt, TaskOutput exempt (J13.34)."
+    },
+    {
+      "id": "permissions.behavior.Write(path), Glob(path), and Grep(path) rules don't match",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/rule-warnings.ts:73 (neverMatches with replacement and use); src/rules/issues.ts:37 (stderr form with source); tests/rules/rule-warnings.test.ts:20",
+      "note": "Fixed since a09: every source warns, allow rules too, --allowedTools Glob silent, bare/Tool(*)/Grep path draw nothing."
+    },
+    {
+      "id": "permissions.mode.auto",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:150-156 (allowedDomains -> classify); src/rules/decide/auto-dropped.ts:21-30 (bash/sh/zsh wrappers); tests/rules/decide-auto-hosts-and-wrappers.test.ts:19,46",
+      "note": "Both a09 gaps fixed: per-command allowed domains go to the classifier over an allow rule, wildcarded shell wrappers are dropped."
+    },
+    {
+      "id": "permissions.modes.Protected paths.remote-settings.json",
+      "file": "13-permissions.md",
+      "status": "diverges",
+      "evidence": "src/rules/decide/protected-paths.ts:61,183-199,231; tests/rules/write-block-settings-files.test.ts:81, tests/rules/protected-path-ids.test.ts:36",
+      "note": "The config-directory file and the host-named kept files are protected (isStoredRemoteSettings, J13.35). But FILES still lists `remote-settings.json`, so a file of that name anywhere (a project's) is protected, wider than `in the configuration directory`; protected-path-ids.test.ts asserts the project path. Implementation should drop the name from FILES and the test row."
+    },
+    {
+      "id": "permissions.modes.Skip all checks with bypassPermissions mode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/decide.ts:95-98 (powershell-removal deny, reach never), :125-127 (foreign artifact); src/rules/decide/powershell-removal.ts; tests/rules/decide-bypass-safety.test.ts:48",
+      "note": "Remove-Item and cmd rd/rmdir/del/erase denies hold in bypass; another organisation's artifact read never happens."
+    },
+    {
+      "id": "permissions.reference.Let one directory through the read or write block",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/managed-only.ts:118-127 (REPOSITORY_FILE.local: tracked or not in a repository); src/settings/context.ts:37; tests/rules/block-working-directory.test.ts:13, tests/settings/permissions/blocks.test.ts",
+      "note": "Fixed: a local file outside a git repository now counts as repository settings."
+    },
+    {
+      "id": "permissions.reference.Sandboxed commands under the block",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/sandbox-read-block.ts:65-80 (worktreeCommonGitDir -> reopened and readWrite), :83; tests/settings/permissions/sandbox-read-block.test.ts:18,59",
+      "note": "Roots, host-named re-opens (worktrees, temp, ~/.claude parts), git config file by file, credentials, denyRead and the three exemptions conform. The docs: sentence in the same paragraph (hooks/ and config inside the common .git stay write-denied) is recorded separately as missing."
+    },
+    {
+      "id": "permissions.reference.What the write block refuses and what stays writable",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/rules/decide/block-exceptions.ts:20-56 (J13.28 list), :83, :107; src/rules/decide/write-block-messages.ts:30; tests/rules/write-block-settings-files.test.ts:28, tests/rules/decide-blocks-and-sessions.test.ts:122",
+      "note": "Settings-file list per J13.28 and the verbatim refusal now present; worktree and repository-chosen auto memory fall outside the counted directories (blockPaths)."
+    },
+    {
+      "id": "permissions.setting.disableAutoMode",
+      "file": "13-permissions.md",
+      "status": "conforms",
+      "evidence": "src/settings/permissions/running-mode.ts:13,43; tests/settings/permissions/running-mode.test.ts:16",
+      "note": "Running auto session leaves for default with `auto mode disabled by settings` when a managed source sets it."
+    },
+    {
+      "id": "policy.server.Enforce fail-closed startup",
+      "file": "14-policy.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/startup-failure.ts:10,36; tests/settings/managed/startup-failure.test.ts:21",
+      "note": "Gateway 401 on an attended interactive launch with the key off now prints the text and opens signed out."
+    },
+    {
+      "id": "policy.key.disableSideloadFlags",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/managed/sideload.ts:58-77 (per-flag lines, SDK plugins option, variable with `: unset the variable`, closing line); src/cli/flags/sideload.ts:29-50 (withSideloadClosing); tests/settings/key-classes/sideload-flags.test.ts:32",
+      "note": ""
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.disableSideloadFlags",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/key-spec.ts; src/settings/managed/sideload.ts:85; tests/settings/key-classes/managed-only.test.ts, tests/settings/key-classes/sideload-flags.test.ts",
+      "note": "Shares the paragraph above, which now conforms."
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Update and remove fail",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/cli/marketplace-update.ts:96; src/cli/marketplace-remove.ts:129-157 (seed_managed without --scope); tests/cli/marketplace-remove.test.ts:142, tests/cli/marketplace-update.test.ts:36",
+      "note": ""
+    },
+    {
+      "id": "policy.reference.Allow only the official marketplace",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/settings/marketplaces/official-registration.ts:50; tests/settings/marketplaces/official-registration.test.ts",
+      "note": "Pure verdict: register on the first terminal session, not in print, cloud terminal or VS Code, no retry after a recorded block."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.Header filter",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/format/marketplace/header-names.ts:11-40 (J15.12 set, prefixes, `_` as `-`, one copy); src/settings/marketplaces/headers-helper.ts:11; tests/settings/marketplaces/registry-headers.test.ts:68",
+      "note": ""
+    },
+    {
+      "id": "policy.reference.Marketplace source types.git",
+      "file": "14-policy-org.md",
+      "status": "conforms",
+      "evidence": "src/cli/lfs-pointer-line.ts; src/cli/marketplace-add.ts:122,198; src/cli/marketplace-update.ts:18; tests/cli/marketplace-lfs.test.ts:12",
+      "note": "Add reports the pointer-file count; for update the plan precedes the fetch, so the host appends lfsPointerLine(count) (documented in the plan's comment)."
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.e.uses.calls",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/scan/uses.ts:58,72 (sortedUnique); tests/mods/testing/policy-mods.test.ts:44",
+      "note": ""
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy.ts:73-86 (`<id> is enabled by managed settings, but ...`); src/mods/load/order.ts; tests/mods/load/settings-order.test.ts",
+      "note": "Debug line now present."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.A built-in guard runs first",
+      "file": "14-policy-mods.md",
+      "status": "conforms",
+      "evidence": "src/mods/load/policy-input.ts:84-87 (isManagedContext reads managedMcp); tests/mods/load/managed-mcp-context.test.ts, tests/mods/load/mod-order.test.ts:33",
+      "note": "managed-mcp.json now loads the guard."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.The guard protects what you manage",
+      "file": "14-policy-mods.md",
+      "status": "diverges",
+      "evidence": "src/mods/load/guard.ts:60-88 (KEPT.ask -> ask; option lifts deny and ask); src/rules/decide/hooks-and-mods.ts:64-73; src/rules/decide/context.ts:24-28; tests/mods/load/settings-guard.test.ts:173",
+      "note": "Fixed in the guard: an ask rule now prompts, and the option lifts both rule outcomes. Still diverging: decide() knows the mod only as ModOutcome.policyEnforced, one bit, with no input for allowModsToOverrideDenyRules and no managed/non-managed mark on the hook outcome. With the option on, a host can't get the spec's result (non-managed hook block/prompt and read block lifted, managed hook outcome and the prompt tool/canUseTool callback kept): policyEnforced=true keeps everything, false also bypasses the callback and managed hook asks. Implementation should change (see J14.14)."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J7.2",
+      "status": "conforms",
+      "evidence": "src/host/session-registry.ts:24-62 (settings files highest precedence first, then plugins, then later registrations); tests/host/hook-entries.test.ts:41",
+      "note": "Fixed since a03; agent-plugins spec/judgments.md:1170 records the same order."
+    },
+    {
+      "id": "J7.3",
+      "status": "conforms",
+      "evidence": "src/hooks/select/lock-gates.ts:29-35 (skill: managed or force-enabled plugin); src/host/session-skill-hooks.ts:50-56 (pluginId, managed); tests/host/skill-hook-trust.test.ts (allowManagedHooksOnly block)",
+      "note": "A bundled skill carries neither managed nor a pluginId, so it is blocked; agent frontmatter hooks are always blocked."
+    },
+    {
+      "id": "J7.10",
+      "status": "conforms",
+      "evidence": "src/format/hooks-settings.ts:107; src/format/hooks-handlers.ts:134; tests/format/hooks-settings.test.ts:176, tests/format/hooks-handlers.test.ts:152,227",
+      "note": "Fixed since a03: unknown group/handler keys and another type's fields are dropped without a warning."
+    },
+    {
+      "id": "J7.20",
+      "status": "diverges",
+      "evidence": "src/loading/validate/json-files.ts:68-90 (hooksFileFindings, declared()); src/format/hooks-settings.ts:187-194 (strayGuard), :219-231; tests/loading/validate/validate-plugin.test.ts:242-253",
+      "note": "Messages, the link warning (links.ts:67-71, 1048576) and the invalid-JSON row conform. Item 2 says the top-level guard message comes only when PreToolUse/PermissionRequest holds at least one matcher group; the validator and loader flag any non-null, non-empty value (`{\"PermissionRequest\":5}` errors, tested). Also the validator checks top-level guard keys only when `hooks` is absent, so `{\"hooks\":{},\"PreToolUse\":[group]}` draws no validator error while the loader rejects the plugin; the row says the validator reports it. Found by reading. Check both against the oracle: the validator should flag the stray key beside a `hooks` object; for a non-group value either the spec says 'anything but null or an empty list' or the code narrows."
+    },
+    {
+      "id": "J7.30",
+      "status": "conforms",
+      "evidence": "src/hooks/output/schemas-common.ts:14-31; src/hooks/verdict/debug-lines.ts:14,23-29; tests/hooks/output/dispatch.test.ts:200",
+      "note": "Fixed since a03."
+    },
+    {
+      "id": "J7.57",
+      "status": "conforms",
+      "evidence": "src/hooks/handlers/remote/mcp-input.ts:17,30-31 (null to \"\"), :47-58; tests/hooks/handlers/remote/mcp-tool.test.ts:157",
+      "note": "The judgment now says null becomes the empty string; the code does that (without the missing-path warning, which J7.57 does not ask for)."
+    },
+    {
+      "id": "J7.66",
+      "status": "missing",
+      "evidence": "no CLAUDE_CODE_SHELL_PREFIX in src/ (src/hooks/handlers/command/plan.ts, shell.ts build the spec without it)",
+      "note": "A shell-form Bash hook is never started through the prefix. Code should change: wrap the shell-form command (unexpanded) as the prefix's one argument; exec-form and PowerShell untouched."
+    },
+    {
+      "id": "J7.67",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/types.ts:21-50 (RunFacts on HookObserver.finished); src/hooks/run-facts.ts; tests/hooks/troubleshooting-fires.test.ts:139",
+      "note": "Fixed since a03."
+    },
+    {
+      "id": "J7.107",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge.ts:40 (UserPromptExpansion merged with mergeUserPrompt); src/hooks/verdict/blocked-prompt.ts:17 (QUOTES_PROMPT UserPromptSubmit only)",
+      "note": "The field is accepted and changes nothing, as the judgment now states."
+    },
+    {
+      "id": "J7.131",
+      "status": "conforms",
+      "evidence": "src/hooks/output/watch-paths.ts:8; src/hooks/select/watch-list.ts:38-43; tests/hooks/output/session-events.test.ts:256, tests/host/watch-list.test.ts:99",
+      "note": "Fixed since a04: relative entries are resolved against the input cwd."
+    },
+    {
+      "id": "J7.136",
+      "status": "conforms",
+      "evidence": "src/hooks/verdict/stop-block-cap.ts:40-47 (TOOL_EVENTS); tests/hooks/verdict/stop-block-cap.test.ts",
+      "note": "The judgment now names the three resetting events, as the code does."
+    },
+    {
+      "id": "J7.143",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:107-122; src/hooks/output/worktree-path.ts:133-142; tests/hooks/output/contract-judgments.test.ts:53",
+      "note": "Fixed since a04."
+    },
+    {
+      "id": "J7.144",
+      "status": "conforms",
+      "evidence": "src/hooks/output/merge-simple.ts:50-67 (reads.filter(read => read.blocks)); tests/hooks/interrupts.test.ts:259",
+      "note": "Fixed since a04."
+    },
+    {
+      "id": "J7.210",
+      "status": "conforms",
+      "evidence": "src/rules/path/tools.ts:42-45,70,124-135; src/rules/path/file-rules.ts:145; tests/rules/path-judgments.test.ts:109",
+      "note": "Read deny/ask rules match filePath (relative resolved against the working directory) for every operation; a Read allow rule does not reach LSP, which needs no permission (catalog.ts:45), so nothing is narrowed."
+    },
+    {
+      "id": "docs:env-vars.md | Variables — CLAUDE_CODE_SHELL_PREFIX",
+      "status": "missing",
+      "evidence": "no CLAUDE_CODE_SHELL_PREFIX in src/ (only in tests/fixtures/remote-mcp-env candidate lists)",
+      "note": "07-hooks/handlers.md §7.3.2.3 item 5: the library starts shell-form command hooks (and stdio MCP servers) without the prefix. Code should change (see J7.66); Bash tool and status line commands are the host's."
+    },
+    {
+      "id": "docs:claude-directory.md | Session scratchpad directory",
+      "status": "conforms",
+      "evidence": "src/host/session-types.ts:89; src/host/session-hooks.ts:53; src/host/turn.ts:25,42",
+      "note": "07-hooks/events.md §SessionStart scratchpad_dir: the library passes the host's scratchpadDir and omits the field when the session has none; the path layout, eligibility and retention are the host's."
+    },
+    {
+      "id": "docs:errors.md | Model switch was blocked by a PreModelSwitch hook",
+      "status": "diverges",
+      "evidence": "src/hooks/verdict/notices.ts:53-58 (TIMED_OUT 'timed out'); src/hooks/verdict/exit2.ts:123; src/hooks/output/merge-gates.ts:106",
+      "note": "07-hooks/events.md §PreModelSwitch: a timeout blocks, but its reason is `timed out` (+ detail), not `PreModelSwitch hook <name> did not respond before its timeout`; no `a PreModelSwitch hook failed before answering`, `... were cancelled (the control stream closed) before answering`, or `confirmation required, and this session cannot ask` texts, and no managed-plugin-load-failure reason. Code should give these reason texts (the `Model switch to <model> was blocked ...` report line is the host's)."
+    },
+    {
+      "id": "J10.2",
+      "status": "diverges",
+      "evidence": "src/mods/load/scan/messages.ts, src/mods/load/scan/file-rules.ts:18-22, src/mods/load/scan/on-rules.ts:42,51, src/mods/load/scan/top-level.ts:81, src/mods/load/scan/issue-codes.ts:60-62, src/mods/load/commands/validate.ts:45; tests/mods/load/validate-325.test.ts:97-155",
+      "note": "Most 2.1.325 messages are now word for word (second modules entry, registered twice with `; the first is at`, generator, telemetry stream, not named like code, dynamic/bare import, is not declared, $.ui is used as a value (...)). Still differ: an issue is printed `<file>: <message>`, without the `<plugin>: <file>:<line>:` lead and without the fixed `$ is always spelled ...` reminder; a bare `$` used as a value says `$ is used as a value` with no parenthetical (src/mods/load/scan/rules.ts:190). SHOULD; library should change."
+    },
+    {
+      "id": "J10.3",
+      "status": "conforms",
+      "evidence": "src/mods/load/types-decl.ts:27-37; tests/mods/load/guide-declare.test.ts:232",
+      "note": ""
+    },
+    {
+      "id": "J10.4",
+      "status": "conforms",
+      "evidence": "src/mods/load/options.ts:72-95; tests/mods/load/options.test.ts:95-104, tests/mods/load/troubleshoot.test.ts:244",
+      "note": "The judgment now matches the code: a required field with no value fails the load under `options do not fit plugin.json userConfig`."
+    },
+    {
+      "id": "J10.20",
+      "status": "conforms",
+      "evidence": "src/mods/api/telemetry.ts:40-66; tests/mods/api/misc.test.ts:232",
+      "note": "D6 removed; no `to` on a mark."
+    },
+    {
+      "id": "J10.21",
+      "status": "conforms",
+      "evidence": "src/format/validate/plugin-manifest.ts:52-53,95,100",
+      "note": "Warning for any value, no error, the field not read. No spec(J10.21) test found for the warning."
+    },
+    {
+      "id": "J10.104",
+      "status": "conforms",
+      "evidence": "src/protocol/mods-ui-names.ts:163-178; tests/mods/ui/mobile.test.ts:21-29",
+      "note": "Mobile draws Svg, no Client."
+    },
+    {
+      "id": "J10.105",
+      "status": "conforms",
+      "evidence": "src/mods/ui/elements/raster.ts:8-43; tests/mods/ui/elements-media.test.ts:193-204",
+      "note": ""
+    },
+    {
+      "id": "J10.107",
+      "status": "conforms",
+      "evidence": "src/mods/ui/toast.ts:38-39,127-130; tests/mods/ui/toast.test.ts:187-199",
+      "note": ""
+    },
+    {
+      "id": "J10.112",
+      "status": "conforms",
+      "evidence": "src/mods/api/state.ts:108-115,137-138; tests/mods/ui/redraw.test.ts:140-158, tests/mods/load/guide-declare.test.ts:212",
+      "note": ""
+    },
+    {
+      "id": "J10.174",
+      "status": "conforms",
+      "evidence": "src/mods/load/commands/validate.ts:33-38; tests/mods/load/troubleshoot.test.ts:122,145",
+      "note": "The judgment now states the oracle behaviour the code had."
+    },
+    {
+      "id": "docs:keybindings.md | Contexts",
+      "status": "missing",
+      "evidence": "src/mods/ui/keyboard/keys.ts:178-187",
+      "note": "The kit routes fixed keys straight to effects; there are no keybinding contexts (AbovePrompt, AbovePromptInput, AbovePromptSelect, Pane, PaneField) and no keybindings.json input, so a user's binding cannot decide what reaches the mod. Library should change (or own this as host-side)."
+    },
+    {
+      "id": "docs:keybindings.md | Above-prompt actions",
+      "status": "diverges",
+      "evidence": "src/mods/ui/keyboard/keys.ts:113-123,141-150,178-187",
+      "note": "Defaults partly match (Tab next, Enter press, Escape leave, Up/Down, Ctrl+X Ctrl+A toggle, Ctrl+X Tab focus), but no action names, no Shift+Tab previous, no Right/Left/Space in the band, and a bare Ctrl+A sends the key to the prompt. Library should change."
+    },
+    {
+      "id": "docs:keybindings.md | Pane actions",
+      "status": "missing",
+      "evidence": "src/mods/ui/keyboard/keys.ts:113-150",
+      "note": "Scroll, grow/shrink and close keys exist as fixed defaults, but no pane:* actions, no pane:next/pane:previous in Global, no PaneField context. Library should change."
+    },
+    {
+      "id": "docs:keybindings.md | Unbind default shortcuts",
+      "status": "missing",
+      "evidence": "src/mods/ui/keyboard/keys.ts:141-150,178-180",
+      "note": "Ctrl+X is always a chord prefix; nothing unbinds a chord per context or frees the prefix. Library should change."
+    },
+    {
+      "id": "docs:keybindings.md | Text fields",
+      "status": "conforms",
+      "evidence": "src/mods/ui/keyboard/keys.ts:126-137,178-187; tests/mods/ui/keyboard.test.ts",
+      "note": "A printable key goes to a focused Input; named keys, modified keys and the second key of a chord run their handling first."
+    },
+    {
+      "id": "J13.24",
+      "status": "conforms",
+      "evidence": "src/rules/decide/auto-dropped.ts:21-30; tests/rules/decide-auto-hosts-and-wrappers.test.ts:46",
+      "note": "Shell wrappers bash/sh/zsh with -c forms now dropped; classifyAllShell only Bash/PowerShell."
+    },
+    {
+      "id": "J13.28",
+      "status": "conforms",
+      "evidence": "src/rules/decide/block-exceptions.ts:20-56; tests/rules/write-block-settings-files.test.ts:28",
+      "note": ""
+    },
+    {
+      "id": "J13.33",
+      "status": "conforms",
+      "evidence": "src/rules/rule-warnings.ts:16-26,90; src/rules/issues.ts; tests/rules/rule-warnings.test.ts",
+      "note": "Warnings returned as values carrying rule, behavior, source, kind, and replacement for never matches."
+    },
+    {
+      "id": "J13.34",
+      "status": "conforms",
+      "evidence": "src/rules/rule-warnings.ts:31,51; src/protocol/tool-names.ts:84; tests/rules/rule-warnings.test.ts:86",
+      "note": ""
+    },
+    {
+      "id": "J13.35",
+      "status": "conforms",
+      "evidence": "src/rules/decide/protected-paths.ts:192-199; tests/rules/write-block-settings-files.test.ts:98",
+      "note": "Kept files come from the host (remoteSettingsFiles), no prefix guessed. The name-anywhere entry in FILES is recorded under permissions.modes.Protected paths.remote-settings.json."
+    },
+    {
+      "id": "J14.1",
+      "status": "conforms",
+      "evidence": "src/settings/managed/drop-in.ts:67-86 (file order, first occurrence kept); tests/settings/managed/drop-in-order.test.ts:19; spec/judgments.md:988",
+      "note": "Fixed since a09: order is now the first occurrence in file order."
+    },
+    {
+      "id": "J14.8",
+      "status": "conforms",
+      "evidence": "src/settings/managed/sideload.ts:74; src/cli/flags/sideload.ts:29-33; tests/settings/key-classes/sideload-flags.test.ts",
+      "note": "Both paths now word the variable with `: unset the variable`."
+    },
+    {
+      "id": "J14.14",
+      "status": "diverges",
+      "evidence": "src/mods/load/guard.ts:85; src/rules/decide/hooks-and-mods.ts:64-73; src/rules/decide/context.ts:24-28",
+      "note": "The guard (rule verdicts) honours the option as decided. The decision engine has no option input and no managed-hook mark: REACH 'unenforced' and 'unbypassable' both key on policyEnforced, so the option can't lift non-managed hook outcomes and the read block while keeping managed hook outcomes and the callback. Implementation should add the option (and a managed flag on the hook outcome) to the decide context."
+    },
+    {
+      "id": "docs:sandboxing.md | Filesystem isolation",
+      "status": "missing",
+      "evidence": "src/settings/permissions/sandbox-read-block.ts:43-53",
+      "note": "In a linked worktree the common .git is returned as readWrite, but SandboxBlock has no write-deny list, so `hooks/` and `config` inside it are not kept write-denied. Implementation should add e.g. denyWrite: [<common>/hooks, <common>/config]."
+    }
+  ]
+}
