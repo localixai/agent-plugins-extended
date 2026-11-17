@@ -31,5 +31,10 @@ extended to the plugin contract of Claude Code 2.1.321.
   own validator: 0 false rejects (`conformance/CORPUS.md`).
 - Tools (`tools/`): the U1 check, links, section citations, coverage, verification, the judgments
   index, the corpus check, and `sync` for merging upstream.
+- Mining Claude Code (`tools/src/mine/`, `bun run mine <release>`): the docs and the mods
+  declarations of a release, the requirements and the scope audit that selects them, the
+  declarations snapshot, the corpus and Claude Code's verdicts on it. The snapshots beside
+  `requirements.json` (`mods-declarations.json`, `docs-tables.json`, `out-of-scope.json`,
+  `out-of-scope-pages.json`, `scope-audit.md`) live in `conformance/`; implementations sync them.
 - Documentation: the GitHub front page (`.github/README.md`), and guides for `conformance/`,
   `tools/` and contributing.

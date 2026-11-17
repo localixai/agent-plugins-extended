@@ -12,14 +12,22 @@
     "typecheck": "tsc -p tsconfig.json",
     "verification": "bun src/verification.ts",
     "judgments": "bun src/judgments-index.ts",
-    "implementations": "bun src/implementations.ts"
+    "implementations": "bun src/implementations.ts",
+    "docs:pull": "bun src/mine/docs/pull.ts",
+    "types:pull": "bun src/mine/docs/pull-types.ts",
+    "types:extract": "bun src/mine/declarations/write.ts",
+    "spec:extract": "bun src/mine/requirements/extract.ts",
+    "corpus:fetch": "bun src/mine/corpus/fetch.ts",
+    "corpus:oracle": "bun src/mine/corpus/run-oracle.ts",
+    "mine": "bun src/mine/main.ts"
   },
   "dependencies": {
     "ajv": "8.17.1",
-    "yaml": "2.9.1"
+    "yaml": "2.9.1",
+    "zod": "4.4.3"
   },
   "devDependencies": {
     "@types/bun": "1.4.4",
-    "typescript": "5.9.3"
+    "typescript": "7.0.2"
   }
 }

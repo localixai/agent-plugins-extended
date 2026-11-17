@@ -2,13 +2,14 @@
  * The corpus check (W4): every file a Claude Code schema covers, in every plugin of the official
  * and community marketplaces, validated with our schemas and compared with Claude Code's own
  * `claude plugin validate` verdict on the same plugin. Writes `extend/conformance/CORPUS.md`.
- * The corpus lives outside the repository and is only read.
+ * The corpus is fetched by `bun run corpus:fetch` and its verdicts by `bun run corpus:oracle`; this
+ * check only reads them.
  *
- *   bun run corpus            (CORPUS_DIR overrides ~/Documents/llx-plugin/.cache/corpus)
+ *   bun run corpus            (CORPUS_DIR overrides extend/.cache/corpus)
  */
 import { existsSync, readFileSync } from 'node:fs'
-import { homedir } from 'node:os'
 import { join } from 'node:path'
+import { CORPUS_DIR as CORPUS } from '../mine/corpus/location.ts'
 import { CONFORMANCE } from '../paths.ts'
 import { checkFiles, type FileVerdict } from './check.ts'
 import { pluginFiles } from './files.ts'
@@ -17,7 +18,6 @@ import { renderCorpus, type PluginVerdict } from './report.ts'
 import { loadSchemas } from './schemas.ts'
 
 export const RELEASE = '2.1.321'
-const CORPUS = process.env.CORPUS_DIR ?? join(homedir(), 'Documents', 'llx-plugin', '.cache', 'corpus')
 
 interface IndexEntry {
   readonly marketplace: string

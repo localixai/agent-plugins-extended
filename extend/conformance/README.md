@@ -7,8 +7,13 @@ compatibility (E5).
 
 | File | What it is | Produced by | When it changes |
 | --- | --- | --- | --- |
-| [`requirements.json`](requirements.json) | Every requirement of the Claude Code plugin-host contract for one release: 2,730 ids in 28 categories, from 50 documentation pages | Extracted from the documentation of Claude Code 2.1.321 ([`SOURCE.md`](SOURCE.md)) | Only with a new Claude Code release (C2) |
+| [`requirements.json`](requirements.json) | Every requirement of the Claude Code plugin-host contract for one release: 2,730 ids in 28 categories, from 50 documentation pages | `bun run spec:extract`, from the documentation of Claude Code 2.1.321 ([`SOURCE.md`](SOURCE.md)) | Only with a new Claude Code release (C2) |
 | [`SOURCE.md`](SOURCE.md) | Where the snapshot came from: release, source revision, hash, scope; how to update it | By hand, with the snapshot | With the snapshot |
+| [`out-of-scope.json`](out-of-scope.json) | Every section of an audited page the snapshot leaves out, with its page and reason; and the rows of the mixed settings, environment and CLI tables it rejects | `bun run spec:extract`, with `requirements.json` | With the snapshot |
+| [`out-of-scope-pages.json`](out-of-scope-pages.json) | Every documentation page not audited, with its reason | By hand: a person classifies each page ("Pages and scope") | When a release adds or removes a page |
+| [`scope-audit.md`](scope-audit.md) | The owner's scope decision, and what of each excluded page stays covered elsewhere | By hand | With the scope |
+| [`docs-tables.json`](docs-tables.json) | The tables of the mods reference (events, API methods, limits, elements, render sites, settings) as data, for implementations' tests | `bun run spec:extract` | With the snapshot |
+| [`mods-declarations.json`](mods-declarations.json) | What the mods declarations of the release declare: events and their fields, `$` and its members, `next`, the elements and their props, the exports, the built-in tools' inputs, each with its line | `bun run types:extract` | With the snapshot |
 | [`REPORT.md`](REPORT.md) | The stated share: per category and per chapter file | `bun run coverage` | Whenever a marker is added, removed or changed |
 | [`verification/`](verification/) | The ledgers: one JSON file per verification pass | By the reader of each pass | When a pass is made |
 | [`VERIFIED.md`](VERIFIED.md) | Which requirements were read against their documentation section, and the outcomes | `bun run verification`, from the ledgers | When a ledger changes |
@@ -18,6 +23,10 @@ The scripts are run in `extend/tools/` ([`tools/README.md`](../tools/README.md))
 fails when `REPORT.md` or `VERIFIED.md` is stale; `CORPUS.md` needs the corpus on disk and is
 refreshed by hand.
 
+This repository owns the evidence: the snapshots here are mined from Claude Code by the tools in
+`extend/tools/src/mine/` (`bun run mine <release>`), and an implementation takes them from here
+and never mines its own. How each one is mined is below, from "Mining the snapshots" on.
+
 ## How the pieces connect
 
 ```text
@@ -25,7 +34,8 @@ requirements.json --(ids)--> markers in extend/spec/ ----> REPORT.md    stated, 
         |                            |
         |                            +-- read against docs --> verification/*.json --> VERIFIED.md
         |
-Claude Code docs, 2.1.321
+Claude Code docs, 2.1.321  --spec:extract-->  requirements.json, out-of-scope.json, docs-tables.json
+mods declarations, 2.1.321 --types:extract-->  mods-declarations.json
 
 extend/schemas/ + corpus of real plugins + claude plugin validate verdicts ----> CORPUS.md
 ```
@@ -127,3 +137,102 @@ Claude Code 2.1.321's `claude plugin validate` printed for the same plugin (the 
 The per-schema table counts errors on validated files only; the remainder in the summary also
 counts oracle errors on no file a schema covers (the plugin directory itself), which is why it is
 larger than the table's.
+
+## Mining the snapshots
+
+Every snapshot is mined from one Claude Code release, from caches in `extend/.cache/` (git-ignored)
+that are keyed by the release: `claude-docs/<release>/`, `claude-types/<release>/` and the corpus.
+`bun run mine <release>` runs the steps in order; [`SOURCE.md`](SOURCE.md) says when.
+
+### Requirements
+
+`bun run docs:pull` downloads the documentation the site's `llms.txt` lists, as Markdown, into
+`claude-docs/<release>/`, the release read from the changelog's first entry. `bun run spec:extract
+[release]` reads it with the rules of `src/mine/requirements/` and writes `requirements.json`: one
+entry per documented event, field, source, tool, rule example or element, with its category, page
+and section. It stores identifiers, never the documentation's text.
+
+- A table rule (`sources.ts`, `tables-extra.ts`) names a page, a heading pattern and optionally a
+  header. Every rule must find something, so a page that is restructured stops the extraction.
+- A cell listing several code spans (`` `min` / `max` ``) gives one requirement each.
+- The mixed tables of the settings index, the environment variables and the CLI reference are
+  filtered to the rows that concern plugins, hooks, skills, MCP, subagents, managed policy, updates
+  and permissions; the rows they reject go to `out-of-scope.json` as `section — row`
+  (`row-scope.ts` classifies the foreign rows by name).
+- The output is sorted and stable; the extractor prints what was added and removed.
+- It also writes `docs-tables.json`, the mods reference's tables as data (`mods-reference.ts`).
+
+### Sections and scope
+
+Tables give most requirements, but pages also state rules in prose. `src/mine/requirements/scope-*.ts`
+audit the pages a client needs to load, install, update, configure and run plugins, section by
+section:
+
+- Every heading of level 2 to 4 of an audited page is **included** unless the page's scope skips
+  it. A section the table rules already read keeps those rows; any other gives one requirement,
+  `<category>.<page>.<heading>`. A section that lists rules gives one per rule: a top-level item
+  that opens with a bold label or a code span, or a table row whose first cell is a short
+  identifier (at most 40 characters, or the whole cell for a section the scope names `phrases`).
+  The section's own id stays when it also holds unlabelled items, so prose is never dropped.
+- A section a release adds therefore appears as a new requirement at the next extraction, and a
+  skip that matches no heading fails it.
+- A heading is **out of scope** only when its page's scope skips it for one of the reasons below,
+  or it only groups sub-sections (`container`). `out-of-scope.json` lists each with its reason.
+
+| Reason | Why a section is out of scope |
+| --- | --- |
+| `navigation` | Links to other pages; no behaviour. |
+| `container` | Only groups sub-sections, which are classified on their own. |
+| `runtime` | Claude Code's own interface, sandbox, model or account setting; a client has its own. |
+| `ui` | Claude Code's own terminal, menu or dialog; nothing a client observes or implements. |
+| `tutorial` | A walkthrough or sample; the behaviour it shows is stated in another section. |
+| `advice` | Guidance for a person about when or how to choose; no rule. |
+| `service` | Needs an Anthropic-hosted service. |
+| `telemetry` | Claude Code's own telemetry and analytics pipelines. |
+| `builtin` | What ships inside Claude Code, not how plugins load. |
+| `model` | Model-side machinery: the classifier, caching, routing. |
+| `tooling` | A Claude Code developer tool (evals, test kit, scaffolding) a client has no use for. |
+| `machine` | The user's shell, terminal, git or network setup. |
+| `duplicate` | Restates a rule a requirement already covers. |
+
+### Pages and scope
+
+Every page of the pulled documentation is classified once, by a person: **audited** (in `SCOPES`,
+`src/mine/requirements/scopes.ts`) or **excluded** (in `out-of-scope-pages.json` as
+`{ "page", "reason" }`; a `duplicate` also names the audited page in `of`). `spec:extract` fails when
+a page is in neither list, when a listed page no longer exists or is also audited, when a reason is
+unknown or has no row below, or when a `duplicate` names a page that is not audited. A page a
+release adds therefore stops the extraction until someone reads it and decides. A page is audited
+when it documents a plugin-host contract; [`scope-audit.md`](scope-audit.md) holds the owner's
+decision and the partial-page calls.
+
+| Reason | Why a page is out of scope |
+| --- | --- |
+| `product` | Claude Code surfaces (IDE, desktop, mobile, chat apps, terminal UI) and named services. |
+| `hosting` | Cloud sessions, CI, self-hosted environments, gateways, containers and networking. |
+| `provider` | Model provider, account, install and authentication setup. |
+| `billing` | Cost, usage analytics, telemetry, data handling, legal and compliance. |
+| `marketing` | Launch kits, champion guides and prompt libraries. |
+| `digest` | Weekly digests and the changelog: a version index, with no rule of its own. |
+| `guide` | Overview, quickstart, glossary or advice; every rule it states is on an audited page. |
+| `engine` | Claude Code's own session, sandbox, context, cache and model machinery. |
+| `sdk-api` | The Agent SDK's client API (options, streaming, sessions, cost); shapes are its types. |
+| `duplicate` | Restates an audited page; the entry names it in `of`. |
+
+### Declarations
+
+Claude Code writes TypeScript declarations of the mods surface beside a mod it loads. `bun run
+types:pull` gets them from the program `CLAUDE_ORACLE_BIN` names (else `claude`), in a private home
+and config folder with an unusable key and no prompt typed, into `claude-types/<release>/`.
+`bun run types:extract [release]` reads them through the TypeScript checker, never by their text,
+into `mods-declarations.json` (E2).
+
+### Corpus and verdicts
+
+`bun run corpus:fetch` clones the official and community marketplaces and fetches every plugin
+they list as a client would (§15.6: a relative path in place, a git source as a shallow, pinned,
+sparse-when-a-subdirectory checkout; npm, archive and command sources are recorded as skipped),
+writing `index.json`. `bun run corpus:oracle [release]` asks Claude Code about each plugin, as a
+black box: `claude plugin validate --json` into `oracle/<release>/` (what `bun run corpus` compares
+the schemas with) and `claude --plugin-dir <dir> plugin details <name>` into
+`oracle-load/<release>/`. The corpus folder is `extend/.cache/corpus/`, or `CORPUS_DIR`.

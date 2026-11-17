@@ -30,10 +30,14 @@ The owner merges it in from time to time (`extend/tools/sync`); that merge must 
   the documentation.
 - **E2** Shapes come from the official types of the same release (`@anthropic-ai/claude-agent-sdk`,
   and for mods the declarations Claude Code writes beside a mod). Name the type you follow.
-- **E3** `~/Documents/llx-plugin` is the reference implementation and is **read-only**: read its
-  code, tests and `spec/judgments.md` closely to find what the docs imply, never edit, build, test or
-  write anything inside it. What it decided where the docs are silent is a lead, recorded as our
-  own judgment with its reason, not copied as a fact.
+- **E3** This repository owns the evidence: the docs, the declarations, the requirements and the
+  corpus with Claude Code's verdicts are mined here (`extend/tools/src/mine/`, `bun run mine`), and
+  the implementation, `agent-plugins` (`~/Documents/localixai/agent-plugins`), follows the
+  specification and syncs those snapshots from `extend/conformance/`; it never mines its own. Read
+  its code, tests and judgments to find what the docs imply; what it decided where the docs are
+  silent is a lead, recorded as our own judgment with its reason, not copied as a fact.
+  `~/Documents/llx-plugin` is an older copy and is **read-only**: never edit, build, test or write
+  anything inside it.
 - **E4** Where the docs are silent, decide, name it in the text ("Judgment J7.3"), and add its row
   to the "Judgments" table at the end of that chapter (`J<chapter>.<n>`, with the evidence); list
   the chapter in `extend/spec/judgments.md`. A judgment never carries a requirement marker.
@@ -59,7 +63,9 @@ contract for the targeted release (`extend/conformance/SOURCE.md` says where it 
   (`conformance/completeness/scope.md`) is still stated, with the marker
   `<!-- docs: <page> | <section> -->` instead of `req:`. The report lists these apart; they never
   count as stated requirements, and the next snapshot should carry them as ids.
-- **C2** Never edit `requirements.json` by hand; a new Claude Code release is a new snapshot
+- **C2** Never edit `requirements.json` by hand: `bun run spec:extract` writes it (with
+  `out-of-scope.json` and `docs-tables.json`), and `bun run types:extract` writes
+  `mods-declarations.json`. A new Claude Code release is a new snapshot
   (`extend/conformance/SOURCE.md`, "Updating").
 - **C3** A chapter is done when every requirement of its categories carries a marker and the text
   around it states the behaviour precisely enough to implement and to test.
@@ -85,7 +91,8 @@ contract for the targeted release (`extend/conformance/SOURCE.md` says where it 
 | Everything (types, U1, links, sections, coverage, verification, judgments index) | `bun run check` |
 | Upstream files untouched (U1) | `bun run check:upstream` |
 | Coverage markers and the report (C1, E5) | `bun run coverage` (`--check` in `check`) |
-| Schemas against the corpus (W4) | `bun run corpus` (writes `conformance/CORPUS.md`; reads `CORPUS_DIR`, default `~/Documents/llx-plugin/.cache/corpus`; not part of `check`) |
+| Schemas against the corpus (W4) | `bun run corpus` (writes `conformance/CORPUS.md`; reads `CORPUS_DIR`, default `extend/.cache/corpus`; not part of `check`) |
+| Mine a Claude Code release (E3, C2) | `bun run mine <release>`; the steps alone: `docs:pull`, `types:pull`, `types:extract`, `spec:extract`, `corpus:fetch`, `corpus:oracle` (`tools/README.md`) |
 | Merge upstream | `./sync` (fetch, merge `upstream/main`, report what changed) |
 
 Commit only when asked, never push: the repository is local until the owner says otherwise.
@@ -94,11 +101,11 @@ Commit only when asked, never push: the repository is local until the owner says
 
 1. List its requirements: `jq -r '.requirements[] | select(.category == "<category>") | "\(.id)\t\(.page)\t\(.section)"' extend/conformance/requirements.json`.
 2. Read every documentation section they name, in full, in the docs of the targeted release
-   (2.1.321: `~/Documents/llx-plugin/.cache/claude-docs/<page>`, read-only). Read the official types
-   for the shapes (`~/Documents/llx-plugin/node_modules/@anthropic-ai/claude-agent-sdk/*.d.ts`; for
-   mods `~/Documents/llx-plugin/.cache/claude-types/`).
-3. Read how the reference implementation reads the same behaviour (`~/Documents/llx-plugin/src/`,
-   its tests, and the rows of its `spec/judgments.md` for these pages) to find the edges the docs
+   (2.1.321: `extend/.cache/claude-docs/2.1.321/<page>`, from `bun run docs:pull` or `mine`). Read
+   the official types for the shapes (`@anthropic-ai/claude-agent-sdk/*.d.ts` in the
+   implementation's `node_modules`; for mods `extend/.cache/claude-types/<release>/`).
+3. Read how the implementation reads the same behaviour (`agent-plugins`: `src/`, its tests, and
+   the rows of its `spec/judgments.md` for these pages) to find the edges the docs
    imply: exact messages, defaults, order, failure boundaries. Check each against the docs (E3).
 4. Where a behaviour is still unclear, ask Claude Code itself: `claude plugin validate` and the
    other read-only `claude plugin` commands on a minimal input of your own in a scratch directory,
