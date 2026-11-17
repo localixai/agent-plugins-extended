@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/hooks.schema.json",
+  "title": "Claude Code plugin hooks file",
+  "description": "A plugin's hooks/hooks.json, or a hooks file the manifest names, as Claude Code 2.1.321 accepts it (Agent Plugins Extended 1.1.0, sections 7.1.3, 7.2 and 7.3; the modules key of section 10.3.1). The file wraps the event map in a top-level hooks key; $defs/eventMap is the unwrapped map that the manifest's inline hooks, settings files and frontmatter use.",
+  "$comment": "Claude Code loads a plugin's hooks entry by entry (section 7.2.1.1): a broken entry under any event but PreToolUse and PermissionRequest is dropped and the rest loads, so the schema accepts it; under those two events it stops the plugin, so the schema refuses it. The documented shape of every matcher group and handler is $defs/matcherGroup and $defs/handler.",
+  "type": "object",
+  "anyOf": [{ "required": ["hooks"] }, { "required": ["modules"] }],
+  "properties": {
+    "$schema": { "type": "string" },
+    "description": { "type": "string", "description": "Free text; the client does not act on it (section 7.1.3)." },
+    "hooks": { "$ref": "#/$defs/eventMap" },
+    "modules": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "\\.(js|mjs|cjs|jsx|ts|mts|cts|tsx)$",
+        "not": { "pattern": "^[/\\\\]|^[A-Za-z]:|(^|[/\\\\])\\.\\.([/\\\\]|$)" }
+      },
+      "description": "The one hooks module of a mod, relative to hooks.json (section 10.3.1)."
+    },
+    "PreToolUse": false,
+    "PermissionRequest": false
+  },
+  "$defs": {
+    "eventMap": {
+      "type": "object",
+      "description": "Hook event name to matcher groups (section 7.2.1). An unknown event, or a broken entry under any event but the two guards, is dropped at load.",
+      "properties": {
+        "PreToolUse": { "$ref": "#/$defs/matcherGroups" },
+        "PermissionRequest": { "$ref": "#/$defs/matcherGroups" }
+      }
+    },
+    "matcherGroups": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/matcherGroup" }
+    },
+    "matcherGroup": {
+      "type": "object",
+      "required": ["hooks"],
+      "properties": {
+        "matcher": { "type": "string" },
+        "hooks": { "type": "array", "items": { "$ref": "#/$defs/handler" } }
+      },
+      "description": "Another key is ignored (Judgment J7.10)."
+    },
+    "handler": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "enum": ["command", "http", "mcp_tool", "prompt", "agent"] },
+        "if": { "type": "string" },
+        "timeout": { "type": "number", "exclusiveMinimum": 0 },
+        "statusMessage": { "type": "string" },
+        "once": { "type": "boolean" }
+      },
+      "allOf": [
+        { "if": { "properties": { "type": { "const": "command" } } }, "then": { "$ref": "#/$defs/command" } },
+        { "if": { "properties": { "type": { "const": "http" } } }, "then": { "$ref": "#/$defs/http" } },
+        { "if": { "properties": { "type": { "const": "mcp_tool" } } }, "then": { "$ref": "#/$defs/mcpTool" } },
+        { "if": { "properties": { "type": { "const": "prompt" } } }, "then": { "$ref": "#/$defs/prompt" } },
+        { "if": { "properties": { "type": { "const": "agent" } } }, "then": { "$ref": "#/$defs/agent" } }
+      ],
+      "description": "A key the handler's type does not define is ignored (Judgment J7.10)."
+    },
+    "onFailure": { "enum": ["continue", "block"] },
+    "command": {
+      "required": ["command"],
+      "properties": {
+        "command": { "type": "string" },
+        "args": { "type": "array", "items": { "type": "string" } },
+        "shell": { "enum": ["bash", "powershell"] },
+        "async": { "type": "boolean" },
+        "asyncRewake": { "type": "boolean" },
+        "onFailure": { "$ref": "#/$defs/onFailure" }
+      }
+    },
+    "http": {
+      "required": ["url"],
+      "properties": {
+        "url": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:\\S" },
+        "headers": { "type": "object", "additionalProperties": { "type": "string" } },
+        "allowedEnvVars": { "type": "array", "items": { "type": "string" } },
+        "onFailure": { "$ref": "#/$defs/onFailure" }
+      }
+    },
+    "mcpTool": {
+      "required": ["server", "tool"],
+      "properties": {
+        "server": { "type": "string" },
+        "tool": { "type": "string" },
+        "input": { "type": "object" }
+      }
+    },
+    "prompt": {
+      "required": ["prompt"],
+      "properties": {
+        "prompt": { "type": "string" },
+        "model": { "type": "string" },
+        "continueOnBlock": { "type": "boolean" }
+      }
+    },
+    "agent": {
+      "required": ["prompt"],
+      "properties": {
+        "prompt": { "type": "string" },
+        "model": { "type": "string" }
+      }
+    }
+  }
+}

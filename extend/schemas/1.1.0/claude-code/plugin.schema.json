@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/plugin.schema.json",
+  "title": "Claude Code plugin manifest",
+  "description": "The .claude-plugin/plugin.json of a Claude Code plugin as Claude Code 2.1.321 accepts it (Agent Plugins Extended 1.1.0, chapter 2, with userConfig of section 3.4 and channels of section 9.3). An unknown top-level field is ignored by Claude Code and accepted here; an unknown key inside a strict object (a userConfig option, a channels entry, an LSP configuration, a monitor) is refused.",
+  "$comment": "Not expressed here, and checked by a validator instead: that a path exists and stays inside the plugin, the reserved-name rule of section 2.3 item 2, a userConfig default that is one of its options, options that repeat a value in another letter case, unique monitor names, and ${user_config.KEY} references to undeclared options.",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "$schema": { "type": "string", "description": "A JSON Schema URL for editors; ignored by the client (section 2.2)." },
+    "name": { "$ref": "#/$defs/pluginName" },
+    "displayName": { "type": "string" },
+    "version": { "type": "string", "description": "Not checked against Semantic Versioning (section 2.4)." },
+    "description": { "type": "string" },
+    "author": { "$ref": "#/$defs/person" },
+    "homepage": { "$ref": "#/$defs/url" },
+    "repository": { "type": "string", "description": "A string; an object such as npm's {type, url} is refused (section 2.2)." },
+    "license": { "type": "string" },
+    "keywords": { "type": "array", "items": { "type": "string" } },
+    "metadata": { "type": "object", "description": "The author's own data; never given meaning (section 2.4)." },
+    "icon": { "type": "string" },
+    "documentationUrl": { "type": "string" },
+    "supportUrl": { "type": "string" },
+    "privacyPolicyUrl": { "type": "string" },
+    "termsOfServiceUrl": { "type": "string" },
+    "defaultEnabled": { "type": "boolean" },
+    "dependencies": { "type": "array", "items": { "$ref": "#/$defs/dependency" } },
+    "settings": { "type": "object", "description": "Plugin default settings (section 12.6); see plugin-settings.schema.json." },
+    "userConfig": { "$ref": "#/$defs/userConfig" },
+    "types": {
+      "allOf": [{ "$ref": "#/$defs/componentPath" }, { "pattern": "\\.d\\.ts$" }],
+      "description": "A .d.ts file declaring a mod's $.state values and $ nouns (section 10)."
+    },
+    "channels": { "type": "array", "items": { "$ref": "#/$defs/channel" } },
+    "skills": { "$ref": "#/$defs/skillsPaths" },
+    "commands": { "$ref": "#/$defs/commands" },
+    "agents": { "$ref": "#/$defs/agentPaths" },
+    "hooks": { "$ref": "#/$defs/hooks" },
+    "mcpServers": { "$ref": "#/$defs/mcpServers" },
+    "lspServers": { "$ref": "#/$defs/lspServers" },
+    "outputStyles": { "$ref": "#/$defs/paths" },
+    "workflows": { "$ref": "#/$defs/paths" },
+    "experimental": { "$ref": "#/$defs/experimental" },
+    "themes": { "$ref": "#/$defs/paths", "description": "Still loaded at the top level, with a validator warning; belongs under experimental." },
+    "monitors": { "$ref": "#/$defs/monitors", "description": "Still loaded at the top level, with a validator warning; belongs under experimental." }
+  },
+  "$defs": {
+    "pluginName": {
+      "type": "string",
+      "minLength": 1,
+      "not": { "pattern": "[\\s@:/\\\\\\p{Cc}\\u061C\\u200E\\u200F\\u202A-\\u202E\\u2066-\\u2069]" },
+      "description": "Non-empty, with no whitespace, @, :, path separator, control or bidirectional-formatting character (section 2.3 item 1). Kebab-case is recommended, not required."
+    },
+    "person": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "url": { "type": "string" }
+      }
+    },
+    "url": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9+.-]*:\\S",
+      "description": "A string that parses as an absolute URL."
+    },
+    "dependency": {
+      "anyOf": [
+        { "type": "string", "minLength": 1 },
+        {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "marketplace": { "type": "string" },
+            "version": { "type": "string" }
+          }
+        }
+      ],
+      "description": "\"name\", \"name@marketplace\", or {name, marketplace?, version?} (section 2.4)."
+    },
+    "componentPath": {
+      "type": "string",
+      "pattern": "^\\./",
+      "not": { "pattern": "(^|[/\\\\])\\.\\.([/\\\\]|$)" },
+      "description": "A path relative to the plugin root: it starts with ./ and has no .. segment (section 2.5)."
+    },
+    "paths": {
+      "anyOf": [
+        { "$ref": "#/$defs/componentPath" },
+        { "type": "array", "items": { "$ref": "#/$defs/componentPath" } }
+      ]
+    },
+    "skillsPath": {
+      "anyOf": [{ "const": "." }, { "$ref": "#/$defs/componentPath" }],
+      "description": "A skills directory; \".\" and \"./\" both name the plugin root (section 2.5 item 1)."
+    },
+    "skillsPaths": {
+      "anyOf": [
+        { "$ref": "#/$defs/skillsPath" },
+        { "type": "array", "items": { "$ref": "#/$defs/skillsPath" } }
+      ]
+    },
+    "agentPath": {
+      "allOf": [{ "$ref": "#/$defs/componentPath" }, { "pattern": "\\.md$" }],
+      "description": "An agent .md file, not a directory (section 2.5 item 4)."
+    },
+    "agentPaths": {
+      "anyOf": [
+        { "$ref": "#/$defs/agentPath" },
+        { "type": "array", "items": { "$ref": "#/$defs/agentPath" } }
+      ]
+    },
+    "commands": {
+      "anyOf": [
+        { "$ref": "#/$defs/paths" },
+        { "type": "object", "additionalProperties": { "$ref": "#/$defs/commandEntry" } }
+      ],
+      "description": "Command files or directories, or a map of command name to entry (sections 2.7 and 4.6.2)."
+    },
+    "commandEntry": {
+      "type": "object",
+      "properties": {
+        "source": { "$ref": "#/$defs/componentPath" },
+        "content": { "type": "string" },
+        "description": { "type": "string" },
+        "argumentHint": { "type": "string" },
+        "model": { "type": "string" },
+        "allowedTools": { "type": "array", "items": { "type": "string" } }
+      },
+      "oneOf": [{ "required": ["source"] }, { "required": ["content"] }],
+      "description": "Exactly one of source and content (section 4.6.2)."
+    },
+    "jsonPath": {
+      "allOf": [{ "$ref": "#/$defs/componentPath" }, { "pattern": "\\.json$" }]
+    },
+    "hooks": {
+      "anyOf": [
+        { "$ref": "#/$defs/jsonPath" },
+        { "$ref": "hooks.schema.json#/$defs/eventMap" },
+        {
+          "type": "array",
+          "items": {
+            "anyOf": [{ "$ref": "#/$defs/jsonPath" }, { "$ref": "hooks.schema.json#/$defs/eventMap" }]
+          }
+        }
+      ],
+      "description": "A hooks file (with the hooks wrapper), the event map itself, or an array of either (section 2.8)."
+    },
+    "mcpSource": {
+      "anyOf": [
+        { "type": "string", "pattern": "^https://.*\\.(mcpb|dxt)$" },
+        {
+          "allOf": [{ "$ref": "#/$defs/componentPath" }, { "pattern": "\\.(json|mcpb|dxt)$" }]
+        },
+        { "$ref": "mcp.schema.json#/$defs/inlineMap" }
+      ]
+    },
+    "mcpServers": {
+      "anyOf": [
+        { "$ref": "#/$defs/mcpSource" },
+        { "type": "array", "items": { "$ref": "#/$defs/mcpSource" } }
+      ],
+      "description": "MCP configuration files, bundles, bundle URLs, an inline map, or an array of them (section 2.9). An inline server that Claude Code would drop fails the manifest (section 8.1 item 5)."
+    },
+    "lspSource": {
+      "anyOf": [{ "$ref": "#/$defs/jsonPath" }, { "$ref": "lsp.schema.json" }]
+    },
+    "lspServers": {
+      "anyOf": [
+        { "$ref": "#/$defs/lspSource" },
+        { "type": "array", "items": { "$ref": "#/$defs/lspSource" } }
+      ]
+    },
+    "monitors": {
+      "anyOf": [{ "$ref": "#/$defs/jsonPath" }, { "$ref": "monitors.schema.json" }],
+      "description": "A .json file holding the monitors array, or the array itself (section 9.2.1)."
+    },
+    "experimental": {
+      "type": "object",
+      "properties": {
+        "themes": { "$ref": "#/$defs/paths" },
+        "monitors": { "$ref": "#/$defs/monitors" },
+        "evals": {
+          "anyOf": [{ "type": "string" }, { "type": "array", "items": { "type": "string" } }],
+          "description": "Not a component path: section 2.5 does not apply (section 2.2)."
+        }
+      }
+    },
+    "userConfig": {
+      "type": "object",
+      "propertyNames": { "pattern": "^[A-Za-z_][A-Za-z0-9_]*$" },
+      "additionalProperties": { "$ref": "#/$defs/userConfigOption" },
+      "description": "Option key to option (section 3.4.1)."
+    },
+    "userConfigOption": {
+      "type": "object",
+      "required": ["type", "title", "description"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "enum": ["string", "number", "boolean", "directory", "file"] },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "required": { "type": "boolean" },
+        "default": {
+          "anyOf": [
+            { "type": "string" },
+            { "type": "number" },
+            { "type": "boolean" },
+            { "type": "array", "items": { "type": "string" } }
+          ],
+          "description": "Not compared with type: Claude Code accepts a default of another type (Judgment J3.9)."
+        },
+        "options": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 64,
+            "not": {
+              "anyOf": [
+                { "pattern": "^ | $" },
+                { "pattern": "[\\p{Cc}\\p{Cf}\\u2028\\u2029]" }
+              ]
+            }
+          },
+          "description": "The fixed values of a string field (section 3.4.2)."
+        },
+        "multiple": { "type": "boolean" },
+        "sensitive": { "type": "boolean" },
+        "min": { "type": "number" },
+        "max": { "type": "number" }
+      },
+      "allOf": [
+        {
+          "if": { "required": ["options"] },
+          "then": {
+            "properties": {
+              "type": { "const": "string" },
+              "multiple": { "const": false },
+              "sensitive": { "const": false }
+            }
+          }
+        },
+        {
+          "if": { "required": ["options"], "not": { "required": ["default"] } },
+          "then": { "required": ["required"], "properties": { "required": { "const": true } } }
+        }
+      ]
+    },
+    "channel": {
+      "type": "object",
+      "required": ["server"],
+      "additionalProperties": false,
+      "properties": {
+        "server": { "type": "string", "minLength": 1 },
+        "displayName": { "type": "string" },
+        "userConfig": { "$ref": "#/$defs/userConfig" }
+      },
+      "description": "A message channel bound to one of the plugin's MCP servers (section 9.3.1)."
+    }
+  }
+}

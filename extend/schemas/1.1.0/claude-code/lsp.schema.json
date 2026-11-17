@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/lsp.schema.json",
+  "title": "Claude Code plugin LSP servers file",
+  "description": "A plugin's .lsp.json, a .json file the manifest's lspServers names, or the inline lspServers object, as Claude Code 2.1.321 accepts it (Agent Plugins Extended 1.1.0, section 9.1): server name to a strict configuration, with no wrapper key. One invalid entry skips the whole file (section 9.1.1 item 3).",
+  "type": "object",
+  "additionalProperties": { "$ref": "#/$defs/server" },
+  "$defs": {
+    "positiveInteger": { "type": "integer", "exclusiveMinimum": 0 },
+    "stringMap": { "type": "object", "additionalProperties": { "type": "string" } },
+    "server": {
+      "type": "object",
+      "required": ["command", "extensionToLanguage"],
+      "additionalProperties": false,
+      "properties": {
+        "command": {
+          "type": "string",
+          "minLength": 1,
+          "anyOf": [{ "pattern": "^/" }, { "not": { "pattern": "\\s" } }],
+          "description": "No whitespace unless the command is an absolute path (Judgment J9.1)."
+        },
+        "extensionToLanguage": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "pattern": "^\\." },
+          "additionalProperties": { "type": "string" }
+        },
+        "args": { "type": "array", "items": { "type": "string" } },
+        "transport": { "enum": ["stdio", "socket"] },
+        "env": { "$ref": "#/$defs/stringMap" },
+        "initializationOptions": true,
+        "settings": true,
+        "workspaceFolder": { "type": "string" },
+        "startupTimeout": { "$ref": "#/$defs/positiveInteger" },
+        "shutdownTimeout": { "$ref": "#/$defs/positiveInteger" },
+        "requestTimeout": { "$ref": "#/$defs/positiveInteger" },
+        "restartOnCrash": { "type": "boolean" },
+        "maxRestarts": { "type": "integer", "minimum": 0 },
+        "diagnostics": { "type": "boolean" }
+      }
+    }
+  }
+}

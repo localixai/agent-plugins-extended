@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/command-frontmatter.schema.json",
+  "title": "Claude Code command frontmatter",
+  "description": "The YAML frontmatter of a command file (commands/*.md) as Claude Code 2.1.321 reads it (Agent Plugins Extended 1.1.0, section 4.6): the skill fields of section 4.4, except name and paths, which a command ignores whatever their value.",
+  "$comment": "As for a skill (skill-frontmatter.schema.json): the root accepts any parsed frontmatter, and $defs/effective states the values that take effect.",
+  "$defs": {
+    "effective": {
+      "$ref": "skill-frontmatter.schema.json#/$defs/commandFields"
+    }
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/skill-frontmatter.schema.json",
+  "title": "Claude Code skill frontmatter",
+  "description": "The YAML frontmatter of a SKILL.md as Claude Code 2.1.321 reads it (Agent Plugins Extended 1.1.0, section 4.4), parsed to JSON. Every field is optional and an unknown key is ignored. An empty block is null and means no field set.",
+  "$comment": "Claude Code never refuses a skill for its frontmatter once the YAML parses (section 4.4.1): an unknown key is ignored, and a value of the wrong type or outside its list is dropped and the default applies (item 5). So the root accepts any parsed frontmatter, and $defs/effective states the values that take effect; a value it refuses is one Claude Code ignores. YAML that does not parse is the one refusal (a validator error, section 2.11) and is checked before any schema.",
+  "$defs": {
+    "flag": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "enum": [
+            0,
+            1
+          ]
+        },
+        {
+          "type": "string",
+          "pattern": "^([Tt][Rr][Uu][Ee]|[Ff][Aa][Ll][Ss][Ee]|[Yy][Ee][Ss]|[Nn][Oo]|[Oo][Nn]|[Oo][Ff][Ff]|1|0)$"
+        }
+      ],
+      "description": "A boolean, or true, false, yes, no, on, off, 1, 0 in any letter case (section 4.4.1 item 4)."
+    },
+    "list": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ],
+      "description": "A YAML list, or a string split as Judgment J4.7 says."
+    },
+    "text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ],
+      "description": "A string; an unquoted [a] is a YAML flow list and is read as the text written (Judgment J4.8)."
+    },
+    "effort": {
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "xhigh",
+        "max"
+      ]
+    },
+    "commandFields": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "when_to_use": {
+          "type": "string"
+        },
+        "argument-hint": {
+          "$ref": "#/$defs/text"
+        },
+        "arguments": {
+          "$ref": "#/$defs/list"
+        },
+        "disable-model-invocation": {
+          "$ref": "#/$defs/flag"
+        },
+        "user-invocable": {
+          "$ref": "#/$defs/flag"
+        },
+        "allowed-tools": {
+          "$ref": "#/$defs/list"
+        },
+        "disallowed-tools": {
+          "$ref": "#/$defs/list"
+        },
+        "model": {
+          "type": "string"
+        },
+        "effort": {
+          "$ref": "#/$defs/effort"
+        },
+        "context": {
+          "const": "fork"
+        },
+        "agent": {
+          "type": "string"
+        },
+        "background": {
+          "$ref": "#/$defs/flag"
+        },
+        "hooks": {
+          "type": "object"
+        },
+        "shell": {
+          "enum": [
+            "bash",
+            "powershell"
+          ]
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "license": {
+          "type": "string"
+        },
+        "compatibility": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "description": "Every field of section 4.4.2 but name and paths: the fields a command file reads (section 4.6)."
+    },
+    "effective": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/$defs/commandFields"
+        }
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "paths": {
+          "$ref": "#/$defs/list"
+        }
+      }
+    }
+  }
+}

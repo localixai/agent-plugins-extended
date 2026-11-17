@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/agent-frontmatter.schema.json",
+  "title": "Claude Code agent frontmatter",
+  "description": "The YAML frontmatter of an agent file as Claude Code 2.1.321 reads it (Agent Plugins Extended 1.1.0, sections 5.4 and 5.6). Field names are case-sensitive camelCase; an unknown key is ignored.",
+  "$comment": "A plugin agent is never skipped for its frontmatter once the YAML parses (section 5.4.2): a missing name or description takes a default, and a value of the wrong type or outside its list is ignored (section 5.4.3). So the root accepts any parsed frontmatter, and $defs/effective states the values that take effect. permissionMode, hooks, mcpServers and initialPrompt are ignored in a plugin agent (section 5.6.1) and typed there as in a user's agent.",
+  "$defs": {
+    "effective": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "description": {
+          "type": "string"
+        },
+        "tools": {
+          "$ref": "skill-frontmatter.schema.json#/$defs/list"
+        },
+        "disallowedTools": {
+          "$ref": "skill-frontmatter.schema.json#/$defs/list"
+        },
+        "model": {
+          "type": "string",
+          "description": "sonnet, opus, haiku, fable, a full model ID, or inherit."
+        },
+        "permissionMode": {
+          "enum": [
+            "default",
+            "manual",
+            "acceptEdits",
+            "auto",
+            "dontAsk",
+            "bypassPermissions",
+            "plan"
+          ]
+        },
+        "maxTurns": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "autoCompactWindow": {
+          "type": "integer",
+          "minimum": 100000,
+          "maximum": 1000000
+        },
+        "skills": {
+          "$ref": "skill-frontmatter.schema.json#/$defs/list"
+        },
+        "mcpServers": {
+          "type": "array"
+        },
+        "hooks": {
+          "type": "object"
+        },
+        "memory": {
+          "enum": [
+            "user",
+            "project",
+            "local"
+          ]
+        },
+        "background": {
+          "$ref": "skill-frontmatter.schema.json#/$defs/flag"
+        },
+        "omitClaudeMd": {
+          "$ref": "skill-frontmatter.schema.json#/$defs/flag"
+        },
+        "effort": {
+          "$ref": "skill-frontmatter.schema.json#/$defs/effort"
+        },
+        "isolation": {
+          "const": "worktree"
+        },
+        "color": {
+          "enum": [
+            "red",
+            "blue",
+            "green",
+            "yellow",
+            "purple",
+            "orange",
+            "pink",
+            "cyan"
+          ]
+        },
+        "initialPrompt": {
+          "type": "string"
+        },
+        "experimental": {
+          "type": "object",
+          "properties": {
+            "cacheTtl": {
+              "enum": [
+                "5m",
+                "1h"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

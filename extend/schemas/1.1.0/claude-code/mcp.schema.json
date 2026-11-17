@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/mcp.schema.json",
+  "title": "Claude Code plugin MCP servers file",
+  "description": "A plugin's .mcp.json, or an MCP configuration file the manifest names, as Claude Code 2.1.321 accepts it (Agent Plugins Extended 1.1.0, chapter 8). The file wraps the servers in a top-level mcpServers key, or is itself the map of server name to configuration (section 8.1 item 2). $defs/inlineMap is the manifest's inline mcpServers.",
+  "$comment": "An entry of the file that fails section 8.2 is dropped by the client and reported as an error by the validator (section 8.3), so the schema refuses it. Not expressed here: ${user_config.KEY} references to undeclared options, and the warnings of section 8.3 item 3.",
+  "type": "object",
+  "if": {
+    "required": ["mcpServers"],
+    "properties": {
+      "mcpServers": { "type": "object", "not": { "anyOf": [{ "required": ["command"] }, { "required": ["url"] }] } }
+    }
+  },
+  "then": {
+    "properties": { "mcpServers": { "$ref": "#/$defs/serverMap" } }
+  },
+  "else": { "$ref": "#/$defs/serverMap" },
+  "$defs": {
+    "serverMap": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/server" }
+    },
+    "inlineMap": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          { "$ref": "#/$defs/server" },
+          { "type": "object", "required": ["type"], "properties": { "type": { "const": "sdk" } } }
+        ]
+      },
+      "description": "An inline server that fails section 8.2 fails the manifest; a type \"sdk\" entry is only dropped (Judgment J8.2)."
+    },
+    "stringMap": { "type": "object", "additionalProperties": { "type": "string" } },
+    "server": {
+      "type": "object",
+      "properties": {
+        "type": { "enum": ["stdio", "http", "streamable-http", "sse", "ws"] },
+        "timeout": { "type": "number" },
+        "alwaysLoad": { "type": "boolean" }
+      },
+      "if": { "properties": { "type": { "const": "stdio" } } },
+      "then": { "$ref": "#/$defs/stdio" },
+      "else": { "$ref": "#/$defs/remote" },
+      "description": "Without type, a stdio server (section 8.2). A field the table does not name is kept and ignored (Judgment J8.3)."
+    },
+    "stdio": {
+      "required": ["command"],
+      "properties": {
+        "command": { "type": "string", "minLength": 1 },
+        "args": { "type": "array", "items": { "type": "string" } },
+        "env": { "$ref": "#/$defs/stringMap" }
+      }
+    },
+    "remote": {
+      "required": ["url"],
+      "properties": {
+        "url": {
+          "type": "string",
+          "anyOf": [{ "const": "" }, { "pattern": "^(\\$\\{[^}]*\\}|[A-Za-z][A-Za-z0-9+.-]*:)" }],
+          "description": "An absolute URL once ${...} references are set aside; the empty string is a placeholder (section 8.2)."
+        },
+        "headers": { "$ref": "#/$defs/stringMap" },
+        "headersHelper": { "type": "string" },
+        "oauth": {
+          "type": "object",
+          "properties": {
+            "clientId": { "type": "string" },
+            "callbackPort": { "type": "number" },
+            "authServerMetadataUrl": { "type": "string" },
+            "scopes": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
