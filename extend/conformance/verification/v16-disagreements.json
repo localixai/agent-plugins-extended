@@ -1,0 +1,125 @@
+{
+  "pass": "v16-disagreements",
+  "date": "2026-11-17",
+  "release": "2.1.321",
+  "files": [
+    "02-manifest.md",
+    "03-environment.md",
+    "04-skills.md",
+    "07-hooks/configuration.md",
+    "07-hooks/tools.md",
+    "09-lsp-monitors-channels.md",
+    "10-mods/interface.md",
+    "12-settings.md",
+    "13-permissions.md",
+    "14-policy.md"
+  ],
+  "requirements": [
+    {
+      "id": "permissions.behavior.Permission system.Bash commands",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "§13.1 item 2 table: the read-only exception is Bash's read-only set; no PowerShell command is in it (J13.37). Evidence: permissions.md, \"Read-only commands\" (\"a built-in set of Bash commands\")."
+    },
+    {
+      "id": "permissions.behavior.Wrappers",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "§13.4.4 item 2 points to J13.8, now the known-safe table with its value checks instead of three names. Evidence: changelog.md names LANG, TZ, NO_COLOR, \"etc.\"; permission-modes.md LANG=C and NO_COLOR=1."
+    },
+    {
+      "id": "permissions.setting.autoMode",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "§13.13: autoMode is read from user, managed and --settings (flag or Agent SDK inline settings), never project or local. Evidence: auto-mode-config.md, \"Where the classifier reads configuration\" (its scope table); settings-reference.md gives \"User or managed\" only, which contradicted §12.3.3's classifyAllShell from --settings."
+    },
+    {
+      "id": "policy.managed.Invalid values inside sandbox",
+      "file": "14-policy.md",
+      "status": "fixed",
+      "note": "§14.4.4: \"no valid entry\" is a list whose entries were all invalid; an empty list is valid and applies (J14.15). Evidence: managed-settings.md, \"Invalid values inside sandbox\" lists invalid values only."
+    },
+    {
+      "id": "mods.interface.Which controls need a key",
+      "file": "10-mods/interface.md",
+      "status": "fixed",
+      "note": "§10.26.1 item 2 contradicted §10.44.6: only two Inputs or two Selects with one key make a tree invalid; buttons may share a key and press fails with key each once (J10.176). Evidence: interface.md \"Which controls need a key\"; troubleshoot.md \"key each once\"."
+    },
+    {
+      "id": "environment.rule.Quoting and path separators",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "§3.2.3 item 3: a skill's or command's injected ! command is pasted like a monitor command and a headersHelper, with J3.5's MAY of a braced reference plus exported variables (also §4.8.2 item 2)."
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams.Lists",
+      "file": "12-settings.md",
+      "status": "fixed",
+      "note": "§12.5.2: combined drop-in lists keep each entry at its first occurrence in file order, as J14.1 says; J12.8 had the later file's entries first, contradicting J14.1."
+    },
+    {
+      "id": "hooks.behavior.Disable or remove hooks",
+      "file": "07-hooks/configuration.md",
+      "status": "fixed",
+      "note": "§7.2.6 item 3: below managed, disableAllHooks spares force-enabled plugins' hooks and the frontmatter hooks of managed-directory and bundled skills and agents (J7.19). Evidence: settings-reference.md, \"disableAllHooks\" (\"managed hooks ... and hooks from plugins force-enabled ... keep running\")."
+    },
+    {
+      "id": "tools.behavior.Shell selection in settings, hooks, and skills.\"shell\": \"powershell\"",
+      "file": "07-hooks/tools.md",
+      "status": "fixed",
+      "note": "§7.6.9 item 5 read as if an exec-form hook had no CLAUDE_ENV_FILE; reworded: a PowerShell hook has none, and an exec-form hook (shell ignored) is no PowerShell hook and gets it. Evidence: hooks.md, \"Persist environment variables\"."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J2.8",
+      "status": "fixed",
+      "note": "New: the kebab-case warning's advice by how badly the name breaks (accepted; not installable from a marketplace; refused by path), and the space and control-character errors as the only report (§2.3 item 1 had one advice). Evidence: claude plugin validate 2.1.326 on minimal manifests (MyPlugin, my_plugin, my.Plugin, a+b, my@plugin, \"My Plugin\", a tab)."
+    },
+    {
+      "id": "J3.5",
+      "status": "fixed",
+      "note": "The pasted surfaces and the MAY now include a skill's or command's injected ! command (its process is the client's, so §3.2.1 item 1 does not bind it). Lead: the reference implementation's oracle on 2.1.322 (a folder named x$(echo INJECTED)y ran in a ! command)."
+    },
+    {
+      "id": "J7.19",
+      "status": "fixed",
+      "note": "Restated with the exceptions settings-reference.md gives: force-enabled plugins' hooks, and the frontmatter hooks of managed-directory (managed hooks) and bundled (built-in) skills and agents stop only under a managed disableAllHooks."
+    },
+    {
+      "id": "J9.4",
+      "status": "fixed",
+      "note": "First appearance read as the keys of the parsed JSON objects: integer-like server names come first, ascending (ECMAScript key order), since the written order of such names does not survive the parse."
+    },
+    {
+      "id": "J10.176",
+      "status": "fixed",
+      "note": "New: buttons sharing a key draw; only press fails with key each once; is drawn twice is for Input and Select (resolves §10.26.1 item 2 against §10.44.6)."
+    },
+    {
+      "id": "J12.8",
+      "status": "fixed",
+      "note": "Dropped the entry-order clause that contradicted J14.1 (later file's entries first); the order is J14.1's, first occurrence in file order."
+    },
+    {
+      "id": "J13.8",
+      "status": "fixed",
+      "note": "The known-safe variables are a table with value checks (LANG, LC_ALL, LC_CTYPE locales; COLUMNS, LINES integers; TZ without ..; twenty any-value names), not three names: changelog.md names TZ and \"etc.\". Lead: the reference implementation's safe-env.ts and its 2.1.322 runs."
+    },
+    {
+      "id": "J13.36",
+      "status": "fixed",
+      "note": "New: Tool(*) is the bare name only for the command format (Bash, Monitor); §13.3 item 3 had said Tool(*) for any tool, which only Bash(*) has in permissions.md, \"Match all uses of a tool\"."
+    },
+    {
+      "id": "J13.37",
+      "status": "fixed",
+      "note": "New: PowerShell has no read-only set (permissions.md lists \"a built-in set of Bash commands\"), so every PowerShell command prompts in Manual mode unless approved."
+    },
+    {
+      "id": "J14.15",
+      "status": "fixed",
+      "note": "New: in a managed sandbox block an empty list is valid and applies; \"no valid entry\" means every entry it held was invalid."
+    }
+  ]
+}

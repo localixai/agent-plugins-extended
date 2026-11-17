@@ -44,3 +44,15 @@ extended to the plugin contract of Claude Code 2.1.321.
   tools table of tools-reference.md as data.
 - Documentation: the GitHub front page (`.github/README.md`), and guides for `conformance/`,
   `tools/` and contributing.
+
+### Changed
+
+- Ten judgments settled against the implementation's disagreements, recorded in the verification
+  ledger `v16-disagreements`: the kebab-case advice by how badly a name breaks (J2.8, new), a
+  skill's `!` command among the pasted surfaces with J3.5's MAY, `disableAllHooks` sparing
+  managed-directory and bundled frontmatter hooks (J7.19), integer-like LSP server names first
+  (J9.4), buttons sharing a key (J10.176, new), drop-in list order as J14.1 (J12.8), the known-safe
+  variables as a table (J13.8), `Tool(*)` bare only for the command format (J13.36, new), no
+  PowerShell read-only set (J13.37, new) and an empty managed `sandbox` list in force (J14.15, new);
+  `autoMode` is read from `--settings` too (§13.13), and an exec-form hook gets `CLAUDE_ENV_FILE`
+  (§7.6.9 item 5).

@@ -309,7 +309,10 @@ defaults filled in or `false`, and `colorScheme` when the mod gave one). The ter
 
 1. Every `Input` and `Select` MUST have a `key` prop, a non-empty string. A `Button` MAY go without
    one when it has a `label` or a single string child: its key is then that label or string.
-2. Two controls of one kind with the same key in one tree make it invalid (§10.44.6).
+2. Two `Input`s, or two `Select`s, with the same key in one tree make it invalid (`<Kind> "<key>"
+   is drawn twice; each takes its own key`, §10.44.6). Buttons MAY share a key, as buttons with
+   one label and no `key` do; the tree is drawn, and a test's `press` by that key fails with
+   `key each once` (Judgment J10.176).
 3. Tests and other mods identify a control by its key. Before running a control's callback the
    client fires `ui.press`, `ui.input` or `ui.select` with the key in `e.element`; another mod's
    hook there sees what the user typed into an `Input` and MAY change that text or keep the
@@ -520,3 +523,4 @@ the hook leaves the site to the rest of the chain, the client's own drawing incl
 | J10.111 | Tab wraps from the last control to the first; Up and Down stop at the ends; Enter with nothing focused and a page key on a drawing that fits do nothing; Ctrl+X then X reads `x` or `X`. | "What each key does" names each key's effect, not the ends or the empty case. Lead: the reference implementation's `ui/keyboard/keys.ts`. |
 | J10.112 | A `$.state` write inside a `ui.render` hook is refused at run time and listed by the validator under `state writes` without an error. | interface.md says a render hook "can't write" state and gives no message; the declarations' `state.set` say it is "Refused while a `ui.render` hook draws", and they win (E2). The reference implementation lets the write take effect without a redraw, which this chapter does not follow. Oracle 2.1.325: `claude plugin validate` on such a module prints `state writes: <plugin>.<key>` and no error. |
 | J10.175 | The keymap of §10.27.5 (contexts, actions, defaults, chords, unbinding, `keybindings.json`) is the presenting client's; a library that runs mods takes the focus and surface facts and an action's binding from its host and returns which button a hotkey, a digit or an `action` binding presses, and the host runs the above-prompt and pane actions. | `keybindings.md` describes one keymap the user edits for the whole terminal interface ("Contexts", "Unbind default shortcuts"); a mod declares only a button's `hotkey` and `action` (`reference.md`, "Elements"), so the part a mod can observe is which button a key presses, and that is all a library without a terminal can decide. |
+| J10.176 | Buttons that share a key, written or taken from one label, leave the tree valid; only `press` by that key in a test fails, `key each once`. `is drawn twice` is for `Input` and `Select`. | interface.md, "Which controls need a `key`", requires a key of `Input` and `Select` only; troubleshoot.md gives `key each once` for a drawing with more than one button with the key passed, so such a drawing is drawn, and its `is drawn twice` example is an `Input`. Lead: the reference implementation's row for `src/mods/ui/elements/button.ts`. |

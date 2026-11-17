@@ -507,7 +507,8 @@ fate. A quoted Boolean counts as that Boolean, with a notice. An invalid `failIf
 dropped, never read as `true`. Every other invalid Boolean reads as the strictest value: one that
 turns the sandbox or a restriction on (`enabled`, `network.allowManagedDomainsOnly`) as `true`, one
 that loosens it (`allowUnsandboxedCommands`) as `false`. In a list outside `credentials` an invalid
-entry is dropped; a list that is not an array, or has no valid entry, does not apply. While
+entry is dropped; a list that is not an array, or whose entries were all invalid, does not apply;
+an empty list is a valid value and applies (Judgment J14.15). While
 `network.deniedDomains` or an entry of it is invalid, `network.allowedDomains` is withheld; while
 `filesystem.denyRead` or `filesystem.denyWrite` or an entry of either is invalid, both
 `filesystem.allowRead` and `filesystem.allowWrite` are withheld.
@@ -602,3 +603,4 @@ strict reading would block what the policy never named.
 | J14.1 | A drop-in directory merge that concatenates two lists removes duplicates by JSON equality of the entries, keeping each entry at the position of its first occurrence in file order: `managed-settings.json` first, then the drop-ins alphabetically, each file's entries in their own order; a later duplicate is dropped. | managed-settings.md says lists "combine, with duplicates removed" and gives no equality or order. |
 | J14.3 | The `Setting sources` labels are matched as the docs spell them, in the ranking order of §14.2.1 when several are merged. | managed-settings.md gives `(remote + file, merged)` as one example and no order rule. |
 | J14.4 | A `policyHelper` envelope whose stdout carries keys besides `managedSettings` is accepted and the other keys ignored. | settings-reference.md specifies the `managedSettings` key and a bare object applying nothing; it names no other envelope key. |
+| J14.15 | In a managed `sandbox` block, "a list that has no valid entry" is one that held entries and lost every one to validation; an empty list is valid and stays in force. | managed-settings.md, "Invalid values inside `sandbox`", lists what Claude Code does with invalid values; an empty array is not one, so dropping it would warn about a value the section does not call invalid and would loosen a policy (`network.allowedDomains: []`) its author wrote. Lead: the reference implementation's row for `src/settings/general/sandbox-check.ts`. |

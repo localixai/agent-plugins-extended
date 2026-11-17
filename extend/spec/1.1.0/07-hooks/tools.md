@@ -484,7 +484,10 @@ plus internal status flags; a hook SHOULD read `tool_response.plan` rather than 
      in Bash (Judgment J7.208). <!-- req: tools.behavior.Shell selection in settings, hooks, and skills."defaultShell": "powershell" -->
    - `"shell": "powershell"` on a command hook (§7.3) runs that hook in PowerShell. Hooks spawn
      PowerShell directly, so this MUST work whether or not `CLAUDE_CODE_USE_POWERSHELL_TOOL` is set.
-     The field is ignored when `args` is set (exec form), and such a hook has no `CLAUDE_ENV_FILE`. <!-- req: tools.behavior.Shell selection in settings, hooks, and skills."shell": "powershell" -->
+     A hook that runs in PowerShell, by this field or by default on Windows without Git Bash, has
+     no `CLAUDE_ENV_FILE` (`hooks.md`, "Persist environment variables"). The field is ignored when
+     `args` is set (exec form): such a hook runs no shell, so it is no PowerShell hook and gets
+     `CLAUDE_ENV_FILE` on the events that offer it. <!-- req: tools.behavior.Shell selection in settings, hooks, and skills."shell": "powershell" -->
    - `shell: powershell` in a skill's frontmatter runs its `` !`command` `` blocks in PowerShell; it
      requires the PowerShell tool to be enabled (§4.8.4). <!-- req: tools.behavior.Shell selection in settings, hooks, and skills.shell: powershell -->
 6. **Shared session behaviour.** PowerShell commands follow Bash's main-session working-directory

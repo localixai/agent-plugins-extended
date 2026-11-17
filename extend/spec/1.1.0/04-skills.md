@@ -575,6 +575,8 @@ Both the user (the text after the name) and Claude (the `Skill` tool's arguments
 
 2. The variables are not in the environment of commands Claude runs through the Bash tool; skill,
    command and agent content uses the `${...}` reference, which the client writes inline (§3.2).
+   In an injected `!` command (§4.8.3) a client MAY instead leave a braced reference and export
+   the variables it names to that command's process (§3.2.3 item 3, Judgment J3.5).
 3. `${user_config.KEY}` in a plugin skill's or command's content is substituted with the saved
    value of a non-sensitive option; a sensitive option becomes the placeholder
    `[sensitive option '<key>' not available in skill content]`, whether or not a value is saved; an
