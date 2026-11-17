@@ -1,0 +1,164 @@
+{
+  "pass": "v15-fix-g1",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "01-packages.md",
+    "02-manifest.md",
+    "03-environment.md",
+    "06-styles.md",
+    "11-workflows.md"
+  ],
+  "requirements": [
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.Invalid JSON syntax: <parse error>",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "§2.1 item 2: manifest message with its trailing period at `json`; hooks/hooks.json invalid (BOM included) now stated as: plugin loads without those hooks, `Failed to load hooks from`, validator tail `At runtime this breaks the entire plugin load.` quoted as wording only (J2.5). Evidence: troubleshooting.md; load oracle 2.1.319/2.1.322 (Skills (1), Hooks (0)); 2.1.321 corpus."
+    },
+    {
+      "id": "manifest.rule.Unrecognized fields",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "§2.1 items 3-4: schema-error message table (Invalid input…, Invalid option…, Invalid string…) and that each stops loading (J2.6, oracle-load 2.1.321); the five unknown-field warning wordings and their order (J2.7, corpus 2.1.321, 2.1.319/2.1.322 probe)."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.Unknown field '<key>'",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "Full plain wording `Unknown field '<key>'. Claude Code ignores it at load time.` plus the did-you-mean, commonly-seen, marketplace-entry and user_config variants (oracle 2.1.321 corpus; J2.7)."
+    },
+    {
+      "id": "manifest.field.author",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "A string author is a type mismatch and the plugin does not load (corpus 2.1.321: 5 plugins, oracle-load)."
+    },
+    {
+      "id": "manifest.field.repository",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "Replaced 'not validated': any non-string (npm object form) stops loading, `Invalid input: expected string, received object` (corpus 2.1.321: 27 plugins do not load)."
+    },
+    {
+      "id": "manifest.rule.name.claude",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "§2.3 item 2: full reserved-name error and warning for plugin.json and the shorter entry variants (oracle 2.1.321 corpus)."
+    },
+    {
+      "id": "manifest.rule.name.claude-",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "As manifest.rule.name.claude: full message wording."
+    },
+    {
+      "id": "manifest.rule.name.official",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "As manifest.rule.name.claude: full message wording."
+    },
+    {
+      "id": "manifest.rule.Containment and existence",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "§2.5 item 1 message `Invalid string: must start with \"./\"` and that it stops loading; item 3: Path not found drops only the path (oracle-load 2.1.321) and the MCP-file variant message."
+    },
+    {
+      "id": "manifest.troubleshooting.commands path not found: <path>",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "Added that the plugin's other components still load (corpus 2.1.321, J2.6)."
+    },
+    {
+      "id": "manifest.rule.Path-only fields",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "§2.5 item 4: `Invalid string: must end with \".md\"` stops loading; both `Path is a file` variants and when each is chosen (SKILL.md vs another file), entry dropped, plugin loads (corpus 2.1.321)."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.No frontmatter block found",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "§2.11: full wording of the frontmatter warning; missing description per kind; YAML-failure tails for skill, command, plugin agent and .claude/agents agent; metadata mapping warning; missing version/description/author wordings; manifest-less detection restated (skills tree or .claude/ folders; only agents/ or commands/ → No manifest found, 2.1.319/2.1.322; J2.4)."
+    },
+    {
+      "id": "environment.variable.${CLAUDE_PLUGIN_DATA}",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "§3.1.2 item 2: ids differing only in case share one directory on a case-insensitive file system (J3.19)."
+    },
+    {
+      "id": "environment.host.CLAUDECODE",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "'every subprocess' narrowed to the env-vars.md list so it agrees with the §3.3 table (monitor, LSP: none required, J3.23); added CLAUDE_CODE_CHILD_SESSION, CLAUDE_CODE_REMOTE_SESSION_ID, CLAUDE_JOB_DIR (docs: markers)."
+    },
+    {
+      "id": "userConfig.field.type",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "Added the validator message `Invalid option: expected one of …` and that the plugin does not load (corpus 2.1.321)."
+    },
+    {
+      "id": "userConfig.rule.Reference a saved value",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "§3.4.4 defines 'set' (a saved value only; a default is a value, not set) so it agrees with §3.4.6; oracle 2.1.319/2.1.322 `plugin configure` lists an option with only a default as `not set`."
+    },
+    {
+      "id": "userConfig.components.When the configuration dialog appears",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "Dialog opens for every option not set, defaults included (components.md 'isn't set yet')."
+    },
+    {
+      "id": "outputStyles.behavior.Create a custom output style",
+      "file": "06-styles.md",
+      "status": "fixed",
+      "note": "§6.1.1 item 5: a non-string name is read as its JS string conversion; number/boolean description as text, list absent (J6.2, oracle 2.1.319/2.1.322)."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J2.3",
+      "status": "fixed",
+      "note": "Kept for both validator and loader: load oracle 2.1.319/2.1.322 shows a BOM hooks file gives Hooks (0); the reference implementation's BOM strip is overridden."
+    },
+    {
+      "id": "J2.4",
+      "status": "fixed",
+      "note": "Restated: a manifest-less directory is components only with a skills tree or a .claude/ skills/agents/commands folder; only agents/ or commands/ → No manifest found (2.1.319, 2.1.322; no such directory in the 2.1.321 corpus)."
+    },
+    {
+      "id": "J2.5",
+      "status": "fixed",
+      "note": "New: invalid hooks/hooks.json loads the plugin without its hooks (docs); validator tail is wording only; no E4a deviation (load oracle 2.1.319/2.1.322, 2.1.325 by the chapter-7 fixer)."
+    },
+    {
+      "id": "J2.6",
+      "status": "fixed",
+      "note": "New: schema errors stop loading, Path not found / Path is a file do not (2.1.321 verdicts against oracle-load 2.1.321)."
+    },
+    {
+      "id": "J2.7",
+      "status": "fixed",
+      "note": "New: unknown-field warning variants, their order and observed field lists and closeness rule."
+    },
+    {
+      "id": "J3.19",
+      "status": "fixed",
+      "note": "Says outright that ids differing only in case share the folder on a case-insensitive file system."
+    },
+    {
+      "id": "J3.23",
+      "status": "fixed",
+      "note": "New: monitor and LSP server receive no required session variables; agrees with the CLAUDECODE text."
+    },
+    {
+      "id": "J6.2",
+      "status": "fixed",
+      "note": "A number (any non-string) name is read as text, list joined with ',', map '[object Object]'; description number/boolean text, list absent (oracle 2.1.319/2.1.322)."
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "pass": "v15-fix-cross",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "04-skills.md",
+    "17-errors.md"
+  ],
+  "requirements": [
+    {
+      "id": "cli.errors.MCP server name is reserved",
+      "file": "17-errors.md",
+      "status": "fixed",
+      "note": "Said plugin servers are included; errors.md 'MCP server name is reserved' names 'one of your MCP servers', and \u00a78.5 item 5 / J8.12 register a plugin server under its scoped name. Aligned with \u00a78.5."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J4.5",
+      "status": "fixed",
+      "note": "The 256-character name limit is counted in code points, like an option label (\u00a73.4.2); two implementation fixers had counted it in different units."
+    }
+  ]
+}

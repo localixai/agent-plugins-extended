@@ -1,0 +1,1133 @@
+{
+  "pass": "v12-install-errors",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "16-install.md",
+    "17-errors.md"
+  ],
+  "requirements": [
+    {
+      "id": "install.develop.Load a folder of plugins",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Load a plugin from a directory or .zip",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Load a plugin from a URL",
+      "file": "16-install.md",
+      "status": "fixed",
+      "note": "The archive limits and the no-headers rule are not in the docs; now named as Judgment J16.25."
+    },
+    {
+      "id": "install.develop.Load plugins from an environment variable",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Name the plugin's skills",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Plugin layout..claude-plugin/plugin.json",
+      "file": "16-install.md",
+      "status": "fixed",
+      "note": "Added that only plugin.json belongs in `.claude-plugin/` (components there do not load) and that the plugin root is the plugin's own directory."
+    },
+    {
+      "id": "install.develop.Plugin layout..mcp.json",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Plugin layout.agents/",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Plugin layout.commands/",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Plugin layout.hooks/hooks.json",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Plugin layout.skills/",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Scaffold the plugin with claude plugin init",
+      "file": "16-install.md",
+      "status": "fixed",
+      "note": "The marker sat on the skills-directory definition, not on the scaffold text; moved, and the manifest path and the order of the two printed lines made exact."
+    },
+    {
+      "id": "install.develop.Share the plugin through a repository",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Stop loading the plugin",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.develop.Test and debug",
+      "file": "16-install.md",
+      "status": "fixed",
+      "note": "Added what each check reports: validate exits 0 on `Validation passed`, `--strict`; `Reloaded:`; Installed details and Errors tab; `Status: ✔ loaded`; the skills-directory blocked step."
+    },
+    {
+      "id": "install.guide.Add a marketplace.Git repository on any host",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Add a marketplace.GitHub repository",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Add a marketplace.Local directory or file",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Add a marketplace.marketplace.json",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Add a private marketplace.GitHub owner/repo shorthand",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Add a private marketplace.HTTPS",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Add a private marketplace.SSH",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Add and install from your shell",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Add and install in a session",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Choose an install scope.Local scope",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Choose an install scope.Project scope",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Choose an install scope.User scope",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Install a plugin",
+      "file": "16-install.md",
+      "status": "fixed",
+      "note": "Last updated and Context cost were stated for every plugin; they show only for the official marketplace, and the estimates not from the Discover list. The reload after `Run /reload-plugins to apply.` lacked its prompt-cache warning and `--force`."
+    },
+    {
+      "id": "install.guide.Install from your shell.Scope",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Install from your shell.The marketplace on a new machine",
+      "file": "16-install.md",
+      "status": "fixed",
+      "note": "Named the command a setup script runs (`claude plugin marketplace add anthropics/claude-plugins-official`)."
+    },
+    {
+      "id": "install.guide.Install from your shell.When the plugins load",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.JetBrains, non-interactive runs, and the Agent SDK.Agent SDK",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.JetBrains, non-interactive runs, and the Agent SDK.claude -p and other non-interactive runs",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.JetBrains, non-interactive runs, and the Agent SDK.JetBrains IDEs",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Manage installed plugins",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Manage marketplaces.List marketplaces",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Manage marketplaces.Remove a marketplace",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Manage marketplaces.Update a marketplace's listing",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Manage plugins from your shell",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.guide.Uninstall a plugin the project enables",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Analytics on",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Frequency limits",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Local, attended session",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Not turned off",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.hints.Check when the prompt appears.Official and installable",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.hints.Emit the hint",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.hints.Hint format.type",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.hints.Hint format.v",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.hints.Hint format.value",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Check which stage a plugin reached",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Cleanup of previous versions",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Disabled in user settings but still loads",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Enabled in project settings but not installed",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Entry name and manifest name",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Hooks when two enabled plugins share a name",
+      "file": "16-install.md",
+      "status": "fixed",
+      "note": "Added that a holder managed settings turn on cannot be disabled, so the other copy's hooks stay off while both are installed."
+    },
+    {
+      "id": "install.loading.In-place and copied plugins",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Keep a session-only plugin from loading",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.60-second timeout",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.A separate install folder",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.Frozen resolution",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.https downloads",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.No lifecycle scripts",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.No overrides or patches",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Limits on the dependency install.Registry packages only",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Name conflicts",
+      "file": "16-install.md",
+      "status": "fixed",
+      "note": "Added that disabling the other copy lets the synced one load."
+    },
+    {
+      "id": "install.loading.Paths that escape the plugin directory",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.Plugins and marketplaces that aren't on disk at session start",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.When the dependency install fails or is skipped",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.loading.When the dependency install runs",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.Make an installed plugin available in your session.Disk",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.Make an installed plugin available in your session.Session",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.Make an installed plugin available in your session.Settings",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.Understand install scopes.Local scope",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.Understand install scopes.Project scope",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.Understand install scopes.User scope",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.After you install",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.Before you install",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.Context and usage",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.Permissions",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.Processes",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.overview.What an enabled plugin adds to your sessions.To stop it without uninstalling",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.plugin.Flags that load a plugin for one session",
+      "file": "16-install.md",
+      "status": "fixed",
+      "note": "Added that the installed copy loads instead when the session-only copy is disabled with `claude plugin disable <name>@inline` or managed settings lock the name."
+    },
+    {
+      "id": "install.plugin.Reload summary",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.plugin.Reloads that change MCP tools",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.plugin.Sessions without an interactive terminal",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.\"<plugin>\" was not installed: it would share its folder with \"<other>\"",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.A plugin stays installed after plugin uninstall on Windows",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.An npm plugin source must name a registry package",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Cannot add marketplace \"<name>\": its source doesn't match its extraKnownMarketplaces entry in user or managed settings",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Could not move the new copy of this plugin version into <path>",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Disabled in ~/.claude/settings.json but still loads",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.does not load (...), so Claude Code ignores the whole file",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Failed to install: <plugin> (<reason>)",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.install records under names that no version of Claude Code can use were removed from installed_plugins.json",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json could not be read and was rebuilt",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json holds a record under \"<id>\" that this version of Claude Code cannot read",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json holds a record under \"<id>\" that this version of Claude Code cannot read.--json on any of those three commands",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json holds a record under \"<id>\" that this version of Claude Code cannot read.claude plugin list",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.installed_plugins.json holds a record under \"<id>\" that this version of Claude Code cannot read.Several such records",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Marketplace \"<name>\" is added but ignored",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Marketplace \"<name>\" is already added from a different source",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Marketplace \"<name>\" is registered from an untrusted source",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.No plugins available or No marketplaces configured",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.not found in marketplace with a refresh hint",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.not found in marketplace with no hint",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Plugin '<name>@<marketplace>' is already installed globally",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Plugin \"<name>\" is enabled in project settings but isn't installed here",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Plugin \"<name>\" not cached at <path>",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Plugin \"<name>\" not found in any marketplace",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Plugin <name> has a corrupt manifest file or has an invalid manifest file",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Plugin archive integrity check failed",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Plugin directory does not exist: <path>",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Plugin directory not found at path: <path>",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Plugin doesn't appear or its skills don't show up",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.Run /reload-plugins to apply.",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.The packages it lists are not installed or were not installed, because ...",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "install.troubleshooting.This plugin uses a source type your Claude Code version does not support",
+      "file": "16-install.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.A skill, command, or workflow wasn't loaded because its name is reserved",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Agent descriptions are over the 15.0k-token limit",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Agent would be spawned with zero tools",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Agent would be spawned with zero tools.Matched no tools in this session",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Agent would be spawned with zero tools.Not available to subagents",
+      "file": "17-errors.md",
+      "status": "fixed",
+      "note": "Added that running in the background is the default."
+    },
+    {
+      "id": "cli.errors.Agent would be spawned with zero tools.Unrecognized",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Can't read .mcp.json",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Cannot add MCP server to the managed scope",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Cannot add MCP server when managed settings allow only plugin servers",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Claude Code couldn't load your organization's settings",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Claude Code refuses the marketplace name",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.crossSessionInbound must be one of accept, hold, refuse",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Denying Bash also turns off the PowerShell tool",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Failed to load marketplace configuration",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Has a wildcard before the rest of the command",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Hook needs quotes around a path with a space",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Invalid --agents configuration",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Is not matched by file permission checks",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Malformed Tool(content) rule",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Managed settings document could not be parsed",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Managed settings need your approval",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Managed settings were not approved",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Marketplace entry path does not stay inside the marketplace directory",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Marketplace is already added from a different source",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Marketplace is registered from an untrusted source",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Marketplace name is another spelling of a reserved name",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Matches no tool · check for typos",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.MCP permission prompt tool not found",
+      "file": "17-errors.md",
+      "status": "fixed",
+      "note": "Added that the prompt is still sent and the run exits on the first tool call with no answer."
+    },
+    {
+      "id": "cli.errors.MCP server is blocked by enterprise managed policy",
+      "file": "17-errors.md",
+      "status": "fixed",
+      "note": "Added each blocker's scope: strictPluginOnlyCustomization only for servers from `~/.claude.json`/`.mcp.json`, disableClaudeAiConnectors only for claude.ai connectors, allowedMcpServers when the server does not match."
+    },
+    {
+      "id": "cli.errors.MCP server is disabled",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.MCP server name is reserved",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.MCP server rejected the elicitation capability",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.No shell command in a skill or command was run",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.No such tool available",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Path could not be checked",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Path could not be checked.EACCES",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Path could not be checked.EIO",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Path could not be checked.ELOOP",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory.hooks/hooks.json",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory.monitors/monitors.json",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory.settings.json",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Path escapes plugin directory.SKILL.md",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Plugin archive integrity check failed",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Plugin command references user\\_config in a shell command",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Plugin is required by your organization",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Plugin not loaded: its manifest was not read",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Plugin was not uninstalled",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Remote managed settings failed to load",
+      "file": "17-errors.md",
+      "status": "fixed",
+      "note": "The follow-up lines appear in the desktop Code tab as conversation lines; the text did not say where. `still loading` now says when it shows."
+    },
+    {
+      "id": "cli.errors.Remote managed settings failed to load.No cache",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Remote managed settings failed to load.Remote managed settings did not load",
+      "file": "17-errors.md",
+      "status": "fixed",
+      "note": "Placed in the desktop Code tab, as the docs say."
+    },
+    {
+      "id": "cli.errors.Remote managed settings failed to load.Remote managed settings have now loaded",
+      "file": "17-errors.md",
+      "status": "fixed",
+      "note": "Placed in the desktop Code tab, as the docs say."
+    },
+    {
+      "id": "cli.errors.Sandbox allow entries are ignored under a managed lock",
+      "file": "17-errors.md",
+      "status": "fixed",
+      "note": "Added the network-lock wording (`sandbox.network.allowedDomains`, `allowManagedDomainsOnly`)."
+    },
+    {
+      "id": "cli.errors.Settings file exceeds the 2MiB limit",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Skill or command name refused",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.subagent\\_type is required",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    },
+    {
+      "id": "cli.errors.Unable to read managed policy settings",
+      "file": "17-errors.md",
+      "status": "fixed",
+      "note": "Added that sign-in flows, API requests of a running session and `claude gateway` are refused with an `allowedProviders` variant in the same state."
+    },
+    {
+      "id": "cli.errors.Workspace has not been trusted",
+      "file": "17-errors.md",
+      "status": "verified",
+      "note": "Checked against the docs section in full."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J16.1",
+      "status": "kept",
+      "note": "Docs name the record fields and a format version, not the layout; reference installed-plugins.ts."
+    },
+    {
+      "id": "J16.2",
+      "status": "kept",
+      "note": "Docs give the file-name shape only; reference uses the UTC ISO day and 8 hex digits of SHA-256 (installed-plugins-store.ts:66)."
+    },
+    {
+      "id": "J16.3",
+      "status": "kept",
+      "note": "Docs silent on in-place directories and the marker-age test; the safest reading leaves sources the client does not own untouched."
+    },
+    {
+      "id": "J16.4",
+      "status": "kept",
+      "note": "Docs say no order helps, not which id is refused; reference folder-collision.ts."
+    },
+    {
+      "id": "J16.5",
+      "status": "kept",
+      "note": "Docs require frozen resolution and --ignore-scripts, not the command; reference node-deps-checks.ts:44-45 and the 60_000 ms limit."
+    },
+    {
+      "id": "J16.6",
+      "status": "kept",
+      "note": "Docs say only 'no plugin components at its top level'; reference plugin-folder.ts."
+    },
+    {
+      "id": "J16.7",
+      "status": "kept",
+      "note": "Docs quote each clause, not the joining; reference reload-summary.ts:53 joins with spaces."
+    },
+    {
+      "id": "J16.8",
+      "status": "kept",
+      "note": "Docs describe the Windows case only; reference uninstall-records.ts."
+    },
+    {
+      "id": "J16.9",
+      "status": "kept",
+      "note": "Docs give the own-line rule and three attributes, not these edges; reference plugin-hints.ts."
+    },
+    {
+      "id": "J16.25",
+      "status": "kept",
+      "note": "Added in this pass: the --plugin-url archive limits and no-headers rule were stated as fact with no docs source; reference session-plugins.ts:65."
+    },
+    {
+      "id": "J17.28",
+      "status": "kept",
+      "note": "Version-history sentences are history for 2.1.321."
+    },
+    {
+      "id": "J17.29",
+      "status": "kept",
+      "note": "errors.md names `EIO or ESTALE` together and says causes 'include'."
+    },
+    {
+      "id": "J17.30",
+      "status": "kept",
+      "note": "The docs' parenthesis names implementation categories; the prefix and the refused line stay quoted."
+    },
+    {
+      "id": "J17.31",
+      "status": "kept",
+      "note": "errors.md states the routing per section in the same words (rechecked for the permission-rule warnings and Denying Bash)."
+    }
+  ]
+}

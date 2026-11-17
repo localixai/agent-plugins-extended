@@ -1,0 +1,1672 @@
+{
+  "pass": "v09-permissions-policy",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "13-permissions.md",
+    "14-policy.md"
+  ],
+  "requirements": [
+    {
+      "id": "permissions.behavior.Agent (subagents).Agent(Explore)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Agent (subagents).Agent(my-custom-agent)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Agent (subagents).Agent(Plan)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Allow or deny every fetch",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Added that an Artifact rule denies or prompts for artifact reads like a covering domain: rule."
+    },
+    {
+      "id": "permissions.behavior.Block file-tool reads and writes outside the working directories",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Added the alternative write-block refusal text from errors.md."
+    },
+    {
+      "id": "permissions.behavior.Cd.Cd(**/node_modules)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Cd.Cd(~/code/*)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Cd.Cd(~/code/**)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Compound commands",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Exec wrappers and find actions",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Hook approvals in plan mode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.MCP",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.MCP.mcp__puppeteer",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.MCP.mcp__puppeteer__*",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.MCP.mcp__puppeteer__puppeteer_navigate",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.MCP.Servers that a plugin provides",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Move the session to another directory",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Network paths.Allow rules",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Network paths.Auto mode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Network paths.macOS and Linux",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Network paths.PreToolUse hooks",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Network paths.Windows",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Permission system.Bash commands",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Permission system.File modification",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Permission system.Read-only",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Permission system.Web fetch",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Permission system.Web search",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.PowerShell",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Precedence among rules, hooks, and mods",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Read-only commands",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.cd with a redirect",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.cd with git",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.Commands the analysis can't parse",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.docker pointed at another daemon",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.file with path-opening flags",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.Network paths on Windows",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Read-only commands.Writes to special shell variables",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Redirections",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Special characters and ! negation",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Tool name wildcards",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Added that the matches-no-tool warning goes to the debug log in background sessions and json/stream-json output (errors.md, Matches no tool)."
+    },
+    {
+      "id": "permissions.behavior.What Read and Edit rules cover",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Where output styles, hooks, and local settings load from.Launch from the config directory",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Where output styles, hooks, and local settings load from.Plugins",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Where output styles, hooks, and local settings load from.User-level configuration",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Working directories.During session",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Working directories.During startup",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Working directories.Persistent configuration",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Wrappers",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.behavior.Write(path), Glob(path), and Grep(path) rules don't match",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Warning scope corrected to Write/NotebookEdit/MultiEdit/Glob path rules from every source; added the Glob row text, that allow rules get no row, and debug-log routing (errors.md)."
+    },
+    {
+      "id": "permissions.mode.acceptEdits",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.mode.auto",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Auto-mode rules-step exceptions lacked per-command allowed domains and symlink-resolved protected-path prompts; suspended allow rules lacked shell-wrapper prefixes (settings-reference, classifyAllShell)."
+    },
+    {
+      "id": "permissions.mode.bypassPermissions",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.mode.default",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.mode.dontAsk",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.mode.plan",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Mode table row lacked classifier-approved commands when auto mode is available."
+    },
+    {
+      "id": "permissions.modes.Actions no mode auto-approves",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Allow only pre-approved tools with dontAsk mode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Analyze before you edit with plan mode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Auto-approve file edits with acceptEdits mode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Bypass permissions ignored in a background session",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Symlinked settings-file target: prompts instead only in classifier-routing modes, and goes to the classifier when its own path is a settings file."
+    },
+    {
+      "id": "permissions.modes.Protected paths..bashrc",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..bazelrc",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..cargo",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..claude",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..config/git",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..devcontainer",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..devcontainer.json",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..git",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..gitconfig",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..husky",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..idea",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..mcp.json",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..mvn",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..npmrc",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..pre-commit-config.yaml",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..ripgreprc",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..vscode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths..yarn",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths.~/.claude/dev-mods/",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths.acceptEdits",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths.auto",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths.bypassPermissions",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths.default",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths.dontAsk",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths.gradle-wrapper.properties",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths.plan",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Protected paths.remote-settings.json",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Set plan mode as the default",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Skip all checks with bypassPermissions mode",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Added the Remove-Item denies and that another organisation's public artifact cannot be read in this mode."
+    },
+    {
+      "id": "permissions.modes.Start in a different permission mode.One session you're about to start",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Tool calls denied in claude -p and Agent SDK runs",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Which mode a session starts in",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Which mode a session starts in.claude -p",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.modes.Which mode a session starts in.disableAutoMode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.reference.Let one directory through the read or write block",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "An untracked .claude/settings.local.json also counts for the blocks; a tracked or non-git local file is repository settings (settings-reference, blockReads)."
+    },
+    {
+      "id": "permissions.reference.Messages from denyInsteadOfPrompting",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.reference.Permission rule syntax.Bash",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.reference.Permission rule syntax.Bash(npm run *)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.reference.Permission rule syntax.Read(./.env)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.reference.Permission rule syntax.WebFetch(domain:example.com)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.reference.Sandboxed commands under the block",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Include mechanisms named, the per-file writable rule corrected (a writable config's named files are not re-opened), credentials files named, linked-worktree common .git added."
+    },
+    {
+      "id": "permissions.reference.What else denyInsteadOfPrompting stops.MCP elicitation",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.reference.What else denyInsteadOfPrompting stops.Permission hosts",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Added the PermissionRequest-hook route and that some calls (auto-mode critical-path removal) are denied before any hook."
+    },
+    {
+      "id": "permissions.reference.What else denyInsteadOfPrompting stops.Question and plan tools",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.reference.What the write block refuses and what stays writable",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "Quoted refusal was missing its last sentence (any .json while a managed settings folder cannot be resolved); adding a directory never lifts it."
+    },
+    {
+      "id": "permissions.rule../path",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.//path",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule./path",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.~/path",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Agent(isolation:worktree)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Agent(model:opus)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(* --help *)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(* --version)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(curl *)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(git * main)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(git log * main)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(git push *)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(ls *)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(ls*)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(npm run *)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(npm run build)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(rm *)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Bash(run_in_background:true)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Edit(**/src/**)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Edit(/src/**)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Edit(src/**)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.path",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Read",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Read(./.env)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Read(.env)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Read(**/.env)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.Read(//**/.env)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.WebFetch",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.rule.WebFetch(domain:example.com)",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.allowManagedPermissionRulesOnly",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.autoMode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.autoMode.classifyAllShell",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.disableAutoMode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions.additionalDirectories",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions.allow",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions.ask",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions.blockReadsOutsideWorkingDirectories",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions.blockWritesOutsideWorkingDirectories",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions.defaultMode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions.deny",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions.denyInsteadOfPrompting",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.permissions.disableBypassPermissionsMode",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.skipAutoPermissionPrompt",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.skipDangerousModePermissionPrompt",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "permissions.setting.useAutoModeDuringPlan",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "Matches its 2.1.321 docs section."
+    },
+    {
+      "id": "policy.key.forceRemoteSettingsRefresh",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Any admin source, cached self-perpetuation, default false, endpoint use before first payload."
+    },
+    {
+      "id": "policy.key.managedSourcesBehavior",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Scope, default, read-from-highest rule and every row of the merge table checked against the entry; the 'exactly' rows match the entry's named keys."
+    },
+    {
+      "id": "policy.key.parentSettingsBehavior",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "first-wins/merge, highest admin source, no admin tier means parent only, restrictive filter."
+    },
+    {
+      "id": "policy.key.policyHelper",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Scope (plist, HKLM, file; ignored in server, HKCU, parent) and not running under server-managed settings match."
+    },
+    {
+      "id": "policy.key.policyHelper.path",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Absolute normalized path, no . or .., Windows drive/UNC ending .exe; required."
+    },
+    {
+      "id": "policy.key.policyHelper.refreshIntervalMs",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "0 or >=60000; unset runs once; refresh success replaces, failure keeps last policy with /status note."
+    },
+    {
+      "id": "policy.key.policyHelper.timeoutMs",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Integer, min 1000, default 10000; timeout fails the run."
+    },
+    {
+      "id": "policy.key.wslInheritsWindowsSettings",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Chain order, honoured sources, HKCU join rule, quoting/null, other values and unreadable docs match."
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.File-based",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.HKCU registry, Windows and WSL",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.MDM or OS-level policy",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.Server-managed settings",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Compute the policy with a helper program",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Deploy a managed settings file.Linux and WSL",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Deploy a managed settings file.macOS",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Deploy a managed settings file.Windows",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Find entries Claude Code dropped",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Find entries Claude Code dropped.HKLM registry value",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Find entries Claude Code dropped.Managed settings file or drop-in file",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Find entries Claude Code dropped.MDM plist",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Invalid values inside sandbox",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keep Cowork folder access when only managed rules apply",
+      "file": "14-policy.md",
+      "status": "fixed",
+      "note": "Added the condition the docs give: Cowork cannot show the prompt in a session that asks before edits."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowAllClaudeAiMcps",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowedChannelPlugins",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowManagedHooksOnly",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowManagedMcpServersOnly",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.allowManagedPermissionRulesOnly",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.blockedMarketplaces",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.channelsEnabled",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.disableCommandPluginSources",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.disableSideloadFlags",
+      "file": "14-policy.md",
+      "status": "fixed",
+      "note": "Added the cloud-session exception (starts and drops delivered --mcp-config servers)."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.forceRemoteSettingsRefresh",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.managedMcpServers",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.managedSourcesBehavior",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.parentSettingsBehavior",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.pluginSuggestionMarketplaces",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.pluginTrustMessage",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.policyHelper",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.sandbox.network.allowManagedDomainsOnly",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.strictKnownMarketplaces",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.strictPluginOnlyCustomization",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.wslInheritsWindowsSettings",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed",
+      "file": "14-policy.md",
+      "status": "fixed",
+      "note": "A quoted disableAllHooks is dropped too (text implied it read as a Boolean); added that blockWritesOutsideWorkingDirectories is on while the managed permissions object is unreadable (settings-reference, the key's Default; 13 §13.13 points here); the autoMode report also names the unreadable list."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.allowedChannelPlugins",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.allowedHttpHookUrls",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.allowedMcpServers",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.allowedProviders",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.availableModels",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.availableModelsMatch",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.blockedMarketplaces",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.crossSessionInbound",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.deniedMcpServers",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.deniedModels",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.enabledPlugins",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.forceLoginOrgUUID",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.gatewayInternalNetworks",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.httpHookAllowedEnvVars",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.sandbox",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.sandbox.credentials",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.strictKnownMarketplaces",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Keys that fail closed.strictPluginOnlyCustomization",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Let an embedding host add policy",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.What a developer can change.Local admin rights",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.What a developer can change.Other tools",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.What a developer can change.The auto-compact window for a session",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.What a developer can change.The model for a session",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.What a developer can change.The server-managed cache",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Changes that need approval",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Claude Tag sessions",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Cloud sessions",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Cowork sessions",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Long-lived sessions",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Running sessions",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where and when a policy applies.Surfaces",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.File-based",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.macOS configuration profile",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.Server-managed",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.Windows HKCU registry",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.managed.Where each mechanism stores the policy.Windows HKLM registry",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.reference.Helper failures",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.reference.Write the helper output",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Current limitations",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Enforce fail-closed startup",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Invalid entries in delivered settings",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Managed-only settings",
+      "file": "14-policy.md",
+      "status": "fixed",
+      "note": "Item 4 said every key is accepted, contradicting item 3 (policyHelper, wslInheritsWindowsSettings not honoured); now 'every other key', hooks and env named."
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.allowedProviders",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.Cross-source lock keys",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.First-party sign-in keys",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.Gateway sign-in keys",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.The env block",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Custom environment variables",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Hook configurations",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Sandbox binary settings",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Sandbox network and isolation settings",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Security approval dialogs.Shell command settings",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    },
+    {
+      "id": "policy.server.Settings precedence",
+      "file": "14-policy.md",
+      "status": "verified",
+      "note": "Checked against the 2.1.321 section in full; values, conditions and order match."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J13.1",
+      "status": "kept",
+      "note": "Docs give grammar and 'skipped' only; whitespace, Tool() and severities are silent."
+    },
+    {
+      "id": "J13.2",
+      "status": "kept",
+      "note": "Docs examples use only *; ?/[ ] literal is the safe reading."
+    },
+    {
+      "id": "J13.3",
+      "status": "kept",
+      "note": "Docs say write two rules; a combined rule is unspecified."
+    },
+    {
+      "id": "J13.4",
+      "status": "kept",
+      "note": "Scalar comparison as text is unspecified."
+    },
+    {
+      "id": "J13.5",
+      "status": "kept",
+      "note": "Docs do not say how name:value is told from a pattern."
+    },
+    {
+      "id": "J13.6",
+      "status": "kept",
+      "note": "errors.md gives two examples; exact class unspecified."
+    },
+    {
+      "id": "J13.7",
+      "status": "kept",
+      "note": "Docs name separators and one unparseable form only."
+    },
+    {
+      "id": "J13.8",
+      "status": "kept",
+      "note": "Docs give examples only (NODE_ENV, LANG, NO_COLOR)."
+    },
+    {
+      "id": "J13.9",
+      "status": "kept",
+      "note": "Docs give the class and four examples."
+    },
+    {
+      "id": "J13.10",
+      "status": "kept",
+      "note": "Docs say 'read-only forms of git' without a list."
+    },
+    {
+      "id": "J13.11",
+      "status": "kept",
+      "note": "Docs give PATH and IFS as examples."
+    },
+    {
+      "id": "J13.12",
+      "status": "kept",
+      "note": "What lifts a redirect prompt is unspecified beyond Edit/Read rules."
+    },
+    {
+      "id": "J13.13",
+      "status": "kept",
+      "note": "Docs give three alias examples."
+    },
+    {
+      "id": "J13.14",
+      "status": "kept",
+      "note": "Docs list ./path with path yet say ./.env is the cwd file."
+    },
+    {
+      "id": "J13.15",
+      "status": "kept",
+      "note": "Anchor table has no managed tier."
+    },
+    {
+      "id": "J13.16",
+      "status": "kept",
+      "note": "Single-segment shape defined by examples only."
+    },
+    {
+      "id": "J13.17",
+      "status": "kept",
+      "note": "Docs say within one label; punycode unspecified."
+    },
+    {
+      "id": "J13.18",
+      "status": "kept",
+      "note": "Unparseable URLs unspecified."
+    },
+    {
+      "id": "J13.19",
+      "status": "kept",
+      "note": "Docs give the reports__v2 outcomes only."
+    },
+    {
+      "id": "J13.20",
+      "status": "kept",
+      "note": "Docs give names only; missing subagent_type unspecified."
+    },
+    {
+      "id": "J13.21",
+      "status": "kept",
+      "note": "Invalid flag value and defaultMode in background sessions unspecified."
+    },
+    {
+      "id": "J13.22",
+      "status": "kept",
+      "note": "Docs say edits stay blocked, not denied."
+    },
+    {
+      "id": "J13.23",
+      "status": "kept",
+      "note": "Classifier internals are the host's; no-verdict deny is documented."
+    },
+    {
+      "id": "J13.24",
+      "status": "fixed",
+      "note": "Added shell-wrapper prefixes from settings-reference autoMode.classifyAllShell; evidence now names both pages."
+    },
+    {
+      "id": "J13.25",
+      "status": "kept",
+      "note": "Docs give outcomes per Claude Code surface only."
+    },
+    {
+      "id": "J13.26",
+      "status": "kept",
+      "note": "Docs say the classifier can't approve, not what follows."
+    },
+    {
+      "id": "J13.27",
+      "status": "kept",
+      "note": "Docs state precedences piecemeal; order is ours."
+    },
+    {
+      "id": "J13.28",
+      "status": "fixed",
+      "note": "errors.md does list extra files; added the stored server-managed files and the any-.json case, evidence corrected."
+    },
+    {
+      "id": "J13.32",
+      "status": "kept",
+      "note": "Two lists in the docs; the seven-command list is the mode's own section."
+    },
+    {
+      "id": "J14.1",
+      "status": "kept",
+      "note": "Docs say lists combine with duplicates removed, no equality or order; JSON equality, first position is the safest deterministic reading."
+    },
+    {
+      "id": "J14.2",
+      "status": "removed",
+      "note": "Not a silence: managed-settings.md defines presence as a policy key set to a non-null value, so a document of only nulls is not present; stated in §14.2.2 directly."
+    },
+    {
+      "id": "J14.3",
+      "status": "fixed",
+      "note": "Kept the decision (labels as spelled, ranking order); its reference moved to the merged-list label it decides, out of the env parenthesis."
+    },
+    {
+      "id": "J14.4",
+      "status": "kept",
+      "note": "settings-reference names only managedSettings and the bare-object case; ignoring other envelope keys is the tolerant reading that changes no policy."
+    }
+  ]
+}

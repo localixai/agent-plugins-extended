@@ -1,0 +1,1662 @@
+{
+  "pass": "v07-mods-reference",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "10-mods/README.md",
+    "10-mods/reference.md",
+    "10-mods/events.md"
+  ],
+  "requirements": [
+    {
+      "id": "mods.overview.How a mod works.plugin.json",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.How a mod works.hooks.json",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.How a mod works.register.js",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.How a mod works",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.What a hook can do with an event.Observe",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.What a hook can do with an event.Rewrite",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.What a hook can do with an event.Answer",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.gallery.See where a mod can draw.Pane and band",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.gallery.See where a mod can draw",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.gallery.See where a mod can draw.Toast, status line, and log line",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.gallery.See where a mod can draw.Question dialog",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Where mods run.claude",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Where mods run.A WSL session in the Desktop app",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Where mods run.The VS Code extension's chat panel",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Where mods run.claude -p",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Where mods run.A cloud session",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Turn mods on or off",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Turn mods on or off.Terminal",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Turn mods on or off.Desktop app",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Turn mods on or off.One mod",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.Turn mods on or off.Every installed mod, for one session",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Act on your machine as you",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Read your secrets",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.What a mod can reach.See your session",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Change your session",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Act without asking you",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.overview.What a mod can reach.Spend your usage",
+      "file": "10-mods/README.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.file..claude-plugin/plugin.json",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.file.hooks/hooks.json",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.file.hooks/register.js",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.file.types/index.d.ts",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.file..test.ts",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.create.Check what Claude Code reads from your mod",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.hookArgument.$",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.hookArgument.e",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.hookArgument.next(e)",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.hookArgument.next.signal",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.hookArgument.next.origin",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.hookArgument.next.budget",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.hookArgument.next.to(e, tier)",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.hookArgument.next.error",
+      "file": "10-mods/reference.md",
+      "status": "deviates",
+      "note": "Was marked req although the text denies the documented re-entry kind; now deviates (J10.7). Evidence: declarations 2.1.321 HookFailure; reference implementation oracle 2.1.322."
+    },
+    {
+      "id": "mods.hookArgument.next.called",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.hookArgument.next.error.cause",
+      "file": "10-mods/reference.md",
+      "status": "deviates",
+      "note": "E4a re-checked: declarations 2.1.321 HookFailure is throw|timeout with no cause; reference implementation oracle 2.1.322 (llx-plugin spec/judgments.md) found no .catch handler asked for a re-entry skip. Docs: re-entry kind and cause."
+    },
+    {
+      "id": "mods.api.$.plugin",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.ui",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.theme",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.command",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.tool",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.agent",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.model",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.prompt",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.turn",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.session",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.config",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.settings",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.env",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.fs",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.store",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.state",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.clock",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.http",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.process",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.mcp",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.audio",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.api.$.telemetry",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.create.Sessions where a mod Claude writes can't load.Nobody is there to approve",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.create.Sessions where a mod Claude writes can't load.The workspace isn't trusted",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.create.Sessions where a mod Claude writes can't load.Mods are disabled",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.Pane",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.AbovePrompt",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.Placed",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.Backdrop",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.UserMessage",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.AssistantMessage",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.ToolUse",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.ToolResult",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.ToolGroup",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.CommandOutput",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.AskUserQuestion",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.ToolProgress",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.Spinner",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.TurnDuration",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.InfoNotice",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.SessionMode",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.site.PromptHint",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Box",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Text",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Button",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Link",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Code",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Markdown",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Input",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Select",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Svg",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Client",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Raster",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.element.Image",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'single'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'double'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'round'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'bold'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'singleDouble'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'doubleSingle'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'classic'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'arrow'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'dashed'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box border styles.'quote'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'xs'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'sm'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'md'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'lg'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Box spacing steps.'xl'",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Replace bold with weight",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit..catch",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.session.end",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.process.run",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.stdout",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.stderr",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.model.complete",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.maxTokens",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.fs.read",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.fs.write",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.http.fetch",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.drop",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.Text in one tree",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.Code",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.Link",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.Nesting depth of one tree",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.Elements and text children in one tree",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.Raster",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.Image",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.store",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.session.messages()",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.ui.invalidate('ui.render')",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.ui.toast",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.A pane opened without the user asking",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.$.ui.place",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.Nesting depth of a mods API call's arguments",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.next",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.ui.render",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.Scopes, such as functions, blocks, and loops, nested inside one another in one file of a hooks module",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.id",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.limit.claude plugin test",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.prependPlugins",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.appendPlugins",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.allowManagedModsOnly",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.allowModsToOverrideDenyRules",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.allowManagedHooksOnly",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.disableAllHooks",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.disableSideloadFlags",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.pluginConfigs",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.CLAUDE_CODE_PLUGIN_DIRS",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.setting.CLAUDE_CODE_PLUGIN_DIR_WATCH",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.command./plugin",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.command.claude plugin validate <directory>",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.command.claude plugin test [directory]",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.command.claude --plugin-dir <directory>",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.command./reload-plugins",
+      "file": "10-mods/reference.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Observe an event",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Rewrite an event",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Answer an event",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Filter which events a hook handles",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.The order mods run in",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Where settings hooks run in the order",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.It failed before calling next",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.It failed after next resolved",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.guard failed before it called next",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.guard failed after it called next",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.tool.check",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Handle a hook that fails.plugin.register",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.tool.call",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.tool.check",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.tool.describe",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Guard or change a tool call.Change the call",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Guard or change a tool call.Retry the call",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Guard or change a tool call.Answer the call yourself",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Guard or change a tool call.Withhold the result from Claude",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Hold a tool call until the user decides.The user picks Run it",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Hold a tool call until the user decides.The user picks Refuse",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Hold a tool call until the user decides.The user types an answer",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Hold a tool call until the user decides.Nobody answers",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.When tool.check fires",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.Arguments",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Agent and organization fields on tool.check",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.The e.isReadOnly field on tool.check",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.What await next(e) gives you",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.What to return",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.On main",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Approve or refuse a tool call before the user is asked.The hook throws or times out",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Check whether a tool call is read-only",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Filter a tool.check hook by whether the call is read-only",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Send a changed system prompt section or tool description with breakPromptCache",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.submit",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.fill",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.suggest",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.edit",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.autocomplete",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.compose",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.section",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.context",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.attachment",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.prompt.mention",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.skill.prompt",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.attribution.text",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Rewrite or add to a prompt",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Rewrite or add to a prompt.Stop the prompt from being sent",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.skillPrompt.e.source",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.skillPrompt.e.pluginName",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.skillPrompt.e.path",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.skillPrompt.e.frontmatter",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.skillPrompt.e.frontmatterProblem",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.command.run",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.command.describe",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.config.set",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.config.describe",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.settings.read",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Settings hook events",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Handle the settings hook events",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.What a settings.read hook receives",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.e.layers and e.source on settings.read",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Tell Claude Code's own read from a mod's read",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.What next(e) gives a settings.read hook",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.What a settings.read hook can return",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Change one setting from a settings.read hook",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.turn.start",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Follow a turn.turn.start",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.turn.step",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Follow a turn.turn.step",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.turn.complete",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Follow a turn.turn.complete",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.events.Send a request to a different model",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.session.start",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.session.end",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.session.compact",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.session.receive",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.session.send",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.session.append",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.session.attach",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.session.detach",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.session.measure",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.agent.offer",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.agent.spawn",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.render",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.resolve",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.press",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.input",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.select",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.focus",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.scroll",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.close",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.message",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.ui.fault",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.plugin.register",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.engine.create",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.event.telemetry.log",
+      "file": "10-mods/events.md",
+      "status": "fixed",
+      "note": "Fixed placement: the marker stood mid-paragraph before judgment text (J10.19); split so the judgment carries no marker. Text verified."
+    },
+    {
+      "id": "mods.event.telemetry.mark",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    },
+    {
+      "id": "mods.reference.Mods API calls",
+      "file": "10-mods/events.md",
+      "status": "verified",
+      "note": "Matches the docs section; declarations-derived fields spot-checked against claude-code/index.d.ts 2.1.321."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J10.1",
+      "status": "kept",
+      "note": "overview.md describes packaging only; built-in list matches \"Mods built into Claude Code\"."
+    },
+    {
+      "id": "J10.2",
+      "status": "kept",
+      "note": "Re-ran oracle 2.1.325: two modules gives the quoted message; docs quote only some messages."
+    },
+    {
+      "id": "J10.3",
+      "status": "kept",
+      "note": "Docs say the types file is required; oracle evidence named; SHOULD NOT refuse is the behaviour-following reading."
+    },
+    {
+      "id": "J10.4",
+      "status": "kept",
+      "note": "Docs say only \"with defaults filled in\"."
+    },
+    {
+      "id": "J10.5",
+      "status": "kept",
+      "note": "Re-ran oracle 2.1.325: a module calling require validates. Refusal is a documented author rule and matches the reference implementation security deviation; safest reading."
+    },
+    {
+      "id": "J10.6",
+      "status": "kept",
+      "note": "Declarations TargetTier = Exclude<Tier, prepend>, comment \"user is for a prepend hook alone\"."
+    },
+    {
+      "id": "J10.7",
+      "status": "fixed",
+      "note": "Evidence re-checked (declarations HookFailure, reference implementation oracle 2.1.322); now named on next.error as well as next.error.cause."
+    },
+    {
+      "id": "J10.8",
+      "status": "kept",
+      "note": "Members are in EngineInterface; docs table says types document every method."
+    },
+    {
+      "id": "J10.9",
+      "status": "kept",
+      "note": "Docs silent on reload order."
+    },
+    {
+      "id": "J10.10",
+      "status": "kept",
+      "note": "Docs give 28,000 levels without defining a level."
+    },
+    {
+      "id": "J10.11",
+      "status": "kept",
+      "note": "overview.md shows the one-mod line only."
+    },
+    {
+      "id": "J10.12",
+      "status": "kept",
+      "note": "events.md silent on when the matcher is tested and on edges."
+    },
+    {
+      "id": "J10.13",
+      "status": "kept",
+      "note": "Declarations Pattern/Glob/Negation; docs name * and classic.* only."
+    },
+    {
+      "id": "J10.14",
+      "status": "kept",
+      "note": "Docs give failed-after-resolved only; declarations Caught comment."
+    },
+    {
+      "id": "J10.15",
+      "status": "kept",
+      "note": "Docs say tighten-not-loosen in plan mode and do not order ask against deny."
+    },
+    {
+      "id": "J10.16",
+      "status": "kept",
+      "note": "PromptChangeInput in declarations; absent from reference.md."
+    },
+    {
+      "id": "J10.17",
+      "status": "kept",
+      "note": "reference.md names message.content only."
+    },
+    {
+      "id": "J10.18",
+      "status": "kept",
+      "note": "reference.md gives next/deny/value; declarations type the method results by event."
+    },
+    {
+      "id": "J10.19",
+      "status": "kept",
+      "note": "reference.md says \"a mod you install\" only; reference implementation row src/mods/chain/validate.ts matches."
+    },
+    {
+      "id": "J10.20",
+      "status": "kept",
+      "note": "Declarations (lines on $.telemetry.mark, TelemetryMarkInput): a mark takes no to and always means anthropic."
+    }
+  ]
+}

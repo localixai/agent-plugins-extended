@@ -1,0 +1,1417 @@
+{
+  "pass": "v08-mods-interface-trust",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "10-mods/interface.md",
+    "10-mods/api.md",
+    "10-mods/troubleshooting.md",
+    "13-trust.md"
+  ],
+  "requirements": [
+    {
+      "id": "mods.interface.Pick where to draw",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.UserMessage",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.AssistantMessage",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.ToolUse",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.ToolResult",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.ToolGroup",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.CommandOutput",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.AskUserQuestion",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.Spinner",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.ToolProgress",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.TurnDuration",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.InfoNotice",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.SessionMode",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.PromptHint",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.When Claude Code redraws without being asked",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Redraw when your data changes",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Redraw on a timer",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.How often a site can redraw",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Box",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Text",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Button",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Link",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Code",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Markdown",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Input",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Select",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Svg",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Client",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Raster",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Build a tree from elements.Image",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Link in the Desktop app and VS Code.Scheme and host",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Link in the Desktop app and VS Code.No @",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Link in the Desktop app and VS Code.Spelling",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Draw a grid of colored cells",
+      "file": "10-mods/interface.md",
+      "status": "fixed",
+      "note": "blit: requestId was said to be the pane id only; the declarations (RasterBlitArgs) name the site it is drawn in, and columns/rows are optional but must be the mounted size. Corrected."
+    },
+    {
+      "id": "mods.interface.When a Client fails",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Open a pane at the right time.title",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Open a pane at the right time.focus",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Open a pane at the right time.closeOnEscape",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Open a pane at the right time.holdToasts",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Open a pane at the right time.rows",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Open a pane at the right time.columns",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Hold toasts behind a dialog",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.When a pane waits for a wider terminal",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Draw in the VS Code extension.Panes",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Draw in the VS Code extension.Toasts and status lines",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Draw in the VS Code extension.Labels",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Draw in the VS Code extension.Keyboard",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Draw in the VS Code extension.Keyboard focus",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Draw in the VS Code extension.The question dialog",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Draw in the VS Code extension.Prompt suggestions",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Draw in the VS Code extension.Text limits",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Place a row in the transcript.The result",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Place a row in the transcript.A second call with the same id",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Place a row in the transcript.When the row goes away",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Put a backdrop behind the conversation.The backdrop fields",
+      "file": "10-mods/interface.md",
+      "status": "fixed",
+      "note": "Backdrop site props said glass appears only when set; the declarations (RenderPropsOf Backdrop) always carry glass with defaults filled in, or false. Corrected."
+    },
+    {
+      "id": "mods.interface.Put a backdrop behind the conversation.Whether the backdrop is drawn",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Put a backdrop behind the conversation.One backdrop for each session",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Which controls need a key",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.How a pane gets keyboard focus",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.What each key does.Tab",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.What each key does.Up and Down",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.What each key does.Enter",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.What each key does.A button's hotkey",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.What each key does.Page Up, Page Down, Home, and End",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.What each key does.Ctrl+X then an arrow key",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.What each key does.Ctrl+X then X",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.What each key does.Ctrl+X then Ctrl+A",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.What each key does.Esc",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Set a hotkey and the first focus",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.When the user collapses the band",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Declare the values",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Point the manifest at the declaration",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Define, read, and write a value",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Load a saved value again after /clear",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.interface.Save from more than one session",
+      "file": "10-mods/interface.md",
+      "status": "verified",
+      "note": "Checked against interface.md and the 2.1.321 declarations (index.d.ts); matches."
+    },
+    {
+      "id": "mods.apiGuide.Add a command",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Add a tool",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Send one prompt",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Use prompt caching",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Choose between prompt and system",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.What a model.complete hook receives.e.prompt",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.What a model.complete hook receives.e.system",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.What a model.complete hook receives.e.promptBlocks and e.systemBlocks",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Stop background work",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Show something without starting a turn.$.ui.status(text)",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Show something without starting a turn.$.ui.toast(text)",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Show something without starting a turn.$.ui.log(text)",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Show something without starting a turn.$.ui.notify(text)",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Show something without starting a turn.disabled",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Show something without starting a turn.no-channel",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Show something without starting a turn.no-surface",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Show something without starting a turn.refused",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Start a turn from a background job",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.What refused calls return.$.prompt.submit",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.What refused calls return.$.command.run",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.What refused calls return.$.agent.spawn",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.What refused calls return.$.session.send",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.What refused calls return.$.tool.call",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Work your mod started before the interruption.$.prompt.submit",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Work your mod started before the interruption.$.command.run",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Work your mod started before the interruption.An event from a monitor your mod started",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Work your mod started before the interruption.$.session.send",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Work your mod started before the interruption.$.tool.call",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Retry a refused or dropped call",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Calls refused in claude -p runs and Agent SDK sessions",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.A claude -p run with your mod never exits",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Send and receive messages between sessions.Another of your sessions",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Send and receive messages between sessions.A subagent or teammate",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Send and receive messages between sessions.The sender of a message you received",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.fs",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.process",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.http",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.store",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.env",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.settings",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.session",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.mcp",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.Paths",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.fs.list",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.process.run",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.http.fetch",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Read all settings, one source, or one key.$.settings.read()",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Read all settings, one source, or one key.$.settings.read({ source: 'policy' })",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Read all settings, one source, or one key.user",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Read all settings, one source, or one key.project",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Read all settings, one source, or one key.local",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Read all settings, one source, or one key.flag",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.apiGuide.Read all settings, one source, or one key.policy",
+      "file": "10-mods/api.md",
+      "status": "verified",
+      "note": "Checked against api.md and CoreEngineInterface in the declarations; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Check whether mods can load.no hooks module to load",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Check whether mods can load.hooks modules are turned off here",
+      "file": "10-mods/troubleshooting.md",
+      "status": "fixed",
+      "note": "Text claimed the rest of the message names the setting (a reference-implementation lead); oracle 2.1.325 prints \"hooks modules are turned off here (disableAllHooks, allowManagedHooksOnly or a policy)\" and exits 1. Replaced with the observed line."
+    },
+    {
+      "id": "mods.troubleshoot.hook skipped",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.no command.run hook answered it",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.it crashed the hooks worker",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.mods that run in the hooks worker are off for this session",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.its session.start ran again in a fresh copy",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.This mod's change didn't load or the earlier version is no longer running",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.$.agent.register refused: the hooks module that made the call is no longer loaded",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Your version is too old",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.The mods active line doesn't name the mod",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A claude -p run prints hooks module not loaded",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Refusal messages.disableAllHooks in managed settings",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Refusal messages.another plugin of that name loads first",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Messages from the built-in guard",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.validate passes and lists no hooks line",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.hooks module did not load",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.options do not fit plugin.json userConfig",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.code nested too deep to scan: more than 2000 scopes",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.the engine ran out of stack linking the file and its imports",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.the parser stopped or the engine ran out of stack loading the file",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.No mod loads in a directory you opened for the first time",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.No installed plugin loads at all",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Claude Code stops asking to enable hot reloading",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.a hook changed this call's input after the model wrote it",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A message about the deny rules in your settings",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Stopped: type a message to continue; a mod cannot resume work after Stop",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Another mod's band shows and yours doesn't",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A pane or band is empty or shows Claude Code's usual content",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A ui.render line says refused",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A ui.render line says threw while drawn",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.the module failed without a message",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.needs a key, is drawn twice, or key each once",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.$.ui.open runs and no pane appears",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A toast doesn't appear.The line for the call is missing",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A toast doesn't appear.A pane is holding toasts",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A toast doesn't appear.The toast is under the prompt",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A toast doesn't appear.Your mod raised a newer toast",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A toast doesn't appear.The toast ran out of time undrawn",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.The band shows plugin panel hidden",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Hotkeys do nothing.No keyboard focus",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Hotkeys do nothing.The button is in a collapsed band",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Hotkeys do nothing.In the VS Code extension",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A drawing works in the terminal and not in the Desktop app or VS Code",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.Your edits don't take effect",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A value resets when the module reloads",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A value resets after /clear, /resume, or /branch",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A key your settings.read hook returns doesn't take effect.settings.read hook skipped",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A key your settings.read hook returns doesn't take effect.answered settings.read without next()",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.A key your settings.read hook returns doesn't take effect.settings.read: refused to the engine",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.the answer for <key> is no value the key can hold",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "mods.troubleshoot.settings.read: refused to the engine",
+      "file": "10-mods/troubleshooting.md",
+      "status": "verified",
+      "note": "Checked against troubleshoot.md; matches."
+    },
+    {
+      "id": "trust.behavior.Project allow rules and workspace trust",
+      "file": "13-trust.md",
+      "status": "fixed",
+      "note": "Item 4 (background session) lacked the \"<path> could not be resolved on disk\" variant errors.md names; added."
+    },
+    {
+      "id": "trust.behavior.Workspace trust",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.behavior.When your local settings file needs trust",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.behavior.What runs before you trust a folder.env",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.behavior.What runs before you trust a folder.permissions.allow",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.behavior.What runs before you trust a folder.@skills-dir",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.behavior.What runs before you trust a folder.mcpServers",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.behavior.What runs before you trust a folder..mcp.json",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.behavior.What runs before you trust a folder.headersHelper",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.behavior.What runs before you trust a folder",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.loading.Trust check and component limits for repository plugins",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.loading.Check why a repository plugin didn't load",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.loading.Check why a repository plugin didn't load.In a subdirectory",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.loading.Check why a repository plugin didn't load.From the desktop app, in a worktree",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.loading.Check why a repository plugin didn't load.In a folder you haven't trusted",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.claude-plugins-official",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.claude-code-marketplace",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.claude-code-plugins",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.anthropic-marketplace",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.anthropic-plugins",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.agent-skills",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.anthropic-agent-skills",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.life-sciences",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.knowledge-work-plugins",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.claude-for-legal",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.claude-for-financial-services",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.financial-services-plugins",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.first-party-plugins",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Official marketplace names.claude-tag-plugins",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Trust warning before you install",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    },
+    {
+      "id": "trust.security.Untrusted marketplace sources and failed integrity checks",
+      "file": "13-trust.md",
+      "status": "verified",
+      "note": "Checked against the named section (permissions.md / hooks.md / plugins/loading.md / plugins/security.md, errors.md for messages); matches."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J10.100",
+      "status": "kept",
+      "note": "Docs silent on how the tree is carried; plain-data crossing follows from the declarations (RenderElement is plain data). Kept."
+    },
+    {
+      "id": "J10.101",
+      "status": "kept",
+      "note": "troubleshoot.md names the props, not a message; kept as the reference wording."
+    },
+    {
+      "id": "J10.102",
+      "status": "kept",
+      "note": "interface.md: \"Otherwise, Claude Code draws its own dialog\", no line; declarations add nothing below. Kept."
+    },
+    {
+      "id": "J10.103",
+      "status": "kept",
+      "note": "Docs give rates and coalescing (reference.md Limits), not the window. Kept."
+    },
+    {
+      "id": "J10.104",
+      "status": "kept",
+      "note": "Re-checked the declarations Elements tables: mobile has Svg/Input/Select, no Client; vscode has no Client. Kept."
+    },
+    {
+      "id": "J10.105",
+      "status": "kept",
+      "note": "Docs example packs Uint32Array via its buffer; declarations deny a blit whose cells do not decode. Kept."
+    },
+    {
+      "id": "J10.106",
+      "status": "kept",
+      "note": "interface.md quotes only the focus message; declarations PaneOpenArgs say anything else is refused. Kept."
+    },
+    {
+      "id": "J10.107",
+      "status": "kept",
+      "note": "Declarations ui.toast: \"waits undrawn, its timer not started; past 50 waiting, an older leaves\". Evidence true. Kept."
+    },
+    {
+      "id": "J10.108",
+      "status": "kept",
+      "note": "UiOpenResult says it waits where no surface places panes or none is attached; reason text is the lead. Kept."
+    },
+    {
+      "id": "J10.109",
+      "status": "kept",
+      "note": "Reasons match interface.md and reference.md Limits; reload behaviour silent. Kept."
+    },
+    {
+      "id": "J10.110",
+      "status": "kept",
+      "note": "interface.md states the rule for terminal and VS Code only; declarations focus: \"a request, not a grant\". Kept."
+    },
+    {
+      "id": "J10.111",
+      "status": "kept",
+      "note": "\"What each key does\" gives no ends or empty case. Kept."
+    },
+    {
+      "id": "J10.112",
+      "status": "kept",
+      "note": "Re-ran oracle 2.1.325: a ui.render hook calling update() validates and lists \"state writes: st.count\" with no error; declarations state.set \"Refused while a ui.render hook draws\". Kept."
+    },
+    {
+      "id": "J10.140",
+      "status": "kept",
+      "note": "api.md quotes only the built-in refusal. Kept."
+    },
+    {
+      "id": "J10.141",
+      "status": "kept",
+      "note": "api.md says leading blocks that still match are kept; partial match silent. Kept."
+    },
+    {
+      "id": "J10.142",
+      "status": "kept",
+      "note": "api.md gives minimum releases only. Kept."
+    },
+    {
+      "id": "J10.143",
+      "status": "kept",
+      "note": "api.md gives http/https and the header rule only; method rule is the fetch standard. Kept."
+    },
+    {
+      "id": "J10.144",
+      "status": "kept",
+      "note": "api.md lists five sources and is silent on others; rejecting is the safest reading. Kept."
+    },
+    {
+      "id": "J10.170",
+      "status": "kept",
+      "note": "troubleshoot.md says the line starts with the mod name, stderr only for -p --plugin-dir in text format. Kept."
+    },
+    {
+      "id": "J10.171",
+      "status": "kept",
+      "note": "troubleshoot.md quotes the first sentence only. Kept."
+    },
+    {
+      "id": "J10.172",
+      "status": "kept",
+      "note": "troubleshoot.md gives three stops and the line, no window. Kept."
+    },
+    {
+      "id": "J10.173",
+      "status": "kept",
+      "note": "troubleshoot.md says what the mod sees, not how calls are matched. Kept."
+    },
+    {
+      "id": "J10.174",
+      "status": "kept",
+      "note": "Re-ran oracle 2.1.325: {\"modlues\":[...]} alone fails with \"hooks.json must have `hooks` ... or `modules` ..., or both\"; {\"hooks\":{},\"modlues\":[...]} passes with no hooks section. Docs case (misspelt key) holds when a hooks key is present; 2.1.321 docs followed. Kept."
+    },
+    {
+      "id": "J13.29",
+      "status": "kept",
+      "note": "Docs give no default for unknown trust; least-granting is safest. Kept."
+    },
+    {
+      "id": "J13.30",
+      "status": "kept",
+      "note": "plugins/loading.md lists the causes without an order. Kept."
+    },
+    {
+      "id": "J13.31",
+      "status": "kept",
+      "note": "plugins/security.md says \"appends\" with no separator. Kept."
+    }
+  ]
+}

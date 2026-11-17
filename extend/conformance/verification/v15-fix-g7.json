@@ -1,0 +1,117 @@
+{
+  "pass": "v15-fix-g7",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "07-hooks/README.md",
+    "09-lsp-monitors-channels.md",
+    "12-settings.md",
+    "13-permissions.md",
+    "15-marketplaces.md",
+    "16-dependencies.md",
+    "17-cli.md"
+  ],
+  "requirements": [
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Everything else is blocked",
+      "file": "12-settings.md",
+      "status": "fixed",
+      "note": "Added that a skill's frontmatter hooks run only for a managed-directory skill or a force-enabled plugin's skill (J7.3, §7.1.4 item 5). Evidence: settings-reference.md, 'What runs under allowManagedHooksOnly' (lists what runs); hooks.md, 'Limits on skill hooks' (managed-directory skill counted as the organization's)."
+    },
+    {
+      "id": "permissions.modes.Protected paths.remote-settings.json",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "The files kept beside remote-settings.json are the client's own, named by it; a library protects the ones its host names (J13.35). Evidence: permission-modes.md, 'Protected paths', names them by role only; claude-directory.md names only remote-settings.json."
+    },
+    {
+      "id": "permissions.reference.Sandboxed commands under the block",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "In a linked worktree, hooks/ and config inside the common .git stay write-denied (docs: sandboxing.md | Filesystem isolation)."
+    },
+    {
+      "id": "marketplace.rule.command plugin source.command",
+      "file": "15-marketplaces.md",
+      "status": "fixed",
+      "note": "Stated the over-500 message `command must not be longer than the install consent UI can display` beside the ASCII one, both errors at plugins.<i>.source.command. Oracle 2.1.325: 500 chars passes, 501 draws it, 501 with a four-space run draws both (J15.8)."
+    },
+    {
+      "id": "marketplace.rule.archive plugin source",
+      "file": "15-marketplaces.md",
+      "status": "fixed",
+      "note": "Added `Invalid URL` for a url that does not parse, reported beside the https message. Oracle 2.1.325: `not a url` drew both, `http://` only the https message (J15.8)."
+    },
+    {
+      "id": "marketplace.rule.Invalid input on a source",
+      "file": "15-marketplaces.md",
+      "status": "fixed",
+      "note": "Listed the cases that stay the bare `plugins.<i>.source: Invalid input`: no source key, unknown type, each type's required field missing or mistyped, npm package with `..`. Oracle 2.1.325, one case each (J15.8)."
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally.You disabled the local copy",
+      "file": "16-dependencies.md",
+      "status": "fixed",
+      "note": "The disabled-dependency error names the resolved id (`q2@m` when the dependent's marketplace is implied; bare `q2` for a --plugin-dir dependent). Oracle 2.1.325, private config dir, installed p@m with dependency q2 and q2@m disabled (J16.24)."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.contents",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "Entry shapes fixed: errors/warnings objects, notes plain strings, gatingHooks {module, pattern, hook, hasCatch}. Oracle 2.1.325 on a mod with two tool.call hooks (J17.15)."
+    },
+    {
+      "id": "monitors.components.Monitors.No user configuration",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "fixed",
+      "note": "Path variables in a monitor command are pasted as paths and never exported, referenced or not; an environment-reference mode is only an opt-in option (J9.17). Evidence: plugins/manifest-reference.md, 'Where each variable resolves' (Not exported) and 'Quoting and path separators'."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J7.2",
+      "status": "fixed",
+      "note": "States the order exactly: settings files in §12.3 precedence, highest first (managed, --settings, local, project, user), then plugins in §16 load order, then frontmatter and session-added hooks as they register; gates remove without reordering."
+    },
+    {
+      "id": "J7.3",
+      "status": "fixed",
+      "note": "New: under allowManagedHooksOnly, skill frontmatter hooks run only for managed-directory skills and force-enabled plugins' skills; bundled and all other skills' are blocked. No oracle (needs a live session under managed settings)."
+    },
+    {
+      "id": "J9.5",
+      "status": "kept",
+      "note": "§9.1.3 rows for an empty and a missing command restated from oracle 2.1.325 (`Too small: expected string to have >=1 characters` at lspServers.go.command; `lspServers: Invalid input`); the 2.1.321 corpus has no lspServers command case."
+    },
+    {
+      "id": "J9.17",
+      "status": "fixed",
+      "note": "New: monitor path variables pasted, not exported; an env-reference mode only as an opt-in."
+    },
+    {
+      "id": "J13.34",
+      "status": "fixed",
+      "note": "New: MultiEdit is not a known tool; bare and path deny rules draw `matches no tool`, the path form also the file-permission warning. Oracle 2.1.325 -p stderr."
+    },
+    {
+      "id": "J13.35",
+      "status": "fixed",
+      "note": "New: the files beside remote-settings.json are the client's own; a library protects the host-named ones, no guessed names."
+    },
+    {
+      "id": "J15.8",
+      "status": "fixed",
+      "note": "Adds the over-500 message, `Invalid URL` and the bare `Invalid input` cases, oracle 2.1.325."
+    },
+    {
+      "id": "J16.24",
+      "status": "fixed",
+      "note": "Disabled dependency named by its resolved id (q2@m with an implied marketplace; bare name only when none), errorDetails dependency the same; oracle 2.1.325 installed case."
+    },
+    {
+      "id": "J17.15",
+      "status": "fixed",
+      "note": "notes are plain strings; gatingHooks entries are {module, pattern, hook, hasCatch}; oracle 2.1.325."
+    }
+  ]
+}

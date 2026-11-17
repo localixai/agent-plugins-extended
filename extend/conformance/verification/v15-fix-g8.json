@@ -1,0 +1,37 @@
+{
+  "pass": "v15-fix-g8",
+  "date": "2026-11-17",
+  "release": "2.1.321",
+  "files": [
+    "07-hooks/configuration.md",
+    "07-hooks/events.md",
+    "08-mcp.md",
+    "10-mods/interface.md",
+    "10-mods/reference.md",
+    "16-install.md",
+    "17-cli.md"
+  ],
+  "requirements": [
+    {
+      "id": "cli.flag.--mcp-config",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "The self-hosted wait is stated: it replaces the MCP_TIMEOUT wait, covers stdio servers only, lasts up to 2 s or CLAUDE_CODE_MCP_STARTUP_WAIT_MS, and HTTP and SSE servers connect in the background. Evidence: cli-reference.md, --mcp-config; self-hosted-environments-configuration.md, 'Wait for MCP servers before the first turn'."
+    },
+    {
+      "id": "mods.create.Check what Claude Code reads from your mod",
+      "file": "10-mods/reference.md",
+      "status": "fixed",
+      "note": "The message line is given whole: `<plugin>: <absolute file>:<line>: <message>; $ is always spelled ...` at modules.<entry>, `<plugin>` the directory name, `; ` the joint; added the bare-$ and computed-access rules with their texts. Oracle 2.1.326, three scratch mods whose directory differs from the manifest name (J10.2)."
+    }
+  ],
+  "judgments": [
+    {"id": "J7.20", "status": "fixed", "note": "A top-level PreToolUse or PermissionRequest holding anything but null or [] (5, {}, \"x\", true, [5], a group), and a non-empty array `hooks`, draw the guard error at `hooks`; an empty `hooks` array draws `Invalid input: expected record, received array`. Oracle 2.1.326, scratch plugins."},
+    {"id": "J7.211", "status": "fixed", "note": "New: which blocked-model-switch line is shown, and where, is the host's; a library returns verdict, reason and both forms (the SDK form joined by `: `). errors.md, 'Model switch was blocked by a PreModelSwitch hook'."},
+    {"id": "J8.26", "status": "kept", "note": "§8.2.1's example now shows per-element quoting: $1 holds `'npx' '-y' '<package>'`, and the full prefixed command is given."},
+    {"id": "J8.29", "status": "fixed", "note": "New: a library returns a stdio server's start command (exec without prefix, bash `<prefix> '<line>'` with a non-blank one); the host launches and keeps the process. env-vars.md, CLAUDE_CODE_SHELL_PREFIX."},
+    {"id": "J10.2", "status": "fixed", "note": "Evidence extended with oracle 2.1.326 for the line's lead (directory name, absolute file, `; ` joint, path modules.<entry>) and the bare-$ wording."},
+    {"id": "J10.175", "status": "fixed", "note": "New: the keybinding contexts, actions, chords and keybindings.json are the host's keymap; a library takes focus/surface facts and an action's binding and returns which button a hotkey, a digit or an `action` binding presses. keybindings.md; reference.md, 'Elements'."},
+    {"id": "J16.26", "status": "fixed", "note": "New: a name Windows cannot store is a segment with < > : \" \\ | ? * or a control character, a trailing space or dot, or a reserved device name with or without extension. desktop.md, 'Windows remote machines', names only `:`."}
+  ]
+}

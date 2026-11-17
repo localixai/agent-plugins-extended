@@ -1,0 +1,90 @@
+{
+  "pass": "v15-fix-g6",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "15-marketplaces.md",
+    "15-marketplace-hosting.md",
+    "16-install.md",
+    "16-updates.md",
+    "16-dependencies.md",
+    "17-cli.md",
+    "17-errors.md"
+  ],
+  "requirements": [
+    {
+      "id": "marketplace.rule.Metadata precedence.version",
+      "file": "15-marketplaces.md",
+      "status": "fixed",
+      "note": "The version-mismatch warning is quoted in full (tail `(calculatePluginVersion precedence) — the entry version is silently ignored. Update this entry to \"<b>\" to match.`), with its key and `<path>` form, and the `Could not parse <path> for version cross-check` warning added. Evidence: oracle 2.1.321, corpus (54 plugins; claude-voice-cue); J15.13."
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.SSH",
+      "file": "15-marketplace-hosting.md",
+      "status": "fixed",
+      "note": "§15.13 now says what happens when GIT_SSH_COMMAND, GIT_SSH or core.sshCommand names an SSH program: the client runs it, in git's order, for clones, fetches and the probe, without rewriting it (plugins/install.md, 'Add a private marketplace'; changelog 2.1.285; J15.14)."
+    },
+    {
+      "id": "install.guide.Add a private marketplace.SSH",
+      "file": "15-marketplace-hosting.md",
+      "status": "fixed",
+      "note": "Also marked on the new §15.13 bullet that states the user-named SSH program rule; §16.5.5 item 2 unchanged."
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally.You disabled the local copy",
+      "file": "16-dependencies.md",
+      "status": "fixed",
+      "note": "§16.28.1 item 3 no longer reads as if the error names `<name>@inline`: it names the dependency as declared (J16.24, oracle 2.1.325), and `<name>@inline` is said to mean the --plugin-dir copy wherever a message uses it (plugins/dependencies.md)."
+    },
+    {
+      "id": "cli.plugin.plugin disable",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "`disable` with neither a name nor --all is now a usage error (no result line with --json, stderr, exit 1). Evidence: plugins/cli-reference.md 'plugin disable'; oracle 2.1.325 `claude plugin disable --json`: stdout empty, stderr the message, exit 1. J17.3 lists it."
+    },
+    {
+      "id": "cli.plugin.Accept a displayed install command",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "The `failed` result of a displayed, not-run command now carries `failureCode: command_not_accepted` (J17.4; reference src/cli/install-plan.ts, update-plan.ts)."
+    },
+    {
+      "id": "cli.plugin.Validate a directory",
+      "file": "17-cli.md",
+      "status": "deviates",
+      "note": "Deviation J17.14 unchanged. §17.13.1's link rules extended: component files that are not regular files, the hooks directory and file, MCP server files (no link, 1 MiB cap), with every message and severity (J17.32; oracle 2.1.321 corpus, 2.1.325 minimal inputs)."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J15.13",
+      "status": "fixed",
+      "note": "New: the validator's messages about a relative-path entry's plugin.json (plugins type errors, version-mismatch tail, cross-check parse warning, linked-source tail, link-or-not-regular warning, path-component error). Oracle 2.1.321, corpus."
+    },
+    {
+      "id": "J15.14",
+      "status": "fixed",
+      "note": "New: a user-named SSH program is run in git's order, also for the probe, with no options added. Docs plugins/install.md; changelog 2.1.285; lead src/marketplace/git-transport.ts."
+    },
+    {
+      "id": "J16.24",
+      "status": "fixed",
+      "note": "Now says how the docs' '<name>@inline' sentence is read against the oracle's bare name, so §16.28.1 item 3 and the judgment agree."
+    },
+    {
+      "id": "J17.3",
+      "status": "fixed",
+      "note": "Adds `disable` with neither a name nor --all (oracle 2.1.325: no stdout with --json, exit 1)."
+    },
+    {
+      "id": "J17.4",
+      "status": "fixed",
+      "note": "Adds `command_not_accepted` for an install or update that displayed a marketplace-declared command and did not run it."
+    },
+    {
+      "id": "J17.32",
+      "status": "fixed",
+      "note": "New: the link, FIFO and size-cap messages of §17.13.1, the 1 MiB cap on hooks and MCP files, the fixed `.claude/skills` phrase. Oracle 2.1.321 corpus; 2.1.325 minimal inputs for cases the corpus lacks. Open: linked agents/commands files draw no warning in 2.1.325."
+    }
+  ]
+}

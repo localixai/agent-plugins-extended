@@ -1,0 +1,1351 @@
+{
+  "pass": "v03-hooks-mechanics",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "07-hooks/README.md",
+    "07-hooks/configuration.md",
+    "07-hooks/handlers.md",
+    "07-hooks/results.md"
+  ],
+  "requirements": [
+    {
+      "id": "hooks.behavior.Hook lifecycle",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook lifecycle\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook locations",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook locations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook locations..claude/settings.json",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook locations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook locations..claude/settings.local.json",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook locations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook locations.~/.claude/settings.json",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook locations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook locations.hooks/hooks.json",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook locations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook locations.Managed policy settings",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook locations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook locations.Skill frontmatter",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook locations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook locations.Subagent frontmatter",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook locations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hooks in skills and agents",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hooks in skills and agents\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.How a hook resolves",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"How a hook resolves\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Limits on skill hooks",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Limits on skill hooks\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.components.Hooks",
+      "file": "README.md",
+      "status": "fixed",
+      "note": "The shadowing note of two same-named plugins needs Claude Code 2.1.296 (plugins/loading.md, linked from the section); added."
+    },
+    {
+      "id": "hooks.components.When plugin hooks fire",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"When plugin hooks fire\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Configure hook location",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Configure hook location\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Hook input",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Hook input\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.How hooks work",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"How hooks work\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.troubleshooting.hook error notices in the transcript",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"hook error notices in the transcript\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.troubleshooting.Hook loads but never fires",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Hook loads but never fires\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.troubleshooting.Hooks fail to load",
+      "file": "README.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Hooks fail to load\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Configuration",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Configuration\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Disable or remove hooks",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Disable or remove hooks\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook handler fields",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook handler fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.How if patterns match Bash commands",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"How if patterns match Bash commands\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Match MCP tools",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Match MCP tools\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Match Monitor commands",
+      "file": "configuration.md",
+      "status": "fixed",
+      "note": "The text omitted that Monitor commands reach Bash matchers only from Claude Code 2.1.314; added."
+    },
+    {
+      "id": "hooks.components.Environment, quoting, and matching MCP tools.Matching the plugin's own MCP tools",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Environment, quoting, and matching MCP tools\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Filter by tool name and arguments with the if field",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Filter by tool name and arguments with the if field\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Filter hooks with matchers",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Filter hooks with matchers\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.How hooks work",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"How hooks work\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.common.if",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Common fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.ConfigChange",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.CwdChanged",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.DirectoryAdded",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.Elicitation",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.ElicitationResult",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.FileChanged",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.InstructionsLoaded",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.MessageDisplay",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.Notification",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PermissionDenied",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PermissionRequest",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PostCompact",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PostModelSwitch",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PostToolBatch",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PostToolUse",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PostToolUseFailure",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PreCompact",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PreModelSwitch",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.PreToolUse",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.SessionEnd",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.SessionStart",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.Setup",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.Stop",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.StopFailure",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.SubagentStart",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.SubagentStop",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.TaskCompleted",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.TaskCreated",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.TeammateIdle",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.UserPromptExpansion",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.UserPromptSubmit",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.WorktreeCreate",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.matcher.WorktreeRemove",
+      "file": "configuration.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Matcher patterns\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Agent hook configuration",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Agent hook configuration\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Configure an async hook",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Configure an async hook\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hook handler fields",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hook handler fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.How agent hooks work",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"How agent hooks work\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.How async hooks execute",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"How async hooks execute\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.How prompt-based hooks work",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"How prompt-based hooks work\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Limitations",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Limitations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.continueOnBlock",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Prompt hook configuration\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.model",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Prompt hook configuration\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.prompt",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Prompt hook configuration\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.timeout",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Prompt hook configuration\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.type",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Prompt hook configuration\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Prompt-based hooks",
+      "file": "handlers.md",
+      "status": "fixed",
+      "note": "Skip-type rule matches the docs; the suggested report wording disagreed with the evidence J7.61 names (reference: \"A hook of type <type> is not supported on <Event> and is skipped\"); corrected."
+    },
+    {
+      "id": "hooks.behavior.Reference scripts by path in PowerShell hooks",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Reference scripts by path in PowerShell hooks\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Reference scripts by path.${CLAUDE_PLUGIN_DATA}",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Reference scripts by path\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Reference scripts by path.${CLAUDE_PLUGIN_ROOT}",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Reference scripts by path\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Reference scripts by path.${CLAUDE_PROJECT_DIR}",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Reference scripts by path\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.SessionEnd input",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"SessionEnd input\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.components.Environment, quoting, and matching MCP tools.Environment",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Environment, quoting, and matching MCP tools\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.components.Environment, quoting, and matching MCP tools.Quoting",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Environment, quoting, and matching MCP tools\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Agent-based hooks",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Agent-based hooks\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.How hooks work",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"How hooks work\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.HTTP hooks",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"HTTP hooks\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Limitations",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Limitations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Prompt-based hooks",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Prompt-based hooks\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.command.args",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Command hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.command.async",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Command hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.command.asyncRewake",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Command hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.command.command",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Command hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.command.onFailure",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Command hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.command.shell",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Command hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.common.if",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Common fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.common.once",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Common fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.common.statusMessage",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Common fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.common.timeout",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Common fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.common.type",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Common fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.http.allowedEnvVars",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.http.headers",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.http.onFailure",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.http.url",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.mcp_tool.input",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"MCP tool hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.mcp_tool.server",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"MCP tool hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.mcp_tool.tool",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"MCP tool hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.prompt.model",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Prompt and agent hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.handler.prompt.prompt",
+      "file": "handlers.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Prompt and agent hook fields\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Add context for Claude",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Add context for Claude\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Add context for Claude.Conditional project rules",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Add context for Claude\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Add context for Claude.Environment state",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Add context for Claude\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Add context for Claude.External data",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Add context for Claude\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Calls that the classifier doesn't record",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Annotate a result for the auto mode classifier\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Hooks configured in Claude Code",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Annotate a result for the auto mode classifier\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.In-process Agent SDK callbacks",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Annotate a result for the auto mode classifier\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Interaction with rewrites",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Annotate a result for the auto mode classifier\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Length",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Annotate a result for the auto mode classifier\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Annotate a result for the auto mode classifier.Synchronous responses only",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Annotate a result for the auto mode classifier\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Block the action when a hook fails\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Background command hooks",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Block the action when a hook fails\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Can't start",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Block the action when a hook fails\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Exit code other than 0 or 2",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Block the action when a hook fails\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.HTTP error",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Block the action when a hook fails\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Invalid output",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Block the action when a hook fails\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Block the action when a hook fails.Timeout",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Block the action when a hook fails\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Decision control",
+      "file": "results.md",
+      "status": "fixed",
+      "note": "The summary of decision patterns left out WorktreeRemove (exit code only, JSON discarded); added."
+    },
+    {
+      "id": "hooks.behavior.Defer a tool call for later",
+      "file": "results.md",
+      "status": "fixed",
+      "note": "Unavailable-tool resume omitted that deferred_tool_use names the tool and what CLAUDE_CODE_DROP_UNAVAILABLE_DEFERRED_TOOL does with and without a prompt; added."
+    },
+    {
+      "id": "hooks.behavior.Emit terminal notifications",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Emit terminal notifications\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code 0",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code 0\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code 2",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code 2\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code output",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Blocking error",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Elicitation and ElicitationResult",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Non-blocking error",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Plain text, or nothing",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code output.Success",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code output.WorktreeCreate",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Exit code output.WorktreeRemove",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Exit code output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Failed hooks on Windows without Git Bash",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Failed hooks on Windows without Git Bash\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Hooks that start a background process",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Hooks that start a background process\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP response handling\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.2xx with a JSON object body",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP response handling\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.2xx with an empty body",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP response handling\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.Connection failure",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP response handling\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.Non-2xx status",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP response handling\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.HTTP response handling.Timeout",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"HTTP response handling\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Other exit codes",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Other exit codes\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.PowerShell started no program",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"PowerShell started no program\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.PowerShell started no program.To print text, such as JSON",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"PowerShell started no program\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.PowerShell started no program.To run a script written for Bash",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"PowerShell started no program\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.PowerShell started no program.To run one .exe at a path without $",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"PowerShell started no program\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.PreToolUse ask decisions in auto mode",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"PreToolUse ask decisions in auto mode\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.PreToolUse updatedInput in auto mode",
+      "file": "results.md",
+      "status": "fixed",
+      "note": "Said \"terminal and editor sessions\"; the docs name interactive terminal and VS Code sessions only; narrowed."
+    },
+    {
+      "id": "hooks.behavior.Prompt hook configuration.continueOnBlock",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Prompt hook configuration\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.impossible",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.ok",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.PermissionDenied",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.PermissionRequest",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.PostToolBatch",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.PostToolUse",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.PostToolUseFailure",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.PreToolUse",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.reason",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.Stop",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.TaskCompleted",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Response schema.TeammateIdle",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Response schema\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Timeouts",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Timeouts\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.behavior.Tools that require user interaction",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Tools that require user interaction\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Combine results from multiple hooks",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Combine results from multiple hooks\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Hook output",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Hook output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Hooks and permission modes",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Hooks and permission modes\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.HTTP hooks",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"HTTP hooks\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Limitations",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Limitations\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Prompt-based hooks",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Prompt-based hooks\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Shell profile output before the JSON",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Shell profile output before the JSON\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.guide.Structured JSON output",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks-guide.md, \"Structured JSON output\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.permissionUpdate.addDirectories",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Permission update entries\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.permissionUpdate.addRules",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Permission update entries\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.permissionUpdate.removeDirectories",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Permission update entries\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.permissionUpdate.removeRules",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Permission update entries\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.permissionUpdate.replaceRules",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Permission update entries\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.permissionUpdate.setMode",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against hooks.md, \"Permission update entries\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.troubleshooting.A plugin hook blocks a tool call or prompt",
+      "file": "results.md",
+      "status": "fixed",
+      "note": "The text omitted that the plugin-naming suffix exists from Claude Code 2.1.281; added."
+    },
+    {
+      "id": "hooks.troubleshooting.hook error notices in the transcript",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"hook error notices in the transcript\", read in full: values, defaults, messages and failure boundaries as stated."
+    },
+    {
+      "id": "hooks.troubleshooting.Hook loads but never fires",
+      "file": "results.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Hook loads but never fires\", read in full: values, defaults, messages and failure boundaries as stated."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J7.1",
+      "status": "kept",
+      "note": "Docs silent on effect; oracle 2.1.325 re-run: validate passes a hooks file with description, nothing reported."
+    },
+    {
+      "id": "J7.2",
+      "status": "kept",
+      "note": "Docs give no order; registry order is the reproducible choice; src/hooks/register.ts exists and appends in file order."
+    },
+    {
+      "id": "J7.10",
+      "status": "kept",
+      "note": "Oracle 2.1.325 re-run: extra group key, extra handler key, onFailure on a prompt hook all pass with nothing reported."
+    },
+    {
+      "id": "J7.11",
+      "status": "kept",
+      "note": "Oracle 2.1.325 re-run: missing command and unknown event warn \"entry ignored at runtime\"; timeout -1 under PreToolUse, unknown type under PermissionRequest and top-level PreToolUse are errors; file without hooks/modules is an error."
+    },
+    {
+      "id": "J7.13",
+      "status": "kept",
+      "note": "Docs define lists, not empty members; reference src/rules/hook-matcher.ts."
+    },
+    {
+      "id": "J7.14",
+      "status": "kept",
+      "note": "Oracle 2.1.325 re-run: matcher \"Bash(\" passes validate; match-nothing is the safe reading."
+    },
+    {
+      "id": "J7.15",
+      "status": "kept",
+      "note": "Docs silent; not matching is the safe reading; reference named."
+    },
+    {
+      "id": "J7.16",
+      "status": "kept",
+      "note": "Docs exclude WebSocket watches without naming the input; reference src/hooks/select/mcp-tools.ts."
+    },
+    {
+      "id": "J7.17",
+      "status": "kept",
+      "note": "Docs say runs once, not identity; reference src/hooks/select/dedupe.ts keys event, matcher text, handler fields and keeps the first, settings sources only."
+    },
+    {
+      "id": "J7.18",
+      "status": "kept",
+      "note": "Docs say \"as running ones finish\" only; reference concurrency.ts sets 12."
+    },
+    {
+      "id": "J7.19",
+      "status": "kept",
+      "note": "settings-reference.md \"disableAllHooks\" says only managed settings can disable managed hooks and nothing narrower; reading stays a judgment; reference gates.ts."
+    },
+    {
+      "id": "J7.30",
+      "status": "kept",
+      "note": "hooks-guide.md \"Fields at the wrong level\" documents the misplaced-field case and log line; extension to every unknown key stays a judgment."
+    },
+    {
+      "id": "J7.31",
+      "status": "kept",
+      "note": "Docs do not define \"sets a field\"; reference stdout-kind.ts."
+    },
+    {
+      "id": "J7.32",
+      "status": "kept",
+      "note": "Docs show only command hooks; reference notices.ts."
+    },
+    {
+      "id": "J7.33",
+      "status": "kept",
+      "note": "Docs conflict on what comes last (troubleshooting vs blocked prompt); reference exited.ts."
+    },
+    {
+      "id": "J7.34",
+      "status": "kept",
+      "note": "Docs show the allow case only; reference suspect-capture.ts."
+    },
+    {
+      "id": "J7.35",
+      "status": "kept",
+      "note": "Follows \"a failure does what exit code 2 does\"; reference on-failure.ts."
+    },
+    {
+      "id": "J7.36",
+      "status": "kept",
+      "note": "Reconciles \"Timeouts\" and onFailure sections; reference on-failure.ts."
+    },
+    {
+      "id": "J7.37",
+      "status": "kept",
+      "note": "Pre/post-2.1.309 messages checked in \"Failed hooks on Windows without Git Bash\"; reference on-failure.ts."
+    },
+    {
+      "id": "J7.38",
+      "status": "kept",
+      "note": "Docs name error and fixes, not trigger; reference powershell-no-program.ts raises it."
+    },
+    {
+      "id": "J7.39",
+      "status": "kept",
+      "note": "Docs give the exception without wording; reference http-response.ts emits \"HTTP <status>\"."
+    },
+    {
+      "id": "J7.40",
+      "status": "kept",
+      "note": "Docs give cap and preview, no wording; reference text-cap.ts emits \"Output too large (<N> characters). Full output saved to: <path>\"."
+    },
+    {
+      "id": "J7.41",
+      "status": "kept",
+      "note": "Docs list rejected sequences, not control characters; safest reading; reference terminal-sequence.ts."
+    },
+    {
+      "id": "J7.43",
+      "status": "kept",
+      "note": "Docs silent on malformed replies; non-blocking error is the neutral reading; reference prompt-response.ts."
+    },
+    {
+      "id": "J7.44",
+      "status": "kept",
+      "note": "cliArg is in the SDK PermissionUpdateDestination, not the docs table; reference permission-update.ts."
+    },
+    {
+      "id": "J7.45",
+      "status": "kept",
+      "note": "hooks-guide.md \"Combine results\" example treats exit 2 as the winning deny; reference finalize.ts."
+    },
+    {
+      "id": "J7.47",
+      "status": "kept",
+      "note": "Docs give shared cap, no separator; reference merge-simple.ts."
+    },
+    {
+      "id": "J7.49",
+      "status": "kept",
+      "note": "Docs give no layout; reference blocked-prompt.ts."
+    },
+    {
+      "id": "J7.50",
+      "status": "kept",
+      "note": "Docs name settings and agent frontmatter only; plugins treated as settings-like; reference once.ts."
+    },
+    {
+      "id": "J7.51",
+      "status": "kept",
+      "note": "Docs silent on overlap; reference once.ts claims while running."
+    },
+    {
+      "id": "J7.52",
+      "status": "kept",
+      "note": "Docs exclude no hook; reference registry.ts."
+    },
+    {
+      "id": "J7.53",
+      "status": "kept",
+      "note": "Docs allow a one-line response among text without saying which of several; reference stdout-kind.ts."
+    },
+    {
+      "id": "J7.54",
+      "status": "kept",
+      "note": "Docs \"stderr, or stdout if stderr is empty\"; blank wakes nobody; reference async.ts."
+    },
+    {
+      "id": "J7.55",
+      "status": "kept",
+      "note": "Docs name the content type, interpolate headers only; reference http.ts lets its Content-Type win."
+    },
+    {
+      "id": "J7.56",
+      "status": "kept",
+      "note": "Docs silent on mechanics; header-injection safe reading; reference http-env.ts."
+    },
+    {
+      "id": "J7.57",
+      "status": "kept",
+      "note": "Docs show one string example; reference mcp-input.ts."
+    },
+    {
+      "id": "J7.58",
+      "status": "kept",
+      "note": "Docs give placeholder, escape and append only; reference prompt-text.ts."
+    },
+    {
+      "id": "J7.59",
+      "status": "kept",
+      "note": "Docs silent on how the model learns the schema; reference prompt-response.ts."
+    },
+    {
+      "id": "J7.60",
+      "status": "kept",
+      "note": "hooks.md \"tools like Read, Grep, and Glob\", \"up to 50 turns\"; reference agent.ts uses exactly these and maxTurns 50."
+    },
+    {
+      "id": "J7.62",
+      "status": "kept",
+      "note": "hooks.md \"Security considerations\", Disclaimer: full user permissions."
+    },
+    {
+      "id": "J7.63",
+      "status": "kept",
+      "note": "Docs name command hooks only for the Ctrl+Enter kill; reference interrupt.ts."
+    },
+    {
+      "id": "J7.64",
+      "status": "kept",
+      "note": "hooks-guide.md \"Combine results\" silent on systemMessage; reference sdk-output.ts joins them."
+    },
+    {
+      "id": "J7.65",
+      "status": "kept",
+      "note": "hooks.md \"Response schema\" bullet names no continueOnBlock exception for these events; reference ok-false.ts agrees."
+    },
+    {
+      "id": "J7.61",
+      "status": "fixed",
+      "note": "Docs silent on the report (kept as a judgment), but the quoted wording did not match the evidence it names: src/hooks/select/select.ts says \"A hook of type <type> is not supported on <Event> and is skipped\"; text and row corrected."
+    }
+  ]
+}

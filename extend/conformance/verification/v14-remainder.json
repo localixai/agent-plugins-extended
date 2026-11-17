@@ -1,0 +1,49 @@
+{
+  "pass": "v14-remainder",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "13-permissions.md",
+    "14-policy-mods.md",
+    "14-policy-org.md"
+  ],
+  "requirements": [
+    {
+      "id": "permissions.behavior.MCP.A <server> that contains __ or ends in _",
+      "file": "13-permissions.md",
+      "status": "verified",
+      "note": "§13 MCP rules item 3 matches permissions.md 'MCP': wildcard form with the whole name, bare and short names read as server `reports`, deny/ask cover reports__v2."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.classic.<Event>",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Row matches admin.md table: classic.<Event> is a settings hook event."
+    },
+    {
+      "id": "policy.troubleshooting.Marketplace '<name>' is seed-managed",
+      "file": "14-policy-org.md",
+      "status": "fixed",
+      "note": "Added CLAUDE_CODE_PLUGIN_SEED_DIR, read-only, and that a bulk marketplace update skips it and updates the others (troubleshooting.md)."
+    },
+    {
+      "id": "policy.troubleshooting.Marketplace \"<name>\" is not in the allowed marketplace list",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Errors-tab line, blocklist variant, guidance line and stop-loading match troubleshooting.md."
+    },
+    {
+      "id": "policy.troubleshooting.Marketplace source '<source>' is blocked by enterprise policy",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Refused add/update/install, Allowed sources, empty allowlist, github.com Tip and refresh stop match troubleshooting.md."
+    },
+    {
+      "id": "policy.troubleshooting.Plugin \"<name>\" is blocked by your organization's policy and cannot be installed",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Install, enable, marketplace and dependency variants match troubleshooting.md."
+    }
+  ],
+  "judgments": []
+}

@@ -1,0 +1,35 @@
+{
+  "pass": "v15-fix-g4",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": ["08-mcp.md", "08-mcp-policy.md", "09-lsp-monitors-channels.md", "12-settings.md"],
+  "requirements": [
+    {
+      "id": "mcp.troubleshooting.Server is configured but never connects",
+      "file": "08-mcp.md",
+      "status": "fixed",
+      "note": "§8.3 item 1 now points to the new §8.3.1, which states every MCP validator message of the 2.1.321 corpus with its fixed wording, severity and finding path (unknown type, url without type, non-object server config, schema type errors with the 'silently drops this server' tail, missing MCP servers file, non-regular or oversized file). Evidence: oracle 2.1.321, corpus (validator-messages.md); got number/boolean/null and the size-cap wording from oracle 2.1.325 (J8.27)."
+    },
+    {
+      "id": "cli.errors.MCP server name is reserved",
+      "file": "08-mcp.md",
+      "status": "fixed",
+      "note": "§8.5 item 5 had no marker (spec-fixes); it now carries this id, sourced from errors.md, \"MCP server name is reserved\", and gives the documented fix (rename where defined). The plugin-key exception stays Judgment J8.12."
+    },
+    {
+      "id": "mcp.behavior.Mark tools that are safe to call twice",
+      "file": "08-mcp.md",
+      "status": "fixed",
+      "note": "§8.10.2 now states what a pending call that is not repeated returns to Claude (errors.md, \"MCP server connection closed before the tool call was answered\", docs: marker)."
+    }
+  ],
+  "judgments": [
+    { "id": "J8.26", "status": "fixed", "note": "New: how a stdio server's command line is quoted under CLAUDE_CODE_SHELL_PREFIX (§8.2.1); env-vars.md gives the single shell-quoted $1, not per-element quoting." },
+    { "id": "J8.27", "status": "fixed", "note": "New: the validator's <kind> values and the size-cap wording for MCP server files; oracle 2.1.325 on own minimal inputs beside the 2.1.321 corpus." },
+    { "id": "J8.28", "status": "fixed", "note": "New: a plugin server's resources go under its scoped name, as its prompts (J8.12)." },
+    { "id": "J9.16", "status": "fixed", "note": "New: the LSP requests behind the seven operations of tools-reference.md, \"LSP tool behavior\" (§9.1.4 item 5)." },
+    { "id": "J12.10", "status": "fixed", "note": "Severity stated: a broken plugin settings.json or a dropped key is a load warning, never a plugin failure, and the validator reports nothing. Added the oracle 2.1.321 corpus evidence (no finding on kindex, claude-crew, claude-music, just-ship; each loads)." },
+    { "id": "J12.13", "status": "fixed", "note": "The allowManagedHooksOnly case is now documented (statusline.md, \"Subagent status lines\": plugin values never run under it, even force-enabled) and stated with a docs: marker; the judgment keeps only the disableAllHooks-outside-managed and --safe-mode cases." },
+    { "id": "J12.16", "status": "fixed", "note": "New: the run and failure rules of the subagentStatusLine command, taken from statusLine (§12.6.1)." }
+  ]
+}

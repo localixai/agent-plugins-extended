@@ -1,0 +1,1093 @@
+{
+  "pass": "v13-cli-bridge",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "17-cli.md",
+    "18-bridge.md"
+  ],
+  "requirements": [
+    {
+      "id": "cli.command.claude plugin",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI commands\"."
+    },
+    {
+      "id": "cli.plugin.JSON result format.command",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON result format\"."
+    },
+    {
+      "id": "cli.plugin.JSON result format.outcome",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON result format\"."
+    },
+    {
+      "id": "cli.plugin.JSON result format.message",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON result format\"."
+    },
+    {
+      "id": "cli.plugin.JSON result for marketplace commands",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON result for marketplace commands\"."
+    },
+    {
+      "id": "cli.plugin.Which scope the command updates",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Which scope the command updates\"."
+    },
+    {
+      "id": "cli.plugin.plugin install",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin install\"."
+    },
+    {
+      "id": "cli.plugin.plugin install.-s, --scope <scope>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin install\"."
+    },
+    {
+      "id": "cli.plugin.plugin install.--config <key=value>",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "Value checking is not in the docs: the row now cites Judgment J17.26 for it and J17.3 for the usage error."
+    },
+    {
+      "id": "cli.plugin.plugin install.-y, --yes",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin install\"."
+    },
+    {
+      "id": "cli.plugin.plugin install.--accept-command <sha256>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin install\"."
+    },
+    {
+      "id": "cli.plugin.plugin install.--json",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin install\"."
+    },
+    {
+      "id": "cli.plugin.plugin install.--marketplace <source>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin install\"."
+    },
+    {
+      "id": "manifest.troubleshooting.The userConfig dialog never appears",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "Added the bundled-MCP variant of the undeclared --config key line, the <server>.<key> keys it lists, and the URL-referenced bundle case."
+    },
+    {
+      "id": "cli.plugin.Accept a displayed install command",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Accept a displayed install command\"."
+    },
+    {
+      "id": "cli.plugin.plugin uninstall.-s, --scope <scope>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin uninstall\"."
+    },
+    {
+      "id": "cli.plugin.plugin uninstall.--keep-data",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin uninstall\"."
+    },
+    {
+      "id": "cli.plugin.plugin uninstall.--prune",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin uninstall\"."
+    },
+    {
+      "id": "cli.plugin.plugin uninstall.-y, --yes",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin uninstall\"."
+    },
+    {
+      "id": "cli.plugin.plugin uninstall.--json",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin uninstall\"."
+    },
+    {
+      "id": "cli.plugin.What an uninstall deletes and keeps",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"What an uninstall deletes and keeps\"."
+    },
+    {
+      "id": "cli.plugin.plugin disable.-s, --scope <scope>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin disable\"."
+    },
+    {
+      "id": "cli.plugin.plugin disable.-a, --all",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin disable\"."
+    },
+    {
+      "id": "cli.plugin.plugin disable.--json",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin disable\"."
+    },
+    {
+      "id": "cli.plugin.plugin enable",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin enable\"."
+    },
+    {
+      "id": "cli.plugin.plugin disable",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin disable\"."
+    },
+    {
+      "id": "cli.plugin.Update by bare name",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Update by bare name\"."
+    },
+    {
+      "id": "cli.plugin.Retry an unfinished dependency install",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Retry an unfinished dependency install\"."
+    },
+    {
+      "id": "cli.plugin.plugin list",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin list\"."
+    },
+    {
+      "id": "cli.plugin.plugin list.--json",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin list\"."
+    },
+    {
+      "id": "cli.plugin.plugin list.--available",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin list\"."
+    },
+    {
+      "id": "cli.plugin.plugin list.--data-size [plugin]",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin list\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.id",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.version",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.scope",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.enabled",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.installPath",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.readFromFolder",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.folderVersion",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.installedAt",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.lastUpdated",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.projectPath",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.mcpServers",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.errors",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.notes",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.errorDetails",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.noteDetails",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.hasUserConfig",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.projectEnabled",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.dataDirSize",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.dataDirUnreadable",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.pluginId",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.name",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.marketplaceName",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.source",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.description",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.JSON output.installCount",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"JSON output\"."
+    },
+    {
+      "id": "cli.plugin.plugin details.Component inventory",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin details\"."
+    },
+    {
+      "id": "cli.plugin.plugin details.Projected token cost",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin details\"."
+    },
+    {
+      "id": "cli.plugin.plugin details.Per-component (rounded)",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin details\"."
+    },
+    {
+      "id": "cli.plugin.plugin configure",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin configure\"."
+    },
+    {
+      "id": "cli.plugin.plugin prune.-s, --scope <scope>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin prune\"."
+    },
+    {
+      "id": "cli.plugin.plugin prune.--dry-run",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin prune\"."
+    },
+    {
+      "id": "cli.plugin.plugin prune.-y, --yes",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin prune\"."
+    },
+    {
+      "id": "cli.plugin.plugin prune.-y",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin prune\"."
+    },
+    {
+      "id": "cli.plugin.plugin tag",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin tag\"."
+    },
+    {
+      "id": "cli.plugin.plugin tag.--dry-run",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin tag\"."
+    },
+    {
+      "id": "cli.plugin.plugin tag.--push",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin tag\"."
+    },
+    {
+      "id": "cli.plugin.plugin tag.--remote <name>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin tag\"."
+    },
+    {
+      "id": "cli.plugin.plugin tag.-f, --force",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin tag\"."
+    },
+    {
+      "id": "cli.plugin.plugin tag.-m, --message <msg>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin tag\"."
+    },
+    {
+      "id": "cli.plugin.Validate a directory..claude-plugin/marketplace.json",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Validate a directory\"."
+    },
+    {
+      "id": "cli.plugin.Validate a directory",
+      "file": "17-cli.md",
+      "status": "deviates",
+      "note": "J17.14 re-checked on 2.1.325 (2026-11-16): a directory holding only skills/x/SKILL.md prints Validating components in, Validating skill, and fails on unparsable frontmatter; the docs name only the .claude directories. Reference 2.1.319 agrees."
+    },
+    {
+      "id": "cli.plugin.Validate a directory.A SKILL.md at the plugin root",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Validate a directory\"."
+    },
+    {
+      "id": "cli.plugin.Validate a directory.A CLAUDE.md at the plugin root",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Validate a directory\"."
+    },
+    {
+      "id": "cli.plugin.Validate a directory.Plugin files in a marketplace run",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Validate a directory\"."
+    },
+    {
+      "id": "cli.plugin.Validate a manifest file",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Validate a manifest file\"."
+    },
+    {
+      "id": "cli.rule.Validate the manifest.Errors",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/manifest-reference.md, \"Validate the manifest\"."
+    },
+    {
+      "id": "cli.rule.Validate the manifest.Warnings",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/manifest-reference.md, \"Validate the manifest\"."
+    },
+    {
+      "id": "cli.rule.Validate the manifest.Validation passed",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/manifest-reference.md, \"Validate the manifest\"."
+    },
+    {
+      "id": "cli.rule.Validate the manifest.Validation passed with warnings",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/manifest-reference.md, \"Validate the manifest\"."
+    },
+    {
+      "id": "cli.rule.Validate the manifest.Validation failed",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/manifest-reference.md, \"Validate the manifest\"."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.1",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Output and exit codes\"."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.2",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Output and exit codes\"."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.0",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Output and exit codes\"."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.success",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Output and exit codes\"."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.strict",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Output and exit codes\"."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.target",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Output and exit codes\"."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.manifest",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Output and exit codes\"."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.contents",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Output and exit codes\"."
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.advice",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Output and exit codes\"."
+    },
+    {
+      "id": "cli.plugin.Advice on the README",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"Advice on the README\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add.--scope <scope>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add.--sparse <paths...>",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add.--claudeai",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add.--json",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add.owner/repo",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add.https://github.com/owner/repo",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add.http://",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add../path",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace add..json",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace add\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace list.name",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace list\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace list.source",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace list\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace list.repo",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace list\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace list.url",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace list\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace list.path",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace list\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace list.ref",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace list\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace list.installLocation",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace list\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace remove",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace remove\"."
+    },
+    {
+      "id": "cli.plugin.plugin marketplace update",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches plugins/cli-reference.md, \"plugin marketplace update\"."
+    },
+    {
+      "id": "cli.flag.--plugin-dir",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "Removed an undocumented, unmarked claim that the .zip extension is compared without regard to case (reference-only behaviour, no judgment)."
+    },
+    {
+      "id": "cli.flag.--plugin-url",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--bare",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "Added what headless.md \"Start faster with bare mode\" says: hooks from --settings and from a flag-loaded plugin still do not run under --bare."
+    },
+    {
+      "id": "cli.flag.--safe-mode",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--disable-slash-commands",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--restricted",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--setting-sources",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--settings",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--add-dir",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "Completed the permissions.md list: .claude/commands/ and the enabledPlugins/extraKnownMarketplaces keys of the added directory settings also load; permissions.additionalDirectories persists file access only, loading none of it."
+    },
+    {
+      "id": "cli.flag.--agent",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--agents",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--tools",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--permission-mode",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--mcp-config",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "Added the shorter wait in a self-hosted environment and that a server with a cached tool list connects on first use."
+    },
+    {
+      "id": "cli.flag.--strict-mcp-config",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--channels",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.flag.--dangerously-load-development-channels",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches cli-reference.md, \"CLI flags\"."
+    },
+    {
+      "id": "cli.debug.Check resolved settings",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches debug-your-config.md, \"Check resolved settings\"."
+    },
+    {
+      "id": "cli.debug.Check hooks",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches debug-your-config.md, \"Check hooks\"."
+    },
+    {
+      "id": "cli.debug.Test against a clean configuration",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches debug-your-config.md, \"Test against a clean configuration\"."
+    },
+    {
+      "id": "cli.debug.Test against a clean configuration.CLAUDE.md",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches debug-your-config.md, \"Test against a clean configuration\"."
+    },
+    {
+      "id": "cli.debug.Test against a clean configuration.Problem gone",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches debug-your-config.md, \"Test against a clean configuration\"."
+    },
+    {
+      "id": "cli.debug.Test against a clean configuration.Problem persists",
+      "file": "17-cli.md",
+      "status": "verified",
+      "note": "Matches debug-your-config.md, \"Test against a clean configuration\"."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J17.1",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: init/eval/test are documented but neither load nor run a plugin; 2.1.325 --help confirms restore-set-aside and validate --profile, absent from the 2.1.321 docs."
+    },
+    {
+      "id": "J17.2",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs name no stream or key order; the marketplace-remove example matches the order."
+    },
+    {
+      "id": "J17.3",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs give no wording; oracle 2.1.325: claude plugin frob and claude plugin marketplace frob print unknown command, exit 1."
+    },
+    {
+      "id": "J17.4",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "fixed: install_records_unreadable is documented (plugins/troubleshooting.md, installed_plugins.json record that this version cannot read) and was listed as missing; now among the documented codes."
+    },
+    {
+      "id": "J17.5",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: the bare-name refusal is documented for update only."
+    },
+    {
+      "id": "J17.6",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs quote one refusal wording only."
+    },
+    {
+      "id": "J17.7",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs give no exit code for the non-TTY row."
+    },
+    {
+      "id": "J17.8",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs say what the digest binds, not how it is computed."
+    },
+    {
+      "id": "J17.9",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: oracle 2.1.325 claude --plugin-dir p plugin list prints Version:, Path:, Status: loaded."
+    },
+    {
+      "id": "J17.10",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs give the field without a format."
+    },
+    {
+      "id": "J17.11",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: oracle 2.1.325 details prints Skills (1) a and < 20."
+    },
+    {
+      "id": "J17.12",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs give labels only."
+    },
+    {
+      "id": "J17.13",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: oracle 2.1.325: missing path exit 1 File not found under file; /dev/null/x exit 2 ENOTDIR, nothing on stdout."
+    },
+    {
+      "id": "J17.14",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept (E4a): re-run on 2.1.325, see the deviates entry."
+    },
+    {
+      "id": "J17.15",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: oracle 2.1.325 --json entries are {path,message,code} and file results carry type."
+    },
+    {
+      "id": "J17.16",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs give one example of each set."
+    },
+    {
+      "id": "J17.17",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs say only that the origin remote fills it."
+    },
+    {
+      "id": "J17.18",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: oracle 2.1.325 with an empty CLAUDE_CONFIG_DIR lists anthropic-plugin-directory as Built in (Anthropic Directory) in text."
+    },
+    {
+      "id": "J17.19",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs give no unknown-name case."
+    },
+    {
+      "id": "J17.20",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs give the plural example only."
+    },
+    {
+      "id": "J17.21",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs say check the exit code without giving it."
+    },
+    {
+      "id": "J17.22",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs list reasons, not wording."
+    },
+    {
+      "id": "J17.23",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs describe the refusals without quoting; managed-settings.md confirms disableSideloadFlags covers --agents and --mcp-config."
+    },
+    {
+      "id": "J17.24",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs list only what each mode turns off."
+    },
+    {
+      "id": "J17.26",
+      "file": "17-cli.md",
+      "status": "fixed",
+      "note": "fixed: the evidence claimed the docs say values are \"validated against the schema\"; plugins/cli-reference.md says nothing about checking --config values. Decision unchanged."
+    },
+    {
+      "id": "J17.27",
+      "file": "17-cli.md",
+      "status": "kept",
+      "note": "kept: docs say only \"then the result\"."
+    },
+    {
+      "id": "J18.1",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §7.3.6 tool_input is the input the call would use and the mcp profile is emitted after client-side transformation."
+    },
+    {
+      "id": "J18.2",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §7.3.3 forbids passing results; core §7.3.7 mcp result is the CallToolResult."
+    },
+    {
+      "id": "J18.3",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept; the rule text it governs was fixed: the UserPromptSubmit and PreToolUse rows now defer to §7.5.4 item 1 / §7.5.11 (exit-code block before a JSON block) instead of plain first-in-order."
+    },
+    {
+      "id": "J18.4",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §7.3.5-§7.3.6 make failure-blocking optional; §7.4.1 non-blocking default."
+    },
+    {
+      "id": "J18.5",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: §7.3.8 gives 600 s and 30 s on UserPromptSubmit for command hooks; core §7.3.3 allows client limits."
+    },
+    {
+      "id": "J18.6",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §7.3.4 and §7.5.5 fork/clear/resume/compact values agree."
+    },
+    {
+      "id": "J18.7",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §7.3.5 and §7.5.8 agree."
+    },
+    {
+      "id": "J18.8",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §7.3.7 includes failure results and excludes calls without a completed result."
+    },
+    {
+      "id": "J18.9",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §7.3.8 counts client-specific continuations and allows a finite limit; §7.5.22 cap of eight."
+    },
+    {
+      "id": "J18.10",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: §8.5 items 1-3 give the scheme and normalisation; the acme.tools example normalises correctly."
+    },
+    {
+      "id": "J18.11",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §7.2.1 maps to native configuration and leaves authorization to the client."
+    },
+    {
+      "id": "J18.12",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §9.1 lets the client choose the base environment; §3.3 table matches."
+    },
+    {
+      "id": "J18.13",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §9.1 data directory per installed instance, kept across updates, MAY delete on uninstall."
+    },
+    {
+      "id": "J18.14",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §7.1 leaves exposure to the client; §4.8.1 item 3 appends ARGUMENTS."
+    },
+    {
+      "id": "J18.15",
+      "file": "18-bridge.md",
+      "status": "fixed",
+      "note": "fixed: evidence cited only core §5.1 (manifest fields) for why entry component fields do not apply; now also core §6.1 (fixed locations, nothing configured beside them)."
+    },
+    {
+      "id": "J18.16",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: sdk-tools.d.ts 0.3.321 BashOutput, FileReadOutput (text, image, notebook, pdf, parts) and WebSearchOutput shapes; §7.6.6 makes only Write, Edit, Read paths absolute."
+    },
+    {
+      "id": "J18.17",
+      "file": "18-bridge.md",
+      "status": "fixed",
+      "note": "fixed: \"(core §7.3.3, §7.4.1)\" read §7.4.1 as a core section; the core has none, it is this specification's §7.4.1."
+    },
+    {
+      "id": "J18.18",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: core §9.2 forbids only PLUGIN_ROOT/PLUGIN_DATA in env."
+    },
+    {
+      "id": "J18.19",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: re-run on 2.1.325: acme.tools passes with warnings (not kebab-case, Claude Code accepts it); author without name gives author.name: Invalid input, homepage docs.example.com gives Invalid URL, extensions gives Unknown field. Core §5.5 allows the period."
+    },
+    {
+      "id": "J18.20",
+      "file": "18-bridge.md",
+      "status": "kept",
+      "note": "kept: re-built the §18.3.5 example in the scratch folder: claude plugin validate --strict on 2.1.325 passes with empty contents and no manifest errors or warnings; without README.md the directory checks report README_MISSING and ICON_MISSING; the handler gives the core denial, the Claude Code denial, and nothing for npm test. The Checked paragraph now says the run had no README.md."
+    }
+  ]
+}

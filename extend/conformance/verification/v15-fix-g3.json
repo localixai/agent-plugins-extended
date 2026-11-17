@@ -1,0 +1,42 @@
+{
+  "pass": "v15-fix-g3",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "07-hooks/configuration.md",
+    "07-hooks/handlers.md",
+    "07-hooks/results.md",
+    "07-hooks/events.md",
+    "07-hooks/tools.md"
+  ],
+  "requirements": [
+    {
+      "id": "hooks.output.UserPromptSubmit.suppressOriginalPrompt",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "The bullet said 'when the prompt is blocked', the 'Several handlers' line 'any': both now tie the flag to a handler that itself blocks (decision or exit 2), as hooks.md 'UserPromptSubmit decision control' words it ('if true when the hook blocks the prompt'); Judgment J7.144."
+    },
+    {
+      "id": "hooks.troubleshooting.Hook loads but never fires",
+      "file": "07-hooks/results.md",
+      "status": "fixed",
+      "note": "§7.4.12 item 1 now gives the debug log's location, the 'Hooks: <Event>:<value> [<command>] ... (<N>ms)' line from 2.1.296 and the 'completed with status' variant without a duration (hooks.md 'Debug hooks'); new item 2 splits what the hook runner exposes from what the host writes (Judgment J7.67)."
+    },
+    {
+      "id": "hooks.guide.Stop hook hits the block cap",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "The loop-protection paragraph now points to J7.136 for which tool calls reset the count; J7.136 names PreToolUse, PostToolUse, PostToolUseFailure (hooks.md 'Stop input': resets 'each time Claude calls a tool')."
+    }
+  ],
+  "judgments": [
+    { "id": "J7.20", "status": "fixed", "note": "New. The hooks-file validator messages of §7.2.1.1 with exact wording and severity (oracle 2.1.321 corpus; oracle 2.1.325 validate), the linked hooks directory warning, and the runtime outcome: an invalid-JSON hooks file loses its hooks only, the plugin's command still loads (oracle 2.1.325, claude -p --plugin-dir), while a broken PreToolUse group or a top-level PreToolUse makes the plugin unavailable." },
+    { "id": "J7.57", "status": "fixed", "note": "Now says what null becomes (the empty string), how numbers and booleans are written, the path grammar, and that non-string input values are sent unchanged. Lead: reference mcp-input.ts." },
+    { "id": "J7.66", "status": "fixed", "note": "New. CLAUDE_CODE_SHELL_PREFIX wraps shell-form Bash hooks with the literal command in $1; exec-form and PowerShell hooks are not wrapped (env-vars.md; oracle 2.1.325)." },
+    { "id": "J7.67", "status": "fixed", "note": "New. Which facts of a finished run a hook runner returns and that the debug line's text is the host's (§7.4.12)." },
+    { "id": "J7.107", "status": "fixed", "note": "Was 'the same effect as on UserPromptSubmit', which is empty: an expansion's block message never quotes the typed line (oracle 2.1.325, claude -p). Now: accepted, no effect." },
+    { "id": "J7.136", "status": "fixed", "note": "Names the reset: the tool call itself; a library resets on PreToolUse, PostToolUse, PostToolUseFailure, not on PermissionRequest, PermissionDenied or PostToolBatch." },
+    { "id": "J7.144", "status": "fixed", "note": "New. suppressOriginalPrompt counts only from a handler that itself blocks; the reference takes any handler's. Oracle 2.1.325 -p cannot tell: its block message has no 'Original prompt:' line at all." },
+    { "id": "J7.210", "status": "fixed", "note": "New. A Read rule matches an LSP call's filePath, relative paths resolved against the working directory, for every operation (tools-reference.md table; LSP input type)." }
+  ]
+}

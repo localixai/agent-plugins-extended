@@ -1,0 +1,13 @@
+{
+  "pass": "v15-fix-g9",
+  "date": "2026-11-17",
+  "release": "2.1.321",
+  "files": ["18-bridge.md"],
+  "requirements": [],
+  "judgments": [
+    {"id": "J18.7", "status": "fixed", "note": "UserPromptSubmit turns are classified by origin: user, sdk, poll_event and peer/channel messages fire; loop_wakeup, schedule_wakeup, task notifications and auto-continuation do not; a `system` turn's origin must come from the host, never a default. Evidence: core §7.3.5; UserPromptSubmitHookInput.source, sdk.d.ts 0.3.321. Implementation must stop defaulting `system` to skip."},
+    {"id": "J18.16", "status": "fixed", "note": "file.read text is the call's tool_result string byte for byte (PostToolBatch tool_response), never `file.content` renumbered; no profile without it. Evidence: hooks.md, PostToolBatch ('line-number-prefixed text'), tools-reference.md Read; core §7.3.7 'returned to the agent'. Implementation must drop its cat -n fallback."},
+    {"id": "J18.21", "status": "fixed", "note": "New: host-only profile facts (declared MCP name, CallToolResult, shell exit code, Read text) are supplied by the host or the profile is omitted; the full name determines the MCP name only with one `__` after `mcp__`; `0` on PostToolUse only without BashOutput.returnCodeInterpretation. Evidence: core §7.3.6-§7.3.7; sdk-tools.d.ts 0.3.321; §8.5."},
+    {"id": "J18.22", "status": "fixed", "note": "New: a failed core handler's notice is `<hook name> hook error: [<command args>]: <cause>` with Claude Code's non-blocking cause for a nonzero status, the launch error, Claude Code's timeout text, and two invalid-output causes of our own; core reasons join by one newline in handler order, empty ones left out, after Claude Code's message. Evidence: §7.4.1.2-§7.4.1.3, §7.5.4; core §7.3.5-§7.3.8."}
+  ]
+}

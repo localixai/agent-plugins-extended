@@ -1,0 +1,1330 @@
+{
+  "pass": "v10-org-mods-policy-hosting",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "14-policy-org.md",
+    "14-policy-mods.md",
+    "15-marketplace-hosting.md"
+  ],
+  "requirements": [
+    {
+      "id": "policy.key.disableSideloadFlags",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.loading.Skills-directory plugins blocked by managed settings.Confirm the cause",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.loading.Skills-directory plugins blocked by managed settings.Customization locked to plugins",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.loading.Skills-directory plugins blocked by managed settings.Load the whole plugin",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.loading.Skills-directory plugins blocked by managed settings.Marketplace sources restricted",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.managed.Keys only a managed source can set.disableSideloadFlags",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Aliases for the marketplace keys",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Allow the official marketplace and your own",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.file and directory",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.git",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.github",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.github owner wildcard",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.hostPattern",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.pathPattern",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.skills-dir",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Allowlist with strictKnownMarketplaces.url",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Blocklist with blockedMarketplaces",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix",
+      "file": "14-policy-org.md",
+      "status": "fixed",
+      "note": "Scope note for syncClaudeAiPlugins now includes --settings, per settings-reference.md."
+    },
+    {
+      "id": "policy.org.Control matrix.allowedChannelPlugins",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.allowManagedHooksOnly",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.allowManagedModsOnly",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.blockedMarketplaces",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.disableCommandPluginSources",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.disableSideloadFlags",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.enabledPlugins",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.pluginSuggestionMarketplaces",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.pluginTrustMessage",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.strictKnownMarketplaces",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.strictPluginOnlyCustomization",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Control matrix.syncClaudeAiPlugins",
+      "file": "14-policy-org.md",
+      "status": "fixed",
+      "note": "Scope missed --settings files (settings-reference.md, syncClaudeAiPlugins Scope)."
+    },
+    {
+      "id": "policy.org.How entries match",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Keep skills-directory plugins loading",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Lock every source out",
+      "file": "14-policy-org.md",
+      "status": "fixed",
+      "note": "Added the second way to stop synced plugins: turning Skills off for the organization on claude.ai."
+    },
+    {
+      "id": "policy.org.Plan for what managed settings can't enforce",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Recommend plugins",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Require a marketplace and its plugins.--plugin-dir copies",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Require a marketplace and its plugins.autoUpdate",
+      "file": "14-policy-org.md",
+      "status": "fixed",
+      "note": "Said only that autoUpdate 'fixes' auto-update; now states true keeps marketplace and plugins refreshing, false turns it off, either locks the user's toggle."
+    },
+    {
+      "id": "policy.org.Require a marketplace and its plugins.Marketplaces",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Require a marketplace and its plugins.source",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Require plugins per repository",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Restrict what users can install",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Restrict what users can install.At session start",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Restrict what users can install.Before a download",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Restrict what users can install.The claude.ai admin console",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Policy still applies",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Read-only",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Seed entries take precedence",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Update and remove fail",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Troubleshoot policy",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.org.Which managed source applies on a machine",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.overview.Enable channels for your organization",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.overview.Restrict which channel plugins can run",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Allow only the official marketplace",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Allowed source types.directory",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Allowed source types.file",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Allowed source types.git",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Allowed source types.github",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Allowed source types.hostPattern",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Allowed source types.pathPattern",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Allowed source types.skills-dir",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Allowed source types.url",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Behavior",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Can be overridden",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Purpose",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Settings file",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.Source format",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Combine with extraKnownMarketplaces.When enforced",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Exact matching",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace key aliases",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace source types",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.directory",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.file",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.Folder trust",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.git",
+      "file": "14-policy-org.md",
+      "status": "fixed",
+      "note": "Added any host, the git clone authentication (credential helpers or SSH keys), GITHUB_TOKEN only through a helper, and that LFS files are pointer files with a count in the add/update output."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.github",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.Header filter",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.settings",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.strict",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Marketplace source types.url",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Owner wildcards.Matching source spellings",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Owner wildcards.Owner case",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Owner wildcards.path",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.reference.Owner wildcards.ref",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.relevance.Enable suggestions in managed settings",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.rule.Source objects in settings",
+      "file": "14-policy-org.md",
+      "status": "fixed",
+      "note": "The list omitted the settings and npm source types the policy lists accept (marketplace-reference.md, Marketplace sources table); rows added."
+    },
+    {
+      "id": "policy.rule.Source values valid only in policy lists",
+      "file": "14-policy-org.md",
+      "status": "fixed",
+      "note": "The intro miscounted ('seven types', 'three forms'; there are four policy-only forms). Rewritten to name the four."
+    },
+    {
+      "id": "policy.security.Enforce plugin controls for your organization",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.troubleshooting.--plugin-dir is disabled by your organization's managed settings (disableSideloadFlags)",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.troubleshooting.Command-sourced plugins are disabled by your organization's managed settings",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.troubleshooting.Plugins from ~/.claude/skills/ are blocked by your organization's managed settings",
+      "file": "14-policy-org.md",
+      "status": "verified",
+      "note": "Checked against the section in full; behaviour, values and messages match."
+    },
+    {
+      "id": "policy.overview.Control mods for your organization",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/overview.md, \"policy.overview.Control mods for your organization\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading",
+      "file": "14-policy-mods.md",
+      "status": "fixed",
+      "note": "Refusal line placement corrected: the debug log always, the transcript only in a session that hot-reloads a plugin directory (troubleshoot.md, Messages from the built-in guard); text said transcript unconditionally."
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.No mod a user brings runs its hooks",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Stop user-installed mods from loading.No mod a user brings runs its hooks\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.Your organization's mods still run",
+      "file": "14-policy-mods.md",
+      "status": "fixed",
+      "note": "Added the docs' consequence that with no organization's mod no installed mod runs its hooks."
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.Users can't undo it",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Stop user-installed mods from loading.Users can't undo it\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.Users' other customizations keep working",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Stop user-installed mods from loading.Users' other customizations keep working\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Stop user-installed mods from loading.Built-in mods keep running",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Stop user-installed mods from loading.Built-in mods keep running\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know what happens by default",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know what happens by default\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.Mods are on",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know what happens by default.Mods are on\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.A built-in guard runs first",
+      "file": "14-policy-mods.md",
+      "status": "fixed",
+      "note": "Added that a long-lived CLAUDE_CODE_OAUTH_TOKEN does not count as a Team/Enterprise /login even when one is stored."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.The guard protects what you manage",
+      "file": "14-policy-mods.md",
+      "status": "fixed",
+      "note": "Precedence of deny/ask rules and PreToolUse blocks is the default only: added 'unless allowModsToOverrideDenyRules is set' (docs: 'by default')."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.A user's mod can still skip some prompts",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know what happens by default.A user's mod can still skip some prompts\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Settings hooks keep working",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which controls still apply.Settings hooks keep working\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Managed hooks run first",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which controls still apply.Managed hooks run first\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Network policy covers $.http.fetch",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which controls still apply.Network policy covers $.http.fetch\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Plugin controls cover mods",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which controls still apply.Plugin controls cover mods\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Mods can't change the permission prompt",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which controls still apply.Mods can't change the permission prompt\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which controls still apply.Trust prompts come first",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which controls still apply.Trust prompts come first\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which controls still apply",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which controls still apply\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.prompt.compose",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.prompt.compose\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.prompt.section",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.prompt.section\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.prompt.context",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.prompt.context\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.prompt.attachment",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.prompt.attachment\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.skill.prompt",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.skill.prompt\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.attribution.text",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.attribution.text\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.session.compact",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.session.compact\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.settings.read",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.settings.read\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.session.append{door=attachment}",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.session.append{door=attachment}\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.session.append{door=hook-context}",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.session.append{door=hook-context}\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Know which hooks of a user's mod don't run.session.append{door=compaction}",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Know which hooks of a user's mod don't run.session.append{door=compaction}\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Install your organization's mods and set the order\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.enabledPlugins",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Install your organization's mods and set the order.enabledPlugins\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.extraKnownMarketplaces",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Install your organization's mods and set the order.extraKnownMarketplaces\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.prependPlugins",
+      "file": "14-policy-mods.md",
+      "status": "fixed",
+      "note": "Added where an unlisted organization's mod runs: after the guard and the prependPlugins mods (events.md, The order mods run in)."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.appendPlugins",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Install your organization's mods and set the order.appendPlugins\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.The list replaces the default",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Install your organization's mods and set the order.The list replaces the default\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.Your own ids must count as yours",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Install your organization's mods and set the order.Your own ids must count as yours\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.Repositories can't set either list",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Install your organization's mods and set the order.Repositories can't set either list\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Install your organization's mods and set the order.The same line with tier user",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Install your organization's mods and set the order.The same line with tier user\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Set options on the built-in guard.The id has one form here",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Set options on the built-in guard.The id has one form here\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Set options on the built-in guard.Only managed settings count",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Set options on the built-in guard.Only managed settings count\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Set options on the built-in guard.The guard has to load",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Set options on the built-in guard.The guard has to load\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Set options on the built-in guard.The guard fails closed",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Set options on the built-in guard.The guard fails closed\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.allowManagedModsOnly",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Choose how much to allow.allowManagedModsOnly\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.Only your organization's mods",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Choose how much to allow.Only your organization's mods\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.allowManagedHooksOnly",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Choose how much to allow.allowManagedHooksOnly\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.disableAllHooks",
+      "file": "14-policy-mods.md",
+      "status": "fixed",
+      "note": "Managed disableAllHooks keeps Agent SDK in-process hooks running (settings-reference.md, disableAllHooks); text said every hook stops."
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.disableSideloadFlags",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Choose how much to allow.disableSideloadFlags\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Choose how much to allow.Any mod from marketplaces you approve",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Choose how much to allow.Any mod from marketplaces you approve\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Allow only your organization's mods\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.pluginConfigs",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Allow only your organization's mods.pluginConfigs\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.disableSideloadFlags",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Allow only your organization's mods.disableSideloadFlags\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.Your mod",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Allow only your organization's mods.Your mod\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.A mod the user installed",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Allow only your organization's mods.A mod the user installed\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Allow only your organization's mods.A plugin directory",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Allow only your organization's mods.A plugin directory\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Apply your plugin controls to mods",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Apply your plugin controls to mods\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Apply your plugin controls to mods.See which plugins load across your fleet",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Apply your plugin controls to mods.See which plugins load across your fleet\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Apply your plugin controls to mods.Set up CI and containers",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Apply your plugin controls to mods.Set up CI and containers\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Apply your plugin controls to mods.Offer mods your users may install",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Apply your plugin controls to mods.Offer mods your users may install\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.plugin.register",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Enforce a policy with a mod of your own.plugin.register\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.e.tier",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Enforce a policy with a mod of your own.e.tier\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.e.uses.calls",
+      "file": "14-policy-mods.md",
+      "status": "fixed",
+      "note": "Added 'sorted, each once' from PluginRegisterUses.calls (claude-code index.d.ts)."
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.tool.call",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Enforce a policy with a mod of your own.tool.call\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.fs.write",
+      "file": "14-policy-mods.md",
+      "status": "verified",
+      "note": "Checked against plugins/mods/admin.md, \"Enforce a policy with a mod of your own.fs.write\"; states the behaviour, values and messages as the docs do."
+    },
+    {
+      "id": "marketplace.publish.Control who can install",
+      "file": "15-marketplace-hosting.md",
+      "status": "fixed",
+      "note": "Text said the client adds no access control of its own, which contradicts the policy lists of 14.8.3; now: the catalog carries none, managed policy limits what a user may add."
+    },
+    {
+      "id": "marketplace.hosting.Register the marketplace for everyone in a repository",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Avoid relative-path entries in a URL-hosted marketplace",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.troubleshooting.Plugins with relative paths fail in URL-based marketplaces",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Edit plugins in place on a shared directory",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.create.Test an edit to a plugin",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Keep plugin files out of Git LFS",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Share files within a marketplace with symlinks.Within the plugin's own directory",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Share files within a marketplace with symlinks.Elsewhere within the same marketplace",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Share files within a marketplace with symlinks.Outside the marketplace",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Stay within the download limits for hosted files.Entries",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Stay within the download limits for hosted files.File size",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Stay within the download limits for hosted files.Total size",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Stay within the download limits for hosted files.Compression ratio",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.GitHub owner/repo",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.git@host:path.git",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.https://example.com/repo.git",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.SSH",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Grant access to a private marketplace.HTTPS",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Serve users who have no git-host account",
+      "file": "15-marketplace-hosting.md",
+      "status": "fixed",
+      "note": "Text read sha256 pinning as part of the archive source; the docs advise it. Now: an entry should pin it so a changed download is refused."
+    },
+    {
+      "id": "marketplace.troubleshooting.Git clone timed out after 120s",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace add fails on a GitHub Enterprise Server host",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.SSH remotes",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.HTTPS remotes with a stored credential",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.The checkout is up to date",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.Store a credential",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.What background auto-update does with credentials.Keep the checkout on failure",
+      "file": "15-marketplace-hosting.md",
+      "status": "fixed",
+      "note": "Added that the offline repeat applies to marketplaces with auto-update on (troubleshooting.md)."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace updates keep failing offline",
+      "file": "15-marketplace-hosting.md",
+      "status": "fixed",
+      "note": "Added that the offline repeat applies to marketplaces with auto-update on."
+    },
+    {
+      "id": "marketplace.hosting.Authenticate archive downloads",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Add a headersHelper to a plugin entry",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Command text",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Output",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Shell and working directory",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Variables Claude Code removes",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Write the headersHelper command.Variables Claude Code sets",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output.Command fails",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output.Redirect leaves the origin",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output.Entry sets a routing or identity header",
+      "file": "15-marketplace-hosting.md",
+      "status": "fixed",
+      "note": "Text named the dropped set as exactly Host, Cookie, X-Forwarded-*; Claude Code drops 21 names and three prefixes (oracle 2.1.325). Now \"such as\" with the exact set in J15.12."
+    },
+    {
+      "id": "marketplace.hosting.When Claude Code skips a headersHelper command or drops its output.Managed settings block the command",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.How users accept a headersHelper command.Terminal session",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.How users accept a headersHelper command.Shell",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.How users accept a headersHelper command.VS Code extension",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Installs and updates that refuse a command instead of asking",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.When a marketplace url source's command runs.--settings",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.When a marketplace url source's command runs..claude/settings.json",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.When a marketplace url source's command runs.Server-managed settings",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Depend on and recommend other plugins",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do.Restrict what else users install",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do.Mark a plugin deprecated",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do.Turn on auto-update for your users",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.hosting.Work around what a marketplace can't do.Carry git credentials",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "marketplace.publish.Prepare your plugin for release",
+      "file": "15-marketplace-hosting.md",
+      "status": "fixed",
+      "note": "Added the validation report of component paths not starting with ./ (step 3)."
+    },
+    {
+      "id": "marketplace.publish.Ship a plugin with your own tool",
+      "file": "15-marketplace-hosting.md",
+      "status": "fixed",
+      "note": "Removed the invented claim that the client offers no other entry point for a tool (publish.md names --plugin-url, --plugin-dir and CLI hints)."
+    },
+    {
+      "id": "marketplace.anthropic.Deprecated claude-code-plugins marketplace",
+      "file": "15-marketplace-hosting.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J14.5",
+      "status": "kept",
+      "note": "org.md says only 'shows the policy error'; reference gate.ts reads it the same way."
+    },
+    {
+      "id": "J14.6",
+      "status": "kept",
+      "note": "org.md lists the spellings, settings-reference.md says only 'a wider set of forms'; matches the reference git-url.ts (host lower case, path keeps case)."
+    },
+    {
+      "id": "J14.7",
+      "status": "kept",
+      "note": "The docs say regex matched anywhere and name no dialect."
+    },
+    {
+      "id": "J14.8",
+      "status": "kept",
+      "note": "troubleshooting.md quotes one line and 'the rejected flags'; the reference sideload.ts appends ': unset the variable'."
+    },
+    {
+      "id": "J14.9",
+      "status": "kept",
+      "note": "The docs say 'appends' and name no separator."
+    },
+    {
+      "id": "J14.10",
+      "status": "kept",
+      "note": "settings-reference.md gives the string form and no split rule; names cannot contain @."
+    },
+    {
+      "id": "J14.11",
+      "status": "fixed",
+      "note": "The label list missed settings:<name> and npm:<package>, both valid policy-list and marketplace source types (reference gate.ts LABELS)."
+    },
+    {
+      "id": "J14.12",
+      "status": "fixed",
+      "note": "Kept the decision (list order places the guard; omitted means no guard), stated by admin.md 'follows the order you list' and its example; evidence now names events.md's default order (guard before prependPlugins mods), the reading it resolves, and agrees with \u00a710 events.md tier table."
+    },
+    {
+      "id": "J14.13",
+      "status": "fixed",
+      "note": "Kept: docs are silent on the guard in appendPlugins; evidence completed with settings-reference.md appendPlugins skipping ids that do not count as the organization's, and the reference implementation's mod-order.ts reading."
+    },
+    {
+      "id": "J15.12",
+      "status": "fixed",
+      "note": "Was exactly Host, Cookie, X-Forwarded-*. Oracle 2.1.325 validate warns for 21 names (forwarded, x-real-ip, via, te, content-length...) and prefixes x-forwarded-, x-original-, proxy-, with _ read as -; same list in installed 2.1.319/2.1.322/2.1.325 builds. Docs say \"such as\", so it stays a judgment, now with the full set."
+    }
+  ]
+}

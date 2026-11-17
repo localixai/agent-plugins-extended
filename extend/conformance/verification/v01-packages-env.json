@@ -1,0 +1,1580 @@
+{
+  "pass": "v01-packages-env",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "01-packages.md",
+    "02-manifest.md",
+    "03-environment.md",
+    "06-styles.md",
+    "11-workflows.md"
+  ],
+  "requirements": [
+    {
+      "id": "layout.Manifest",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.components.Explore the plugin directory",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Skills",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Commands",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Agents",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Hooks",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.MCP servers",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.LSP servers",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Output styles",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Workflows",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Themes",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Monitors",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Executables",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.Settings",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "layout.components.Executables",
+      "file": "01-packages.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.Invalid JSON syntax: <parse error>",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.Unrecognized fields",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.Unknown field '<key>'",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.$schema",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.name",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.displayName",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.version",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.description",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.author",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.homepage",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.repository",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.license",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.keywords",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.metadata",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.icon",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.documentationUrl",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.supportUrl",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.privacyPolicyUrl",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.termsOfServiceUrl",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.defaultEnabled",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.dependencies",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.settings",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.userConfig",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.types",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.channels",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.skills",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "The cell lacked the two directory shapes the docs allow (a folder of <name>/SKILL.md folders, or one folder holding SKILL.md) and that \".\" names the root; added."
+    },
+    {
+      "id": "manifest.field.commands",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.agents",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.hooks",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.mcpServers",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.lspServers",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.outputStyles",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.workflows",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.experimental",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.experimental.themes",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.experimental.monitors",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.field.experimental.evals",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "Added that the directory is below the plugin root and that `claude plugin eval --eval-dir` overrides it."
+    },
+    {
+      "id": "manifest.rule.name.claude-",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.name.claude",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.name.official",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.displayName",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.version",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.metadata",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.Directory listing fields",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.defaultEnabled",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.dependencies",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.settings",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.Containment and existence",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.commands path not found: <path>",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.Path-only fields",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.How each key combines with its default location.Replaces the default",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.How each key combines with its default location.Adds to the default",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.How each key combines with its default location.Merges",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.Warning: No commands found in plugin <name> custom directory",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.rule.hooks",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.File not found: <path>",
+      "file": "02-manifest.md",
+      "status": "deviates",
+      "note": "J2.1 (E4a): docs give File not found for a directory without a manifest; re-run on 2.1.325 2026-11-16: a manifest-less dir with skills/ validates its components, a dir with only a README reports No manifest found, a missing path reports File not found. Earlier evidence 2.1.319."
+    },
+    {
+      "id": "manifest.troubleshooting.claude plugin validate reports errors.No frontmatter block found",
+      "file": "02-manifest.md",
+      "status": "fixed",
+      "note": "§2.11 lacked the documented marketplace prefix of entry-manifest problems (`plugins[1] plugin.json → json: ...`); added. The frontmatter rule itself was right."
+    },
+    {
+      "id": "manifest.troubleshooting.--plugin-dir at a marketplace root doesn't load the plugins under plugins/",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.Files the plugin references outside its directory aren't found",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.${CLAUDE_PLUGIN_ROOT} shows forward slashes on Windows",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.Plugin loads but its skills are missing",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.Skill loads but Claude never invokes the skill",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.The userConfig dialog never appears",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "manifest.troubleshooting.Plugin <name> has conflicting manifests",
+      "file": "02-manifest.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.variable.${CLAUDE_PLUGIN_ROOT}",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.variable.${CLAUDE_PLUGIN_DATA}",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.variable.${CLAUDE_PROJECT_DIR}",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.component.Hook commands",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.component.Monitor commands",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.component.stdio",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.component.http",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.component.LSP servers",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.component.Skill, command, and agent content",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.rule.Quoting and path separators",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDECODE",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "Missing that editor extensions also set it in their integrated terminals; added."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SESSION_ID",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_PID",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SUBPROCESS_ENV_SCRUB",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.ANTHROPIC_API_KEY",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.AWS_SECRET_ACCESS_KEY",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.NPM_TOKEN",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.DB_PASSWORD",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.DATABASE_URL",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.PIP_INDEX_URL",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.CLAUDE_CONFIG_DIR",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GITHUB_TOKEN",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GH_TOKEN",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GH_ENTERPRISE_TOKEN",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GITHUB_ENTERPRISE_TOKEN",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.HTTP_PROXY",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.HTTPS_PROXY",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GIT_CONFIG_COUNT",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GIT_CONFIG_KEY_<n>",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.What the subprocess environment scrub removes.GIT_CONFIG_VALUE_<n>",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MCP_ALLOWLIST_ENV",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.field.type",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.field.title",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.field.description",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.field.required",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.field.default",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.field.options",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.field.multiple",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "Said the value \"is\" an array; the docs say `multiple` allows an array of strings. Now \"may be\"."
+    },
+    {
+      "id": "userConfig.field.sensitive",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.field.min",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.field.max",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.rule.Limit a field to fixed options",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.rule.Where values are stored",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "The whole-entry-per-plugin-id merge is not in the docs; now cites Judgment J12.3, which decides it."
+    },
+    {
+      "id": "userConfig.rule.Reference a saved value",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.shell.Shell-form hook commands",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.shell.Monitor commands",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.shell.headersHelper",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "userConfig.components.When the configuration dialog appears",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.components.Install dependencies into the data directory",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_ENV_FILE",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.behavior.Reload skills that a hook installs",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.Set variables in settings files.~/.claude/settings.json",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.Set variables in settings files..claude/settings.json",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.Set variables in settings files..claude/settings.local.json",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.Set variables in settings files.Managed settings",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.Precedence",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CONFIG_DIR",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_CACHE_DIR",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_SEED_DIR",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_DIRS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_DIR_WATCH",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SYNC_PLUGIN_INSTALL",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SYNC_PLUGIN_INSTALL_TIMEOUT_MS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_ENABLE_BACKGROUND_PLUGIN_REFRESH",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_TMPDIR",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "Missing: the sandbox fallback applies on macOS and Linux and lands under the system default; the native-Windows $TMPDIR/%TEMP% rule; own temp files always use the override. Added."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_POLICY_SKILLS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_WORKFLOWS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.SLASH_COMMAND_TOOL_CHAR_BUDGET",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_GIT_TIMEOUT_MS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_KEEP_MARKETPLACE_ON_FAILURE",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_PLUGIN_PREFER_HTTPS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_OFFICIAL_MARKETPLACE_AUTOINSTALL",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.DISABLE_AUTOUPDATER",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.DISABLE_UPDATES",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.FORCE_AUTOUPDATE_PLUGINS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.DISABLE_TELEMETRY",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.DO_NOT_TRACK",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SESSIONEND_HOOKS_TIMEOUT_MS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_STOP_HOOK_BLOCK_CAP",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_PERMISSION_PROMPT_NOTIFY_HOOKS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_TIMEOUT",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_TOOL_TIMEOUT",
+      "file": "03-environment.md",
+      "status": "fixed",
+      "note": "Missing: stdio/WebSocket have no per-request timer, a server `timeout` above 60000 also raises the per-request limit, a lower variable shortens only the overall timeout, a server `timeout` below 1000 is ignored. Added."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MCP_TOOL_IDLE_TIMEOUT",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_CONNECTION_NONBLOCKING",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_CONNECT_TIMEOUT_MS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MCP_STARTUP_WAIT_MS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_SERVER_CONNECTION_BATCH_SIZE",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_REMOTE_SERVER_CONNECTION_BATCH_SIZE",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_DISABLE_MCP_TASK_BACKGROUND",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MAX_MCP_OUTPUT_TOKENS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MAX_MCP_DESCRIPTION_LENGTH",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_DISCOVERY_CACHE",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_DISCOVERY_CACHE_TTL_S",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_DISCOVERY_CACHE_MAX_STALE_S",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_DISCOVERY_CACHE_STRIKES",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_SDK_GENERATION",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_PROTOCOL_NEGOTIATION",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_CLIENT_SECRET",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.MCP_OAUTH_CALLBACK_PORT",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.ENABLE_CLAUDEAI_MCP_SERVERS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SUBAGENT_MODEL",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SUBAGENT_MODEL_FORCE",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH",
+      "file": "03-environment.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "outputStyles.frontmatter.name",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "outputStyles.frontmatter.description",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "outputStyles.frontmatter.keep-coding-instructions",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "outputStyles.frontmatter.force-for-plugin",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "outputStyles.behavior.Create a custom output style",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "themes.components.Themes and output styles",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "outputStyles.behavior.How output styles work",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "themes.config.Create a custom theme.name",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "themes.config.Create a custom theme.base",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "themes.config.Create a custom theme.overrides",
+      "file": "06-styles.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.What the saved script looks like",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Edit a saved script.phases",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Edit a saved script.meta block",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Edit a saved script.Body",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Distribute a workflow in a plugin",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Save the workflow for reuse",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Edit a saved script.Timestamps and randomness",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Behavior and limits.import()",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Behavior and limits.parallel()",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Pass input to a saved workflow",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Behavior and limits.No mid-run user input",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Behavior and limits.1,000 agents total per run",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Set a size guideline.unrestricted",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Set a size guideline.small",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Set a size guideline.medium",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Set a size guideline.large",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.One agent",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.Every agent",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.agent stalled on all 6 attempts",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.agent lost its reply on all 6 attempts",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.agent abandoned after 6 attempts",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.When an agent stalls and restarts.Awaited directly",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Which agents run again.Completed",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Which agents run again.Still running when you stopped",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Which agents run again.Failed",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Resume after you leave the session",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.When a run hits your usage limit",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    },
+    {
+      "id": "workflows.behavior.Turn workflows off",
+      "file": "11-workflows.md",
+      "status": "verified",
+      "note": "Text matches the docs section of 2.1.321."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J1.1",
+      "status": "kept",
+      "note": "Docs silent on a root plugin.json. Oracle 2.1.325 re-run 2026-11-16: a dir with only a root plugin.json (core $schema, unknown field) and skills/ validates as a plugin without a manifest, nothing about the file."
+    },
+    {
+      "id": "J1.2",
+      "status": "kept",
+      "note": "Docs silent. Oracle 2.1.325 re-run: same dir plus .claude-plugin/plugin.json validates on that manifest alone."
+    },
+    {
+      "id": "J2.1",
+      "status": "kept",
+      "note": "E4a deviation; evidence re-run on 2.1.325 (see requirement note)."
+    },
+    {
+      "id": "J2.2",
+      "status": "kept",
+      "note": "Docs silent on the exemption. Oracle 2.1.325 re-run: marketplace claude-plugins-official listing claude-foo passes; renamed my-market fails with the reserved-name error at plugins[0].name; plugin dir alone draws it plus the \"validate the marketplace\" hint."
+    },
+    {
+      "id": "J2.3",
+      "status": "kept",
+      "note": "Docs silent on the BOM. Re-run on 2.1.325 with a minimal plugin: manifest read past the mark (its unknown field reported), hooks/hooks.json with the mark draws Invalid JSON syntax; evidence line extended. Note: 2.1.325 words that error \"At runtime this breaks the entire plugin load\", against the docs (\"loads the plugin without the hooks\"); the spec keeps the docs."
+    },
+    {
+      "id": "J2.4",
+      "status": "kept",
+      "note": "Docs do not name the folders. Oracle 2.1.325 re-run: a skill with broken YAML under a declared ./extra/ draws no finding."
+    },
+    {
+      "id": "J3.1",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.2",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.3",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.4",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.5",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.6",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.7",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.8",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.9",
+      "status": "kept",
+      "note": "Oracle 2.1.325 re-run: string option with default 5 and number with min 1 max 0 pass."
+    },
+    {
+      "id": "J3.10",
+      "status": "kept",
+      "note": "Docs say only \"plain label of 1 to 64 characters\". Oracle 2.1.325 re-run: repeated-case, leading-space messages as in the table."
+    },
+    {
+      "id": "J3.11",
+      "status": "kept",
+      "note": "Docs state it; oracle 2.1.325 re-run: required:false without default draws the table message."
+    },
+    {
+      "id": "J3.12",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.13",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.14",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.15",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.16",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.17",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.18",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.19",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.20",
+      "status": "kept",
+      "note": "Oracle 2.1.325 re-run: hooks file warning at hooks.PostToolUse naming ${CLAUDE_PROJECT_DIR}, ${CLAUDE_PLUGIN_ROOT} in order (bare $NAME counted); quoted and powershell hooks silent."
+    },
+    {
+      "id": "J3.21",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J3.22",
+      "status": "kept",
+      "note": "Docs silent on this edge as stated; decision is the safest reading; evidence as named."
+    },
+    {
+      "id": "J6.2",
+      "status": "kept",
+      "note": "Docs silent on this edge (output-styles.md, terminal-config.md, plugins/components.md re-read); decision and evidence hold."
+    },
+    {
+      "id": "J6.3",
+      "status": "kept",
+      "note": "Docs silent on this edge (output-styles.md, terminal-config.md, plugins/components.md re-read); decision and evidence hold."
+    },
+    {
+      "id": "J6.4",
+      "status": "kept",
+      "note": "Docs silent on this edge (output-styles.md, terminal-config.md, plugins/components.md re-read); decision and evidence hold."
+    },
+    {
+      "id": "J6.5",
+      "status": "kept",
+      "note": "Docs silent on this edge (output-styles.md, terminal-config.md, plugins/components.md re-read); decision and evidence hold."
+    },
+    {
+      "id": "J6.6",
+      "status": "kept",
+      "note": "Docs silent on this edge (output-styles.md, terminal-config.md, plugins/components.md re-read); decision and evidence hold."
+    },
+    {
+      "id": "J6.7",
+      "status": "kept",
+      "note": "Docs silent on this edge (output-styles.md, terminal-config.md, plugins/components.md re-read); decision and evidence hold."
+    },
+    {
+      "id": "J6.9",
+      "status": "kept",
+      "note": "Docs silent on this edge (output-styles.md, terminal-config.md, plugins/components.md re-read); decision and evidence hold."
+    },
+    {
+      "id": "J6.10",
+      "status": "kept",
+      "note": "Docs silent on this edge (output-styles.md, terminal-config.md, plugins/components.md re-read); decision and evidence hold."
+    },
+    {
+      "id": "J6.11",
+      "status": "kept",
+      "note": "Docs silent on this edge (output-styles.md, terminal-config.md, plugins/components.md re-read); decision and evidence hold."
+    },
+    {
+      "id": "J11.1",
+      "status": "kept",
+      "note": "Docs silent on this edge (workflows.md re-read in full); decision and evidence hold."
+    },
+    {
+      "id": "J11.2",
+      "status": "kept",
+      "note": "Docs silent on this edge (workflows.md re-read in full); decision and evidence hold."
+    },
+    {
+      "id": "J11.3",
+      "status": "kept",
+      "note": "Docs silent on this edge (workflows.md re-read in full); decision and evidence hold."
+    },
+    {
+      "id": "J11.4",
+      "status": "kept",
+      "note": "workflows.md states no filesystem or shell access; the judgment adds network only, which the docs do not name. Kept."
+    },
+    {
+      "id": "J11.5",
+      "status": "kept",
+      "note": "Docs silent on this edge (workflows.md re-read in full); decision and evidence hold."
+    },
+    {
+      "id": "J11.6",
+      "status": "kept",
+      "note": "Docs silent on this edge (workflows.md re-read in full); decision and evidence hold."
+    },
+    {
+      "id": "J11.7",
+      "status": "kept",
+      "note": "Docs silent on this edge (workflows.md re-read in full); decision and evidence hold."
+    }
+  ]
+}

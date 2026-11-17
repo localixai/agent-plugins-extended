@@ -1,0 +1,1384 @@
+{
+  "pass": "v06-mcp-settings",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "08-mcp.md",
+    "12-settings.md"
+  ],
+  "requirements": [
+    {
+      "id": "mcp.components.MCP servers",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"MCP servers\"."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Plugin-provided MCP servers\"."
+    },
+    {
+      "id": "mcp.source..json",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/manifest-reference.md, \"mcpServers\"."
+    },
+    {
+      "id": "mcp.source.Inline map",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/manifest-reference.md, \"mcpServers\"."
+    },
+    {
+      "id": "mcp.source.MCP bundle path",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/manifest-reference.md, \"mcpServers\"."
+    },
+    {
+      "id": "mcp.source.MCP bundle URL",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/manifest-reference.md, \"mcpServers\"."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.Multiple transport types",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Plugin-provided MCP servers\"."
+    },
+    {
+      "id": "mcp.behavior.Add MCP servers from JSON configuration",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Add MCP servers from JSON configuration\"."
+    },
+    {
+      "id": "mcp.behavior.Option 3: Add a local stdio server",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Option 3: Add a local stdio server\"."
+    },
+    {
+      "id": "mcp.behavior.Option 1: Add a remote HTTP server",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Option 1: Add a remote HTTP server\"."
+    },
+    {
+      "id": "mcp.behavior.Option 2: Add a remote SSE server",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Option 2: Add a remote SSE server\"."
+    },
+    {
+      "id": "mcp.behavior.Option 4: Add a remote WebSocket server",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Option 4: Add a remote WebSocket server\"."
+    },
+    {
+      "id": "mcp.troubleshooting.Server is configured but never connects",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Server is configured but never connects\"."
+    },
+    {
+      "id": "mcp.troubleshooting.Invalid MCP server config for \"<server>\": <error>.Missing environment variables: <names>",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Invalid MCP server config for \"<server>\": <error>\"."
+    },
+    {
+      "id": "mcp.troubleshooting.Invalid MCP server config for \"<server>\": <error>.URL is unset or invalid",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Invalid MCP server config for \"<server>\": <error>\"."
+    },
+    {
+      "id": "mcp.troubleshooting.Invalid MCP server config for \"<server>\": <error>.has an invalid MCP url",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Invalid MCP server config for \"<server>\": <error>\"."
+    },
+    {
+      "id": "mcp.troubleshooting.Server works with --plugin-dir but fails after install",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Server works with --plugin-dir but fails after install\"."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.Path placeholders",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Plugin-provided MCP servers\"."
+    },
+    {
+      "id": "mcp.components.Server names, tool names, and reloads.Substitution",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Server names, tool names, and reloads\"."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.User environment access",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Plugin-provided MCP servers\"."
+    },
+    {
+      "id": "mcpSettings.behavior.Example with variable expansion",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Example with variable expansion\"."
+    },
+    {
+      "id": "mcpSettings.behavior.Unset variables without a default",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Unset variables without a default\"."
+    },
+    {
+      "id": "mcpSettings.behavior.Variables set to an empty string",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Variables set to an empty string\"."
+    },
+    {
+      "id": "mcpSettings.behavior.Credential variables that read as empty",
+      "file": "08-mcp.md",
+      "status": "fixed",
+      "note": "Added that a covered variable read as empty draws no missing-variable warning (mcp.md, \"Unset variables without a default\" and \"Configuration warnings\")."
+    },
+    {
+      "id": "mcp.components.Server names, tool names, and reloads.Server name",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Server names, tool names, and reloads\"."
+    },
+    {
+      "id": "mcp.components.Server names, tool names, and reloads.Tool names",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Server names, tool names, and reloads\"."
+    },
+    {
+      "id": "mcp.behavior.Tools with names longer than 128 characters",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Tools with names longer than 128 characters\"."
+    },
+    {
+      "id": "mcp.behavior.Execute MCP prompts",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Execute MCP prompts\"."
+    },
+    {
+      "id": "mcp.behavior.Use dynamic headers for custom authentication",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Use dynamic headers for custom authentication\"."
+    },
+    {
+      "id": "mcp.behavior.Use dynamic headers for custom authentication.CLAUDE_CODE_MCP_SERVER_NAME",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Use dynamic headers for custom authentication\"."
+    },
+    {
+      "id": "mcp.behavior.Use dynamic headers for custom authentication.CLAUDE_CODE_MCP_SERVER_URL",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Use dynamic headers for custom authentication\"."
+    },
+    {
+      "id": "mcp.behavior.Use dynamic headers for custom authentication.CLAUDE_PLUGIN_ROOT",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Use dynamic headers for custom authentication\"."
+    },
+    {
+      "id": "mcp.behavior.Where the helper runs.A plugin",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Where the helper runs\"."
+    },
+    {
+      "id": "mcp.behavior.Where the helper runs..mcp.json",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Where the helper runs\"."
+    },
+    {
+      "id": "mcp.behavior.Where the helper runs.mcpServers",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Where the helper runs\"."
+    },
+    {
+      "id": "mcp.behavior.Where the helper runs.--add-dir",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Where the helper runs\"."
+    },
+    {
+      "id": "mcp.behavior.Which variables a helper can read",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Which variables a helper can read\"."
+    },
+    {
+      "id": "mcp.behavior.Trust a folder before its headersHelper runs.Trust that doesn't count",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Trust a folder before its headersHelper runs\"."
+    },
+    {
+      "id": "mcp.behavior.Trust a folder before its headersHelper runs.Until you trust the folder",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Trust a folder before its headersHelper runs\"."
+    },
+    {
+      "id": "mcp.behavior.Trust a folder before its headersHelper runs.Trust without a dialog",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Trust a folder before its headersHelper runs\"."
+    },
+    {
+      "id": "mcp.behavior.Authenticate with remote MCP servers",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Authenticate with remote MCP servers\"."
+    },
+    {
+      "id": "mcp.behavior.Use a fixed OAuth callback port",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Use a fixed OAuth callback port\"."
+    },
+    {
+      "id": "mcp.behavior.Use pre-configured OAuth credentials",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Use pre-configured OAuth credentials\"."
+    },
+    {
+      "id": "mcp.behavior.Override OAuth metadata discovery",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Override OAuth metadata discovery\"."
+    },
+    {
+      "id": "mcp.behavior.Restrict OAuth scopes",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Restrict OAuth scopes\"."
+    },
+    {
+      "id": "mcp.behavior.Use OAuth with a server behind an authenticating proxy",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Use OAuth with a server behind an authenticating proxy\"."
+    },
+    {
+      "id": "mcp.components.Server names, tool names, and reloads.Reload",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Server names, tool names, and reloads\"."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.Automatic lifecycle",
+      "file": "08-mcp.md",
+      "status": "fixed",
+      "note": "§8.8: the `cached` status was said of any remote server; the docs limit it to an http or sse plugin server used before. /cd connecting and disconnecting plugin servers now carries its 2.1.246 floor."
+    },
+    {
+      "id": "mcp.components.Include a packaged MCPB server",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Include a packaged MCPB server\"."
+    },
+    {
+      "id": "mcp.troubleshooting.Bundled MCP server \"<name>\" was not started: it needs configuration",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Bundled MCP server \"<name>\" was not started: it needs configuration\"."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Output warning threshold",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"MCP output limits and warnings\"."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Default limit",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"MCP output limits and warnings\"."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Configurable limit",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"MCP output limits and warnings\"."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Scope",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"MCP output limits and warnings\"."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Over the limit",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"MCP output limits and warnings\"."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Response size from HTTP and SSE servers",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"MCP output limits and warnings\"."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Message size from WebSocket servers",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"MCP output limits and warnings\"."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Character limit for text results",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"MCP output limits and warnings\"."
+    },
+    {
+      "id": "mcp.behavior.MCP output limits and warnings.Error results",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"MCP output limits and warnings\"."
+    },
+    {
+      "id": "mcp.behavior.Raise the limit for a specific tool",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Raise the limit for a specific tool\"."
+    },
+    {
+      "id": "mcp.behavior.Require approval for a specific tool",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Require approval for a specific tool\"."
+    },
+    {
+      "id": "mcp.behavior.Mark tools that are safe to call twice",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Mark tools that are safe to call twice\"."
+    },
+    {
+      "id": "mcp.behavior.Tool input schemas with a root-level combinator",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Tool input schemas with a root-level combinator\"."
+    },
+    {
+      "id": "mcp.behavior.Tools with invalid input schemas",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Tools with invalid input schemas\"."
+    },
+    {
+      "id": "mcp.behavior.Tools whose input schema the API refuses",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Tools whose input schema the API refuses\"."
+    },
+    {
+      "id": "mcp.behavior.Images in tool results",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Images in tool results\"."
+    },
+    {
+      "id": "mcp.behavior.Respond to MCP elicitation requests",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Respond to MCP elicitation requests\"."
+    },
+    {
+      "id": "mcp.behavior.Elicitation modes Claude Code declares",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Elicitation modes Claude Code declares\"."
+    },
+    {
+      "id": "mcpSettings.behavior.Disable a server without removing it",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Disable a server without removing it\"."
+    },
+    {
+      "id": "mcpSettings.behavior.How references appear in /mcp and CLI output",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"How references appear in /mcp and CLI output\"."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.stdio server",
+      "file": "08-mcp.md",
+      "status": "fixed",
+      "note": "§8.10.6 item 3 said claude mcp get hides values of any plugin server that can carry credentials; the docs name stdio and WebSocket servers only."
+    },
+    {
+      "id": "mcp.behavior.Plugin-provided MCP servers.WebSocket server",
+      "file": "08-mcp.md",
+      "status": "verified",
+      "note": "Checked against mcp.md, \"Plugin-provided MCP servers\"."
+    },
+    {
+      "id": "settingsMerge.settings.Compare the scope of each settings file.~/.claude/settings.json",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Compare the scope of each settings file\"."
+    },
+    {
+      "id": "settingsMerge.settings.Compare the scope of each settings file.acme-app/.claude/settings.json",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Compare the scope of each settings file\"."
+    },
+    {
+      "id": "settingsMerge.settings.Compare the scope of each settings file.acme-app/.claude/settings.local.json",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Compare the scope of each settings file\"."
+    },
+    {
+      "id": "settingsMerge.settings.Compare the scope of each settings file.Managed settings",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Compare the scope of each settings file\"."
+    },
+    {
+      "id": "settingsMerge.settings.Find or create your settings files.Managed",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Find or create your settings files\"."
+    },
+    {
+      "id": "settingsMerge.settings.Find or create your settings files.Shared project",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Find or create your settings files\"."
+    },
+    {
+      "id": "settingsMerge.settings.Find or create your settings files.User",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Find or create your settings files\"."
+    },
+    {
+      "id": "settingsMerge.settings.Where Claude Code keeps the local file in a git repository",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Where Claude Code keeps the local file in a git repository\"."
+    },
+    {
+      "id": "settingsMerge.settings.Edit a settings file",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Edit a settings file\"."
+    },
+    {
+      "id": "settingsMerge.settings.Change a setting for one session.--settings",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Change a setting for one session\"."
+    },
+    {
+      "id": "settingsMerge.settings.Change a setting for one session.A flag for that key",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Change a setting for one session\"."
+    },
+    {
+      "id": "settingsMerge.settings.Change a setting for one session.An environment variable",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Change a setting for one session\"."
+    },
+    {
+      "id": "settingsMerge.settings.When edits take effect",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"When edits take effect\"."
+    },
+    {
+      "id": "settingsMerge.settings.Fix a broken settings file.Settings Error",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Fix a broken settings file\"."
+    },
+    {
+      "id": "settingsMerge.settings.Fix a broken settings file.Settings Warning",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Fix a broken settings file\"."
+    },
+    {
+      "id": "settingsMerge.settings.Fix a broken settings file.Managed settings",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Fix a broken settings file\"."
+    },
+    {
+      "id": "settingsMerge.settings.Fix a broken settings file.Configuration error",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Fix a broken settings file\"."
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.Managed settings",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.Command line",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.Project local settings",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.Shared project settings",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Settings precedence.User settings",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.behavior.Settings precedence",
+      "file": "12-settings.md",
+      "status": "fixed",
+      "note": "The marker sat on the stack intro while permissions.md \"Settings precedence\" is about permission rules; moved it to §12.3.1 item 1 and stated that no level overrides a managed rule and that a deny at any scope blocks an allow at any other, in both directions."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.disableClaudeAiConnectors",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.enableArtifact",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.isolatePeerMachines",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.permissions.denyInsteadOfPrompting",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.autoMode.classifyAllShell",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.remoteControlAtStartup",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.crossSessionInbound",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.useAutoModeDuringPlan",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.syncClaudeAiSkills",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.syncClaudeAiPlugins",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.Exceptions to managed settings precedence.maxEffortLevel",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Exceptions to managed settings precedence\"."
+    },
+    {
+      "id": "settingsMerge.settings.A value you set is ignored.A higher level sets it",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"A value you set is ignored\"."
+    },
+    {
+      "id": "settingsMerge.settings.A value you set is ignored.A security key keeps its strict value",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"A value you set is ignored\"."
+    },
+    {
+      "id": "settingsMerge.settings.A value you set is ignored.The file can't set that value",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"A value you set is ignored\"."
+    },
+    {
+      "id": "settingsMerge.settings.A value you set is ignored.The file is broken",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"A value you set is ignored\"."
+    },
+    {
+      "id": "settingsMerge.settings.A committed key doesn't reach teammates",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"A committed key doesn't reach teammates\"."
+    },
+    {
+      "id": "settingsMerge.settings.A managed change hasn't reached you",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"A managed change hasn't reached you\"."
+    },
+    {
+      "id": "settingsMerge.settings.Permission rules combine differently than you expected",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Permission rules combine differently than you expected\"."
+    },
+    {
+      "id": "settingsMerge.settings.Lists merge instead of overriding",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings.md, \"Lists merge instead of overriding\"."
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Split a file-based policy across teams\"."
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams.Single values",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Split a file-based policy across teams\"."
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams.Lists",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Split a file-based policy across teams\"."
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams.Nested blocks",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Split a file-based policy across teams\"."
+    },
+    {
+      "id": "settingsMerge.managed.Split a file-based policy across teams.fallbackModel",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Split a file-based policy across teams\"."
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources.Policy key",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"How Claude Code combines managed sources\"."
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources.Admin source",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"How Claude Code combines managed sources\"."
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"How Claude Code combines managed sources\"."
+    },
+    {
+      "id": "settingsMerge.managed.When an admin document counts as present",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"When an admin document counts as present\"."
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources.\"first-wins\", the default",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"How Claude Code combines managed sources\"."
+    },
+    {
+      "id": "settingsMerge.managed.How Claude Code combines managed sources.\"merge\"",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"How Claude Code combines managed sources\"."
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Keys read from every admin source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.sandbox.network.allowManagedDomainsOnly",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Keys read from every admin source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.allowAllClaudeAiMcps",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Keys read from every admin source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.allowManagedMcpServersOnly",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Keys read from every admin source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.deniedMcpServers",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Keys read from every admin source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.sandbox.filesystem.disabled",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Keys read from every admin source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Keys read from every admin source.env",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Keys read from every admin source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Which managed source supplies login keys",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Which managed source supplies login keys\"."
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Lists",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Compose every managed source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Locks",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Compose every managed source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Restriction allowlists",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Compose every managed source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Values taken whole",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Compose every managed source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Provided MCP servers",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Compose every managed source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.env",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Compose every managed source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Login keys",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Compose every managed source\"."
+    },
+    {
+      "id": "settingsMerge.managed.Compose every managed source.Every other key",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against managed-settings.md, \"Compose every managed source\"."
+    },
+    {
+      "id": "settings.components.Default settings.File over manifest",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Default settings\"."
+    },
+    {
+      "id": "settings.components.Default settings.User settings over plugin defaults",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Default settings\"."
+    },
+    {
+      "id": "settings.components.Default settings.Two plugins set the same key",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against plugins/components.md, \"Default settings\"."
+    },
+    {
+      "id": "settings.key.agent",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.allowedChannelPlugins",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.allowedHttpHookUrls",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.allowManagedHooksOnly",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.appendPlugins",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.blockedMarketplaces",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.channelsEnabled",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.crossSessionInbound",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.disableAgentView",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.disableAllHooks",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.disableBundledSkills",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.disableCommandPluginSources",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.disableSkillShellExecution",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.disableWorkflows",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.enabledPlugins",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.enableWorkflows",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.env",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.extraKnownMarketplaces",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.hooks",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.httpHookAllowedEnvVars",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.isolatePeerMachines",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.outputStyle",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.pluginConfigs",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.pluginSuggestionMarketplaces",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.pluginTrustMessage",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.prependPlugins",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.processWrapper",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.skillOverrides",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.statusLine",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.strictKnownMarketplaces",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization.skills",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization.agents",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization.hooks",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.strictPluginOnlyCustomization.mcp",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.syncClaudeAiPlugins",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.syncClaudeAiSkills",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.teammateMode",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.theme",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.workflowKeywordTriggerEnabled",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.workflowSizeGuideline",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.worktree",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.worktree.baseRef",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.worktree.symlinkDirectories",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.worktree.sparsePaths",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.worktree.bgIsolation",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.key.worktree.location",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Managed and SDK hooks run",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"What runs under allowManagedHooksOnly\"."
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Force-enabled plugin hooks run",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"What runs under allowManagedHooksOnly\"."
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Monitors from other plugins are blocked",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"What runs under allowManagedHooksOnly\"."
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Everything else is blocked",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"What runs under allowManagedHooksOnly\"."
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly.Command-sourced plugins are disabled",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"What runs under allowManagedHooksOnly\"."
+    },
+    {
+      "id": "settings.reference.What runs under allowManagedHooksOnly",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"What runs under allowManagedHooksOnly\"."
+    },
+    {
+      "id": "settings.reference.Status line and file suggestion gates",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Status line and file suggestion gates\"."
+    },
+    {
+      "id": "settings.reference.How env values interact with your shell",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"How env values interact with your shell\"."
+    },
+    {
+      "id": "settings.reference.When Claude Code applies env values",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"When Claude Code applies env values\"."
+    },
+    {
+      "id": "settings.reference.Variables Claude Code ignores in env",
+      "file": "12-settings.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Variables Claude Code ignores in env\"."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J8.1",
+      "status": "kept",
+      "note": "components.md allows omitting the wrapper without saying how the forms are told apart; the rule is the safe reading. Docs silent."
+    },
+    {
+      "id": "J8.2",
+      "status": "kept",
+      "note": "Re-run: claude plugin validate 2.1.325 reports `mcpServers: Invalid input` for an inline url-without-type entry. mcp.md skip rules name .mcp.json, ~/.claude.json, settings and add-json only, so the docs are silent on a manifest inline map."
+    },
+    {
+      "id": "J8.3",
+      "status": "kept",
+      "note": "SDK types still lack ws, headersHelper and oauth; mcp.md has no full field table. Evidence named is consistent."
+    },
+    {
+      "id": "J8.4",
+      "status": "kept",
+      "note": "mcp.md names the alias only; silent on whether the type is kept."
+    },
+    {
+      "id": "J8.5",
+      "status": "kept",
+      "note": "Docs-vs-docs contradiction (mcp.md unset-variable rule vs plugins/troubleshooting.md \"Missing environment variables\" for plugin servers) re-read; the plugin page decides for plugins."
+    },
+    {
+      "id": "J8.6",
+      "status": "kept",
+      "note": "mcp.md gives only the two forms; grammar edge cases are silent."
+    },
+    {
+      "id": "J8.7",
+      "status": "kept",
+      "note": "mcp.md lists credential names with \"such as\"; the helper rule gives patterns plus a fixed list; the set itself is silent."
+    },
+    {
+      "id": "J8.8",
+      "status": "kept",
+      "note": "mcp.md gives the output rule and 10-second limit, not the failure behaviour or case of header names."
+    },
+    {
+      "id": "J8.9",
+      "status": "kept",
+      "note": "mcp.md says \"the name of the MCP server\"; the scoped name is the safest reading."
+    },
+    {
+      "id": "J8.10",
+      "status": "kept",
+      "note": "Re-run: validate 2.1.325 says the loader refuses only when the plugin declares options; errors.md of the target says the check runs on the template. Target docs kept; evidence true."
+    },
+    {
+      "id": "J8.11",
+      "status": "kept",
+      "note": "mcp.md and errors.md say \"characters\" only."
+    },
+    {
+      "id": "J8.12",
+      "status": "kept",
+      "note": "Re-run: validate 2.1.325 reports nothing for a plugin server key `workspace`. Docs give the reserved names for \"your configuration\" only."
+    },
+    {
+      "id": "J8.13",
+      "status": "kept",
+      "note": "Re-run: validate 2.1.325 reports `./x.zip` as `Invalid string: must end with \".json\"`. manifest-reference names shapes, not classification."
+    },
+    {
+      "id": "J8.14",
+      "status": "kept",
+      "note": "components.md points to the external MCPB format; silent on the override."
+    },
+    {
+      "id": "J8.15",
+      "status": "kept",
+      "note": "mcp.md: secret only at add time, flags for HTTP and SSE only. Consistent."
+    },
+    {
+      "id": "J8.16",
+      "status": "kept",
+      "note": "errors.md says \"less than 15 minutes\"; the boundary case is silent."
+    },
+    {
+      "id": "J8.17",
+      "status": "kept",
+      "note": "mcp.md says \"about 11,000\"; no counting rule in the docs."
+    },
+    {
+      "id": "J8.18",
+      "status": "kept",
+      "note": "mcp.md contrasts the user MCP configuration only with claude.ai connectors; plugin servers are not named."
+    },
+    {
+      "id": "J12.1",
+      "status": "kept",
+      "note": "plugins/loading.md ranks --add-dir lowest for enabledPlugins with only true counting; permissions.md gives no rank for extraKnownMarketplaces. Evidence true."
+    },
+    {
+      "id": "J12.2",
+      "status": "kept",
+      "note": "settings.md says lists combine and is silent on duplicates and order outside managed drop-ins."
+    },
+    {
+      "id": "J12.3",
+      "status": "kept",
+      "note": "Docs fix per-name rules for enabledPlugins and extraKnownMarketplaces only; silent for pluginConfigs, skillOverrides and non-managed nested blocks."
+    },
+    {
+      "id": "J12.4",
+      "status": "kept",
+      "note": "settings-reference types the value Boolean; the SDK type admits more. Silent on non-Boolean values."
+    },
+    {
+      "id": "J12.5",
+      "status": "kept",
+      "note": "settings.md names the kinds without quoting text and is silent on a broken --settings."
+    },
+    {
+      "id": "J12.6",
+      "status": "kept",
+      "note": "settings.md: --settings cannot set Global config keys; no warning text quoted."
+    },
+    {
+      "id": "J12.7",
+      "status": "kept",
+      "note": "settings.md lists only \"the ones you are most likely to edit\"; managed-settings.md adds forceRemoteSettingsRefresh, requiredMinimumVersion and policyHelper. No closed list in the docs."
+    },
+    {
+      "id": "J12.8",
+      "status": "kept",
+      "note": "managed-settings.md says alphabetical with numeric prefixes, nothing about case or entry order."
+    },
+    {
+      "id": "J12.9",
+      "status": "kept",
+      "note": "The Locks row states the rule without the case where the highest source sets none; ignoring it is the stricter reading."
+    },
+    {
+      "id": "J12.10",
+      "status": "kept",
+      "note": "Re-run on 2.1.325: settings.json `{\"agent\":5,\"model\":\"x\"}` passes validate (warnings only, no dropped-key report); manifest `\"settings\":\"str\"` fails with `settings: Invalid input: expected record, received string`. components.md silent on a broken file."
+    },
+    {
+      "id": "J12.11",
+      "status": "kept",
+      "note": "components.md quotes only `overrides setting`."
+    },
+    {
+      "id": "J12.12",
+      "status": "kept",
+      "note": "components.md says \"loaded last\" without an order."
+    },
+    {
+      "id": "J12.13",
+      "status": "kept",
+      "note": "settings-reference gives the gates for the key without naming the plugin layer."
+    },
+    {
+      "id": "J12.14",
+      "status": "kept",
+      "note": "Re-run: validate 2.1.325 warns that a plugin `agent` setting is deprecated. 2.1.321 docs (components.md \"Default settings\", settings-reference `agent`) state the key supported; documented behaviour kept, not an E4a case since the warning is past the target."
+    },
+    {
+      "id": "J12.15",
+      "status": "kept",
+      "note": "settings.md: a project or local value \"that isn't stricter is ignored\", silent when nothing else sets the key; settings-reference crossSessionInbound covers project hold/refuse applying when no trusted source sets one, consistent with the judgment."
+    }
+  ]
+}

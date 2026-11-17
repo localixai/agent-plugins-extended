@@ -1,0 +1,74 @@
+{
+  "pass": "v15-fix-g2",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": ["04-skills.md", "05-agents.md"],
+  "requirements": [
+    {
+      "id": "skills.behavior.Load skills in monorepos and subdirectories",
+      "file": "04-skills.md",
+      "status": "fixed",
+      "note": "§4.5.2 item 3 now says the directory-qualified variant's name and description are listing entries the client produces, and the prefer-this-one instruction is the client's own prompt text (J4.28). Evidence: skills.md, 'Load skills in monorepos and subdirectories'."
+    },
+    {
+      "id": "agents.behavior.Write subagent files",
+      "file": "05-agents.md",
+      "status": "fixed",
+      "note": "§5.3 item 4: the worktree-isolation refusals are part of the client's decision to run each command, owed wherever commands run even when loading is a separate component (J5.18). Evidence: worktrees.md, 'How Claude Code enforces isolation'."
+    },
+    {
+      "id": "tools.tool.ExitWorktree",
+      "file": "05-agents.md",
+      "status": "fixed",
+      "note": "§5.7.1 filter 1 gains the ExitWorktree row: withheld from a subagent already in its own working directory (isolation: worktree). Evidence: tools-reference.md, tools table, ExitWorktree row."
+    },
+    {
+      "id": "agents.frontmatter.maxTurns",
+      "file": "05-agents.md",
+      "status": "fixed",
+      "note": "§5.4.3 and J5.5: maxTurns written as text holding a whole number is that number. Evidence: oracle 2.1.325 with a local Messages API stand-in, a plugin agent with maxTurns: \"2\" stopped after 2 turns like maxTurns: 2; without the field it ran 9."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J4.6",
+      "status": "fixed",
+      "note": "The claim that the validator reports none of the dropped values is narrowed: it reports the type errors of §4.10 and none of the values J4.6 drops. Evidence: oracle 2.1.321 corpus (no finding for 73 out-of-list effort values, context: inline, list/map compatibility, list hooks, empty allowed-tools/tools) and oracle 2.1.325 minimal inputs."
+    },
+    {
+      "id": "J4.26",
+      "status": "fixed",
+      "note": "Added: the validator's frontmatter findings for skills and commands (§4.10 table): the three 'No description in frontmatter' warnings, the metadata mapping warning, the parse-error tails, and the name/description/allowed-tools/shell type errors. Evidence: oracle 2.1.321 corpus for the warnings and tails; oracle 2.1.325 for the type errors, which the corpus has no input for."
+    },
+    {
+      "id": "J4.27",
+      "status": "fixed",
+      "note": "Added: a command and a skill of one plugin with one command name - the command is listed and runs (§4.6.1 item 4). Evidence: oracle 2.1.319 (reference implementation), oracle 2.1.325 with a local Messages API stand-in."
+    },
+    {
+      "id": "J4.28",
+      "status": "fixed",
+      "note": "Added: the monorepo variant's instruction is the client's prompt text; its wording is not part of the contract."
+    },
+    {
+      "id": "J5.2",
+      "status": "fixed",
+      "note": "Evidence extended with the 2.1.321 corpus: 27 'No description in frontmatter ... this agent.' warnings, on files without the key, at any depth below agents/."
+    },
+    {
+      "id": "J5.5",
+      "status": "fixed",
+      "note": "maxTurns accepts text holding a whole number; evidence of oracle 2.1.325 (local Messages API stand-in) and of the validator not reporting maxTurns: \"5\", tools: 5, effort: HIGH."
+    },
+    {
+      "id": "J5.17",
+      "status": "kept",
+      "note": "Now points to the agent validation table, §5.4.4; the 2.1.321 corpus gives the same agent tail 7 times."
+    },
+    {
+      "id": "J5.18",
+      "status": "fixed",
+      "note": "Added: the worktree-isolation checks belong to the client's command execution, not to agent loading."
+    }
+  ]
+}

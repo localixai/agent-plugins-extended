@@ -1,0 +1,53 @@
+{
+  "pass": "v15-fix-g5",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "10-mods/troubleshooting.md",
+    "10-mods/reference.md",
+    "10-mods/interface.md",
+    "13-permissions.md",
+    "14-policy.md",
+    "14-policy-mods.md"
+  ],
+  "requirements": [
+    {
+      "id": "mods.troubleshoot.validate passes and lists no hooks line",
+      "file": "10-mods/troubleshooting.md",
+      "status": "deviates",
+      "note": "§10.42.3 item 1 now splits the case: with `hooks` but no `modules`, validate passes and lists no hooks module (docs); with neither key, validate reports the root error ``hooks.json must have `hooks` (the hook matchers) or `modules` (hooks modules), or both`` and fails. Marker changed from req: to deviates: (E4a). Evidence: oracle 2.1.321, corpus (5 plugins: tap, ai-dev-kit, jhipster-forge, claude-cowork-personal-context-loader, magellan); oracle 2.1.325 on `{}` and `{\"description\": \"x\"}` (error) and `{\"hooks\": {}}` (passes)."
+    },
+    {
+      "id": "permissions.behavior.Tool name wildcards",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "§13.2.1 item 3: where the `matches no tool` warning appears is the presenting client's output; a library returns it as a value (rule, behaviour, source, kind). Judgment J13.33."
+    },
+    {
+      "id": "permissions.behavior.Write(path), Glob(path), and Grep(path) rules don't match",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "§13.5.2: the row/stderr/debug-log line is the presenting client's output; a library returns the `never matches` warning as a value with the suggested Edit/Read rule. Judgment J13.33."
+    },
+    {
+      "id": "permissions.behavior.Precedence among rules, hooks, and mods",
+      "file": "13-permissions.md",
+      "status": "fixed",
+      "note": "§13.11 item 2 names what allowModsToOverrideDenyRules lifts (rule outcomes, non-managed hooks) and keeps (managed hooks, the callback); the no-guard sentence names its conditions instead of 'those'. Judgment J14.14; permissions.md 'Precedence among rules, hooks, and mods', admin.md 'Set options on the built-in guard'."
+    },
+    {
+      "id": "policy.mods.Know what happens by default.The guard protects what you manage",
+      "file": "14-policy-mods.md",
+      "status": "fixed",
+      "note": "§14.9.2 item 3 no longer says the option lifts both deny and ask by an ambiguous 'unless set'; it says the option lifts the two rule outcomes and non-managed hooks' outcomes, never a managed hook's, matching §14.9.6 (now itemised). Judgment J14.14."
+    }
+  ],
+  "judgments": [
+    { "id": "J10.174", "status": "fixed", "note": "Was: validate passes for a hooks.json with neither key under 2.1.321. Now: an E4a deviation; 2.1.321 corpus gives the root error on 5 plugins; `hooks` without `modules` still passes." },
+    { "id": "J10.4", "status": "fixed", "note": "Now says outright that for a mod a `required` field with no value and no default keeps the mod from loading (troubleshoot.md, 'options do not fit plugin.json userConfig': 'a required field has no value'), and that outside mods `required` binds only the dialog. §10.3.4 states it." },
+    { "id": "J10.21", "status": "fixed", "note": "New: a plugin.json `capabilities` field draws the 2.1.321 warning whatever its value and the plugin loads (oracle 2.1.321 corpus: dominion-flow, gatekeeper-ai; 2.1.325 on `\"capabilities\": 5`). §10.3 states the message." },
+    { "id": "J13.33", "status": "fixed", "note": "New: where a rule warning goes is the presenting client's output; a library returns it as a value (§13.2.1 item 3, §13.5.2)." },
+    { "id": "J14.1", "status": "fixed", "note": "'first occurrence's position' now 'in file order': managed-settings.json, then drop-ins alphabetically, each file's entries in order; later duplicates dropped." },
+    { "id": "J14.14", "status": "fixed", "note": "New: allowModsToOverrideDenyRules lifts deny and ask rule outcomes and non-managed hooks' and the read block's outcomes; never a managed hook's decision or the prompt tool/canUseTool callback. Resolves §14.9.2 against §14.9.6." }
+  ]
+}

@@ -1,0 +1,1381 @@
+{
+  "pass": "v02-skills-agents",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "04-skills.md",
+    "05-agents.md"
+  ],
+  "requirements": [
+    {
+      "id": "commands.components.Define commands in the manifest",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "commands.entry.allowedTools",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "commands.entry.argumentHint",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "commands.entry.content",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "commands.entry.description",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "commands.entry.model",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "commands.entry.source",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Add supporting files",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Angle brackets in a skill description show as &lt; and &gt;",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Characters a skill name can't hold",
+      "file": "04-skills.md",
+      "status": "fixed",
+      "note": "Startup notice was cut short; now the full errors.md text, plus the two debug-line forms (`is not offered`, `is not shown for`)."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Additional directory",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Characters in the name",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.claude.ai account",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Command files",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Enterprise",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Nested",
+      "file": "04-skills.md",
+      "status": "fixed",
+      "note": "Added that nested skills never load in a project's cloud threads, as the location table says."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Personal",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Plugin",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Project",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Reserved name anthropic-skills",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Reserved name synced",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Skill folder as a plugin",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Choose where skills load.Symlinked folders",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Edit a skill during a session",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Example: Research skill using Explore agent",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name..claude/commands/",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name..claude/skills/",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name.~/.claude/skills/",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name.Skill synced from claude.ai",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name.SKILL.md",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How a skill gets its command name.skills/",
+      "file": "04-skills.md",
+      "status": "deviates",
+      "note": "J4.1 re-run on 2.1.325 (plugin details): skills/review with name: fancy lists as review; manifest-path skill lists as declared-one; scanned extra/many/three lists as three. With 2.1.319 and 2.1.322 from the reference."
+    },
+    {
+      "id": "skills.behavior.How injected commands run",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How injected commands run.Output size",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How injected commands run.shell: bash",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How injected commands run.shell: powershell",
+      "file": "04-skills.md",
+      "status": "fixed",
+      "note": "PowerShell tool enablement was incomplete; added on-by-default with Git Bash for claude.ai/Console accounts, the Bedrock/Agent Platform/Foundry opt-in and `0` to turn off."
+    },
+    {
+      "id": "skills.behavior.How injected commands run.stderr",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How injected commands run.Timeout",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.How injected commands run.Working directory",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Inject dynamic context",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Load skills in monorepos and subdirectories",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Override skill visibility from settings.\"name-only\"",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Override skill visibility from settings.\"off\"",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Override skill visibility from settings.\"on\"",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Override skill visibility from settings.\"user-invocable-only\"",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Pass arguments to skills",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Permission checks on injected commands",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Personal skills disappeared",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Bundled skill",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Enterprise skill",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Personal or project skill",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Plugin skill",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Remove a skill.Skill synced from claude.ai",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name..claude/commands/",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.A plugin skill and a skill at any of the locations above",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.A project-root skill and a nested skill",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.An enterprise, personal, or project skill and a skill in an added directory outside the project",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Any of the above and the short name of a skill synced from your claude.ai account",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Any of those locations and a built-in command",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Any of those locations and a bundled skill",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Two added directories outside the project",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Resolve skills that share a name.Two of enterprise, personal, and project",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.A skill in the parameter form",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.A skill synced from claude.ai",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.An alias",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.An unqualified name",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.Skill(anthropic *)",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.Skill(anthropic-skills *)",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.Skill(anthropic-skills:pdf)",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Restrict Claude's skill access.The plugin form of a synced skill",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Run a same-named skill from an added directory",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Run skills in a subagent",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Skill content lifecycle",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Skill descriptions are cut short",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Stack several skills in one message",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.Using skill frontmatter outside Claude Code",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.When an injected command fails",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.behavior.When managed settings lock hooks to plugins",
+      "file": "04-skills.md",
+      "status": "fixed",
+      "note": "Added the settings-reference exception: under context: fork the skill keeps its allowed-tools grant."
+    },
+    {
+      "id": "skills.behavior.When no shell command was run",
+      "file": "04-skills.md",
+      "status": "fixed",
+      "note": "Message given in its full errors.md form (`, because the <tool> tool does not accept one of them: ...`), ending with the command."
+    },
+    {
+      "id": "skills.behavior.When only managed permission rules apply",
+      "file": "04-skills.md",
+      "status": "fixed",
+      "note": "Added the settings-reference exception: an @inline plugin named anthropic-skills loses allowed-tools everywhere."
+    },
+    {
+      "id": "skills.behavior.Where you write the skill's name",
+      "file": "04-skills.md",
+      "status": "fixed",
+      "note": "Added that Claude judges from the wording whether the user asked it to run the skill."
+    },
+    {
+      "id": "skills.components.Skills.A single skill at the plugin root",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.components.Skills.Additional directories",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.components.Skills.Command name",
+      "file": "04-skills.md",
+      "status": "deviates",
+      "note": "Same evidence as J4.1: 2.1.319, 2.1.322, 2.1.325 (re-run 2026-11-16)."
+    },
+    {
+      "id": "skills.components.Skills.Who invokes it",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.agent",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.allowed-tools",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.argument-hint",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.arguments",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.background",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.compatibility",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.context",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.description",
+      "file": "04-skills.md",
+      "status": "deviates",
+      "note": "J4.13: 2.1.319 oracle of the reference (absent from init.skills and the model request listing); 2.1.325 cannot show the listing without a model call. Rest of the row matches Frontmatter reference."
+    },
+    {
+      "id": "skills.frontmatter.disable-model-invocation",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.disallowed-tools",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.effort",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.hooks",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.license",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.metadata",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.model",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.name",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.paths",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.shell",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.user-invocable",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.frontmatter.when_to_use",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.invocation.(default)",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.invocation.disable-model-invocation: true",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.invocation.user-invocable: false",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_EFFORT}",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_PLUGIN_DATA}",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_PLUGIN_ROOT}",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_PROJECT_DIR}",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_SESSION_ID}",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.${CLAUDE_SKILL_DIR}",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.$ARGUMENTS",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.$ARGUMENTS[N]",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.$N",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "skills.substitution.$name",
+      "file": "04-skills.md",
+      "status": "verified",
+      "note": "Matches the docs section read in full."
+    },
+    {
+      "id": "agents.behavior.Available tools.Agent",
+      "file": "05-agents.md",
+      "status": "fixed",
+      "note": "Filter 2 keep-list lacked SubagentHandback for a subagent that reports through it; added."
+    },
+    {
+      "id": "agents.behavior.Available tools.AskUserQuestion",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Available tools.EndConversation",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Available tools.EnterPlanMode",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Available tools.ExitPlanMode",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Available tools.ScheduleWakeup",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Available tools.WaitForMcpServers",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Available tools.Workflow",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Built-in subagents",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Choose a model",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Resolution order, alias-to-main-model cases, availableModels substitution and resume persistence match 'Choose a model'."
+    },
+    {
+      "id": "agents.behavior.Choose a model.Full model ID",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Choose a model.inherit",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Choose a model.Model alias",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope",
+      "file": "05-agents.md",
+      "status": "fixed",
+      "note": "Managed agents lock: plugin agents still load except skills-directory plugins (settings-reference strictPluginOnlyCustomization.agents); text said every plugin."
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope.--agents",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope..claude/agents/",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope.~/.claude/agents/",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope.agents/",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Choose the subagent scope.Managed settings",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Conditional rules with hooks",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Disable specific subagents",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Invoke subagents explicitly.@-mention",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Invoke subagents explicitly.Natural language",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Invoke subagents explicitly.Session-wide",
+      "file": "05-agents.md",
+      "status": "fixed",
+      "note": "initialPrompt is prepended to the user's prompt, not submitted before it as a separate turn; corrected."
+    },
+    {
+      "id": "agents.behavior.Let subagents spawn their own subagents",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Preload skills into subagents",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Project-level hooks for subagent events",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Restrict which subagents can be spawned",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Restrict which tools a subagent can use.Withhold every MCP tool from any server",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Restrict which tools a subagent can use.Withhold one server's tools",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Run every subagent on one model",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "FORCE semantics, Explore exception, fork and inherit-skill exceptions match."
+    },
+    {
+      "id": "agents.behavior.Scope MCP servers to a subagent",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Subagent files Claude Code skips",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Unknown-field debug line (five fields, 'does not recognize or apply') matches Frontmatter reference."
+    },
+    {
+      "id": "agents.behavior.Subagent files Claude Code skips.A name but no description",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Subagent files Claude Code skips.No name",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Subagent files Claude Code skips.YAML that doesn't parse",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Subagent names",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Trust required for inline MCP servers",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Trust required for inline MCP servers.--add-dir directories",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Trust required for inline MCP servers.Trust that doesn't count",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Trust required for inline MCP servers.Until then",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.When a subagent has no effort field or parameter",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.behavior.Write subagent files",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Watcher, restart cases, system prompt, cwd, worktree checks and --append-subagent-system-prompt match."
+    },
+    {
+      "id": "agents.components.Frontmatter fields in plugin agents.A name longer than 256 characters",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.components.Frontmatter fields in plugin agents.Frontmatter that doesn't parse",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Loads named after file with 'Agent from <plugin> plugin'; oracle 2.1.325 validate reports it as an error (re-run)."
+    },
+    {
+      "id": "agents.components.Frontmatter fields in plugin agents.Ignored fields",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.components.Frontmatter fields in plugin agents.Supported fields",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.components.Organize agents in subfolders",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.autoCompactWindow",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.background",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.color",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.description",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.disallowedTools",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.effort",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.experimental",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.hooks",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.initialPrompt",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.isolation",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.maxTurns",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.mcpServers",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.memory",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.model",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.name",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.omitClaudeMd",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.permissionMode",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.skills",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.frontmatter.tools",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.hookEvent.PostToolUse",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.hookEvent.PreToolUse",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.hookEvent.Stop",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.permissionMode.acceptEdits",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.permissionMode.auto",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.permissionMode.bypassPermissions",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.permissionMode.default",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.permissionMode.dontAsk",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    },
+    {
+      "id": "agents.permissionMode.plan",
+      "file": "05-agents.md",
+      "status": "verified",
+      "note": "Text matches the docs section as read in full."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J4.1",
+      "status": "kept",
+      "note": "E4a evidence re-checked on 2.1.325 in the scratch oracle; matches."
+    },
+    {
+      "id": "J4.2",
+      "status": "kept",
+      "note": "Re-run on 2.1.325: skills/SKILL.md beside skills/b lists only `direct`, as the row says; docs silent; 2.1.319 kept as the observation nearest the target."
+    },
+    {
+      "id": "J4.3",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.4",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.5",
+      "status": "kept",
+      "note": "errors.md does add the 256-character limit; skills.md lists kinds only; kept."
+    },
+    {
+      "id": "J4.6",
+      "status": "kept",
+      "note": "Docs list values and only booleans as case-insensitive; kept."
+    },
+    {
+      "id": "J4.7",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.8",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.9",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.10",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.11",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.12",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.13",
+      "status": "kept",
+      "note": "E4a; docs say first body line without exception; 2.1.319 oracle evidence in the reference's judgments row 568 is as cited."
+    },
+    {
+      "id": "J4.14",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.15",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.16",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.17",
+      "status": "kept",
+      "note": "Docs (manifest-reference \"Reference a saved value\") say only \"becomes a placeholder\"; Base directory line not in docs."
+    },
+    {
+      "id": "J4.18",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.19",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.20",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.21",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.22",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.23",
+      "status": "kept",
+      "note": "Docs silent on this edge as the row says; reading is the safe one; evidence named is the reference implementation."
+    },
+    {
+      "id": "J4.24",
+      "status": "kept",
+      "note": "troubleshooting.md \"Validate\" table confirmed; 2.1.325 re-run: entry with both source and content reports the \"but not both\" error at commands.x."
+    },
+    {
+      "id": "J4.25",
+      "status": "kept",
+      "note": "Docs silent beyond loading with no metadata; corpus oracle not re-run in this pass."
+    },
+    {
+      "id": "J5.1",
+      "status": "kept",
+      "note": "Docs name only 'No name'; YAML null reading is the safe one."
+    },
+    {
+      "id": "J5.2",
+      "status": "kept",
+      "note": "Docs silent for missing description and name with ':'; oracle 2.1.325 re-run: warning 'No description in frontmatter', nothing for 'name: has:colon'."
+    },
+    {
+      "id": "J5.3",
+      "status": "kept",
+      "note": "Docs leave duplicates to filesystem order; a fixed code-unit order is the deterministic reading."
+    },
+    {
+      "id": "J5.4",
+      "status": "kept",
+      "note": "Docs give five-field limit without similarity rule; oracle 2.1.325 re-run: validator silent on maxTurn."
+    },
+    {
+      "id": "J5.5",
+      "status": "kept",
+      "note": "Docs give no invalid-value rule beyond autoCompactWindow; oracle 2.1.325 re-run: validator silent on color magenta, isolation remote, permissionMode in plugin."
+    },
+    {
+      "id": "J5.6",
+      "status": "kept",
+      "note": "Docs say 'alongside' with no order; kept."
+    },
+    {
+      "id": "J5.7",
+      "status": "kept",
+      "note": "Docs state user/project Explore override only; extension to higher sources follows priority table."
+    },
+    {
+      "id": "J5.8",
+      "status": "kept",
+      "note": "Docs state whole-tool rule for disallowedTools only; kept."
+    },
+    {
+      "id": "J5.9",
+      "status": "kept",
+      "note": "errors.md covers all-failed and disallowed-emptied only; mixed case is a judgment."
+    },
+    {
+      "id": "J5.10",
+      "status": "kept",
+      "note": "Docs predate plugin scoping; scoped name is the agent type; kept."
+    },
+    {
+      "id": "J5.11",
+      "status": "kept",
+      "note": "Docs say Claude cannot pass ID or inherit, not what happens; fall-through is safe."
+    },
+    {
+      "id": "J5.12",
+      "status": "kept",
+      "note": "model-config.md 'Effort level of subagents and teammates' re-read: says only 'doesn't apply'; kept."
+    },
+    {
+      "id": "J5.13",
+      "status": "kept",
+      "note": "Docs name <name-of-agent> only; sanitising ':' is required on Windows."
+    },
+    {
+      "id": "J5.14",
+      "status": "kept",
+      "note": "Docs exempt user and --agents only; managed exemption is a judgment."
+    },
+    {
+      "id": "J5.15",
+      "status": "kept",
+      "note": "Docs define name only with agent teams; kept."
+    },
+    {
+      "id": "J5.16",
+      "status": "kept",
+      "note": "Docs silent on clash with other sources and subfolders; kept."
+    },
+    {
+      "id": "J5.17",
+      "status": "kept",
+      "note": "Oracle 2.1.325 re-run: an unparsable agent frontmatter is '✘ Found 1 error'; '[unclosed' parses (J4.25 retry)."
+    }
+  ]
+}

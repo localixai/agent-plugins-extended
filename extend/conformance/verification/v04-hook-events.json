@@ -1,0 +1,1817 @@
+{
+  "pass": "v04-hook-events",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "07-hooks/events.md"
+  ],
+  "requirements": [
+    {
+      "id": "hooks.input.common.session_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.common.prompt_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.common.transcript_path",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.common.cwd",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.common.scratchpad_dir",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.common.permission_mode",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.common.effort",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "Added that a level the user just changed can show before it takes effect (Common input fields)."
+    },
+    {
+      "id": "hooks.input.common.hook_event_name",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.common.agent_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.common.agent_type",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.common.continue",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.JSON.continue",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.common.stopReason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.JSON.stopReason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.common.suppressOutput",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.JSON.suppressOutput",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.common.systemMessage",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.JSON.systemMessage",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.common.terminalSequence",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.JSON.terminalSequence",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.SessionStart",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.startup",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.resume",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.clear",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.compact",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.SessionStart.fork",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.SessionStart.source",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.SessionStart.model",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.SessionStart.agent_type",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.SessionStart.session_title",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.SessionStart.seconds_since_last_response",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.SessionStart.context_tokens",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.SessionStart.prompt_cache_likely_expired",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.SessionStart.estimated_cache_write_usd",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.SessionStart.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.SessionStart.initialUserMessage",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.SessionStart.sessionTitle",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.SessionStart.watchPaths",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.SessionStart.reloadSkills",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.SessionStart",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.Setup",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Setup.init",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Setup.maintenance",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.Setup input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.Setup decision control",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.Setup",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.InstructionsLoaded",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.file_path",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.memory_type",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.load_reason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.globs",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.trigger_file_path",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.InstructionsLoaded.parent_file_path",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.InstructionsLoaded decision control",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.InstructionsLoaded",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.UserPromptSubmit",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "Timeout rule lacked the async command-hook exception, the onFailure \"block\" path that blocks the prompt, and that the notice says the output was discarded."
+    },
+    {
+      "id": "hooks.behavior.Esc during a prompt check",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.UserPromptSubmit input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.decision",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.reason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.sessionTitle",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.UserPromptSubmit.suppressOriginalPrompt",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.What a blocked prompt leaves behind",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.UserPromptSubmit",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.UserPromptExpansion",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.UserPromptExpansion input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.UserPromptExpansion.decision",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.UserPromptExpansion.reason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.UserPromptExpansion.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.UserPromptExpansion",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.MessageDisplay",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.MessageDisplay.turn_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.MessageDisplay.message_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.MessageDisplay.index",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.MessageDisplay.final",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.MessageDisplay.delta",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "The empty final delta on a trailing newline holds in interactive runs only; added that final, not an empty delta, marks the end."
+    },
+    {
+      "id": "hooks.output.MessageDisplay.displayContent",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.MessageDisplay",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PreToolUse",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "Added that an Agent SDK callback hook on PreToolUse that exceeds its timeout blocks the tool call."
+    },
+    {
+      "id": "hooks.behavior.PreToolUse input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PreToolUse.permissionDecision",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PreToolUse.permissionDecisionReason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PreToolUse.updatedInput",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PreToolUse.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.PreToolUse",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PermissionRequest",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PermissionRequest input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PermissionRequest.behavior",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PermissionRequest.updatedInput",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PermissionRequest.updatedPermissions",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PermissionRequest.message",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PermissionRequest.interrupt",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.PermissionRequest",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PostToolUse",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PostToolUse after an interrupt.Ctrl+Enter",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PostToolUse after an interrupt.Enter",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PostToolUse after an interrupt.Esc",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PostToolUse.duration_ms",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PostToolUse.decision",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PostToolUse.reason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PostToolUse.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PostToolUse.classifierContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PostToolUse.updatedToolOutput",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PostToolUse.updatedMCPToolOutput",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "\"updatedToolOutput wins when both are set\" was stated as fact; the docs only say prefer it. Now cites Judgment J7.138, which records the rule and its lead."
+    },
+    {
+      "id": "hooks.exit2.PostToolUse",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PostToolUseFailure",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PostToolUseFailure.error",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PostToolUseFailure.is_interrupt",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PostToolUseFailure.duration_ms",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PostToolUseFailure.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.PostToolUseFailure",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PostToolBatch",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PostToolBatch input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PostToolBatch.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.PostToolBatch",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PermissionDenied",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PermissionDenied.reason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PermissionDenied decision control",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.PermissionDenied",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.Notification",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.permission_prompt",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.idle_prompt",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.auth_success",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.auth_storage_failure",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.elicitation_dialog",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.elicitation_url_dialog",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.elicitation_complete",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.elicitation_response",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.agent_needs_input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.agent_completed",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.quota_auto_resume_fired",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.quota_auto_resume_stale",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.quota_auto_resume_disabled",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.Notification.plugin_notification",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.Notification input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.Notification",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.SubagentStart",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.SubagentStart.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.SubagentStart",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.SubagentStop",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.SubagentStop input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.SubagentStop",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.TaskCreated",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCreated.task_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCreated.task_subject",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCreated.task_description",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCreated.teammate_name",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCreated.team_name",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCreated.agent_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.TaskCreated decision control",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.TaskCreated",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.TaskCompleted",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCompleted.task_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCompleted.task_subject",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCompleted.task_description",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCompleted.teammate_name",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCompleted.team_name",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TaskCompleted.agent_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.TaskCompleted decision control",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.TaskCompleted",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.Stop",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.type",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.status",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.description",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.command",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.agent_type",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.server",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.tool",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.name",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.schedule",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.recurring",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.Stop.prompt",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.Stop.decision",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.Stop.reason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.Stop.hookSpecificOutput.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.guide.Stop hook hits the block cap",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.Stop",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.StopFailure",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.StopFailure.error",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.StopFailure.error_details",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.StopFailure.last_assistant_message",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.StopFailure",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.TeammateIdle",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TeammateIdle.teammate_name",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TeammateIdle.team_name",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.TeammateIdle.agent_id",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.TeammateIdle decision control",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.TeammateIdle",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.ConfigChange",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.user_settings",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.project_settings",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.local_settings",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.policy_settings",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.ConfigChange.skills",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.ConfigChange input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.ConfigChange.decision",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.ConfigChange.reason",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.ConfigChange",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.CwdChanged",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.CwdChanged input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.CwdChanged.watchPaths",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.CwdChanged",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.DirectoryAdded",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.DirectoryAdded.slash_command",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.DirectoryAdded.register_repo_root",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.DirectoryAdded.directory",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.DirectoryAdded.source",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.DirectoryAdded",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.FileChanged",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.FileChanged.file_path",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.FileChanged.event",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.FileChanged.watchPaths",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.FileChanged",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.WorktreeCreate",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.WorktreeCreate input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.WorktreeCreate output",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.WorktreeCreate",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.WorktreeRemove",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "Added that on a background-session delete the hook runs for a worktree still holding files only after the user confirms in agent view."
+    },
+    {
+      "id": "hooks.behavior.WorktreeRemove input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.WorktreeRemove",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PreCompact",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.PreCompact.manual",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.PreCompact.auto",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PreCompact input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PreCompact output",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "\"All instructions used, in handler order\" is not in the docs; now cites Judgment J7.111, extended to cover it."
+    },
+    {
+      "id": "hooks.exit2.PreCompact",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PostCompact",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.PostCompact.manual",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.matcherValue.PostCompact.auto",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PostCompact input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.PostCompact",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PreModelSwitch",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.from_model",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.to_model",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.requested_model",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.source",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.context_tokens",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.prompt_cache_warm",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.cache_ttl",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.estimated_cache_write_usd",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.input.PreModelSwitch.pricing",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PreModelSwitch.permissionDecision",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.PreModelSwitch.permissionDecisionReason",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "\"Ignored for allow\" is documented; Judgment J7.140 reference removed (promoted)."
+    },
+    {
+      "id": "hooks.behavior.PreModelSwitch timeouts and other exit codes",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.PreModelSwitch",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.PostModelSwitch",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.PostModelSwitch input",
+      "file": "07-hooks/events.md",
+      "status": "fixed",
+      "note": "Judgment J7.133 restated what hooks.md and the SDK type both say; reference removed and the text kept normative (J7.133 promoted)."
+    },
+    {
+      "id": "hooks.output.PostModelSwitch.additionalContext",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.PostModelSwitch",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.SessionEnd",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.SessionEnd input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.SessionEnd",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.Elicitation",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.Elicitation input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.Elicitation.Answer for the user",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.Elicitation.Decline the request",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.Elicitation.Cancel the request",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.Elicitation.Leave the request to the user",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.Other ways to decline an elicitation",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.Answer a form request from a script",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.Elicitation",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.event.ElicitationResult",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.behavior.ElicitationResult input",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.ElicitationResult.Let the response through",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.ElicitationResult.Change the submitted values",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.ElicitationResult.Block the response",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.output.ElicitationResult.Cancel the request",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    },
+    {
+      "id": "hooks.exit2.ElicitationResult",
+      "file": "07-hooks/events.md",
+      "status": "verified",
+      "note": "Checked against hooks.md (hooks-guide.md for the block cap) and the SDK 0.3.321 HookInput/HookSpecificOutput types."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J7.100",
+      "status": "kept",
+      "note": "Re-run on 2.1.325: claude plugin validate warns \"hooks.PreToolUSE: unknown hook event; entry ignored at runtime\"; no warning for a matcher on Stop."
+    },
+    {
+      "id": "J7.101",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.102",
+      "status": "kept",
+      "note": "Re-counted: exactly these 12 events show permission_mode in the hooks.md examples."
+    },
+    {
+      "id": "J7.103",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.104",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.105",
+      "status": "kept",
+      "note": "SDKAssistantMessageError in sdk.d.ts includes verification_required."
+    },
+    {
+      "id": "J7.106",
+      "status": "kept",
+      "note": "UserPromptSubmitHookInput.source in sdk.d.ts says payloads may omit it while it rolls out."
+    },
+    {
+      "id": "J7.107",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.108",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.111",
+      "status": "fixed",
+      "note": "Extended to PreCompact stdout instructions of several handlers (all used, in order), which \u00a77.5.31 stated without evidence."
+    },
+    {
+      "id": "J7.112",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.113",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.114",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.115",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.116",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.117",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.118",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.120",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.121",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.122",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.123",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.124",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.125",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.126",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.127",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.128",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.129",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.130",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.131",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.132",
+      "status": "kept",
+      "note": "SDK ExitReason/EXIT_REASONS lack bypass_permissions_disabled."
+    },
+    {
+      "id": "J7.133",
+      "status": "promoted",
+      "note": "hooks.md \"PostModelSwitch input\" and the SDK type both state the two extra source values; row removed, text stays under hooks.behavior.PostModelSwitch input."
+    },
+    {
+      "id": "J7.135",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.136",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.138",
+      "status": "fixed",
+      "note": "Extended to the updatedToolOutput/updatedMCPToolOutput precedence on an MCP tool; docs say only \"prefer\"; lead src/hooks/output/merge-simple.ts."
+    },
+    {
+      "id": "J7.140",
+      "status": "promoted",
+      "note": "hooks.md says \"Ignored for allow\"; row removed, text stays under hooks.output.PreModelSwitch.permissionDecisionReason."
+    },
+    {
+      "id": "J7.141",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    },
+    {
+      "id": "J7.143",
+      "status": "kept",
+      "note": "Docs silent on this point as stated; decision is the safest reading; evidence re-read and true."
+    }
+  ]
+}

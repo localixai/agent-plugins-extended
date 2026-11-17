@@ -1,0 +1,11 @@
+{
+  "pass": "v15-fix-g10",
+  "date": "2026-11-17",
+  "release": "2.1.321",
+  "files": ["05-agents.md", "18-bridge.md"],
+  "requirements": [],
+  "judgments": [
+    {"id": "J5.18", "status": "fixed", "note": "Added: a plugin-host library that runs no commands does not own the worktree-isolation checks of §5.3 item 4, returns only the parsed `isolation` value for its host to apply them, and records the item as not applicable. Evidence: worktrees.md, 'How Claude Code enforces isolation' (checks on each command before it runs)."},
+    {"id": "J18.23", "status": "fixed", "note": "New: a hook adapter running a core UserPromptSubmit handler under Claude Code fires on `source` system or absent and skips only loop_wakeup and schedule_wakeup; the converter lists the over-firing (§18.4.4 item 5, §18.4.1 item 1). Evidence: UserPromptSubmitHookInput.source, sdk.d.ts 0.3.321 (no field separates system origins); core §7.3.5 MUST vs SHOULD NOT."}
+  ]
+}

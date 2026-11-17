@@ -1,0 +1,1266 @@
+{
+  "pass": "v05-tools-lsp-mcp-policy",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "07-hooks/tools.md",
+    "09-lsp-monitors-channels.md",
+    "08-mcp-policy.md"
+  ],
+  "requirements": [
+    {
+      "id": "tools.behavior.Agent tool behavior.Background subagents",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Both set",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.disallowedTools only",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Foreground subagents",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Fork",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Neither field set",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.Teammate",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Agent tool behavior.tools only",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Bash deny rules also turn off the PowerShell tool",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Agent(Explore)",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Bash(npm run *)",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Edit(/src/**)",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.PowerShell(Get-ChildItem *)",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Read(~/secrets/**)",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.Skill(deploy *)",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.WebFetch(domain:example.com)",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Configure tools with permission rules and hooks.WebSearch",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Shell selection in settings, hooks, and skills.\"defaultShell\": \"powershell\"",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Shell selection in settings, hooks, and skills.\"shell\": \"powershell\"",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.behavior.Shell selection in settings, hooks, and skills.shell: powershell",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.agentId",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.content",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.description",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.model",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.modelsUsed",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.prompt",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.resolvedModel",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.status",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.subagent_type",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.totalDurationMs",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.totalTokens",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.totalToolUseCount",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Agent.usage",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.AskUserQuestion.answers",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.AskUserQuestion.questions",
+      "file": "07-hooks/tools.md",
+      "status": "fixed",
+      "note": "multiSelect is required in AskUserQuestionInput and BuiltinToolInputs but optional in hooks.md; the text now says so and that a hook must accept its absence."
+    },
+    {
+      "id": "tools.input.Bash.changedFiles",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Bash.command",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Bash.description",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Bash.files",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Bash.moreFiles",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Bash.run_in_background",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Bash.shared",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Bash.skipped",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Bash.timeout",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Bash.unavailable",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Edit.file_path",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Edit.new_string",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Edit.old_string",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Edit.replace_all",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.ExitPlanMode.allowedPrompts",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.ExitPlanMode.plan",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.ExitPlanMode.planFilePath",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Glob.path",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Glob.pattern",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Grep.-i",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Grep.glob",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Grep.multiline",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Grep.output_mode",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Grep.path",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Grep.pattern",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.PowerShell.command",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.PowerShell.description",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.PowerShell.run_in_background",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.PowerShell.timeout",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Read.file_path",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Read.limit",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Read.offset",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.WebFetch.offset",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.WebFetch.prompt",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.WebFetch.url",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.WebSearch.allowed_domains",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.WebSearch.blocked_domains",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.WebSearch.mode",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.WebSearch.query",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Write.content",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.input.Write.file_path",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Agent",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Artifact",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.AskUserQuestion",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Bash",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.CronCreate",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.CronDelete",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.CronList",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Edit",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.EndConversation",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.EnterPlanMode",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.EnterWorktree",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.ExitPlanMode",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.ExitWorktree",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Glob",
+      "file": "07-hooks/tools.md",
+      "status": "fixed",
+      "note": "7.6.3 item 1 omitted the Agent SDK tools/allowedTools options that restore Glob and Grep (tools-reference \"Glob tool behavior\"); added."
+    },
+    {
+      "id": "tools.tool.Grep",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.ListAgents",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.ListMcpResourcesTool",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.LSP",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Monitor",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.NotebookEdit",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.PowerShell",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.PushNotification",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Read",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.ReadMcpResourceTool",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.RemoteTrigger",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.ReportFindings",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.ScheduleWakeup",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.SendFeedback",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.SendMessage",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.SendUserFile",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.ShareOnboardingGuide",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Skill",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.SubagentHandback",
+      "file": "07-hooks/tools.md",
+      "status": "fixed",
+      "note": "\"Other tools\" said every input comes from the 2.1.321 types, but neither type file declares SubagentHandback; the message field is now attributed to hooks.md."
+    },
+    {
+      "id": "tools.tool.TaskCreate",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.TaskGet",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.TaskList",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.TaskOutput",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.TaskStop",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.TaskUpdate",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.TodoWrite",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.ToolSearch",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.WaitForMcpServers",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.WebFetch",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.WebSearch",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Workflow",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "tools.tool.Write",
+      "file": "07-hooks/tools.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcp.behavior.Managed MCP configuration",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.behavior.Local scope",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.behavior.Project scope",
+      "file": "08-mcp-policy.md",
+      "status": "fixed",
+      "note": "8.11.1 item 3 lacked the documented prompt skip in bypassPermissions with skipDangerousModePermissionPrompt and claude mcp reset-project-choices; added, marker added there."
+    },
+    {
+      "id": "mcpSettings.behavior.Project server approvals and workspace trust",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.behavior.Scope hierarchy and precedence",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.behavior.User scope",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.key.allowAllClaudeAiMcps",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.key.allowClaudeInChromeWithManagedMcp",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.key.allowedMcpServers",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.key.allowManagedMcpServersOnly",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.key.deniedMcpServers",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.key.disableClaudeAiConnectors",
+      "file": "08-mcp-policy.md",
+      "status": "fixed",
+      "note": "Wording \"plugin servers and other --mcp-config servers\" implied plugin servers come through --mcp-config; reworded."
+    },
+    {
+      "id": "mcpSettings.key.disabledMcpjsonServers",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.key.enableAllProjectMcpServers",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.key.enabledMcpjsonServers",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.key.managedMcpServers",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Allow Claude in Chrome alongside the managed set",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Allow claude.ai connectors alongside the managed set",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Authenticate with per-user credentials",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Deploy managed-mcp.json.Linux and WSL",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Deploy managed-mcp.json.macOS",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Deploy managed-mcp.json.Windows",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Disable MCP entirely",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Environment variables in serverCommand and serverUrl entries",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How allowlists and denylists apply to the managed set",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How provided servers load",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverCommand entries match",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverName entries match",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.*://mcp.example.com/*",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.*://staging.example.com:*/*",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.Hostname written out in full",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.http://localhost:*/*",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://*.example.com/*",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://mcp.example.com",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://mcp.example.com:*/*",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://mcp.example.com:8443/*",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://mcp.example.com/*",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://staging.example.com:*/*",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.How serverUrl entries match.https://staging.example.com/*",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Policy-based control with allowlists and denylists",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Restrict the allowlist to managed settings only",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Servers passed with --mcp-config or --strict-mcp-config",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Servers that skip the allowlist check",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.What an entry can contain",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.What users can see and change",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.When provided servers connect",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.When provided servers connect.Add a server",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.When provided servers connect.Change a server's entry",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.When provided servers connect.Remove a server",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "mcpSettings.managed.Where managedMcpServers applies",
+      "file": "08-mcp-policy.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.components.Channels",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.field.displayName",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.field.server",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.field.userConfig",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.overview.Security",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Expose a reply tool",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Gate inbound messages",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.How relay works",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Notification format",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "fixed",
+      "note": "source attribute is the scoped name plugin:<plugin>:<server> for a plugin channel (channels.md Quickstart); the transcript summary is given as an example form, since a plugin channel shows \"<- fakechat · web: ...\"."
+    },
+    {
+      "id": "channels.reference.Package as a plugin",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Permission request fields",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Permission request fields.description",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Permission request fields.input_preview",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Permission request fields.request_id",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Permission request fields.tool_name",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Server options.capabilities.tools",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.Server options.instructions",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "channels.reference.What you need",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.components.LSP servers",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.args",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.command",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.diagnostics",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.env",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.extensionToLanguage",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.initializationOptions",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.maxRestarts",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.requestTimeout",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.restartOnCrash",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.settings",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.shutdownTimeout",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.startupTimeout",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.transport",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.field.workspaceFolder",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.intelligence.Add a language without an official plugin",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "lsp.troubleshooting.Language server doesn't start",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "monitors.components.Monitors.Disabling mid-session",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "monitors.components.Monitors.Interactive sessions",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "monitors.components.Monitors.Minimum version",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "monitors.components.Monitors.No user configuration",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "monitors.field.command",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "monitors.field.description",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "monitors.field.name",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "verified"
+    },
+    {
+      "id": "monitors.field.when",
+      "file": "09-lsp-monitors-channels.md",
+      "status": "fixed",
+      "note": "Oracle 2.1.325: a non-empty wrong value yields both messages, an empty skill only the second; text said otherwise. Also completed the top-level monitors warning text in 9.2.1."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J8.19",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read in mcp.md/managed-mcp.md/cli-reference.md; decision kept."
+    },
+    {
+      "id": "J8.20",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read in mcp.md/managed-mcp.md/cli-reference.md; decision kept."
+    },
+    {
+      "id": "J8.21",
+      "status": "kept",
+      "note": "cli-reference says --strict-mcp-config ignores all other MCP configurations; consistent with 17-cli; kept as a judgment since no requirement id names the flag here."
+    },
+    {
+      "id": "J8.22",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read in mcp.md/managed-mcp.md/cli-reference.md; decision kept."
+    },
+    {
+      "id": "J8.23",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read in mcp.md/managed-mcp.md/cli-reference.md; decision kept."
+    },
+    {
+      "id": "J8.24",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read in mcp.md/managed-mcp.md/cli-reference.md; decision kept."
+    },
+    {
+      "id": "J8.25",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read in mcp.md/managed-mcp.md/cli-reference.md; decision kept."
+    },
+    {
+      "id": "J9.1",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.2",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.3",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.4",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.5",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.6",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.7",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.8",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.9",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.10",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.11",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.12",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.13",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.14",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J9.15",
+      "status": "kept",
+      "note": "Docs silent as stated; evidence re-read; oracle 2.1.325 rows spot-checked (J9.1, J9.2, J9.7, J9.8, J9.12)."
+    },
+    {
+      "id": "J7.200",
+      "status": "kept",
+      "note": "Docs silent as stated; types re-read (BuiltinToolInputs, sdk-tools.d.ts); J7.202 re-run on oracle 2.1.325."
+    },
+    {
+      "id": "J7.201",
+      "status": "kept",
+      "note": "Docs silent as stated; types re-read (BuiltinToolInputs, sdk-tools.d.ts); J7.202 re-run on oracle 2.1.325."
+    },
+    {
+      "id": "J7.202",
+      "status": "kept",
+      "note": "Docs silent as stated; types re-read (BuiltinToolInputs, sdk-tools.d.ts); J7.202 re-run on oracle 2.1.325."
+    },
+    {
+      "id": "J7.203",
+      "status": "kept",
+      "note": "Docs silent as stated; types re-read (BuiltinToolInputs, sdk-tools.d.ts); J7.202 re-run on oracle 2.1.325."
+    },
+    {
+      "id": "J7.204",
+      "status": "kept",
+      "note": "Docs silent as stated; types re-read (BuiltinToolInputs, sdk-tools.d.ts); J7.202 re-run on oracle 2.1.325."
+    },
+    {
+      "id": "J7.205",
+      "status": "kept",
+      "note": "Re-checked: no PowerShell in BuiltinToolInputs nor PowerShellInput in sdk-tools.d.ts; kept."
+    },
+    {
+      "id": "J7.206",
+      "status": "kept",
+      "note": "Re-checked: WebSearchInput and BuiltinToolInputs.WebSearch declare no mode; kept."
+    },
+    {
+      "id": "J7.207",
+      "status": "kept",
+      "note": "Docs silent as stated; types re-read (BuiltinToolInputs, sdk-tools.d.ts); J7.202 re-run on oracle 2.1.325."
+    },
+    {
+      "id": "J7.208",
+      "status": "kept",
+      "note": "Docs silent as stated; types re-read (BuiltinToolInputs, sdk-tools.d.ts); J7.202 re-run on oracle 2.1.325."
+    },
+    {
+      "id": "J7.209",
+      "status": "kept",
+      "note": "Docs silent as stated; types re-read (BuiltinToolInputs, sdk-tools.d.ts); J7.202 re-run on oracle 2.1.325."
+    }
+  ]
+}

@@ -1,0 +1,1386 @@
+{
+  "pass": "v11-marketplaces-updates-deps",
+  "date": "2026-11-16",
+  "release": "2.1.321",
+  "files": [
+    "15-marketplaces.md",
+    "16-updates.md",
+    "16-dependencies.md"
+  ],
+  "requirements": [
+    {
+      "id": "marketplace.publish.Add the marketplace file to your repository",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/publish.md, \"Add the marketplace file to your repository\"."
+    },
+    {
+      "id": "marketplace.create.Write relative paths from the marketplace root",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Write relative paths from the marketplace root\"."
+    },
+    {
+      "id": "marketplace.field.$schema",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.name",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.owner",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.plugins",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.description",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.version",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.metadata.description",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.metadata.version",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.metadata.pluginRoot",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.forceRemoveDeletedPlugins",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.allowCrossMarketplaceDependenciesOn",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.field.renames",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Top-level fields\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Cannot add marketplace \"<name>\": Claude Code cannot install plugins from a marketplace with this name",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Cannot add marketplace \"<name>\": Claude Code cannot install plugins from a marketplace with this name\"."
+    },
+    {
+      "id": "marketplace.rule.Reserved names",
+      "file": "15-marketplaces.md",
+      "status": "fixed",
+      "note": "Item 3 now says the named refusal 'Claude Code refuses the marketplace name' requires v2.1.282 or later, as marketplace-reference.md 'Reserved names' states; rest checked against the section."
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Official marketplace names",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Reserved names\"."
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Community marketplace names",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Reserved names\"."
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Plugin directory names",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Reserved names\"."
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Another spelling of a reserved name",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Reserved names\"."
+    },
+    {
+      "id": "marketplace.rule.Reserved names.npm, pip, uv, cargo, github, and gh",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Reserved names\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Cannot add marketplace \"<name>\": Claude Code reserves this name and cannot register a marketplace under it",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Cannot add marketplace \"<name>\": Claude Code reserves this name and cannot register a marketplace under it\"."
+    },
+    {
+      "id": "marketplace.rule.Reserved names.Names starting with claudeai-",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Reserved names\"."
+    },
+    {
+      "id": "marketplace.entry.name",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.source",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.description",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.version",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.category",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.tags",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.strict",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.relevance",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.dependencies",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.defaultEnabled",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.displayName",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.metadata",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.headers",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.entry.headersHelper",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin entries\"."
+    },
+    {
+      "id": "marketplace.create.Keep the entry name and the manifest name the same",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Keep the entry name and the manifest name the same\"."
+    },
+    {
+      "id": "marketplace.rule.Metadata precedence.name",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/manifest-reference.md, \"Metadata precedence\"."
+    },
+    {
+      "id": "marketplace.rule.How entry fields combine with plugin.json",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/manifest-reference.md, \"How entry fields combine with plugin.json\"."
+    },
+    {
+      "id": "marketplace.rule.Strict mode.any",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Strict mode\"."
+    },
+    {
+      "id": "marketplace.rule.Strict mode.true",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Strict mode\"."
+    },
+    {
+      "id": "marketplace.rule.Strict mode.false",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Strict mode\"."
+    },
+    {
+      "id": "marketplace.rule.Hooks in an entry",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Hooks in an entry\"."
+    },
+    {
+      "id": "marketplace.rule.Display fields",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Display fields\"."
+    },
+    {
+      "id": "marketplace.rule.Metadata precedence.defaultEnabled and display fields",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/manifest-reference.md, \"Metadata precedence\"."
+    },
+    {
+      "id": "marketplace.rule.Metadata precedence.version",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/manifest-reference.md, \"Metadata precedence\"."
+    },
+    {
+      "id": "marketplace.source.Relative path",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin sources\"."
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.Relative path",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Choose a plugin source\"."
+    },
+    {
+      "id": "marketplace.source.github",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin sources\"."
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.github",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Choose a plugin source\"."
+    },
+    {
+      "id": "marketplace.source.url",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin sources\"."
+    },
+    {
+      "id": "marketplace.source.git-subdir",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin sources\"."
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.git-subdir",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Choose a plugin source\"."
+    },
+    {
+      "id": "marketplace.source.npm",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin sources\"."
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.npm",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Choose a plugin source\"."
+    },
+    {
+      "id": "marketplace.source.archive",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin sources\"."
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.archive",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Choose a plugin source\"."
+    },
+    {
+      "id": "marketplace.source.command",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Plugin sources\"."
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.command",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Choose a plugin source\"."
+    },
+    {
+      "id": "marketplace.create.Choose a plugin source.url",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Choose a plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.Relative path plugin source.github, git, file, and directory",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Relative path plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.Relative path plugin source.url",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Relative path plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.Relative path plugin source.settings",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Relative path plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.Bare names under pluginRoot",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Bare names under pluginRoot\"."
+    },
+    {
+      "id": "marketplace.rule.github plugin source",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"github plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.url plugin source",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"url plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.git-subdir plugin source",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"git-subdir plugin source\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Invalid git URL",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Invalid git URL\"."
+    },
+    {
+      "id": "marketplace.rule.npm plugin source.package",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"npm plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.npm plugin source.version",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"npm plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.npm plugin source.registry",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"npm plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.npm plugin source",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"npm plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.npm plugin source.A tarball link over http",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"npm plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.archive plugin source",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"archive plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.command plugin source.command",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"command plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.command plugin source.timeout",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"command plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.command plugin source.mode",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"command plugin source\"."
+    },
+    {
+      "id": "marketplace.rule.What the command must do.Shell and working directory",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"What the command must do\"."
+    },
+    {
+      "id": "marketplace.rule.What the command must do.Output",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"What the command must do\"."
+    },
+    {
+      "id": "marketplace.rule.What the command must do.Directory contents",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"What the command must do\"."
+    },
+    {
+      "id": "marketplace.rule.Output that fails the install or update.No plugin content",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Output that fails the install or update\"."
+    },
+    {
+      "id": "marketplace.rule.Output that fails the install or update.The session's own directory",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Output that fails the install or update\"."
+    },
+    {
+      "id": "marketplace.rule.Output that fails the install or update.A network path",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Output that fails the install or update\"."
+    },
+    {
+      "id": "marketplace.rule.Output that fails the install or update.Too large to copy",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Output that fails the install or update\"."
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Copy mode and link mode\"."
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.copy",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Copy mode and link mode\"."
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.link",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Copy mode and link mode\"."
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.Keep the directory in place",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Copy mode and link mode\"."
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.Include node_modules",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Copy mode and link mode\"."
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.Sessions started inside the directory",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Copy mode and link mode\"."
+    },
+    {
+      "id": "marketplace.rule.Copy mode and link mode.Not on Windows",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Copy mode and link mode\"."
+    },
+    {
+      "id": "marketplace.rule.Invalid input on a source",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Invalid input on a source\"."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Git submodules in the marketplace repository\"."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.The plugin is inside the submodule",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Git submodules in the marketplace repository\"."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.The submodule is inside the plugin",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Git submodules in the marketplace repository\"."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A component directory",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Git submodules in the marketplace repository\"."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A path in the plugin's configuration",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Git submodules in the marketplace repository\"."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A symbolic link",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Git submodules in the marketplace repository\"."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.Text in the plugin's files",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Git submodules in the marketplace repository\"."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A SKILL.md at the root",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Git submodules in the marketplace repository\"."
+    },
+    {
+      "id": "marketplace.rule.Git submodules in the marketplace repository.A file Claude Code can't read",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Git submodules in the marketplace repository\"."
+    },
+    {
+      "id": "marketplace.create.Keep unused submodules out of the clone",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Keep unused submodules out of the clone\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.A root plugin's files from a git submodule are missing after install",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"A root plugin's files from a git submodule are missing after install\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.url",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.github",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.git",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.npm",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.file",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.directory",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.settings",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.skills-dir",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.hostPattern",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.rule.Marketplace sources.pathPattern",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Marketplace sources\"."
+    },
+    {
+      "id": "marketplace.sourceField.url",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.sourceField.headers",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.sourceField.headersHelper",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.sourceField.repo",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.sourceField.ref",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.sourceField.path",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.sourceField.sparsePaths",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.sourceField.skipLfs",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.sourceField.name",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.sourceField.plugins",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Fields by type\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Invalid marketplace source format",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Invalid marketplace source format\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.'<source>' is not a valid GitHub owner/repo shorthand.A repository on any host",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"'<source>' is not a valid GitHub owner/repo shorthand\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.'<source>' is not a valid GitHub owner/repo shorthand.A hosted marketplace.json",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"'<source>' is not a valid GitHub owner/repo shorthand\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.'<source>' is not a valid GitHub owner/repo shorthand.A local checkout",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"'<source>' is not a valid GitHub owner/repo shorthand\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Path does not exist: <path>",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Path does not exist: <path>\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace file not found at <path>/.claude-plugin/marketplace.json",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Marketplace file not found at <path>/.claude-plugin/marketplace.json\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace \"<name>\" not found",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Marketplace \"<name>\" not found\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace \"claude-plugins-official\" not found",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Marketplace \"claude-plugins-official\" not found\"."
+    },
+    {
+      "id": "marketplace.create.Remove the marketplace to start over",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Remove the marketplace to start over\"."
+    },
+    {
+      "id": "marketplace.relevance.relevance",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/relevance.md, \"relevance\"."
+    },
+    {
+      "id": "marketplace.relevance.Add relevance to a plugin entry",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/relevance.md, \"Add relevance to a plugin entry\"."
+    },
+    {
+      "id": "marketplace.relevance.Working directory matching",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/relevance.md, \"Working directory matching\"."
+    },
+    {
+      "id": "marketplace.relevance.Command name matching",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/relevance.md, \"Command name matching\"."
+    },
+    {
+      "id": "marketplace.relevance.Manifest dependency matching",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/relevance.md, \"Manifest dependency matching\"."
+    },
+    {
+      "id": "marketplace.relevance.Understand how plugin relevance works.Spinner tip",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/relevance.md, \"Understand how plugin relevance works\"."
+    },
+    {
+      "id": "marketplace.relevance.Understand how plugin relevance works.Session-start notification",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/relevance.md, \"Understand how plugin relevance works\"."
+    },
+    {
+      "id": "marketplace.relevance.Understand how plugin relevance works./plugin Discover tab",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/relevance.md, \"Understand how plugin relevance works\"."
+    },
+    {
+      "id": "marketplace.relevance.Validate your marketplace",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/relevance.md, \"Validate your marketplace\"."
+    },
+    {
+      "id": "marketplace.create.Problems that validation reports",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Problems that validation reports\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace validation errors.Path contains \"..\": <path>",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Marketplace validation errors\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace validation errors.Marketplace has no plugins defined",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Marketplace validation errors\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace validation errors.No marketplace description provided",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Marketplace validation errors\"."
+    },
+    {
+      "id": "marketplace.troubleshooting.Marketplace validation errors.Plugin name \"<name>\" is not kebab-case",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Marketplace validation errors\"."
+    },
+    {
+      "id": "marketplace.create.Problems that surface when you add or install",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/create-marketplace.md, \"Problems that surface when you add or install\"."
+    },
+    {
+      "id": "marketplace.rule.Failures that validation doesn't catch",
+      "file": "15-marketplaces.md",
+      "status": "verified",
+      "note": "Checked against plugins/marketplace-reference.md, \"Failures that validation doesn't catch\"."
+    },
+    {
+      "id": "updates.loading.How Claude Code computes the version.github",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/loading.md, \"How Claude Code computes the version\"."
+    },
+    {
+      "id": "updates.loading.How Claude Code computes the version.archive",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/loading.md, \"How Claude Code computes the version\"."
+    },
+    {
+      "id": "updates.loading.How Claude Code computes the version.npm",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/loading.md, \"How Claude Code computes the version\"."
+    },
+    {
+      "id": "updates.loading.How Claude Code computes the version",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/loading.md, \"How Claude Code computes the version\"."
+    },
+    {
+      "id": "install.troubleshooting.A plugin installed from a git repository shows version unknown",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"A plugin installed from a git repository shows version unknown\"."
+    },
+    {
+      "id": "updates.loading.When Claude Code refreshes a marketplace before an install.name@marketplace",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/loading.md, \"When Claude Code refreshes a marketplace before an install\"."
+    },
+    {
+      "id": "updates.loading.When Claude Code refreshes a marketplace before an install.name",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/loading.md, \"When Claude Code refreshes a marketplace before an install\"."
+    },
+    {
+      "id": "updates.loading.When Claude Code refreshes a marketplace before an install",
+      "file": "16-updates.md",
+      "status": "fixed",
+      "note": "The bare-name sentence said 'the same skips', implying the managed-block refusal too; J16.12 says a managed block there only drops the marketplace. Text now says so."
+    },
+    {
+      "id": "updates.guide.Update plugins now",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/install.md, \"Update plugins now\"."
+    },
+    {
+      "id": "updates.loading.Which marketplaces and plugins auto-update",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/loading.md, \"Which marketplaces and plugins auto-update\"."
+    },
+    {
+      "id": "updates.guide.Turn auto-update on or off for a marketplace",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/install.md, \"Turn auto-update on or off for a marketplace\"."
+    },
+    {
+      "id": "updates.hosting.Turn on auto-update",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/host-marketplace.md, \"Turn on auto-update\"."
+    },
+    {
+      "id": "updates.org.Turn auto-update on or off per marketplace",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/org.md, \"Turn auto-update on or off per marketplace\"."
+    },
+    {
+      "id": "updates.org.Turn updates off for the whole fleet",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/org.md, \"Turn updates off for the whole fleet\"."
+    },
+    {
+      "id": "updates.org.Assign release channels to user groups",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/org.md, \"Assign release channels to user groups\"."
+    },
+    {
+      "id": "updates.guide.Auto-update from a private marketplace",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/install.md, \"Auto-update from a private marketplace\"."
+    },
+    {
+      "id": "updates.loading.When a command source re-runs",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/loading.md, \"When a command source re-runs\"."
+    },
+    {
+      "id": "updates.hosting.Change the command of a command source",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/host-marketplace.md, \"Change the command of a command source\"."
+    },
+    {
+      "id": "updates.hosting.Release a new version",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/host-marketplace.md, \"Release a new version\"."
+    },
+    {
+      "id": "updates.publish.Release a new version",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/publish.md, \"Release a new version\"."
+    },
+    {
+      "id": "updates.publish.Ship updates to users",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/publish.md, \"Ship updates to users\"."
+    },
+    {
+      "id": "updates.publish.Tag a release",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/publish.md, \"Tag a release\"."
+    },
+    {
+      "id": "updates.hosting.Hold users on one version",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/host-marketplace.md, \"Hold users on one version\"."
+    },
+    {
+      "id": "updates.hosting.Run release channels",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/host-marketplace.md, \"Run release channels\"."
+    },
+    {
+      "id": "updates.publish.Rename or remove a plugin",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/publish.md, \"Rename or remove a plugin\"."
+    },
+    {
+      "id": "updates.hosting.Migrate users with a renames map.Renamed entry",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/host-marketplace.md, \"Migrate users with a renames map\"."
+    },
+    {
+      "id": "updates.hosting.Migrate users with a renames map.null entry",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/host-marketplace.md, \"Migrate users with a renames map\"."
+    },
+    {
+      "id": "updates.hosting.Migrate users with a renames map.Enabled in managed settings",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/host-marketplace.md, \"Migrate users with a renames map\"."
+    },
+    {
+      "id": "updates.hosting.Uninstall removed plugins from users' machines",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against plugins/host-marketplace.md, \"Uninstall removed plugins from users' machines\"."
+    },
+    {
+      "id": "updates.key.autoUpdatesChannel",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "updates.key.minimumVersion",
+      "file": "16-updates.md",
+      "status": "fixed",
+      "note": "Added that /config writes the key when staying on the current version while switching to stable and clears it on switching back to latest (settings-reference.md, minimumVersion)."
+    },
+    {
+      "id": "updates.key.requiredMaximumVersion",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "updates.key.requiredMinimumVersion",
+      "file": "16-updates.md",
+      "status": "verified",
+      "note": "Checked against settings-reference.md, \"Settings index\"."
+    },
+    {
+      "id": "dependencies.field.name",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Declare a dependency with a version constraint\"."
+    },
+    {
+      "id": "dependencies.field.version",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Declare a dependency with a version constraint\"."
+    },
+    {
+      "id": "dependencies.field.marketplace",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Declare a dependency with a version constraint\"."
+    },
+    {
+      "id": "dependencies.guide.Bundle plugins for a team",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Bundle plugins for a team\"."
+    },
+    {
+      "id": "install.guide.Plugins with dependencies.Install",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/install.md, \"Plugins with dependencies\"."
+    },
+    {
+      "id": "install.guide.Plugins with dependencies.Enable",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/install.md, \"Plugins with dependencies\"."
+    },
+    {
+      "id": "install.guide.Plugins with dependencies.Disable",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/install.md, \"Plugins with dependencies\"."
+    },
+    {
+      "id": "install.guide.Plugins with dependencies.Uninstall",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/install.md, \"Plugins with dependencies\"."
+    },
+    {
+      "id": "dependencies.guide.Constrain a dependency that has a non-git source",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Constrain a dependency that has a non-git source\"."
+    },
+    {
+      "id": "dependencies.guide.Create a release tag",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Create a release tag\"."
+    },
+    {
+      "id": "dependencies.guide.How a constraint resolves against tags",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"How a constraint resolves against tags\"."
+    },
+    {
+      "id": "dependencies.guide.Confirm the resolved version",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Confirm the resolved version\"."
+    },
+    {
+      "id": "dependencies.guide.Combine constraints from several plugins.^2.0",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Combine constraints from several plugins\"."
+    },
+    {
+      "id": "dependencies.guide.Combine constraints from several plugins.~2.1",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Combine constraints from several plugins\"."
+    },
+    {
+      "id": "dependencies.guide.Combine constraints from several plugins.=2.1.0",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Combine constraints from several plugins\"."
+    },
+    {
+      "id": "dependencies.guide.Depend on a plugin from another marketplace",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Depend on a plugin from another marketplace\"."
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally",
+      "file": "16-dependencies.md",
+      "status": "fixed",
+      "note": "Said an installed copy 'wins over' the local copy, which reads against loading.md 'Name conflicts' (the --plugin-dir copy replaces the installed one). Now: the local copy meets the entry only until the dependency is installed; then the entry is checked against the installed copy while the local copy still loads (§16.11)."
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally.No version needed",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Test a plugin and its dependency locally\"."
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally.Entries that name a marketplace",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Test a plugin and its dependency locally\"."
+    },
+    {
+      "id": "dependencies.guide.Test a plugin and its dependency locally.You disabled the local copy",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/dependencies.md, \"Test a plugin and its dependency locally\"."
+    },
+    {
+      "id": "install.troubleshooting.Dependency errors.Dependency \"<dep>\" is not installed",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Dependency errors\"."
+    },
+    {
+      "id": "install.troubleshooting.Dependency errors.Dependency \"<dep>\" is disabled",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Dependency errors\"."
+    },
+    {
+      "id": "install.troubleshooting.Dependency errors.has an invalid version requirement",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Dependency errors\"."
+    },
+    {
+      "id": "install.troubleshooting.Dependency errors.... has no git tag satisfying <range>",
+      "file": "16-dependencies.md",
+      "status": "verified",
+      "note": "Checked against plugins/troubleshooting.md, \"Dependency errors\"."
+    }
+  ],
+  "judgments": [
+    {
+      "id": "J15.1",
+      "status": "kept",
+      "note": "Docs call metadata.* an alternate location with no order; top-level first is the safest reading."
+    },
+    {
+      "id": "J15.2",
+      "status": "kept",
+      "note": "Docs give only examples. Re-run oracle 2.1.325: official-claude-plugins draws the impersonation error."
+    },
+    {
+      "id": "J15.3",
+      "status": "kept",
+      "note": "2.1.321 validation table lists npm…gh as validator errors; oracle 2.1.325: a marketplace named npm passes validation. Docs verdict kept, oracle wording for claude-plugin-test."
+    },
+    {
+      "id": "J15.4",
+      "status": "kept",
+      "note": "Docs name only which entry fields combine when plugin.json is present; others not applying is the safest reading."
+    },
+    {
+      "id": "J15.5",
+      "status": "kept",
+      "note": "Docs list dependencies as an entry field with no combining rule; append keeps the catalog's requirements."
+    },
+    {
+      "id": "J15.6",
+      "status": "kept",
+      "note": "Docs say only 'a relative path inside the marketplace'. Re-run oracle 2.1.325: pluginRoot \"plugins\" with source \"p\" passes validation."
+    },
+    {
+      "id": "J15.7",
+      "status": "kept",
+      "note": "Docs give no validation message. Re-run oracle 2.1.325: url source with owner/repo draws no validator error."
+    },
+    {
+      "id": "J15.8",
+      "status": "kept",
+      "note": "Docs give the command rules, not the message wording; evidence named."
+    },
+    {
+      "id": "J15.9",
+      "status": "kept",
+      "note": "cli-reference.md marketplace add table gives forms without precedence; reference marketplace-input.ts matches (~/ prefix)."
+    },
+    {
+      "id": "J15.10",
+      "status": "kept",
+      "note": "Docs say 'characters' and 'bare lowercase hostname'. Re-run oracle 2.1.325: hosts entry Example.com draws 'must be a lowercase bare hostname (no scheme, port, or path)'."
+    },
+    {
+      "id": "J15.11",
+      "status": "kept",
+      "note": "Docs table lists the messages without precedence; oracle evidence named."
+    },
+    {
+      "id": "J16.10",
+      "status": "kept",
+      "note": "loading.md gives the order and table only; blank strings, folder-name limits and path hash form are silent."
+    },
+    {
+      "id": "J16.11",
+      "status": "kept",
+      "note": "Docs give no version rule for session-only plugins; oracle evidence named."
+    },
+    {
+      "id": "J16.12",
+      "status": "kept",
+      "note": "Docs state the skip list for name@marketplace only. Text of §16.17 item 3 aligned with the judgment (managed block for a bare name drops, does not refuse)."
+    },
+    {
+      "id": "J16.13",
+      "status": "kept",
+      "note": "loading.md: 'a random delay of up to ten minutes', nothing on repetition."
+    },
+    {
+      "id": "J16.14",
+      "status": "kept",
+      "note": "org.md 'Seed containers and CI': a seed forces autoUpdate off; writable files for the toggle unstated."
+    },
+    {
+      "id": "J16.15",
+      "status": "kept",
+      "note": "host-marketplace.md says managed-only installs stay, not whether they are flagged; never uninstalling on a broken renames chain is the safest reading."
+    },
+    {
+      "id": "J16.16",
+      "status": "kept",
+      "note": "settings-reference.md gives two values and a managed floor; rest silent."
+    },
+    {
+      "id": "J16.17",
+      "status": "kept",
+      "note": "Docs say only the fields are strings. Re-run oracle 2.1.325: \"a@b@c\" and {version:\"^1\"} draw dependencies.<i>: Invalid input; an invalid range and an extra key pass."
+    },
+    {
+      "id": "J16.18",
+      "status": "kept",
+      "note": "Docs say 'at the same scope' only; depth and cycles silent."
+    },
+    {
+      "id": "J16.19",
+      "status": "kept",
+      "note": "Docs give <plugin-name>--v<version> only."
+    },
+    {
+      "id": "J16.20",
+      "status": "kept",
+      "note": "Docs say 'several installed plugins'; excluding the plugin's own stale range is the safest reading."
+    },
+    {
+      "id": "J16.21",
+      "status": "kept",
+      "note": "troubleshooting.md names the message, not the method or limit."
+    },
+    {
+      "id": "J16.22",
+      "status": "kept",
+      "note": "dependencies.md quotes the start and says it 'names the field to set'."
+    },
+    {
+      "id": "J16.23",
+      "status": "kept",
+      "note": "Docs cover disable refusal, silent on uninstall; oracle 2.1.322 evidence from the reference tests, not re-run (writes state)."
+    },
+    {
+      "id": "J16.24",
+      "status": "kept",
+      "note": "troubleshooting.md quotes the opening only; oracle 2.1.325 evidence named."
+    }
+  ]
+}
