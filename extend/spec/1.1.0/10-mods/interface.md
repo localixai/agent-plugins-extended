@@ -342,25 +342,26 @@ and given one mode alone acts as if `overrideColorScheme` named it. The 2.1.330 
 
 1. **Ask Claude for a colors mod.** In a local Code tab session the user describes the colours and
    Claude writes a mod under the rules of `reference.md` §10.8.4; the Code tab changes colour when
-   it loads. <!-- req: mods.interface.Ask Claude for a colors mod -->
+   it loads. <!-- docs: plugins/mods/interface.md | Ask Claude for a colors mod -->
 2. **Write a colors mod yourself.** The built-in `plugin-authoring` skill carries `make-colors.js`
    and `make-colors.d.ts`, whose `makeColors({ label, light, dark })` builds `{ theme, problems }`
    from a few hex anchors per mode; a mod under `~/.claude/skills/<name>/` (§4, loaded at session
    start) calls `await $.theme.set({ colors: theme })` in `session.start`. A client that offers the
-   skill MUST ship those two files in it. <!-- req: mods.interface.Write a colors mod yourself -->
+   skill MUST ship those two files in it. <!-- docs: plugins/mods/interface.md | Write a colors mod yourself -->
 3. **When the colours do not appear.** The Code tab keeps its own colours with a third-party
    provider in Claude Desktop 5.11492.5 or earlier. Otherwise the documented causes, which a client
    MUST keep observable:
-   - **an old version**: the Desktop app or its Claude Code is older than 2.1.324; <!-- req: mods.interface.Fix missing mod colors in the Desktop app.Old version -->
-   - **the mod is not loaded**; <!-- req: mods.interface.Fix missing mod colors in the Desktop app.Mod not loaded -->
+   - **an old version**: the Desktop app or its Claude Code is older than 2.1.324; <!-- docs: plugins/mods/interface.md | Fix missing mod colors in the Desktop app -->
+   - **the mod is not loaded**; <!-- docs: plugins/mods/interface.md | Fix missing mod colors in the Desktop app -->
    - **a refused theme**: `makeColors` threw, or its `problems` list has an entry that starts
-     `Desktop won't paint this theme`, and the Desktop app does not paint it; <!-- req: mods.interface.Fix missing mod colors in the Desktop app.Refused theme -->
+     `Desktop won't paint this theme`, and the Desktop app does not paint it; <!-- docs: plugins/mods/interface.md | Fix missing mod colors in the Desktop app -->
    - **another `$.theme` call**: any mod's later `$.theme.set` or `$.theme.clear()` removes the
      colours and backdrop an earlier call set (item 3 of §10.25.6). <!-- req: mods.interface.Fix missing mod colors in the Desktop app.Another $.theme call -->
 4. **Removing the colours.** A mod that is still on sets its colours again, so the user turns it off
    first, then starts a new local session; colours that stay are removed from the Desktop app's
    **Settings**, `code appearance`, **Remove colors**. Turning a mod off is:
-   - for a mod Claude wrote, moving its directory out of the session's mods folder; <!-- req: mods.interface.Remove mod colors from the Desktop app.Claude wrote the mod -->
+   - for a mod Claude wrote, moving its directory out of the session's mods folder, which keeps it
+     from loading as §10.8.4 says; <!-- docs: plugins/mods/interface.md | Remove mod colors from the Desktop app -->
    - for a mod under `~/.claude/skills/`, moving its directory out of that folder; <!-- req: mods.interface.Remove mod colors from the Desktop app.You put the mod under ~/.claude/skills/ -->
    - for an installed mod, disabling or uninstalling its plugin, in the Desktop app's **Manage
      plugins** or from the shell (§16). <!-- req: mods.interface.Remove mod colors from the Desktop app.You installed the mod -->

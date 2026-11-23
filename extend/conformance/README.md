@@ -7,7 +7,7 @@ compatibility (E5).
 
 | File | What it is | Produced by | When it changes |
 | --- | --- | --- | --- |
-| [`requirements.json`](requirements.json) | Every requirement of the Claude Code plugin-host contract for one release: 2,816 ids in 28 categories, from 52 documentation pages | `bun run spec:extract`, from the documentation of Claude Code 2.1.330 ([`SOURCE.md`](SOURCE.md)) | Only with a new Claude Code release (C2) |
+| [`requirements.json`](requirements.json) | Every requirement of the Claude Code plugin-host contract for one release: 2,803 ids in 28 categories, from 52 documentation pages | `bun run spec:extract`, from the documentation of Claude Code 2.1.330 ([`SOURCE.md`](SOURCE.md)) | Only with a new Claude Code release (C2) |
 | [`SOURCE.md`](SOURCE.md) | Where the snapshot came from: release, source revision, hash, scope; how to update it | By hand, with the snapshot | With the snapshot |
 | [`out-of-scope.json`](out-of-scope.json) | Every section of an audited page the snapshot leaves out, with its page and reason; and the rows of the mixed settings, environment and CLI tables it rejects | `bun run spec:extract`, with `requirements.json` | With the snapshot |
 | [`out-of-scope-pages.json`](out-of-scope-pages.json) | Every documentation page not audited, with its reason | By hand: a person classifies each page ("Pages and scope") | When a release adds or removes a page |

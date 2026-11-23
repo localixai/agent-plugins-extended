@@ -22,8 +22,8 @@ From the generated reports, not from reading:
 
 | Report | Result |
 | --- | --- |
-| [`REPORT.md`](conformance/REPORT.md) | 2,810 of 2,816 requirements stated (99.8%), 6 deviations (E4a), none missing |
-| [`VERIFIED.md`](conformance/VERIFIED.md) | 2,689 of 2,816 requirements read against their documentation section, all by passes of the 2.1.321 documentation; no pass has read 2.1.330's yet |
+| [`REPORT.md`](conformance/REPORT.md) | 2,797 of 2,803 requirements stated (99.8%), 6 deviations (E4a), none missing |
+| [`VERIFIED.md`](conformance/VERIFIED.md) | 2,689 of 2,803 requirements read against their documentation section, all by passes of the 2.1.321 documentation; no pass has read 2.1.330's yet |
 | [`CORPUS.md`](conformance/CORPUS.md) | 2,489 real plugins, 25,347 files, 0 false rejects against Claude Code 2.1.330's verdicts |
 
 ## How it relates to the core

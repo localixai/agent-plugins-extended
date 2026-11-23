@@ -98,5 +98,14 @@ export const HOST_SCOPES: readonly PageScope[] = [
       ['Permission prompt with a countdown', 'ui'],
       NAVIGATION,
     ],
+    // The limits of Claude Code's own Code Mode session: where it resumes, how long code runs, which
+    // of its features are off and where the session can move. Auto mode and Hooks stay: a plugin's
+    // rules and hooks meet them.
+    skipItems: [
+      ['Code Mode limitations', 'Resuming', 'runtime'],
+      ['Code Mode limitations', 'Long-running code', 'runtime'],
+      ['Code Mode limitations', 'Unavailable features', 'runtime'],
+      ['Code Mode limitations', 'Moving the session', 'runtime'],
+    ],
   },
 ]

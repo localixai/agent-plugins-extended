@@ -3296,30 +3296,6 @@
       "section": "Code Mode limitations"
     },
     {
-      "id": "hooks.code-mode.Code Mode limitations.Long-running code",
-      "category": "hooks",
-      "page": "code-mode.md",
-      "section": "Code Mode limitations"
-    },
-    {
-      "id": "hooks.code-mode.Code Mode limitations.Moving the session",
-      "category": "hooks",
-      "page": "code-mode.md",
-      "section": "Code Mode limitations"
-    },
-    {
-      "id": "hooks.code-mode.Code Mode limitations.Resuming",
-      "category": "hooks",
-      "page": "code-mode.md",
-      "section": "Code Mode limitations"
-    },
-    {
-      "id": "hooks.code-mode.Code Mode limitations.Unavailable features",
-      "category": "hooks",
-      "page": "code-mode.md",
-      "section": "Code Mode limitations"
-    },
-    {
       "id": "hooks.code-mode.Code output withheld by a hook",
       "category": "hooks",
       "page": "code-mode.md",
@@ -9902,12 +9878,6 @@
       "section": "The hook function"
     },
     {
-      "id": "mods.interface.Ask Claude for a colors mod",
-      "category": "mods",
-      "page": "plugins/mods/interface.md",
-      "section": "Ask Claude for a colors mod"
-    },
-    {
       "id": "mods.interface.Build a tree from elements.Box",
       "category": "mods",
       "page": "plugins/mods/interface.md",
@@ -10136,24 +10106,6 @@
       "section": "Fix missing mod colors in the Desktop app"
     },
     {
-      "id": "mods.interface.Fix missing mod colors in the Desktop app.Mod not loaded",
-      "category": "mods",
-      "page": "plugins/mods/interface.md",
-      "section": "Fix missing mod colors in the Desktop app"
-    },
-    {
-      "id": "mods.interface.Fix missing mod colors in the Desktop app.Old version",
-      "category": "mods",
-      "page": "plugins/mods/interface.md",
-      "section": "Fix missing mod colors in the Desktop app"
-    },
-    {
-      "id": "mods.interface.Fix missing mod colors in the Desktop app.Refused theme",
-      "category": "mods",
-      "page": "plugins/mods/interface.md",
-      "section": "Fix missing mod colors in the Desktop app"
-    },
-    {
       "id": "mods.interface.Hold toasts behind a dialog",
       "category": "mods",
       "page": "plugins/mods/interface.md",
@@ -10292,12 +10244,6 @@
       "section": "Redraw when your data changes"
     },
     {
-      "id": "mods.interface.Remove mod colors from the Desktop app.Claude wrote the mod",
-      "category": "mods",
-      "page": "plugins/mods/interface.md",
-      "section": "Remove mod colors from the Desktop app"
-    },
-    {
       "id": "mods.interface.Remove mod colors from the Desktop app.You installed the mod",
       "category": "mods",
       "page": "plugins/mods/interface.md",
@@ -10404,12 +10350,6 @@
       "category": "mods",
       "page": "plugins/mods/interface.md",
       "section": "Which controls need a key"
-    },
-    {
-      "id": "mods.interface.Write a colors mod yourself",
-      "category": "mods",
-      "page": "plugins/mods/interface.md",
-      "section": "Write a colors mod yourself"
     },
     {
       "id": "mods.limit..catch",
@@ -10602,24 +10542,6 @@
       "category": "mods",
       "page": "plugins/mods/reference.md",
       "section": "Limits"
-    },
-    {
-      "id": "mods.overview.Check the charts mod requirements.Platform",
-      "category": "mods",
-      "page": "plugins/mods/overview.md",
-      "section": "Check the charts mod requirements"
-    },
-    {
-      "id": "mods.overview.Check the charts mod requirements.Sign-in",
-      "category": "mods",
-      "page": "plugins/mods/overview.md",
-      "section": "Check the charts mod requirements"
-    },
-    {
-      "id": "mods.overview.Check the charts mod requirements.Version",
-      "category": "mods",
-      "page": "plugins/mods/overview.md",
-      "section": "Check the charts mod requirements"
     },
     {
       "id": "mods.overview.How a mod works",

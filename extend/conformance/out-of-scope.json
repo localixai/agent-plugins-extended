@@ -4006,6 +4006,11 @@
   },
   {
     "page": "plugins/mods/overview.md",
+    "section": "Check the charts mod requirements",
+    "reason": "builtin"
+  },
+  {
+    "page": "plugins/mods/overview.md",
     "section": "Read the source of built-in mods",
     "reason": "builtin"
   },
@@ -4268,6 +4273,36 @@
     "page": "plugins/mods/interface.md",
     "section": "Change the colors of the Desktop app",
     "reason": "container"
+  },
+  {
+    "page": "plugins/mods/interface.md",
+    "section": "Ask Claude for a colors mod",
+    "reason": "tutorial"
+  },
+  {
+    "page": "plugins/mods/interface.md",
+    "section": "Write a colors mod yourself",
+    "reason": "builtin"
+  },
+  {
+    "page": "plugins/mods/interface.md",
+    "section": "Fix missing mod colors in the Desktop app — Old version",
+    "reason": "runtime"
+  },
+  {
+    "page": "plugins/mods/interface.md",
+    "section": "Fix missing mod colors in the Desktop app — Mod not loaded",
+    "reason": "advice"
+  },
+  {
+    "page": "plugins/mods/interface.md",
+    "section": "Fix missing mod colors in the Desktop app — Refused theme",
+    "reason": "builtin"
+  },
+  {
+    "page": "plugins/mods/interface.md",
+    "section": "Remove mod colors from the Desktop app — Claude wrote the mod",
+    "reason": "duplicate"
   },
   {
     "page": "plugins/mods/interface.md",
@@ -7753,6 +7788,26 @@
     "page": "code-mode.md",
     "section": "When to use Code Mode",
     "reason": "advice"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Code Mode limitations — Resuming",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Code Mode limitations — Long-running code",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Code Mode limitations — Unavailable features",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Code Mode limitations — Moving the session",
+    "reason": "runtime"
   },
   {
     "page": "code-mode.md",

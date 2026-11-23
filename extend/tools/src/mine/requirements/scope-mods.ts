@@ -16,6 +16,8 @@ export const MOD_SCOPES: readonly PageScope[] = [
       ['List what a mod does before you install one', 'ui'],
       ['Compare mods, settings hooks, skills, and MCP servers', 'advice'],
       ['Read the source of built-in mods', 'builtin'],
+      // What the built-in charts mod needs to load: its plan, release and platform are Claude Code's.
+      ['Check the charts mod requirements', 'builtin'],
       NAVIGATION,
     ],
   },
@@ -80,7 +82,23 @@ export const MOD_SCOPES: readonly PageScope[] = [
       ['Build a pane with tabs', 'tutorial'],
       ['Take typed input and draw a row for each item', 'tutorial'],
       ['Change hello-tabs to use $.state', 'tutorial'],
+      // The Desktop app's colours: Claude writing a colours mod is the built-in plugin-authoring
+      // skill's flow, and `makeColors` ships in that skill; `$.theme.set` with `colors` is stated
+      // under "Put a backdrop behind the conversation".
+      ['Ask Claude for a colors mod', 'tutorial'],
+      ['Write a colors mod yourself', 'builtin'],
       NAVIGATION,
+    ],
+    skipItems: [
+      // The Desktop app's version, and its Claude Code's.
+      ['Fix missing mod colors in the Desktop app', 'Old version', 'runtime'],
+      // Points to the sections on when a mod loads.
+      ['Fix missing mod colors in the Desktop app', 'Mod not loaded', 'advice'],
+      // `makeColors`' problems (the built-in skill's file) and what the Desktop app paints.
+      ['Fix missing mod colors in the Desktop app', 'Refused theme', 'builtin'],
+      // Deleting a written mod's directory keeps it from loading: create.md, "Sessions that load a
+      // mod without asking".
+      ['Remove mod colors from the Desktop app', 'Claude wrote the mod', 'duplicate'],
     ],
   },
   {

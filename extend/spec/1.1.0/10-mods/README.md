@@ -191,9 +191,9 @@ other built-in entry does in its details.
 
 `cc-plugin-easel` loads only where all of these hold, among others the documentation does not list:
 
-- **Sign-in**: the session runs on a claude.ai subscription. <!-- req: mods.overview.Check the charts mod requirements.Sign-in -->
-- **Version**: Claude Code 2.1.321 or later; 2.1.326 or later on a Team or Enterprise plan. <!-- req: mods.overview.Check the charts mod requirements.Version -->
-- **Platform**: macOS, or Linux outside WSL. <!-- req: mods.overview.Check the charts mod requirements.Platform -->
+- **Sign-in**: the session runs on a claude.ai subscription. <!-- docs: plugins/mods/overview.md | Check the charts mod requirements -->
+- **Version**: Claude Code 2.1.321 or later; 2.1.326 or later on a Team or Enterprise plan. <!-- docs: plugins/mods/overview.md | Check the charts mod requirements -->
+- **Platform**: macOS, or Linux outside WSL. <!-- docs: plugins/mods/overview.md | Check the charts mod requirements -->
 
 An Extended client is not required to ship these features as mods; when it does, it MUST list and
 order them as this section and §10.14 say (Judgment J10.1).

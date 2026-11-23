@@ -543,20 +543,23 @@ code makes (Judgment J7.214). Evidence: `code-mode.md`.
 
 ### 7.6.11.1 What Code Mode limits
 
-A client that offers Code Mode states these limits to the user before turning it on:
+A client that offers Code Mode states these limits to the user before turning it on. Auto mode
+and Hooks bind a plugin's rules and hooks; the others are the limits of Claude Code's own session
+(its resume, how long code runs, its features and where the session moves), which a client sets
+for its own:
 
 - **Resuming**: a Code Mode session resumes only in the terminal with Code Mode on; with it off the
-  client refuses the resume. A session started without Code Mode resumes without it. <!-- req: hooks.code-mode.Code Mode limitations.Resuming -->
+  client refuses the resume. A session started without Code Mode resumes without it. <!-- docs: code-mode.md | Code Mode limitations -->
 - **Auto mode**: the auto mode classifier reviews the code, not each tool call (§7.6.11.2). <!-- req: hooks.code-mode.Code Mode limitations.Auto mode -->
 - **Long-running code**: the client waits for the code to finish and stops it after ten minutes,
   unless the code can run in the background, where it runs for up to two hours. Background code
   needs a session started in `auto` or `bypassPermissions` mode. In Manual and `acceptEdits` modes,
-  time at a permission prompt does not count toward the ten minutes (v2.1.328+). <!-- req: hooks.code-mode.Code Mode limitations.Long-running code -->
+  time at a permission prompt does not count toward the ten minutes (v2.1.328+). <!-- docs: code-mode.md | Code Mode limitations -->
 - **Hooks**: a tool call is refused when a `PreToolUse` hook does not finish, for example after a
   timeout (§7.6.11.4). <!-- req: hooks.code-mode.Code Mode limitations.Hooks -->
-- **Unavailable features**: Remote Control, Claude in Chrome and computer use are not available. <!-- req: hooks.code-mode.Code Mode limitations.Unavailable features -->
+- **Unavailable features**: Remote Control, Claude in Chrome and computer use are not available. <!-- docs: code-mode.md | Code Mode limitations -->
 - **Moving the session**: the session cannot move to the desktop app or become a background
-  session, and `/fork` cannot start a background copy of it. <!-- req: hooks.code-mode.Code Mode limitations.Moving the session -->
+  session, and `/fork` cannot start a background copy of it. <!-- docs: code-mode.md | Code Mode limitations -->
 
 ### 7.6.11.2 Permission checks and `PreToolUse`
 
@@ -612,11 +615,14 @@ A client that offers Code Mode states these limits to the user before turning it
 4. **Not `UserPromptSubmit`.** From 2.1.328 the client MUST NOT run `UserPromptSubmit` hooks on code
    output, managed ones included; a check of code output belongs in this `PostToolUse` hook.
    <!-- req: hooks.code-mode.Move a check from a UserPromptSubmit hook -->
-5. Before 2.1.328, background code output reached `UserPromptSubmit` hooks as a prompt (input
-   `source` `poll_event`), for `command`, `http` and `mcp_tool` hooks; a hook that blocked it
-   withheld the output, Claude's reply showed `UserPromptSubmit operation blocked by hook`, and the
-   block's `reason` reached Claude's context. A hook written for those releases lets
-   `poll_event` through (§7.5.8). <!-- req: hooks.code-mode.Code output withheld by a hook -->
+5. **Code output withheld.** Before 2.1.328, background code output reached `UserPromptSubmit`
+   hooks as a prompt (input `source` `poll_event`), for `command`, `http` and `mcp_tool` hooks; a
+   hook that blocked it withheld the output, Claude's reply showed `UserPromptSubmit operation
+   blocked by hook`, and the block's `reason` reached Claude's context. A client at 2.1.328 or later
+   MUST NOT withhold code output for a `UserPromptSubmit` hook's block, since no such hook runs on
+   it (item 4). A hook written for the earlier releases lets a prompt whose `source` is
+   `poll_event` through, so the client MUST pass `source` in the input where it sends one (§7.5.8).
+   <!-- req: hooks.code-mode.Code output withheld by a hook -->
 
 ### 7.6.11.4 Tool calls refused by a hook
 

@@ -13,10 +13,15 @@ extended to the plugin contract of Claude Code 2.1.330. It was first written aga
 ### Changed: Claude Code 2.1.321 to 2.1.330
 
 - **The snapshot.** `conformance/requirements.json` re-extracted from the 2.1.330 documentation:
-  2,816 ids (was 2,730), 127 added and 41 removed (most removals are renamed sections whose rule
+  2,803 ids (was 2,730), 114 added and 41 removed (most removals are renamed sections whose rule
   lives on under a new id), from 52 pages (was 50). The new page `code-mode.md` is audited; the
-  whats-new digests left the docs. `mods-declarations.json`, `docs-tables.json`,
-  `tools-table.json` and the scope files are of 2.1.330 too. Coverage: 2,810 stated, 6 deviations
+  whats-new digests left the docs. Thirteen sections and items 2.1.330 added describe Claude Code's
+  own session, app or built-in content and left the snapshot through the scope (still stated, with
+  `docs:` markers): four of Code Mode's limits (resuming, long-running code, unavailable features,
+  moving the session), the Desktop app's colours mod flows (asking Claude for one, writing one with
+  the built-in skill's `makeColors`, an old version, a mod not loaded, a refused theme, removing a
+  mod Claude wrote) and the built-in charts mod's requirements (sign-in, version, platform). `mods-declarations.json`, `docs-tables.json`,
+  `tools-table.json` and the scope files are of 2.1.330 too. Coverage: 2,797 stated, 6 deviations
   (E4a), none missing.
 - **Manifest and packages (§1, §2).** `engines` (a `claude-code` semver range: outside it a plugin
   is not installed, updated or loaded, except from a local folder) and `network` (the hosts a

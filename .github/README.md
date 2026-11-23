@@ -79,7 +79,7 @@ generated report.
 
 ```text
  Claude Code docs (2.1.330)      requirements.json        extend/spec/          REPORT.md
- 52 pages              ------->  2,816 ids, 28  -------> <!-- req: id -->  ---> stated share
+ 52 pages              ------->  2,803 ids, 28  -------> <!-- req: id -->  ---> stated share
                        extracted categories      markers   per paragraph
                                                                 |
                          each id read against its docs section  +-------->  VERIFIED.md
@@ -92,13 +92,13 @@ every requirement of the Claude Code plugin-host contract, extracted from the of
 of the targeted release, each with its page and section
 ([where it came from](../extend/conformance/SOURCE.md)). Each normative paragraph of the
 specification ends with a marker naming the requirements it states, and `bun run coverage` counts
-them. [`REPORT.md`](../extend/conformance/REPORT.md): **2,810 of 2,816 stated (99.8%), 6
+them. [`REPORT.md`](../extend/conformance/REPORT.md): **2,797 of 2,803 stated (99.8%), 6
 deviations, none missing.**
 
 **Verification.** A marker says a paragraph claims a requirement; it does not say the paragraph is
 right. Verification passes read every requirement of Claude Code 2.1.321 against its documentation
 section and recorded the outcome in a ledger. [`VERIFIED.md`](../extend/conformance/VERIFIED.md):
-**2,689 of 2,816 verified**, all of them against the 2.1.321 documentation; the 127 requirements
+**2,689 of 2,803 verified**, all of them against the 2.1.321 documentation; the 114 requirements
 2.1.330 added, and the changed sections under the others, await a pass on 2.1.330. The passes
 found 170 statements to correct and corrected them, and re-examined judgments 483 times (392 kept,
 88 corrected, 2 promoted to normative text, 1 removed).

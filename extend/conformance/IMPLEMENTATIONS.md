@@ -5,7 +5,7 @@ implementation is audited paragraph by paragraph against this specification.
 
 ## agent-plugins
 
-Audited at 018f293+rename, 018f293+rename+fixes, 018f293+rename+fixes+core, 018f293+rename+fixes+core+last: **2689 of 2816 requirements audited, 2689 conform** (an id counts as conforming only when every file that states it conforms).
+Audited at 018f293+rename, 018f293+rename+fixes, 018f293+rename+fixes+core, 018f293+rename+fixes+core+last: **2689 of 2803 requirements audited, 2689 conform** (an id counts as conforming only when every file that states it conforms).
 
 The passes audited the specification text of Claude Code 2.1.321; the snapshot is 2.1.330.
 
