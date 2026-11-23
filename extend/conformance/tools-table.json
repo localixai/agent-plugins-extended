@@ -1,5 +1,5 @@
 {
-  "claudeCode": "2.1.321",
+  "claudeCode": "2.1.330",
   "tools": [
     {
       "tool": "Agent",
@@ -43,7 +43,7 @@
     },
     {
       "tool": "EnterWorktree",
-      "permissionRequired": true
+      "permissionRequired": false
     },
     {
       "tool": "ExitPlanMode",
@@ -51,7 +51,7 @@
     },
     {
       "tool": "ExitWorktree",
-      "permissionRequired": false
+      "permissionRequired": true
     },
     {
       "tool": "Glob",
@@ -70,6 +70,14 @@
       "permissionRequired": false
     },
     {
+      "tool": "ListPlugins",
+      "permissionRequired": false
+    },
+    {
+      "tool": "ListSkills",
+      "permissionRequired": false
+    },
+    {
       "tool": "LSP",
       "permissionRequired": false
     },
@@ -84,6 +92,10 @@
     {
       "tool": "PowerShell",
       "permissionRequired": true
+    },
+    {
+      "tool": "propose_skills",
+      "permissionRequired": false
     },
     {
       "tool": "PushNotification",
@@ -110,6 +122,14 @@
       "permissionRequired": false
     },
     {
+      "tool": "SearchPlugins",
+      "permissionRequired": false
+    },
+    {
+      "tool": "SearchSkills",
+      "permissionRequired": false
+    },
+    {
       "tool": "SendFeedback",
       "permissionRequired": false
     },
@@ -127,10 +147,18 @@
     },
     {
       "tool": "Skill",
-      "permissionRequired": true
+      "permissionRequired": false
     },
     {
       "tool": "SubagentHandback",
+      "permissionRequired": false
+    },
+    {
+      "tool": "SuggestPluginInstall",
+      "permissionRequired": false
+    },
+    {
+      "tool": "SuggestSkills",
       "permissionRequired": false
     },
     {

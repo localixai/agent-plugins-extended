@@ -228,6 +228,10 @@
     "reason": "engine"
   },
   {
+    "page": "claude-models-on-google-cloud-anthropic-managed.md",
+    "reason": "provider"
+  },
+  {
     "page": "claude-platform-on-aws.md",
     "reason": "provider"
   },
@@ -558,6 +562,10 @@
     "reason": "provider"
   },
   {
+    "page": "share-sessions.md",
+    "reason": "hosting"
+  },
+  {
     "page": "slack.md",
     "reason": "product"
   },
@@ -592,106 +600,6 @@
   {
     "page": "web-quickstart.md",
     "reason": "hosting"
-  },
-  {
-    "page": "whats-new/2026-w13.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w14.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w15.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w16.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w17.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w18.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w19.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w20.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w21.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w22.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w23.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w24.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w25.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w26.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w27.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w28.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w29.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w30.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w32.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w33.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w34.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w35.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w36.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/2026-w37.md",
-    "reason": "digest"
-  },
-  {
-    "page": "whats-new/index.md",
-    "reason": "digest"
   },
   {
     "page": "worktrees.md",

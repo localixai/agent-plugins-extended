@@ -61,7 +61,7 @@ function remainder(plugins: readonly PluginVerdict[]): string[] {
   const unmatched = plugins.flatMap((p) => [...p.files.flatMap((f) => f.unmatched), ...p.elsewhere])
   const byKind = new Map<string, Map<string, number>>()
   for (const error of unmatched) {
-    const kind = classify(error.message)
+    const kind = classify(error.message, error.path)
     const shapes = byKind.get(kind) ?? new Map<string, number>()
     const key = `${error.path.replace(/\d+/g, 'N')}: ${shape(error.message)}`
     shapes.set(key, (shapes.get(key) ?? 0) + 1)

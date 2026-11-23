@@ -231,6 +231,11 @@
   },
   {
     "page": "settings-reference.md",
+    "section": "Settings index — disableRemotePreviewScripts",
+    "reason": "runtime"
+  },
+  {
+    "page": "settings-reference.md",
     "section": "Settings index — editorMode",
     "reason": "runtime"
   },
@@ -247,6 +252,11 @@
   {
     "page": "settings-reference.md",
     "section": "Settings index — enableArtifact",
+    "reason": "runtime"
+  },
+  {
+    "page": "settings-reference.md",
+    "section": "Settings index — enforceAnthropicSignIn",
     "reason": "runtime"
   },
   {
@@ -726,11 +736,6 @@
   },
   {
     "page": "settings-reference.md",
-    "section": "Settings index — subagentStatusLine",
-    "reason": "runtime"
-  },
-  {
-    "page": "settings-reference.md",
     "section": "Settings index — switchModelsOnFlag",
     "reason": "runtime"
   },
@@ -1001,6 +1006,26 @@
   },
   {
     "page": "env-vars.md",
+    "section": "Variables — ANTHROPIC_GOOGLE_CLOUD_BASE_URL",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — ANTHROPIC_GOOGLE_CLOUD_LOCATION",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — ANTHROPIC_GOOGLE_CLOUD_PROJECT",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — ANTHROPIC_GOOGLE_CLOUD_WORKSPACE_ID",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
     "section": "Variables — ANTHROPIC_MODEL",
     "reason": "runtime"
   },
@@ -1211,6 +1236,11 @@
   },
   {
     "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_AUTOMOUNT_ROOTS",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_AWS_CHAIN_RESOLVE_TIMEOUT_MS",
     "reason": "runtime"
   },
@@ -1381,6 +1411,11 @@
   },
   {
     "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_DISABLE_DEFERRED_TOOL_RESUME",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS",
     "reason": "runtime"
   },
@@ -1392,6 +1427,11 @@
   {
     "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_DISABLE_FAST_MODE",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_DISABLE_FEATURE_FLAGS",
     "reason": "runtime"
   },
   {
@@ -1466,7 +1506,17 @@
   },
   {
     "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_DISABLE_PROXY_SCHEME_REPAIR",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_DISABLE_REFUSAL_FALLBACK",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_DISABLE_SHELL_HEAD_START",
     "reason": "runtime"
   },
   {
@@ -1492,6 +1542,11 @@
   {
     "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_DISABLE_ULTRAREVIEW_TRUST_CHECK",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_DISABLE_ULTRATHINK",
     "reason": "runtime"
   },
   {
@@ -1606,6 +1661,11 @@
   },
   {
     "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_EXPERIMENTAL_CODE_MODE",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_EXTRA_BODY",
     "reason": "runtime"
   },
@@ -1642,6 +1702,11 @@
   {
     "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_FORWARD_SUBAGENT_TEXT",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_FULL_SIGN_IN_LINK",
     "reason": "runtime"
   },
   {
@@ -1707,6 +1772,11 @@
   {
     "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_IDLE_COMPACT_MIN_TOKENS",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_LOOP_KEEPALIVE",
     "reason": "runtime"
   },
   {
@@ -1896,6 +1966,11 @@
   },
   {
     "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_RESUME_HINT_COMMAND",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_RESUME_INTERRUPTED_TURN",
     "reason": "runtime"
   },
@@ -1976,6 +2051,11 @@
   },
   {
     "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_SKIP_ANTHROPIC_GOOGLE_CLOUD_AUTH",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_SKIP_AWS_CRED_CACHE",
     "reason": "runtime"
   },
@@ -2022,6 +2102,11 @@
   {
     "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_STARTUP_FAILURE_RESULTS",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_STRICT_INLINE_SHELL_RM_PROMPT",
     "reason": "runtime"
   },
   {
@@ -2082,6 +2167,11 @@
   {
     "page": "env-vars.md",
     "section": "Variables — CLAUDE_CODE_USE_ANTHROPIC_AWS",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — CLAUDE_CODE_USE_ANTHROPIC_GOOGLE_CLOUD",
     "reason": "runtime"
   },
   {
@@ -2422,6 +2512,11 @@
   {
     "page": "env-vars.md",
     "section": "Variables — OTEL_METRICS_INCLUDE_VERSION",
+    "reason": "runtime"
+  },
+  {
+    "page": "env-vars.md",
+    "section": "Variables — OTEL_RESOURCE_INCLUDE_HOST",
     "reason": "runtime"
   },
   {
@@ -2786,6 +2881,11 @@
   },
   {
     "page": "cli-reference.md",
+    "section": "CLI flags — --correlation-id <id>",
+    "reason": "runtime"
+  },
+  {
+    "page": "cli-reference.md",
     "section": "CLI flags — --dangerously-skip-permissions",
     "reason": "runtime"
   },
@@ -2902,6 +3002,11 @@
   {
     "page": "cli-reference.md",
     "section": "CLI flags — --max-turns",
+    "reason": "runtime"
+  },
+  {
+    "page": "cli-reference.md",
+    "section": "CLI flags — --metadata <key=value>",
     "reason": "runtime"
   },
   {
@@ -3193,11 +3298,6 @@
     "page": "plugins/marketplace-reference.md",
     "section": "Next steps",
     "reason": "navigation"
-  },
-  {
-    "page": "plugins/cli-reference.md",
-    "section": "claude plugin commands",
-    "reason": "container"
   },
   {
     "page": "plugins/cli-reference.md",
@@ -3616,7 +3716,7 @@
   },
   {
     "page": "plugins/troubleshooting.md",
-    "section": "Failed to load hooks from <path> and hooks that don't fire",
+    "section": "Couldn't load hooks from <path> and hooks that don't fire",
     "reason": "container"
   },
   {
@@ -3946,6 +4046,11 @@
   },
   {
     "page": "plugins/mods/api.md",
+    "section": "Add a command",
+    "reason": "container"
+  },
+  {
+    "page": "plugins/mods/api.md",
     "section": "Call a model",
     "reason": "container"
   },
@@ -4022,6 +4127,11 @@
   {
     "page": "plugins/mods/events.md",
     "section": "How a hook handles an event",
+    "reason": "container"
+  },
+  {
+    "page": "plugins/mods/events.md",
+    "section": "Filter which events a hook handles",
     "reason": "container"
   },
   {
@@ -4156,6 +4266,11 @@
   },
   {
     "page": "plugins/mods/interface.md",
+    "section": "Change the colors of the Desktop app",
+    "reason": "container"
+  },
+  {
+    "page": "plugins/mods/interface.md",
     "section": "Respond to presses and typing",
     "reason": "container"
   },
@@ -4287,6 +4402,11 @@
   {
     "page": "plugins/mods/reference.md",
     "section": "Events",
+    "reason": "container"
+  },
+  {
+    "page": "plugins/mods/reference.md",
+    "section": "Mods API calls",
     "reason": "container"
   },
   {
@@ -5008,11 +5128,6 @@
     "page": "managed-mcp.md",
     "section": "Choose a pattern",
     "reason": "advice"
-  },
-  {
-    "page": "managed-mcp.md",
-    "section": "Exclusive control with managed-mcp.json",
-    "reason": "container"
   },
   {
     "page": "managed-mcp.md",
@@ -5816,11 +5931,6 @@
   },
   {
     "page": "settings-reference.md",
-    "section": "subagentStatusLine",
-    "reason": "runtime"
-  },
-  {
-    "page": "settings-reference.md",
     "section": "syntaxHighlightingDisabled",
     "reason": "runtime"
   },
@@ -6246,6 +6356,11 @@
   },
   {
     "page": "settings-reference.md",
+    "section": "disableRemotePreviewScripts",
+    "reason": "runtime"
+  },
+  {
+    "page": "settings-reference.md",
     "section": "enableArtifact",
     "reason": "runtime"
   },
@@ -6312,6 +6427,11 @@
   {
     "page": "settings-reference.md",
     "section": "awsCredentialExport",
+    "reason": "runtime"
+  },
+  {
+    "page": "settings-reference.md",
+    "section": "enforceAnthropicSignIn",
     "reason": "runtime"
   },
   {
@@ -7281,6 +7401,11 @@
   },
   {
     "page": "server-managed-settings.md",
+    "section": "Settings precedence",
+    "reason": "container"
+  },
+  {
+    "page": "server-managed-settings.md",
     "section": "When a machine's apiKeyHelper isn't in effect",
     "reason": "runtime"
   },
@@ -7406,6 +7531,11 @@
   },
   {
     "page": "tools-reference.md",
+    "section": "Protect read-only files in Perforce",
+    "reason": "runtime"
+  },
+  {
+    "page": "tools-reference.md",
     "section": "Non-UTF-8 files",
     "reason": "runtime"
   },
@@ -7457,6 +7587,11 @@
   {
     "page": "tools-reference.md",
     "section": "NotebookEdit tool behavior",
+    "reason": "runtime"
+  },
+  {
+    "page": "tools-reference.md",
+    "section": "Replacing a cell clears its saved outputs in the file",
     "reason": "runtime"
   },
   {
@@ -7546,7 +7681,42 @@
   },
   {
     "page": "tools-reference.md",
-    "section": "WebFetch availability",
+    "section": "Allow a domain",
+    "reason": "runtime"
+  },
+  {
+    "page": "tools-reference.md",
+    "section": "Block a site or turn WebFetch off",
+    "reason": "runtime"
+  },
+  {
+    "page": "tools-reference.md",
+    "section": "When a fetch prompts, fails, or WebFetch is missing",
+    "reason": "runtime"
+  },
+  {
+    "page": "tools-reference.md",
+    "section": "The web-fetch subagent",
+    "reason": "runtime"
+  },
+  {
+    "page": "tools-reference.md",
+    "section": "Which model the web-fetch subagent runs on",
+    "reason": "runtime"
+  },
+  {
+    "page": "tools-reference.md",
+    "section": "Rules, hooks, and CLAUDE.md with the web-fetch subagent",
+    "reason": "runtime"
+  },
+  {
+    "page": "tools-reference.md",
+    "section": "Turn off the web-fetch subagent",
+    "reason": "runtime"
+  },
+  {
+    "page": "tools-reference.md",
+    "section": "Identify WebFetch requests to your site",
     "reason": "runtime"
   },
   {
@@ -7572,6 +7742,91 @@
   {
     "page": "tools-reference.md",
     "section": "See also",
+    "reason": "navigation"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "How Code Mode works",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "When to use Code Mode",
+    "reason": "advice"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Requirements",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Try Code Mode",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Turn off Code Mode",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Block Code Mode for your organization",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Monitor Code Mode with OpenTelemetry",
+    "reason": "telemetry"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Permissions and long-running code",
+    "reason": "container"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Answer a permission prompt while code runs",
+    "reason": "ui"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Limit shell commands with the sandbox",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Long-running code",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Stop code in progress",
+    "reason": "ui"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Check code output with a hook",
+    "reason": "container"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Troubleshooting",
+    "reason": "container"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Code Mode doesn't start",
+    "reason": "runtime"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Permission prompt with a countdown",
+    "reason": "ui"
+  },
+  {
+    "page": "code-mode.md",
+    "section": "Related resources",
     "reason": "navigation"
   },
   {
@@ -7602,6 +7857,11 @@
   {
     "page": "errors.md",
     "section": "Tune retry behavior",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
+    "section": "How long a non-streaming attempt waits",
     "reason": "runtime"
   },
   {
@@ -7811,6 +8071,11 @@
   },
   {
     "page": "errors.md",
+    "section": "Could not refresh your login: the disk that holds the Claude Code config directory is full",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
     "section": "Couldn't save your login",
     "reason": "runtime"
   },
@@ -7882,6 +8147,11 @@
   {
     "page": "errors.md",
     "section": "Issuer mismatch in authorization response",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
+    "section": "Stopped an OAuth request",
     "reason": "runtime"
   },
   {
@@ -8002,6 +8272,11 @@
   {
     "page": "errors.md",
     "section": "Failed to fetch session from Sessions API",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
+    "section": "Couldn't load the history of cloud session",
     "reason": "runtime"
   },
   {
@@ -8291,6 +8566,11 @@
   },
   {
     "page": "errors.md",
+    "section": "Claude Code could not save because the disk is full",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
     "section": "Directory couldn't be resolved to a real location",
     "reason": "runtime"
   },
@@ -8306,7 +8586,22 @@
   },
   {
     "page": "errors.md",
+    "section": "Remote Control did not start because a question got no answer",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
     "section": "Not carried over to the sessions Remote Control starts",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
+    "section": "Remote Control did not start because of the --settings file",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
+    "section": "The settings file has changed since Remote Control started",
     "reason": "runtime"
   },
   {
@@ -8362,6 +8657,11 @@
   {
     "page": "errors.md",
     "section": "/security-review fails without origin/HEAD",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
+    "section": "Skill, command, or hook over the 4,000,000-character limit",
     "reason": "runtime"
   },
   {
@@ -8566,7 +8866,7 @@
   },
   {
     "page": "errors.md",
-    "section": "Command approved before Claude Code restarted was not run",
+    "section": "Approved command was not run after Claude Code restarted",
     "reason": "runtime"
   },
   {
@@ -8631,6 +8931,11 @@
   },
   {
     "page": "errors.md",
+    "section": "The search failed, so this is not a \"no matches\" result",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
     "section": "Task output swap refused",
     "reason": "runtime"
   },
@@ -8647,6 +8952,11 @@
   {
     "page": "errors.md",
     "section": "File is not valid UTF-8",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
+    "section": "Refusing to apply edits: a hook is configured for file edits in this session",
     "reason": "runtime"
   },
   {
@@ -8672,6 +8982,11 @@
   {
     "page": "errors.md",
     "section": "WebFetch cannot fetch localhost",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
+    "section": "Claude Code is unable to fetch from a host",
     "reason": "runtime"
   },
   {
@@ -8781,12 +9096,22 @@
   },
   {
     "page": "errors.md",
+    "section": "This forked session could not be started",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
     "section": "Workspace not trusted when dispatching a background session",
     "reason": "runtime"
   },
   {
     "page": "errors.md",
     "section": "Wrapper and IDE errors",
+    "reason": "runtime"
+  },
+  {
+    "page": "errors.md",
+    "section": "Subprocess initialization did not complete within 60000ms",
     "reason": "runtime"
   },
   {

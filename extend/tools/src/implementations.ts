@@ -4,7 +4,7 @@
  * `extend/conformance/implementations/<implementation>/`:
  *
  *   { "implementation": "agent-plugins", "revision": "<git short sha>", "pass": "<name>",
- *     "date": "YYYY-MM-DD", "files": ["04-skills.md"],
+ *     "date": "YYYY-MM-DD", "release": "2.1.330", "files": ["04-skills.md"],
  *     "requirements": [{ "id", "file", "status", "evidence", "note" }],
  *     "judgments": [{ "id": "J4.3", "status", "evidence", "note" }] }
  *
@@ -12,8 +12,10 @@
  * test), `diverges` (it does something else; `note` says what, and which side is right),
  * `missing` (it does not do it at all), `not-applicable` (the paragraph binds a party the
  * implementation is not, such as a plugin author or a validator it does not ship).
- * This script writes `extend/conformance/IMPLEMENTATIONS.md`; `--check` fails on an unknown id or
- * status, or a stale report.
+ * `release` is the Claude Code release of the specification text the pass audited against.
+ * This script writes `extend/conformance/IMPLEMENTATIONS.md`; `--check` fails on an unknown id in a
+ * pass of the snapshot's release, an unknown status, or a stale report. An id that a pass of an
+ * earlier release named and the snapshot no longer has is listed as retired, not an error.
  *
  *   bun run implementations [--check]
  */
@@ -27,6 +29,7 @@ interface Pass {
   readonly revision: string
   readonly pass: string
   readonly date: string
+  readonly release: string
   readonly files: readonly string[]
   readonly requirements: readonly Entry[]
   readonly judgments: readonly Entry[]
@@ -34,7 +37,10 @@ interface Pass {
 
 const STATUS = new Set(['conforms', 'diverges', 'missing', 'not-applicable'])
 const ROOT = join(CONFORMANCE, 'implementations')
-const { requirements } = (await Bun.file(join(CONFORMANCE, 'requirements.json')).json()) as { requirements: { id: string }[] }
+const { claudeCode: release, requirements } = (await Bun.file(join(CONFORMANCE, 'requirements.json')).json()) as {
+  claudeCode: string
+  requirements: { id: string }[]
+}
 const known = new Set(requirements.map((each) => each.id))
 
 const problems: string[] = []
@@ -48,10 +54,15 @@ for (const implementation of (await readdir(ROOT).catch(() => [])).sort()) {
   // that states it does.
   const latest = new Map<string, { pass: string; entry: Entry }>()
   const latestJudgments = new Map<string, { pass: string; entry: Entry }>()
+  const retired = new Set<string>()
   for (const pass of passes) {
     for (const entry of pass.requirements ?? []) {
-      if (!known.has(entry.id)) problems.push(`${implementation}/${pass.pass}: unknown id ${entry.id}`)
       if (!STATUS.has(entry.status)) problems.push(`${implementation}/${pass.pass}: ${entry.id}: status ${entry.status}`)
+      if (!known.has(entry.id)) {
+        if (pass.release === release) problems.push(`${implementation}/${pass.pass}: unknown id ${entry.id}`)
+        else retired.add(entry.id)
+        continue
+      }
       latest.set(`${entry.id}\u0000${entry.file ?? ''}`, { pass: pass.pass, entry })
     }
     for (const entry of pass.judgments ?? []) {
@@ -77,10 +88,13 @@ for (const implementation of (await readdir(ROOT).catch(() => [])).sort()) {
   const audited = byId.size
   const conforming = [...byId.values()].filter((status) => status === 'conforms' || status === 'not-applicable').length
   const revisions = [...new Set(passes.map((pass) => pass.revision))].join(', ')
+  const releases = [...new Set(passes.map((pass) => pass.release))].sort().join(', ')
   sections.push(
     `## ${implementation}`,
     '',
     `Audited at ${revisions || '—'}: **${audited} of ${requirements.length} requirements audited, ${conforming} conform** (an id counts as conforming only when every file that states it conforms).`,
+    '',
+    `The passes audited the specification text of Claude Code ${releases || '—'}; the snapshot is ${release}.`,
     '',
     '| Outcome | Count |',
     '| --- | ---: |',
@@ -89,6 +103,12 @@ for (const implementation of (await readdir(ROOT).catch(() => [])).sort()) {
     `### Open: divergences and missing behaviour (${open.length})`,
     '',
     ...(open.length === 0 ? ['None.'] : ['| Id | File | Status | Pass | What |', '| --- | --- | --- | --- | --- |', ...open]),
+    '',
+    `### Retired (${retired.size})`,
+    '',
+    `Ids that passes of an earlier release audited and the ${release} snapshot no longer has; counted nowhere above.`,
+    '',
+    ...[...retired].sort().map((id) => `- \`${id}\``),
     '',
   )
 }

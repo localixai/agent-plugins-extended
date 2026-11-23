@@ -1,5 +1,5 @@
 {
-  "claudeCode": "2.1.321",
+  "claudeCode": "2.1.330",
   "requirements": [
     {
       "id": "agents.behavior.Available tools.Agent",
@@ -32,6 +32,12 @@
       "section": "Available tools"
     },
     {
+      "id": "agents.behavior.Available tools.propose_skills",
+      "category": "agents",
+      "page": "sub-agents.md",
+      "section": "Available tools"
+    },
+    {
       "id": "agents.behavior.Available tools.ScheduleWakeup",
       "category": "agents",
       "page": "sub-agents.md",
@@ -54,6 +60,12 @@
       "category": "agents",
       "page": "sub-agents.md",
       "section": "Built-in subagents"
+    },
+    {
+      "id": "agents.behavior.Check a subagent's model",
+      "category": "agents",
+      "page": "sub-agents.md",
+      "section": "Check a subagent's model"
     },
     {
       "id": "agents.behavior.Choose a model",
@@ -126,6 +138,12 @@
       "category": "agents",
       "page": "sub-agents.md",
       "section": "Disable specific subagents"
+    },
+    {
+      "id": "agents.behavior.Extended thinking in subagents",
+      "category": "agents",
+      "page": "sub-agents.md",
+      "section": "Extended thinking in subagents"
     },
     {
       "id": "agents.behavior.Invoke subagents explicitly.@-mention",
@@ -252,6 +270,24 @@
       "category": "agents",
       "page": "sub-agents.md",
       "section": "When a subagent has no effort field or parameter"
+    },
+    {
+      "id": "agents.behavior.When an allowlist blocks a subagent model",
+      "category": "agents",
+      "page": "sub-agents.md",
+      "section": "When an allowlist blocks a subagent model"
+    },
+    {
+      "id": "agents.behavior.Which model a nested subagent runs on",
+      "category": "agents",
+      "page": "sub-agents.md",
+      "section": "Which model a nested subagent runs on"
+    },
+    {
+      "id": "agents.behavior.Which version a model alias selects",
+      "category": "agents",
+      "page": "sub-agents.md",
+      "section": "Which version a model alias selects"
     },
     {
       "id": "agents.behavior.Write subagent files",
@@ -854,12 +890,6 @@
       "section": "Path escapes plugin directory"
     },
     {
-      "id": "cli.errors.Path escapes plugin directory.settings.json",
-      "category": "cli",
-      "page": "errors.md",
-      "section": "Path escapes plugin directory"
-    },
-    {
       "id": "cli.errors.Path escapes plugin directory.SKILL.md",
       "category": "cli",
       "page": "errors.md",
@@ -902,7 +932,7 @@
       "section": "Remote managed settings failed to load"
     },
     {
-      "id": "cli.errors.Remote managed settings failed to load.No cache",
+      "id": "cli.errors.Remote managed settings failed to load.No cached settings to apply",
       "category": "cli",
       "page": "errors.md",
       "section": "Remote managed settings failed to load"
@@ -924,6 +954,12 @@
       "category": "cli",
       "page": "errors.md",
       "section": "Sandbox allow entries are ignored under a managed lock"
+    },
+    {
+      "id": "cli.errors.Server file path not read",
+      "category": "cli",
+      "page": "errors.md",
+      "section": "Server file path not read"
     },
     {
       "id": "cli.errors.Settings file exceeds the 2MiB limit",
@@ -1068,6 +1104,30 @@
       "category": "cli",
       "page": "plugins/cli-reference.md",
       "section": "Advice on the README"
+    },
+    {
+      "id": "cli.plugin.claude plugin commands.Exit codes",
+      "category": "cli",
+      "page": "plugins/cli-reference.md",
+      "section": "claude plugin commands"
+    },
+    {
+      "id": "cli.plugin.claude plugin commands.Plugin arguments",
+      "category": "cli",
+      "page": "plugins/cli-reference.md",
+      "section": "claude plugin commands"
+    },
+    {
+      "id": "cli.plugin.claude plugin commands.Scopes",
+      "category": "cli",
+      "page": "plugins/cli-reference.md",
+      "section": "claude plugin commands"
+    },
+    {
+      "id": "cli.plugin.Dependencies installed during a reload",
+      "category": "cli",
+      "page": "plugins/cli-reference.md",
+      "section": "Dependencies installed during a reload"
     },
     {
       "id": "cli.plugin.JSON output.dataDirSize",
@@ -1232,6 +1292,18 @@
       "section": "JSON result format"
     },
     {
+      "id": "cli.plugin.JSON result format.commandFailed",
+      "category": "cli",
+      "page": "plugins/cli-reference.md",
+      "section": "JSON result format"
+    },
+    {
+      "id": "cli.plugin.JSON result format.commandPrinted",
+      "category": "cli",
+      "page": "plugins/cli-reference.md",
+      "section": "JSON result format"
+    },
+    {
       "id": "cli.plugin.JSON result format.message",
       "category": "cli",
       "page": "plugins/cli-reference.md",
@@ -1274,7 +1346,19 @@
       "section": "Output and exit codes"
     },
     {
+      "id": "cli.plugin.Output and exit codes.hosts",
+      "category": "cli",
+      "page": "plugins/cli-reference.md",
+      "section": "Output and exit codes"
+    },
+    {
       "id": "cli.plugin.Output and exit codes.manifest",
+      "category": "cli",
+      "page": "plugins/cli-reference.md",
+      "section": "Output and exit codes"
+    },
+    {
+      "id": "cli.plugin.Output and exit codes.provides",
       "category": "cli",
       "page": "plugins/cli-reference.md",
       "section": "Output and exit codes"
@@ -1554,6 +1638,12 @@
       "category": "cli",
       "page": "plugins/cli-reference.md",
       "section": "plugin prune"
+    },
+    {
+      "id": "cli.plugin.plugin restore-set-aside",
+      "category": "cli",
+      "page": "plugins/cli-reference.md",
+      "section": "plugin restore-set-aside"
     },
     {
       "id": "cli.plugin.plugin tag",
@@ -1850,6 +1940,12 @@
       "section": "Test a plugin and its dependency locally"
     },
     {
+      "id": "dependencies.guide.When a dependency installs automatically",
+      "category": "dependencies",
+      "page": "plugins/dependencies.md",
+      "section": "When a dependency installs automatically"
+    },
+    {
       "id": "environment.behavior.Reload skills that a hook installs",
       "category": "environment",
       "page": "hooks.md",
@@ -2037,6 +2133,18 @@
     },
     {
       "id": "environment.host.CLAUDE_CODE_STOP_HOOK_BLOCK_CAP",
+      "category": "environment",
+      "page": "env-vars.md",
+      "section": "Variables"
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SUBAGENT_EFFORT",
+      "category": "environment",
+      "page": "env-vars.md",
+      "section": "Variables"
+    },
+    {
+      "id": "environment.host.CLAUDE_CODE_SUBAGENT_HISTORY",
       "category": "environment",
       "page": "env-vars.md",
       "section": "Variables"
@@ -2492,6 +2600,12 @@
       "section": "Block the action when a hook fails"
     },
     {
+      "id": "hooks.behavior.Block the action when a hook fails.MCP failure",
+      "category": "hooks",
+      "page": "hooks.md",
+      "section": "Block the action when a hook fails"
+    },
+    {
       "id": "hooks.behavior.Block the action when a hook fails.Timeout",
       "category": "hooks",
       "page": "hooks.md",
@@ -2570,7 +2684,19 @@
       "section": "Exit code 0"
     },
     {
-      "id": "hooks.behavior.Exit code 2",
+      "id": "hooks.behavior.Exit code 2.JSON that fails schema validation",
+      "category": "hooks",
+      "page": "hooks.md",
+      "section": "Exit code 2"
+    },
+    {
+      "id": "hooks.behavior.Exit code 2.JSON that sets continue: false",
+      "category": "hooks",
+      "page": "hooks.md",
+      "section": "Exit code 2"
+    },
+    {
+      "id": "hooks.behavior.Exit code 2.Other JSON that passes schema validation",
       "category": "hooks",
       "page": "hooks.md",
       "section": "Exit code 2"
@@ -2772,6 +2898,12 @@
       "category": "hooks",
       "page": "hooks.md",
       "section": "InstructionsLoaded decision control"
+    },
+    {
+      "id": "hooks.behavior.Limit HTTP hooks",
+      "category": "hooks",
+      "page": "hooks.md",
+      "section": "Limit HTTP hooks"
     },
     {
       "id": "hooks.behavior.Limitations",
@@ -3144,6 +3276,108 @@
       "category": "hooks",
       "page": "hooks.md",
       "section": "WorktreeRemove input"
+    },
+    {
+      "id": "hooks.code-mode.Approve each piece of code first",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Approve each piece of code first"
+    },
+    {
+      "id": "hooks.code-mode.Code Mode limitations.Auto mode",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Code Mode limitations"
+    },
+    {
+      "id": "hooks.code-mode.Code Mode limitations.Hooks",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Code Mode limitations"
+    },
+    {
+      "id": "hooks.code-mode.Code Mode limitations.Long-running code",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Code Mode limitations"
+    },
+    {
+      "id": "hooks.code-mode.Code Mode limitations.Moving the session",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Code Mode limitations"
+    },
+    {
+      "id": "hooks.code-mode.Code Mode limitations.Resuming",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Code Mode limitations"
+    },
+    {
+      "id": "hooks.code-mode.Code Mode limitations.Unavailable features",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Code Mode limitations"
+    },
+    {
+      "id": "hooks.code-mode.Code output withheld by a hook",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Code output withheld by a hook"
+    },
+    {
+      "id": "hooks.code-mode.Move a check from a UserPromptSubmit hook",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Move a check from a UserPromptSubmit hook"
+    },
+    {
+      "id": "hooks.code-mode.Permission checks",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Permission checks"
+    },
+    {
+      "id": "hooks.code-mode.Read code output in the hook",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Read code output in the hook"
+    },
+    {
+      "id": "hooks.code-mode.Redact code output.Change the text",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Redact code output"
+    },
+    {
+      "id": "hooks.code-mode.Redact code output.Keep the shape",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Redact code output"
+    },
+    {
+      "id": "hooks.code-mode.Redact code output.Remove images and PDFs",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Redact code output"
+    },
+    {
+      "id": "hooks.code-mode.Redact when your hook blocks or hits an error",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Redact when your hook blocks or hits an error"
+    },
+    {
+      "id": "hooks.code-mode.Require approval for a command",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Require approval for a command"
+    },
+    {
+      "id": "hooks.code-mode.Tool call refused by a hook",
+      "category": "hooks",
+      "page": "code-mode.md",
+      "section": "Tool call refused by a hook"
     },
     {
       "id": "hooks.components.Environment, quoting, and matching MCP tools.Environment",
@@ -3753,6 +3987,12 @@
     },
     {
       "id": "hooks.handler.mcp_tool.input",
+      "category": "hooks",
+      "page": "hooks.md",
+      "section": "MCP tool hook fields"
+    },
+    {
+      "id": "hooks.handler.mcp_tool.onFailure",
       "category": "hooks",
       "page": "hooks.md",
       "section": "MCP tool hook fields"
@@ -5030,30 +5270,6 @@
       "section": "Permission update entries"
     },
     {
-      "id": "hooks.troubleshooting.A plugin hook blocks a tool call or prompt",
-      "category": "hooks",
-      "page": "plugins/troubleshooting.md",
-      "section": "A plugin hook blocks a tool call or prompt"
-    },
-    {
-      "id": "hooks.troubleshooting.hook error notices in the transcript",
-      "category": "hooks",
-      "page": "plugins/troubleshooting.md",
-      "section": "hook error notices in the transcript"
-    },
-    {
-      "id": "hooks.troubleshooting.Hook loads but never fires",
-      "category": "hooks",
-      "page": "plugins/troubleshooting.md",
-      "section": "Hook loads but never fires"
-    },
-    {
-      "id": "hooks.troubleshooting.Hooks fail to load",
-      "category": "hooks",
-      "page": "plugins/troubleshooting.md",
-      "section": "Hooks fail to load"
-    },
-    {
       "id": "install.develop.Load a folder of plugins",
       "category": "install",
       "page": "plugins/create.md",
@@ -5390,6 +5606,30 @@
       "section": "Disabled in user settings but still loads"
     },
     {
+      "id": "install.loading.Enabled in an --add-dir directory but not loaded..claude/settings.json",
+      "category": "install",
+      "page": "plugins/loading.md",
+      "section": "Enabled in an --add-dir directory but not loaded"
+    },
+    {
+      "id": "install.loading.Enabled in an --add-dir directory but not loaded..claude/settings.local.json",
+      "category": "install",
+      "page": "plugins/loading.md",
+      "section": "Enabled in an --add-dir directory but not loaded"
+    },
+    {
+      "id": "install.loading.Enabled in an --add-dir directory but not loaded.settings.json",
+      "category": "install",
+      "page": "plugins/loading.md",
+      "section": "Enabled in an --add-dir directory but not loaded"
+    },
+    {
+      "id": "install.loading.Enabled in an --add-dir directory but not loaded.settings.local.json",
+      "category": "install",
+      "page": "plugins/loading.md",
+      "section": "Enabled in an --add-dir directory but not loaded"
+    },
+    {
       "id": "install.loading.Enabled in project settings but not installed",
       "category": "install",
       "page": "plugins/loading.md",
@@ -5594,6 +5834,12 @@
       "section": "\"<plugin>\" was not installed: it would share its folder with \"<other>\""
     },
     {
+      "id": "install.troubleshooting.A plugin hook blocks a tool call or prompt",
+      "category": "install",
+      "page": "plugins/troubleshooting.md",
+      "section": "A plugin hook blocks a tool call or prompt"
+    },
+    {
       "id": "install.troubleshooting.A plugin installed from a git repository shows version unknown",
       "category": "install",
       "page": "plugins/troubleshooting.md",
@@ -5624,7 +5870,19 @@
       "section": "Could not move the new copy of this plugin version into <path>"
     },
     {
+      "id": "install.troubleshooting.Couldn't install: <plugin> (<reason>) or Failed to install: <plugin> (<reason>)",
+      "category": "install",
+      "page": "plugins/troubleshooting.md",
+      "section": "Couldn't install: <plugin> (<reason>) or Failed to install: <plugin> (<reason>)"
+    },
+    {
       "id": "install.troubleshooting.Dependency errors.... has no git tag satisfying <range>",
+      "category": "install",
+      "page": "plugins/troubleshooting.md",
+      "section": "Dependency errors"
+    },
+    {
+      "id": "install.troubleshooting.Dependency errors.... still unresolved: <names>",
       "category": "install",
       "page": "plugins/troubleshooting.md",
       "section": "Dependency errors"
@@ -5660,10 +5918,22 @@
       "section": "does not load (...), so Claude Code ignores the whole file"
     },
     {
-      "id": "install.troubleshooting.Failed to install: <plugin> (<reason>)",
+      "id": "install.troubleshooting.hook error notices in the transcript",
       "category": "install",
       "page": "plugins/troubleshooting.md",
-      "section": "Failed to install: <plugin> (<reason>)"
+      "section": "hook error notices in the transcript"
+    },
+    {
+      "id": "install.troubleshooting.Hook loads but never fires",
+      "category": "install",
+      "page": "plugins/troubleshooting.md",
+      "section": "Hook loads but never fires"
+    },
+    {
+      "id": "install.troubleshooting.Hooks fail to load",
+      "category": "install",
+      "page": "plugins/troubleshooting.md",
+      "section": "Hooks fail to load"
     },
     {
       "id": "install.troubleshooting.install records under names that no version of Claude Code can use were removed from installed_plugins.json",
@@ -5720,10 +5990,16 @@
       "section": "Marketplace \"<name>\" is registered from an untrusted source"
     },
     {
-      "id": "install.troubleshooting.No plugins available or No marketplaces configured",
+      "id": "install.troubleshooting.Marketplace \"<name>\", which managed settings declare, stands from another source and cannot be taken back while its declared source is unreachable",
       "category": "install",
       "page": "plugins/troubleshooting.md",
-      "section": "No plugins available or No marketplaces configured"
+      "section": "Marketplace \"<name>\", which managed settings declare, stands from another source and cannot be taken back while its declared source is unreachable"
+    },
+    {
+      "id": "install.troubleshooting.No plugins yet or No marketplaces configured",
+      "category": "install",
+      "page": "plugins/troubleshooting.md",
+      "section": "No plugins yet or No marketplaces configured"
     },
     {
       "id": "install.troubleshooting.not found in marketplace with a refresh hint",
@@ -5744,10 +6020,10 @@
       "section": "Plugin '<name>@<marketplace>' is already installed globally"
     },
     {
-      "id": "install.troubleshooting.Plugin \"<name>\" is enabled in project settings but isn't installed here",
+      "id": "install.troubleshooting.Plugin \"<name>\" is on in project settings but isn't installed here",
       "category": "install",
       "page": "plugins/troubleshooting.md",
-      "section": "Plugin \"<name>\" is enabled in project settings but isn't installed here"
+      "section": "Plugin \"<name>\" is on in project settings but isn't installed here"
     },
     {
       "id": "install.troubleshooting.Plugin \"<name>\" not cached at <path>",
@@ -5796,6 +6072,12 @@
       "category": "install",
       "page": "plugins/troubleshooting.md",
       "section": "Run /reload-plugins to apply."
+    },
+    {
+      "id": "install.troubleshooting.The list of installed plugins (installed_plugins.json) could not be read, so marketplace \"<name>\", which managed settings declare, cannot be taken back from another source",
+      "category": "install",
+      "page": "plugins/troubleshooting.md",
+      "section": "The list of installed plugins (installed_plugins.json) could not be read, so marketplace \"<name>\", which managed settings declare, cannot be taken back from another source"
     },
     {
       "id": "install.troubleshooting.The packages it lists are not installed or were not installed, because ...",
@@ -5871,12 +6153,6 @@
     },
     {
       "id": "layout.Output styles",
-      "category": "layout",
-      "page": "plugins/manifest-reference.md",
-      "section": "Standard layout"
-    },
-    {
-      "id": "layout.Settings",
       "category": "layout",
       "page": "plugins/manifest-reference.md",
       "section": "Standard layout"
@@ -6062,6 +6338,12 @@
       "section": "Fields"
     },
     {
+      "id": "manifest.field.engines",
+      "category": "manifest",
+      "page": "plugins/manifest-reference.md",
+      "section": "Fields"
+    },
+    {
       "id": "manifest.field.experimental",
       "category": "manifest",
       "page": "plugins/manifest-reference.md",
@@ -6140,6 +6422,12 @@
       "section": "Fields"
     },
     {
+      "id": "manifest.field.network",
+      "category": "manifest",
+      "page": "plugins/manifest-reference.md",
+      "section": "Fields"
+    },
+    {
       "id": "manifest.field.outputStyles",
       "category": "manifest",
       "page": "plugins/manifest-reference.md",
@@ -6153,12 +6441,6 @@
     },
     {
       "id": "manifest.field.repository",
-      "category": "manifest",
-      "page": "plugins/manifest-reference.md",
-      "section": "Fields"
-    },
-    {
-      "id": "manifest.field.settings",
       "category": "manifest",
       "page": "plugins/manifest-reference.md",
       "section": "Fields"
@@ -6288,12 +6570,6 @@
       "category": "manifest",
       "page": "plugins/manifest-reference.md",
       "section": "Path-only fields"
-    },
-    {
-      "id": "manifest.rule.settings",
-      "category": "manifest",
-      "page": "plugins/manifest-reference.md",
-      "section": "settings"
     },
     {
       "id": "manifest.rule.Unrecognized fields",
@@ -6501,6 +6777,12 @@
     },
     {
       "id": "marketplace.entry.displayName",
+      "category": "marketplace",
+      "page": "plugins/marketplace-reference.md",
+      "section": "Plugin entries"
+    },
+    {
+      "id": "marketplace.entry.engines",
       "category": "marketplace",
       "page": "plugins/marketplace-reference.md",
       "section": "Plugin entries"
@@ -7346,12 +7628,6 @@
       "section": "Reserved names"
     },
     {
-      "id": "marketplace.rule.Reserved names.npm, pip, uv, cargo, github, and gh",
-      "category": "marketplace",
-      "page": "plugins/marketplace-reference.md",
-      "section": "Reserved names"
-    },
-    {
       "id": "marketplace.rule.Reserved names.Official marketplace names",
       "category": "marketplace",
       "page": "plugins/marketplace-reference.md",
@@ -7638,6 +7914,12 @@
       "category": "mcp",
       "page": "mcp.md",
       "section": "Authenticate with remote MCP servers"
+    },
+    {
+      "id": "mcp.behavior.Choose a time to live and a poll interval",
+      "category": "mcp",
+      "page": "mcp.md",
+      "section": "Choose a time to live and a poll interval"
     },
     {
       "id": "mcp.behavior.Elicitation modes Claude Code declares",
@@ -8204,6 +8486,12 @@
       "section": "Environment variables in serverCommand and serverUrl entries"
     },
     {
+      "id": "mcpSettings.managed.Exclusive control with managed-mcp.json",
+      "category": "mcp-settings",
+      "page": "managed-mcp.md",
+      "section": "Exclusive control with managed-mcp.json"
+    },
+    {
       "id": "mcpSettings.managed.How allowlists and denylists apply to the managed set",
       "category": "mcp-settings",
       "page": "managed-mcp.md",
@@ -8498,16 +8786,16 @@
       "section": "Mods API methods"
     },
     {
+      "id": "mods.api.$.wasm",
+      "category": "mods",
+      "page": "plugins/mods/reference.md",
+      "section": "Mods API methods"
+    },
+    {
       "id": "mods.apiGuide.A claude -p run with your mod never exits",
       "category": "mods",
       "page": "plugins/mods/api.md",
       "section": "A claude -p run with your mod never exits"
-    },
-    {
-      "id": "mods.apiGuide.Add a command",
-      "category": "mods",
-      "page": "plugins/mods/api.md",
-      "section": "Add a command"
     },
     {
       "id": "mods.apiGuide.Add a tool",
@@ -8526,6 +8814,12 @@
       "category": "mods",
       "page": "plugins/mods/api.md",
       "section": "Choose between prompt and system"
+    },
+    {
+      "id": "mods.apiGuide.Hide command text from Claude",
+      "category": "mods",
+      "page": "plugins/mods/api.md",
+      "section": "Hide command text from Claude"
     },
     {
       "id": "mods.apiGuide.Reach files, processes, and the network",
@@ -8595,6 +8889,12 @@
     },
     {
       "id": "mods.apiGuide.Reach files, processes, and the network.$.store",
+      "category": "mods",
+      "page": "plugins/mods/api.md",
+      "section": "Reach files, processes, and the network"
+    },
+    {
+      "id": "mods.apiGuide.Reach files, processes, and the network.$.wasm",
       "category": "mods",
       "page": "plugins/mods/api.md",
       "section": "Reach files, processes, and the network"
@@ -8858,19 +9158,13 @@
       "section": "Check what Claude Code reads from your mod"
     },
     {
-      "id": "mods.create.Sessions where a mod Claude writes can't load.Mods are disabled",
+      "id": "mods.create.Sessions that load a mod without asking",
       "category": "mods",
       "page": "plugins/mods/create.md",
-      "section": "Sessions where a mod Claude writes can't load"
+      "section": "Sessions that load a mod without asking"
     },
     {
-      "id": "mods.create.Sessions where a mod Claude writes can't load.Nobody is there to approve",
-      "category": "mods",
-      "page": "plugins/mods/create.md",
-      "section": "Sessions where a mod Claude writes can't load"
-    },
-    {
-      "id": "mods.create.Sessions where a mod Claude writes can't load.The workspace isn't trusted",
+      "id": "mods.create.Sessions where a mod Claude writes can't load",
       "category": "mods",
       "page": "plugins/mods/create.md",
       "section": "Sessions where a mod Claude writes can't load"
@@ -9116,6 +9410,12 @@
       "section": "Session"
     },
     {
+      "id": "mods.event.session.stop",
+      "category": "mods",
+      "page": "plugins/mods/reference.md",
+      "section": "Session"
+    },
+    {
       "id": "mods.event.settings.read",
       "category": "mods",
       "page": "plugins/mods/reference.md",
@@ -9153,6 +9453,18 @@
     },
     {
       "id": "mods.event.tool.describe",
+      "category": "mods",
+      "page": "plugins/mods/reference.md",
+      "section": "Tools"
+    },
+    {
+      "id": "mods.event.tool.judge",
+      "category": "mods",
+      "page": "plugins/mods/reference.md",
+      "section": "Tools"
+    },
+    {
+      "id": "mods.event.tool.run",
       "category": "mods",
       "page": "plugins/mods/reference.md",
       "section": "Tools"
@@ -9302,12 +9614,6 @@
       "section": "Filter a tool.check hook by whether the call is read-only"
     },
     {
-      "id": "mods.events.Filter which events a hook handles",
-      "category": "mods",
-      "page": "plugins/mods/events.md",
-      "section": "Filter which events a hook handles"
-    },
-    {
       "id": "mods.events.Follow a turn.turn.complete",
       "category": "mods",
       "page": "plugins/mods/events.md",
@@ -9414,6 +9720,12 @@
       "category": "mods",
       "page": "plugins/mods/events.md",
       "section": "Hold a tool call until the user decides"
+    },
+    {
+      "id": "mods.events.Hook other mods' drawings and controls",
+      "category": "mods",
+      "page": "plugins/mods/events.md",
+      "section": "Hook other mods' drawings and controls"
     },
     {
       "id": "mods.events.Observe an event",
@@ -9566,12 +9878,6 @@
       "section": "The hook function"
     },
     {
-      "id": "mods.hookArgument.next.error.cause",
-      "category": "mods",
-      "page": "plugins/mods/reference.md",
-      "section": "The hook function"
-    },
-    {
       "id": "mods.hookArgument.next.origin",
       "category": "mods",
       "page": "plugins/mods/reference.md",
@@ -9594,6 +9900,12 @@
       "category": "mods",
       "page": "plugins/mods/reference.md",
       "section": "The hook function"
+    },
+    {
+      "id": "mods.interface.Ask Claude for a colors mod",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Ask Claude for a colors mod"
     },
     {
       "id": "mods.interface.Build a tree from elements.Box",
@@ -9666,6 +9978,12 @@
       "category": "mods",
       "page": "plugins/mods/interface.md",
       "section": "Build a tree from elements"
+    },
+    {
+      "id": "mods.interface.Change what Claude Code already draws.AgentRow",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Change what Claude Code already draws"
     },
     {
       "id": "mods.interface.Change what Claude Code already draws.AskUserQuestion",
@@ -9812,6 +10130,30 @@
       "section": "Draw in the VS Code extension"
     },
     {
+      "id": "mods.interface.Fix missing mod colors in the Desktop app.Another $.theme call",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Fix missing mod colors in the Desktop app"
+    },
+    {
+      "id": "mods.interface.Fix missing mod colors in the Desktop app.Mod not loaded",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Fix missing mod colors in the Desktop app"
+    },
+    {
+      "id": "mods.interface.Fix missing mod colors in the Desktop app.Old version",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Fix missing mod colors in the Desktop app"
+    },
+    {
+      "id": "mods.interface.Fix missing mod colors in the Desktop app.Refused theme",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Fix missing mod colors in the Desktop app"
+    },
+    {
       "id": "mods.interface.Hold toasts behind a dialog",
       "category": "mods",
       "page": "plugins/mods/interface.md",
@@ -9920,7 +10262,7 @@
       "section": "Point the manifest at the declaration"
     },
     {
-      "id": "mods.interface.Put a backdrop behind the conversation.One backdrop for each session",
+      "id": "mods.interface.Put a backdrop behind the conversation.One theme for each session",
       "category": "mods",
       "page": "plugins/mods/interface.md",
       "section": "Put a backdrop behind the conversation"
@@ -9948,6 +10290,24 @@
       "category": "mods",
       "page": "plugins/mods/interface.md",
       "section": "Redraw when your data changes"
+    },
+    {
+      "id": "mods.interface.Remove mod colors from the Desktop app.Claude wrote the mod",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Remove mod colors from the Desktop app"
+    },
+    {
+      "id": "mods.interface.Remove mod colors from the Desktop app.You installed the mod",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Remove mod colors from the Desktop app"
+    },
+    {
+      "id": "mods.interface.Remove mod colors from the Desktop app.You put the mod under ~/.claude/skills/",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Remove mod colors from the Desktop app"
     },
     {
       "id": "mods.interface.Save from more than one session",
@@ -10046,6 +10406,12 @@
       "section": "Which controls need a key"
     },
     {
+      "id": "mods.interface.Write a colors mod yourself",
+      "category": "mods",
+      "page": "plugins/mods/interface.md",
+      "section": "Write a colors mod yourself"
+    },
+    {
       "id": "mods.limit..catch",
       "category": "mods",
       "page": "plugins/mods/reference.md",
@@ -10125,6 +10491,12 @@
     },
     {
       "id": "mods.limit.Code",
+      "category": "mods",
+      "page": "plugins/mods/reference.md",
+      "section": "Limits"
+    },
+    {
+      "id": "mods.limit.Depth and size of a tree counted with its prop values",
       "category": "mods",
       "page": "plugins/mods/reference.md",
       "section": "Limits"
@@ -10220,10 +10592,34 @@
       "section": "Limits"
     },
     {
+      "id": "mods.limit.The rows above the prompt, stacked",
+      "category": "mods",
+      "page": "plugins/mods/reference.md",
+      "section": "Limits"
+    },
+    {
       "id": "mods.limit.ui.render",
       "category": "mods",
       "page": "plugins/mods/reference.md",
       "section": "Limits"
+    },
+    {
+      "id": "mods.overview.Check the charts mod requirements.Platform",
+      "category": "mods",
+      "page": "plugins/mods/overview.md",
+      "section": "Check the charts mod requirements"
+    },
+    {
+      "id": "mods.overview.Check the charts mod requirements.Sign-in",
+      "category": "mods",
+      "page": "plugins/mods/overview.md",
+      "section": "Check the charts mod requirements"
+    },
+    {
+      "id": "mods.overview.Check the charts mod requirements.Version",
+      "category": "mods",
+      "page": "plugins/mods/overview.md",
+      "section": "Check the charts mod requirements"
     },
     {
       "id": "mods.overview.How a mod works",
@@ -10466,10 +10862,10 @@
       "section": "e.layers and e.source on settings.read"
     },
     {
-      "id": "mods.reference.Mods API calls",
+      "id": "mods.reference.Fields on Claude Code's own http.fetch requests",
       "category": "mods",
       "page": "plugins/mods/reference.md",
-      "section": "Mods API calls"
+      "section": "Fields on Claude Code's own http.fetch requests"
     },
     {
       "id": "mods.reference.Replace bold with weight",
@@ -10557,6 +10953,18 @@
     },
     {
       "id": "mods.site.AbovePrompt",
+      "category": "mods",
+      "page": "plugins/mods/reference.md",
+      "section": "Render sites"
+    },
+    {
+      "id": "mods.site.AbovePromptList",
+      "category": "mods",
+      "page": "plugins/mods/reference.md",
+      "section": "Render sites"
+    },
+    {
+      "id": "mods.site.AgentRow",
       "category": "mods",
       "page": "plugins/mods/reference.md",
       "section": "Render sites"
@@ -10688,6 +11096,12 @@
       "section": "Source and frontmatter fields on skill.prompt"
     },
     {
+      "id": "mods.test.Check a result with expect",
+      "category": "mods",
+      "page": "plugins/mods/test.md",
+      "section": "Check a result with expect"
+    },
+    {
       "id": "mods.troubleshoot.$.agent.register refused: the hooks module that made the call is no longer loaded",
       "category": "mods",
       "page": "plugins/mods/troubleshoot.md",
@@ -10802,7 +11216,31 @@
       "section": "A value resets when the module reloads"
     },
     {
-      "id": "mods.troubleshoot.Another mod's band shows and yours doesn't",
+      "id": "mods.troubleshoot.Another mod's band shows and yours doesn't.Another mod hides or draws over your row",
+      "category": "mods",
+      "page": "plugins/mods/troubleshoot.md",
+      "section": "Another mod's band shows and yours doesn't"
+    },
+    {
+      "id": "mods.troubleshoot.Another mod's band shows and yours doesn't.Keep later mods' drawings",
+      "category": "mods",
+      "page": "plugins/mods/troubleshoot.md",
+      "section": "Another mod's band shows and yours doesn't"
+    },
+    {
+      "id": "mods.troubleshoot.Another mod's band shows and yours doesn't.Keep the tree valid",
+      "category": "mods",
+      "page": "plugins/mods/troubleshoot.md",
+      "section": "Another mod's band shows and yours doesn't"
+    },
+    {
+      "id": "mods.troubleshoot.Another mod's band shows and yours doesn't.The rows together exceed a limit",
+      "category": "mods",
+      "page": "plugins/mods/troubleshoot.md",
+      "section": "Another mod's band shows and yours doesn't"
+    },
+    {
+      "id": "mods.troubleshoot.Another mod's band shows and yours doesn't.Your tree doesn't validate",
       "category": "mods",
       "page": "plugins/mods/troubleshoot.md",
       "section": "Another mod's band shows and yours doesn't"
@@ -10844,19 +11282,7 @@
       "section": "hooks module did not load"
     },
     {
-      "id": "mods.troubleshoot.Hotkeys do nothing.In the VS Code extension",
-      "category": "mods",
-      "page": "plugins/mods/troubleshoot.md",
-      "section": "Hotkeys do nothing"
-    },
-    {
-      "id": "mods.troubleshoot.Hotkeys do nothing.No keyboard focus",
-      "category": "mods",
-      "page": "plugins/mods/troubleshoot.md",
-      "section": "Hotkeys do nothing"
-    },
-    {
-      "id": "mods.troubleshoot.Hotkeys do nothing.The button is in a collapsed band",
+      "id": "mods.troubleshoot.Hotkeys do nothing",
       "category": "mods",
       "page": "plugins/mods/troubleshoot.md",
       "section": "Hotkeys do nothing"
@@ -10928,16 +11354,22 @@
       "section": "Refusal messages"
     },
     {
+      "id": "mods.troubleshoot.reload failed",
+      "category": "mods",
+      "page": "plugins/mods/troubleshoot.md",
+      "section": "reload failed"
+    },
+    {
       "id": "mods.troubleshoot.settings.read: refused to the engine",
       "category": "mods",
       "page": "plugins/mods/troubleshoot.md",
       "section": "settings.read: refused to the engine"
     },
     {
-      "id": "mods.troubleshoot.Stopped: type a message to continue; a mod cannot resume work after Stop",
+      "id": "mods.troubleshoot.stopped · type a message to continue",
       "category": "mods",
       "page": "plugins/mods/troubleshoot.md",
-      "section": "Stopped: type a message to continue; a mod cannot resume work after Stop"
+      "section": "stopped · type a message to continue"
     },
     {
       "id": "mods.troubleshoot.the answer for <key> is no value the key can hold",
@@ -11130,6 +11562,12 @@
       "category": "permissions",
       "page": "permissions.md",
       "section": "Cd"
+    },
+    {
+      "id": "permissions.behavior.Check the parameters Claude sends",
+      "category": "permissions",
+      "page": "permissions.md",
+      "section": "Check the parameters Claude sends"
     },
     {
       "id": "permissions.behavior.Compound commands",
@@ -11618,6 +12056,12 @@
       "section": "Protected paths"
     },
     {
+      "id": "permissions.modes.Restricted mode refuses bypassPermissions",
+      "category": "permissions",
+      "page": "permission-modes.md",
+      "section": "Restricted mode refuses bypassPermissions"
+    },
+    {
       "id": "permissions.modes.Set plan mode as the default",
       "category": "permissions",
       "page": "permission-modes.md",
@@ -12086,7 +12530,19 @@
       "section": "Skills-directory plugins blocked by managed settings"
     },
     {
+      "id": "policy.managed.Choose a delivery mechanism.Delivery controls",
+      "category": "policy",
+      "page": "managed-settings.md",
+      "section": "Choose a delivery mechanism"
+    },
+    {
       "id": "policy.managed.Choose a delivery mechanism.File-based",
+      "category": "policy",
+      "page": "managed-settings.md",
+      "section": "Choose a delivery mechanism"
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.Gateway login keys",
       "category": "policy",
       "page": "managed-settings.md",
       "section": "Choose a delivery mechanism"
@@ -12105,6 +12561,12 @@
     },
     {
       "id": "policy.managed.Choose a delivery mechanism.Server-managed settings",
+      "category": "policy",
+      "page": "managed-settings.md",
+      "section": "Choose a delivery mechanism"
+    },
+    {
+      "id": "policy.managed.Choose a delivery mechanism.Sign-in requirement",
       "category": "policy",
       "page": "managed-settings.md",
       "section": "Choose a delivery mechanism"
@@ -12410,6 +12872,12 @@
       "section": "Let an embedding host add policy"
     },
     {
+      "id": "policy.managed.What a developer can change.Allow rules and allowlists",
+      "category": "policy",
+      "page": "managed-settings.md",
+      "section": "What a developer can change"
+    },
+    {
       "id": "policy.managed.What a developer can change.Local admin rights",
       "category": "policy",
       "page": "managed-settings.md",
@@ -12584,12 +13052,6 @@
       "section": "Choose how much to allow"
     },
     {
-      "id": "policy.mods.Choose how much to allow.Any mod from marketplaces you approve",
-      "category": "policy",
-      "page": "plugins/mods/admin.md",
-      "section": "Choose how much to allow"
-    },
-    {
       "id": "policy.mods.Choose how much to allow.disableAllHooks",
       "category": "policy",
       "page": "plugins/mods/admin.md",
@@ -12606,6 +13068,12 @@
       "category": "policy",
       "page": "plugins/mods/admin.md",
       "section": "Choose how much to allow"
+    },
+    {
+      "id": "policy.mods.Enforce a policy with a mod of your own.e.provides",
+      "category": "policy",
+      "page": "plugins/mods/admin.md",
+      "section": "Enforce a policy with a mod of your own"
     },
     {
       "id": "policy.mods.Enforce a policy with a mod of your own.e.tier",
@@ -12704,7 +13172,7 @@
       "section": "Know what happens by default"
     },
     {
-      "id": "policy.mods.Know what happens by default.A user's mod can still skip some prompts",
+      "id": "policy.mods.Know what happens by default.A mod's own calls can skip your checks",
       "category": "policy",
       "page": "plugins/mods/admin.md",
       "section": "Know what happens by default"
@@ -12716,7 +13184,7 @@
       "section": "Know what happens by default"
     },
     {
-      "id": "policy.mods.Know what happens by default.The guard protects what you manage",
+      "id": "policy.mods.Know what happens by default.When a user's mod approves Claude's call",
       "category": "policy",
       "page": "plugins/mods/admin.md",
       "section": "Know what happens by default"
@@ -12734,12 +13202,6 @@
       "section": "Know which controls still apply"
     },
     {
-      "id": "policy.mods.Know which controls still apply.Mods can't change the permission prompt",
-      "category": "policy",
-      "page": "plugins/mods/admin.md",
-      "section": "Know which controls still apply"
-    },
-    {
       "id": "policy.mods.Know which controls still apply.Network policy covers $.http.fetch",
       "category": "policy",
       "page": "plugins/mods/admin.md",
@@ -12747,12 +13209,6 @@
     },
     {
       "id": "policy.mods.Know which controls still apply.Plugin controls cover mods",
-      "category": "policy",
-      "page": "plugins/mods/admin.md",
-      "section": "Know which controls still apply"
-    },
-    {
-      "id": "policy.mods.Know which controls still apply.Settings hooks keep working",
       "category": "policy",
       "page": "plugins/mods/admin.md",
       "section": "Know which controls still apply"
@@ -12836,7 +13292,13 @@
       "section": "Know which hooks of a user's mod don't run"
     },
     {
-      "id": "policy.mods.Set options on the built-in guard.Only managed settings count",
+      "id": "policy.mods.Know which hooks of a user's mod don't run.telemetry.log",
+      "category": "policy",
+      "page": "plugins/mods/admin.md",
+      "section": "Know which hooks of a user's mod don't run"
+    },
+    {
+      "id": "policy.mods.Set options on the built-in guard",
       "category": "policy",
       "page": "plugins/mods/admin.md",
       "section": "Set options on the built-in guard"
@@ -12872,13 +13334,7 @@
       "section": "Stop user-installed mods from loading"
     },
     {
-      "id": "policy.mods.Stop user-installed mods from loading.No mod a user brings runs its hooks",
-      "category": "policy",
-      "page": "plugins/mods/admin.md",
-      "section": "Stop user-installed mods from loading"
-    },
-    {
-      "id": "policy.mods.Stop user-installed mods from loading.Users can't undo it",
+      "id": "policy.mods.Stop user-installed mods from loading.The guard refuses these mods",
       "category": "policy",
       "page": "plugins/mods/admin.md",
       "section": "Stop user-installed mods from loading"
@@ -13124,6 +13580,18 @@
       "section": "Restrict what users can install"
     },
     {
+      "id": "policy.org.Seed containers and CI.Build from the declared source",
+      "category": "policy",
+      "page": "plugins/org.md",
+      "section": "Seed containers and CI"
+    },
+    {
+      "id": "policy.org.Seed containers and CI.Opting out",
+      "category": "policy",
+      "page": "plugins/org.md",
+      "section": "Seed containers and CI"
+    },
+    {
       "id": "policy.org.Seed containers and CI.Policy still applies",
       "category": "policy",
       "page": "plugins/org.md",
@@ -13131,12 +13599,6 @@
     },
     {
       "id": "policy.org.Seed containers and CI.Read-only",
-      "category": "policy",
-      "page": "plugins/org.md",
-      "section": "Seed containers and CI"
-    },
-    {
-      "id": "policy.org.Seed containers and CI.Seed entries take precedence",
       "category": "policy",
       "page": "plugins/org.md",
       "section": "Seed containers and CI"
@@ -13412,6 +13874,12 @@
       "section": "Enforce fail-closed startup"
     },
     {
+      "id": "policy.server.Give groups different settings",
+      "category": "policy",
+      "page": "server-managed-settings.md",
+      "section": "Give groups different settings"
+    },
+    {
       "id": "policy.server.Invalid entries in delivered settings",
       "category": "policy",
       "page": "server-managed-settings.md",
@@ -13431,6 +13899,12 @@
     },
     {
       "id": "policy.server.Per-key exceptions across managed sources.Cross-source lock keys",
+      "category": "policy",
+      "page": "server-managed-settings.md",
+      "section": "Per-key exceptions across managed sources"
+    },
+    {
+      "id": "policy.server.Per-key exceptions across managed sources.enforceAnthropicSignIn",
       "category": "policy",
       "page": "server-managed-settings.md",
       "section": "Per-key exceptions across managed sources"
@@ -13484,10 +13958,10 @@
       "section": "Security approval dialogs"
     },
     {
-      "id": "policy.server.Settings precedence",
+      "id": "policy.server.When endpoint-managed settings take over",
       "category": "policy",
       "page": "server-managed-settings.md",
-      "section": "Settings precedence"
+      "section": "When endpoint-managed settings take over"
     },
     {
       "id": "policy.troubleshooting.--plugin-dir is disabled by your organization's managed settings (disableSideloadFlags)",
@@ -13530,24 +14004,6 @@
       "category": "policy",
       "page": "plugins/troubleshooting.md",
       "section": "Plugins from ~/.claude/skills/ are blocked by your organization's managed settings"
-    },
-    {
-      "id": "settings.components.Default settings.File over manifest",
-      "category": "settings",
-      "page": "plugins/components.md",
-      "section": "Default settings"
-    },
-    {
-      "id": "settings.components.Default settings.Two plugins set the same key",
-      "category": "settings",
-      "page": "plugins/components.md",
-      "section": "Default settings"
-    },
-    {
-      "id": "settings.components.Default settings.User settings over plugin defaults",
-      "category": "settings",
-      "page": "plugins/components.md",
-      "section": "Default settings"
     },
     {
       "id": "settings.key.agent",
@@ -14534,7 +14990,19 @@
       "section": "Pass arguments to skills"
     },
     {
-      "id": "skills.behavior.Permission checks on injected commands",
+      "id": "skills.behavior.Permission checks on injected commands.Bare repository folders",
+      "category": "skills",
+      "page": "skills.md",
+      "section": "Permission checks on injected commands"
+    },
+    {
+      "id": "skills.behavior.Permission checks on injected commands.Deny and ask rules",
+      "category": "skills",
+      "page": "skills.md",
+      "section": "Permission checks on injected commands"
+    },
+    {
+      "id": "skills.behavior.Permission checks on injected commands.Managed-only rules",
       "category": "skills",
       "page": "skills.md",
       "section": "Permission checks on injected commands"
@@ -15554,6 +16022,18 @@
       "section": "Tools reference"
     },
     {
+      "id": "tools.tool.ListPlugins",
+      "category": "tools",
+      "page": "tools-reference.md",
+      "section": "Tools reference"
+    },
+    {
+      "id": "tools.tool.ListSkills",
+      "category": "tools",
+      "page": "tools-reference.md",
+      "section": "Tools reference"
+    },
+    {
       "id": "tools.tool.LSP",
       "category": "tools",
       "page": "tools-reference.md",
@@ -15573,6 +16053,12 @@
     },
     {
       "id": "tools.tool.PowerShell",
+      "category": "tools",
+      "page": "tools-reference.md",
+      "section": "Tools reference"
+    },
+    {
+      "id": "tools.tool.propose_skills",
       "category": "tools",
       "page": "tools-reference.md",
       "section": "Tools reference"
@@ -15614,6 +16100,18 @@
       "section": "Tools reference"
     },
     {
+      "id": "tools.tool.SearchPlugins",
+      "category": "tools",
+      "page": "tools-reference.md",
+      "section": "Tools reference"
+    },
+    {
+      "id": "tools.tool.SearchSkills",
+      "category": "tools",
+      "page": "tools-reference.md",
+      "section": "Tools reference"
+    },
+    {
       "id": "tools.tool.SendFeedback",
       "category": "tools",
       "page": "tools-reference.md",
@@ -15645,6 +16143,18 @@
     },
     {
       "id": "tools.tool.SubagentHandback",
+      "category": "tools",
+      "page": "tools-reference.md",
+      "section": "Tools reference"
+    },
+    {
+      "id": "tools.tool.SuggestPluginInstall",
+      "category": "tools",
+      "page": "tools-reference.md",
+      "section": "Tools reference"
+    },
+    {
+      "id": "tools.tool.SuggestSkills",
       "category": "tools",
       "page": "tools-reference.md",
       "section": "Tools reference"
@@ -16362,6 +16872,12 @@
       "category": "workflows",
       "page": "workflows.md",
       "section": "When an agent stalls and restarts"
+    },
+    {
+      "id": "workflows.behavior.Which agents run again",
+      "category": "workflows",
+      "page": "workflows.md",
+      "section": "Which agents run again"
     },
     {
       "id": "workflows.behavior.Which agents run again.Completed",

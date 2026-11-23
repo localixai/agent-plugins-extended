@@ -8,8 +8,10 @@
  *
  * `verified`: the text states the requirement as the docs do. `fixed`: it did not, and the pass
  * corrected it (the note says how). `deviates`: E4a applies and the evidence was re-checked. This
- * script writes `extend/conformance/VERIFIED.md`; `--check` fails on an unknown id, an unknown
- * status, or a stale report. It never fails because verification is incomplete: that is progress.
+ * script writes `extend/conformance/VERIFIED.md`; `--check` fails on an unknown id in a pass of the
+ * snapshot's release, an unknown status, or a stale report. A pass of an earlier release keeps the
+ * ids that release had: one the snapshot no longer has is listed as retired, not an error. It never
+ * fails because verification is incomplete: that is progress.
  *
  *   bun run verification [--check]
  */
@@ -21,6 +23,7 @@ interface Entry { readonly id: string; readonly file?: string; readonly status: 
 interface Pass {
   readonly pass: string
   readonly date: string
+  readonly release: string
   readonly files: readonly string[]
   readonly requirements: readonly Entry[]
   readonly judgments: readonly Entry[]
@@ -30,7 +33,8 @@ const REQUIREMENT_STATUS = new Set(['verified', 'fixed', 'deviates'])
 const JUDGMENT_STATUS = new Set(['kept', 'fixed', 'removed', 'promoted'])
 const LEDGER = join(CONFORMANCE, 'verification')
 
-const { requirements } = (await Bun.file(join(CONFORMANCE, 'requirements.json')).json()) as {
+const { claudeCode: release, requirements } = (await Bun.file(join(CONFORMANCE, 'requirements.json')).json()) as {
+  claudeCode: string
   requirements: { id: string; category: string }[]
 }
 const known = new Set(requirements.map((each) => each.id))
@@ -39,13 +43,22 @@ const passes = await Promise.all(names.map(async (name) => (await Bun.file(join(
 
 const problems: string[] = []
 const checked = new Map<string, string>()
+/** Ids read against the documentation of the snapshot's own release. */
+const current = new Set<string>()
+/** Ids a pass of an earlier release named that the snapshot no longer has. */
+const retired = new Set<string>()
 let judgments = 0
 const tally = new Map<string, number>()
 for (const pass of passes) {
   for (const entry of pass.requirements ?? []) {
-    if (!known.has(entry.id)) problems.push(`${pass.pass}: unknown id ${entry.id}`)
     if (!REQUIREMENT_STATUS.has(entry.status)) problems.push(`${pass.pass}: ${entry.id}: status ${entry.status}`)
+    if (!known.has(entry.id)) {
+      if (pass.release === release) problems.push(`${pass.pass}: unknown id ${entry.id}`)
+      else retired.add(entry.id)
+      continue
+    }
     checked.set(entry.id, entry.status)
+    if (pass.release === release) current.add(entry.id)
     tally.set(entry.status, (tally.get(entry.status) ?? 0) + 1)
   }
   for (const entry of pass.judgments ?? []) {
@@ -77,6 +90,9 @@ const report = [
   '',
   `**Verified: ${checked.size} of ${requirements.length} requirements; ${judgments} judgments re-examined.**`,
   '',
+  `The snapshot is Claude Code ${release}. Of the verified ids, ${current.size} were read against its`,
+  `documentation and ${checked.size - current.size} only against an earlier release's (each pass names its release).`,
+  '',
   '| Outcome | Count |',
   '| --- | ---: |',
   ...[...tally].sort().map(([status, count]) => `| ${status} | ${count} |`),
@@ -92,6 +108,13 @@ const report = [
   `## Not verified yet (${missing.length})`,
   '',
   ...(missing.length > 40 ? [`${missing.length} ids; run \`bun run verification\` and see the ledger.`] : missing.map((id) => `- \`${id}\``)),
+  '',
+  `## Retired (${retired.size})`,
+  '',
+  `Ids that passes of an earlier release verified and Claude Code ${release}'s snapshot no longer has;`,
+  'their entries stay in the ledgers as the record of those passes and count nowhere above.',
+  '',
+  ...[...retired].sort().map((id) => `- \`${id}\``),
   '',
 ].join('\n')
 

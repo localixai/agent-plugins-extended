@@ -80,4 +80,23 @@ export const HOST_SCOPES: readonly PageScope[] = [
       NAVIGATION,
     ],
   },
+  {
+    // Code Mode (2.1.330, experimental): the REPL tool and how each call inside its code meets
+    // permission rules and PreToolUse/PostToolUse hooks are a host contract; turning it on, the
+    // sandbox, the countdown and stopping code are Claude Code's own session.
+    page: 'code-mode.md',
+    category: 'hooks',
+    slug: 'code-mode',
+    skip: [
+      [/^(How Code Mode works|Requirements|Try Code Mode|Turn off Code Mode)$/, 'runtime'],
+      ['Block Code Mode for your organization', 'runtime'],
+      ['When to use Code Mode', 'advice'],
+      ['Monitor Code Mode with OpenTelemetry', 'telemetry'],
+      [/^(Answer a permission prompt while code runs|Stop code in progress)$/, 'ui'],
+      [/^(Limit shell commands with the sandbox|Long-running code)$/, 'runtime'],
+      [/^(Code Mode doesn't start)$/, 'runtime'],
+      ['Permission prompt with a countdown', 'ui'],
+      NAVIGATION,
+    ],
+  },
 ]

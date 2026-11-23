@@ -7,7 +7,7 @@
  * not asked again. The program is `CLAUDE_ORACLE_BIN`, else `claude` on `PATH`; a named release
  * that is not the program's fails the run instead of filing answers under the wrong release.
  *
- *   CLAUDE_ORACLE_BIN=~/.local/share/claude/versions/2.1.321 bun run corpus:oracle [release] [--validate-only]
+ *   CLAUDE_ORACLE_BIN=~/.local/share/claude/versions/2.1.330 bun run corpus:oracle [release] [--validate-only]
  */
 import { CLAUDE_BIN, claudeVersion } from '../claude-bin.ts'
 import { loadOracle } from './load-oracle.ts'

@@ -62,7 +62,7 @@ incomplete, only because a report is stale or an id is wrong.
 $CORPUS_DIR/
 ├── index.json                                 { marketplace, name, dir?, skipped? } per plugin
 ├── <dir>/                                     each plugin's files, as fetched
-└── oracle/2.1.321/<marketplace>/<name>.json   what claude plugin validate printed for it
+└── oracle/2.1.330/<marketplace>/<name>.json   what claude plugin validate printed for it
 ```
 
 `CORPUS_DIR` defaults to `extend/.cache/corpus`, filled by `corpus:fetch` and `corpus:oracle`. The

@@ -14,7 +14,7 @@
  * of `claude-code/index.d.ts` ("Written by Claude Code <version>."), and the folder is named by it;
  * run it with `CLAUDE_ORACLE_BIN` set to the program of the release being mined.
  *
- *   CLAUDE_ORACLE_BIN=~/.local/share/claude/versions/2.1.321 bun run types:pull
+ *   CLAUDE_ORACLE_BIN=~/.local/share/claude/versions/2.1.330 bun run types:pull
  */
 import { copyFile, mkdir, mkdtemp, readFile, realpath, rm, stat, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'

@@ -5,6 +5,8 @@
       "events": [
         "tool.call",
         "tool.check",
+        "tool.judge",
+        "tool.run",
         "tool.describe"
       ]
     },
@@ -54,7 +56,8 @@
         "session.append",
         "session.attach",
         "session.detach",
-        "session.measure"
+        "session.measure",
+        "session.stop"
       ]
     },
     {
@@ -154,7 +157,9 @@
       "methods": [
         "register",
         "spawn",
-        "list"
+        "call",
+        "list",
+        "limits"
       ]
     },
     {
@@ -194,6 +199,7 @@
         "surfaces",
         "usage",
         "version",
+        "info",
         "compact",
         "send",
         "append",
@@ -266,7 +272,8 @@
       "namespace": "process",
       "methods": [
         "run",
-        "spawn"
+        "spawn",
+        "hookEnv"
       ]
     },
     {
@@ -274,6 +281,12 @@
       "methods": [
         "call",
         "connect"
+      ]
+    },
+    {
+      "namespace": "wasm",
+      "methods": [
+        "compile"
       ]
     },
     {
@@ -308,6 +321,10 @@
     {
       "limit": "A `.catch` handler's execution time",
       "value": "1 second"
+    },
+    {
+      "limit": "Time a `ui.render` or `plugin.register`",
+      "value": "30 seconds; 10 seconds"
     },
     {
       "limit": "All `session.end` hooks together",
@@ -366,12 +383,20 @@
       "value": "32 levels"
     },
     {
+      "limit": "Depth and size of a",
+      "value": "100; 1000000"
+    },
+    {
       "limit": "Elements and text children in",
       "value": "20,000"
     },
     {
       "limit": "`Raster` cells in one tree,",
       "value": "262,144"
+    },
+    {
+      "limit": "The rows above the prompt,",
+      "value": ""
     },
     {
       "limit": "PNG or RGBA bytes of",
@@ -674,11 +699,28 @@
       ],
       "props": [
         "hasSurvey",
+        "isCollapsed",
         "isWorking",
         "maxRows",
         "bodyColumns",
         "scroll",
         "view"
+      ],
+      "request": "instance",
+      "surfaces": [
+        "terminal",
+        "desktop"
+      ]
+    },
+    {
+      "sites": [
+        "AbovePromptList",
+        "AbovePrompt"
+      ],
+      "props": [
+        "rows",
+        "{ plugin, tree }",
+        "AbovePrompt"
       ],
       "request": "instance",
       "surfaces": [
@@ -705,9 +747,13 @@
         "Backdrop"
       ],
       "props": [
-        "id",
+        "scene",
         "plugin",
         "glass",
+        "overrideColorScheme",
+        "scene",
+        "id",
+        "overrideColorScheme",
         "colorScheme"
       ],
       "request": "backdrop",
@@ -727,7 +773,7 @@
         "task",
         "from"
       ],
-      "request": "message-id",
+      "request": null,
       "surfaces": [
         "terminal",
         "desktop",
@@ -739,7 +785,7 @@
         "AssistantMessage"
       ],
       "props": [],
-      "request": "message-id",
+      "request": null,
       "surfaces": [
         "terminal",
         "desktop",
@@ -768,7 +814,7 @@
         "command",
         "text"
       ],
-      "request": "message-id",
+      "request": null,
       "surfaces": [
         "terminal",
         "desktop"
@@ -823,7 +869,7 @@
         "word",
         "durationMs"
       ],
-      "request": "message-id",
+      "request": null,
       "surfaces": [
         "terminal"
       ]
@@ -836,7 +882,7 @@
         "text",
         "command"
       ],
-      "request": "message-id",
+      "request": null,
       "surfaces": [
         "terminal"
       ]
@@ -867,6 +913,23 @@
       "surfaces": [
         "terminal",
         "desktop"
+      ]
+    },
+    {
+      "sites": [
+        "AgentRow"
+      ],
+      "props": [
+        "$.agent.list()",
+        "rowIds",
+        "columns",
+        "body",
+        "isHidden"
+      ],
+      "request": "agent-id",
+      "surfaces": [
+        "terminal",
+        "vscode"
       ]
     }
   ],

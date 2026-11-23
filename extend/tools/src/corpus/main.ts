@@ -17,7 +17,7 @@ import { readOracle } from './oracle.ts'
 import { renderCorpus, type PluginVerdict } from './report.ts'
 import { loadSchemas } from './schemas.ts'
 
-export const RELEASE = '2.1.321'
+export const RELEASE = '2.1.330'
 
 interface IndexEntry {
   readonly marketplace: string
