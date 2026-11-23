@@ -3,6 +3,7 @@
   "revision": "018f293+rename+fixes+core+last",
   "pass": "r06-last-items",
   "date": "2026-11-17",
+  "release": "2.1.321",
   "files": ["03-environment.md", "05-agents.md", "10-mods/reference.md", "15-marketplaces.md", "18-bridge.md"],
   "requirements": [
     {

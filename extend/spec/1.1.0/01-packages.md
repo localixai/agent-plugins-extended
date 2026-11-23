@@ -19,7 +19,7 @@ apart, and where each Claude Code component lives in a package.
 1. A **core package** is loaded as the core says. An Extended client MUST implement the core for
    every core package it loads; nothing in this specification changes core behaviour for a core
    package.
-2. A **Claude Code plugin** is loaded as this specification says, which is how Claude Code 2.1.321
+2. A **Claude Code plugin** is loaded as this specification says, which is how Claude Code 2.1.330
    loads it. The manifest, when present, is `.claude-plugin/plugin.json` (§2). The manifest is
    optional: without it, the client loads the components found in the default locations of §1.4.
    <!-- req: layout.Manifest -->
@@ -59,7 +59,7 @@ what `.mcp.json` and `hooks/hooks.json` state (§18 maps one onto the other).
 Each component type has a default location under the plugin root, used when the manifest does not
 point elsewhere (§2.6 says how a manifest key combines with its default). A client MUST discover
 each kind of component in the table below from its default location alone, so that a plugin with
-one of every kind and no manifest loads them all (`plugins/components.md`, "Explore the plugin
+these components and no manifest loads them all (`plugins/components.md`, "Explore the plugin
 directory"; `plugins/manifest-reference.md`, "Standard layout"). Only the manifest belongs inside
 `.claude-plugin/`; a component directory inside `.claude-plugin/`, such as `.claude-plugin/skills/`,
 is not scanned. <!-- req: layout.components.Explore the plugin directory -->
@@ -78,13 +78,13 @@ is not scanned. <!-- req: layout.components.Explore the plugin directory -->
 | Themes | `themes/` | Theme JSON files (§6.2). <!-- req: layout.Themes --> |
 | Monitors | `monitors/monitors.json` | The monitors array (§9.2). <!-- req: layout.Monitors --> |
 | Executables | `bin/` | Files put on the shell tools' `PATH` while the plugin is enabled (§1.5). <!-- req: layout.Executables --> |
-| Settings | `settings.json` | `agent` and `subagentStatusLine` defaults applied while the plugin is enabled (§12.6). <!-- req: layout.Settings --> |
+| Settings | `settings.json` | Deprecated plugin defaults: only `agent` applies while the plugin is enabled; `subagentStatusLine` has no effect (§12.6, Judgment J1.3). |
 
 A plugin with a `SKILL.md` at its root, no `skills/` directory and no `skills` manifest key loads
 as a single skill (§4.2). A `CLAUDE.md` at the plugin root is not loaded as context; a validator
 SHOULD warn when it finds one (§17).
 
-Example: a plugin that uses every default location, and a `scripts/` folder its hooks call:
+Example: a plugin that uses the default locations, and a `scripts/` folder its hooks call:
 
 ```text
 deploy-tools/
@@ -100,7 +100,6 @@ deploy-tools/
 ├── workflows/release-audit.js
 ├── bin/deploy-tool
 ├── scripts/format.sh
-├── settings.json
 ├── .mcp.json
 └── .lsp.json
 ```
@@ -150,3 +149,4 @@ The canonical `$schema` is what makes a file a core manifest (core §5.2), so it
 | --- | --- | --- |
 | J1.1 | A root `plugin.json` without a canonical core `$schema` is an ordinary file of a Claude Code plugin, never a reason to reject it (§1.3). | Claude Code reads only `.claude-plugin/plugin.json`. Oracle 2.1.325: `claude plugin validate` on a directory with only a root `plugin.json` (core `$schema`, an unknown field) and `skills/` validates it as a plugin without a manifest and says nothing about the file. |
 | J1.2 | A dual package loads only as a Claude Code plugin; its core manifest and core component files are not read (§1.3.1). | Loading both would run each hook and connect each MCP server twice, in an Extended client only. Oracle 2.1.325: the same directory with `.claude-plugin/plugin.json` added validates on that manifest alone. |
+| J1.3 | A root `settings.json` stays a default location though the 2.1.330 docs no longer list it (`plugins/manifest-reference.md`, "Standard layout"; `plugins/components.md`): Claude Code 2.1.330 still reads it and warns that its `agent` key is deprecated (§2.4, Judgment J2.9). | The id `layout.Settings` is gone from the 2.1.330 requirements. Oracle 2.1.330, 2026-11-23: `claude plugin validate` on a plugin whose root `settings.json` sets `agent` prints `Validating plugin: settings.json` and the deprecation warning. |

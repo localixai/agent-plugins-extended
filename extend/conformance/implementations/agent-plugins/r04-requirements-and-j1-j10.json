@@ -3,6 +3,7 @@
   "revision": "018f293+rename+fixes+core",
   "pass": "r04-requirements-and-j1-j10",
   "date": "2026-11-17",
+  "release": "2.1.321",
   "files": [
     "01-packages.md",
     "02-manifest.md",

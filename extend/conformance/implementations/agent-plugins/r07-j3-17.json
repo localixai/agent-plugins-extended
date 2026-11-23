@@ -3,6 +3,7 @@
   "revision": "018f293+rename+fixes+core+last",
   "pass": "r07-j3-17",
   "date": "2026-11-17",
+  "release": "2.1.321",
   "files": [
     "03-environment.md"
   ],

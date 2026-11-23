@@ -3,6 +3,7 @@
   "revision": "018f293+rename",
   "pass": "a06-mcp-settings",
   "date": "2026-11-16",
+  "release": "2.1.321",
   "files": [
     "08-mcp.md",
     "12-settings.md"

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/lsp.schema.json",
   "title": "Claude Code plugin LSP servers file",
-  "description": "A plugin's .lsp.json, a .json file the manifest's lspServers names, or the inline lspServers object, as Claude Code 2.1.321 accepts it (Agent Plugins Extended 1.1.0, section 9.1): server name to a strict configuration, with no wrapper key. One invalid entry skips the whole file (section 9.1.1 item 3).",
+  "description": "A plugin's .lsp.json, a .json file the manifest's lspServers names, or the inline lspServers object, as Claude Code 2.1.330 accepts it (Agent Plugins Extended 1.1.0, section 9.1): server name to a strict configuration, with no wrapper key. One invalid entry skips the whole file (section 9.1.1 item 3).",
   "type": "object",
   "additionalProperties": { "$ref": "#/$defs/server" },
   "$defs": {

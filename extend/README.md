@@ -1,14 +1,14 @@
 # extend/
 
 Everything of Agent Plugins Extended lives in this folder: the [Agent Plugins Specification](../README.md)
-grown to the whole Claude Code 2.1.321 plugin contract. What it is, who it is for and how
+grown to the whole Claude Code 2.1.330 plugin contract. What it is, who it is for and how
 compatibility is measured is on the [front page](../.github/README.md); this file is the map of the
 folder.
 
 | Path | What it is |
 | --- | --- |
-| [`spec/1.1.0/`](spec/1.1.0/README.md) | The specification, `1.1.0+claude-code.2.1.321`, working draft: 18 chapters, and how to read them |
-| [`spec/judgments.md`](spec/judgments.md) | Where the Claude Code documentation is silent and the specification decides: 405 judgments, indexed by chapter (generated) |
+| [`spec/1.1.0/`](spec/1.1.0/README.md) | The specification, `1.1.0+claude-code.2.1.330`, working draft: 18 chapters, and how to read them |
+| [`spec/judgments.md`](spec/judgments.md) | Where the Claude Code documentation is silent and the specification decides: 470 judgments, indexed by chapter (generated) |
 | [`schemas/1.1.0/claude-code/`](schemas/1.1.0/claude-code/README.md) | JSON Schema 2020-12 for the twelve kinds of Claude Code plugin file |
 | [`conformance/`](conformance/README.md) | The requirements snapshot, the verification ledgers and the generated reports |
 | [`tools/`](tools/README.md) | The checks and generators, and `sync` for merging upstream |
@@ -22,9 +22,9 @@ From the generated reports, not from reading:
 
 | Report | Result |
 | --- | --- |
-| [`REPORT.md`](conformance/REPORT.md) | 2,723 of 2,730 requirements stated (99.7%), 7 deviations (E4a), none missing |
-| [`VERIFIED.md`](conformance/VERIFIED.md) | 2,730 of 2,730 requirements read against their documentation section |
-| [`CORPUS.md`](conformance/CORPUS.md) | 2,495 real plugins, 25,514 files, 0 false rejects |
+| [`REPORT.md`](conformance/REPORT.md) | 2,810 of 2,816 requirements stated (99.8%), 6 deviations (E4a), none missing |
+| [`VERIFIED.md`](conformance/VERIFIED.md) | 2,689 of 2,816 requirements read against their documentation section, all by passes of the 2.1.321 documentation; no pass has read 2.1.330's yet |
+| [`CORPUS.md`](conformance/CORPUS.md) | 2,489 real plugins, 25,347 files, 0 false rejects against Claude Code 2.1.330's verdicts |
 
 ## How it relates to the core
 

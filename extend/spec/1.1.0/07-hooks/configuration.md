@@ -3,7 +3,7 @@
 What a hooks configuration looks like, how a client reads it, and how it decides which handlers an
 occurrence of an event runs. Evidence: `hooks.md`, "Configuration", unless a rule names another
 section or page. Shapes follow the `hooks` member of the official `Settings` type of
-`@anthropic-ai/claude-agent-sdk` 0.3.321 (`sdk.d.ts`).
+`@anthropic-ai/claude-agent-sdk` 0.3.330 (`sdk.d.ts`).
 
 ## 7.2.1 The shape
 
@@ -37,7 +37,7 @@ except where the broken entry could be a guard (Judgment J7.11):
 
 | What is wrong | At runtime | A validator reports |
 | --- | --- | --- |
-| The file is not valid JSON, a leading UTF-8 byte order mark included (Judgment J2.3). | The file's hooks do not load (`Failed to load hooks from <path>: <reason>`, §7.1.3); the plugin's other components still load (Judgment J7.20). | error `Invalid JSON syntax: <parser message>. At runtime this breaks the entire plugin load.` |
+| The file is not valid JSON, a leading UTF-8 byte order mark included (Judgment J2.3). | The file's hooks do not load (`Couldn't load hooks from <path>: <reason>` or `Failed to load hooks from <path>: <reason>`, §7.1.3); the plugin's other components still load (Judgment J7.20). | error `Invalid JSON syntax: <parser message>. At runtime this breaks the entire plugin load.` |
 | The file has neither `hooks` nor `modules` at its top level. | The file's hooks do not load. | error ``hooks.json must have `hooks` (the hook matchers) or `modules` (hooks modules), or both`` |
 | An event key names no event. | That event's entry is dropped; the rest loads. | warning `hooks.<Event>: unknown hook event; entry ignored at runtime` |
 | An event's value is not an array of matcher groups. | That event's entry is dropped; the rest loads. | warning `hooks.<Event>: must be an array of matchers; received <kind>; entry ignored at runtime` |
@@ -202,7 +202,7 @@ checked, including commands inside `$()` and backticks, and one matching subcomm
 | `Bash(rm *)` | `echo $(date)` | no | no subcommand matches |
 | `Bash(git push *)` | `echo $(date)` | yes | a pattern that says more than the command name runs the hook anyway on `$()`, backticks or `$VAR` |
 
-When the client cannot tell which commands a Bash input runs, it MUST run the handler regardless of
+When the client cannot split a Bash input into subcommands, it MUST run the handler regardless of
 the pattern. The `if` filter is therefore best effort: a hard allow or deny belongs in permission
 rules (§13), not in a hook. <!-- req: hooks.behavior.How if patterns match Bash commands | hooks.guide.Filter by tool name and arguments with the if field -->
 

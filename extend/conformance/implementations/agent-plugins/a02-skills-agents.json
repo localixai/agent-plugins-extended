@@ -3,6 +3,7 @@
   "revision": "018f293+rename",
   "pass": "a02-skills-agents",
   "date": "2026-11-16",
+  "release": "2.1.321",
   "files": [
     "04-skills.md",
     "05-agents.md"

@@ -115,9 +115,9 @@ refreshes that copy first depends on the form:
 1. In an interactive session, after the user's first message, the client waits a random delay of up
    to ten minutes, then refreshes every marketplace with auto-update on and updates the plugins
    installed from them on disk (Judgment J16.13).
-2. The running session MUST keep the versions it loaded; the client shows `Plugin updated: <name> ·
-   Run /reload-plugins to apply`, and the next launch loads the new versions whether or not the user
-   reloads.
+2. The running session MUST keep the versions it loaded until the user reloads; the client shows
+   `Plugin updated: <name> · Run /reload-plugins to apply`, `/reload-plugins` in that session loads
+   the new versions, and the next launch loads them whether or not the user reloads.
 3. When a copied plugin updates mid-session, its hook commands, monitors, MCP and LSP servers keep
    the previous version's path. `/reload-plugins` switches hooks, MCP and LSP servers to the new
    path; monitors switch only at a restart (§9.2).
@@ -127,9 +127,10 @@ refreshes that copy first depends on the form:
 Whether a marketplace auto-updates follows the first of these that is set:
 
 1. `autoUpdate` on its `extraKnownMarketplaces` entry in a settings file (§12);
-2. `autoUpdate` on its `known_marketplaces.json` entry, which the **Enable auto-update** /
-   **Disable auto-update** toggle on the **Marketplaces** tab writes; when a settings file also
-   declares the marketplace, the toggle writes `autoUpdate` to that entry as well;
+2. `autoUpdate` on its `known_marketplaces.json` entry, which the auto-update toggle in the
+   marketplace's menu on the **Marketplaces** tab writes; when the user, project or local settings
+   also declare the marketplace under `extraKnownMarketplaces`, the toggle writes `autoUpdate` there
+   as well;
 3. the default: on for Anthropic's official marketplace names (§15) such as `claude-plugins-official`,
    except off for `knowledge-work-plugins` and `first-party-plugins`; on for marketplaces added from
    claude.ai; off for every other marketplace, including the community marketplace, third-party and
@@ -225,11 +226,11 @@ Release practice for authors and marketplace maintainers (`plugins/publish.md`,
 3. **Tagging**: a release needs a git tag only when other plugins put a version range on it, because
    ranges resolve against tags (§16.25). `claude plugin tag` creates `{name}--v{version}` and `--push`
    sends it to `origin` (§17). <!-- req: updates.publish.Tag a release -->
-4. **Holding users on a version**: one marketplace serves one version of each plugin at a time. A
-   maintainer holds users through `ref` and `sha` on a `github`, `url` or `git-subdir` entry, through
-   `#<ref>` on the add command, or, for dependents, through `<plugin>--v<version>` tags.
+4. **Holding users on a version**: a maintainer chooses which ref, commit or tag users get: `ref`
+   and `sha` on a `github`, `url` or `git-subdir` entry, `#<ref>` on the add command, a marketplace
+   source whose `ref` is a full commit SHA (§15), or, for dependents, `<plugin>--v<version>` tags.
    <!-- req: updates.hosting.Hold users on one version -->
-5. **Release channels**: the client has no channel concept. Two marketplaces with different `name`
+5. **Release channels**: a plugin has no channel of its own. Two marketplaces with different `name`
    values point at different refs of one plugin, and each user adds one; a user cannot register two
    marketplaces of one name. The two refs need different versions (or no `version`), because a ref
    that moves without a version change leaves users on the cached copy.
@@ -258,8 +259,9 @@ top-level `renames` map (§15) migrates users: <!-- req: updates.publish.Rename 
    `"forceRemoveDeletedPlugins": true`, at each session start the client compares what was installed
    from the marketplace against its entries and `renames`, treats each plugin neither listed nor
    renamed as removed, uninstalls it from the user, project and local scopes (a plugin only managed
-   settings installed stays), and lists it under **Flagged** in `/plugin` with `Removed from
-   marketplace`, recorded in `flagged-plugins.json` (§16.6). A `renames` target, even one whose chain
+   settings installed stays), and lists it under **Needs attention** on the **Installed** tab of
+   `/plugin`, recorded in `flagged-plugins.json` (§16.6; `plugins/host-marketplace.md`, "Uninstall
+   removed plugins from users' machines"). A `renames` target, even one whose chain
    does not resolve, is never treated as removed (Judgment J16.15).
    <!-- req: updates.hosting.Uninstall removed plugins from users' machines -->
 
@@ -300,5 +302,5 @@ finish on what it started with.
 | J16.12 | "Within the last 30 seconds" excludes exactly 30 seconds; a bare name through `/plugin install` applies the `name@marketplace` skips to each auto-update marketplace, and a managed block there drops that marketplace from the refresh without refusing (§16.17). | The skip list is stated for `name@marketplace` only. Reference: `src/updates/refresh-before-install.ts`. |
 | J16.13 | The first auto-update pass is armed once per session with a delay drawn uniformly from 0 to 10 minutes; the client does not repeat it within the session (§16.19.1). | The docs say "a random delay of up to ten minutes" and nothing about repetition. Reference: `src/updates/auto-update-pass.ts`. |
 | J16.14 | A seed marketplace is off before the settings entry, the recorded value and the default are consulted; the toggle writes a settings entry only in a user, project or local file, never in a managed, `--settings` or `--add-dir` one (§16.19.2). | `org.md` says a seed forces `autoUpdate` off and the toggle also writes the declaring settings entry, not which files are writable. Reference: `src/updates/auto-update-precedence.ts`. |
-| J16.15 | With `forceRemoveDeletedPlugins`, a `renames` key with a non-null target is renamed, never removed, even when its chain does not resolve; a plugin only managed settings installed is still listed under **Flagged** (§16.21.1). | A broken map must not uninstall plugins; the docs say managed installs stay, not whether they are flagged. Reference: `src/marketplace/removal.ts`. |
-| J16.16 | An `autoUpdatesChannel` other than `latest` or `stable` follows `latest`; the effective `minimumVersion` is the highest valid value of all files; `v2.1.100` reads as `2.1.100`; a running version that is not a version starts (the gate fails open) (§16.22). | `settings-reference.md` gives the two values and a managed floor that "user and project settings can't lower". The SDK `Settings` type also lists `rc`, which the docs do not. Reference: `src/updates/claude-code-version-policy.ts`. |
+| J16.15 | With `forceRemoveDeletedPlugins`, a `renames` key with a non-null target is renamed, never removed, even when its chain does not resolve; a plugin only managed settings installed is still listed under **Needs attention** (§16.21.1). | A broken map must not uninstall plugins; the docs say managed installs stay, not whether they are flagged. Reference: `src/marketplace/removal.ts`. |
+| J16.16 | An `autoUpdatesChannel` other than `latest` or `stable` follows `latest`; the effective `minimumVersion` is the highest valid value of all files; `v2.1.100` reads as `2.1.100`; a running version that is not a version starts (the gate fails open) (§16.22). | `settings-reference.md` gives the two values and a managed floor that "user and project settings can't lower", in 2.1.330 as in 2.1.321. The SDK `Settings` type (`@anthropic-ai/claude-agent-sdk` 0.3.330, `sdk.d.ts`) also lists `rc`, which the docs of neither release name; this specification does not define `rc`, and a client MAY accept it as a channel of its own. Reference: `src/updates/claude-code-version-policy.ts`. |

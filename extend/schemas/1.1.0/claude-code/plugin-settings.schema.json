@@ -2,30 +2,16 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/plugin-settings.schema.json",
   "title": "Claude Code plugin default settings",
-  "description": "A plugin's root settings.json, or the manifest's settings object, as Claude Code 2.1.321 reads it (Agent Plugins Extended 1.1.0, section 12.6). Only agent and subagentStatusLine take effect; every other key is dropped at load without an error, so it is accepted here.",
-  "$comment": "Every key but agent and subagentStatusLine is dropped at load, and so is a value of the wrong type for one of the two, or a file that is not an object; none of it stops the plugin (section 12.6 item 1, Judgment J12.10). So the root accepts any JSON value, and $defs/effective states the values that take effect.",
+  "description": "A plugin's root settings.json, or the manifest's settings object, as Claude Code 2.1.330 reads it (Agent Plugins Extended 1.1.0, section 12.6). The feature is deprecated: only agent takes effect, with a deprecation warning; subagentStatusLine was removed and has no effect, though a validator still warns that it is deprecated in favor of mods; every other key is dropped at load without an error, so it is accepted here.",
+  "$comment": "Every key but agent is dropped at load, and so is an agent that is not a string, or a file that is not an object; none of it stops the plugin (section 12.6 item 1, Judgment J12.10). So the root accepts any JSON value, and $defs/effective states the values that take effect. A validator warns, without failing, for agent and for subagentStatusLine whatever their values (section 12.6 item 2).",
   "$defs": {
     "effective": {
       "type": "object",
       "properties": {
         "agent": {
           "type": "string",
-          "description": "One of the plugin's own agents, run as the main thread (section 12.6 item 5)."
-        },
-        "subagentStatusLine": {
-          "type": "object",
-          "required": [
-            "type",
-            "command"
-          ],
-          "properties": {
-            "type": {
-              "const": "command"
-            },
-            "command": {
-              "type": "string"
-            }
-          }
+          "deprecated": true,
+          "description": "One of the plugin's own agents, run as the main thread (section 12.6 item 6). Deprecated: it still applies, with a warning at startup, in claude plugin list and from a validator."
         }
       }
     }

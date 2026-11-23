@@ -9,7 +9,7 @@ and the managed policy that govern MCP servers are §8.11, in [08-mcp-policy.md]
 The MCP wire protocol is the MCP specification's; this chapter states only what Claude Code adds
 to it or decides about it. Evidence: `mcp.md` and `plugins/components.md` ("MCP servers"), unless a
 section names another page. Shapes follow the official types `McpStdioServerConfig`,
-`McpSSEServerConfig` and `McpHttpServerConfig` of `@anthropic-ai/claude-agent-sdk` 0.3.321, which
+`McpSSEServerConfig` and `McpHttpServerConfig` of `@anthropic-ai/claude-agent-sdk` 0.3.330, which
 type neither the `ws` transport, `headersHelper` nor `oauth` (Judgment J8.3).
 
 ## 8.1 Where a plugin declares its servers
@@ -30,8 +30,8 @@ type neither the `ws` transport, `headersHelper` nor `oauth` (Judgment J8.3).
    | --- | --- |
    | A `.json` file path | The file is read like `.mcp.json`. <!-- req: mcp.source..json --> |
    | An inline map | The object is the map of server name to configuration. <!-- req: mcp.source.Inline map --> |
-   | A bundle path ending `.mcpb` or `.dxt` | The bundle inside the plugin is extracted into `.mcpb-cache/` under the plugin root and its server read (§8.9). <!-- req: mcp.source.MCP bundle path --> |
-   | A bundle URL (`https://`, ending `.mcpb` or `.dxt`) | The bundle is downloaded into `.mcpb-cache/`, then read as a bundle path is (§8.9). <!-- req: mcp.source.MCP bundle URL --> |
+   | A bundle path ending `.mcpb` or `.dxt` | The bundle inside the plugin is extracted into `mcpb/` under the plugins root (§16.6), never into the plugin's own folder, so a read-only plugin folder loads, and its server read (§8.9). <!-- req: mcp.source.MCP bundle path --> |
+   | A bundle URL (`https://`, ending `.mcpb` or `.dxt`) | The bundle is downloaded, then extracted into `mcpb/` and read as a bundle path is (§8.9). <!-- req: mcp.source.MCP bundle URL --> |
 
    A string that starts with `http://` or `https://` is a URL, and only an `https://` URL is
    accepted; a string that ends in `.json` is a file; any other string is a bundle path, which
@@ -134,7 +134,7 @@ server that is `npx` with `["-y", "<package>"]` reaches the prefix with `$1` hol
 
 The prefix must re-evaluate `$1` with a shell (`exec bash -c "$1"`); one that treats `$1` as
 an executable path breaks every server with arguments. The same prefix wraps hook commands (§7)
-and status line commands (§12.6), not PowerShell or exec-form hooks.
+and the `statusLine` command (§12.7.1, §12.7.3), not PowerShell or exec-form hooks.
 <!-- docs: env-vars.md | Variables — CLAUDE_CODE_SHELL_PREFIX -->
 
 Starting and keeping the server's process is the host's: a library that resolves a plugin's servers
@@ -518,7 +518,17 @@ the configured one, and the client does not fall back to OAuth for it.
    connected and not reported as an error, and its detail view reads `No URL configured for this
    server`. A plugin MAY ship such an entry for a connector the user configures later.
 7. **Reconnection.** A dropped remote server is reconnected up to five times with backoff from one
-   second, doubling. An `http` or `sse` server's first connection is retried up to three times after
+   second, doubling. When the five fail, an interactive session marks the server failed (or needing
+   authentication) and says whether it keeps retrying: `MCP server "<name>" disconnected · still
+   retrying · open /mcp to reconnect now` while background retries go on, for up to about a day,
+   with the server shown as `retrying` in `/mcp` (turning the server off for the project stops
+   them); `MCP server "<name>" disconnected · open /mcp to reconnect` when none do. In `claude -p`
+   and SDK sessions the run goes on without the server's tools: after a transient error the client
+   keeps retrying an `http` or `sse` server in the background for up to about half an hour, or about
+   a day for some servers, and an SDK session reports the server `failed` meanwhile; a server that
+   needs a new sign-in is reported `needs-auth`.
+   <!-- docs: mcp.md | Mid-session drops of a remote server -->
+   An `http` or `sse` server's first connection is retried up to three times after
    a transient error, not after an authentication or not-found error, except that a server whose
    only `Authorization` source is `headersHelper` is retried after an authentication error too. A
    stdio server that exits is marked failed in an interactive session and restarted on the next
@@ -557,6 +567,10 @@ the configured one, and the client does not fall back to OAuth for it.
    shows `Bundled MCP server "<name>" was not started: it needs configuration`. A saved empty string
    is no value. Once the values are saved, `/plugin` shows `Configuration saved.`, plugins reload,
    and the server starts when that reload applies. <!-- req: mcp.troubleshooting.Bundled MCP server "<name>" was not started: it needs configuration -->
+4. The extracted files under `mcpb/` belong to the client, not to the plugin: they are deleted with
+   the plugin's options at its last uninstall, unless another installed plugin uses an identical
+   bundle, and otherwise once no session has used them for the `cleanupPeriodDays` period
+   (§16.6, §17.5.1).
 
 ## 8.10 Tools, results and interaction
 
@@ -566,7 +580,7 @@ the configured one, and the client does not fall back to OAuth for it.
 
 | Limit | Value | Rule |
 | --- | --- | --- |
-| Warning threshold | 10,000 tokens | The client warns when a tool's output exceeds it. Fixed. |
+| Warning threshold | 10,000 tokens | The client's transcript viewer warns when a tool's output exceeds it. Fixed. |
 | Token limit | 25,000 tokens, or `MAX_MCP_OUTPUT_TOKENS` | Applies to tools that declare no limit of their own, and to image data always. A successful result with no image content over the limit is saved to a file in the session's `tool-results` directory under `~/.claude/projects/`, and the conversation carries a message naming the file instead. |
 | Text limit | 50,000 characters, or the tool's `anthropic/maxResultSizeChars` (§8.10.2) | A successful foreground result with no image content longer than this is saved to a file the same way, whatever its token count; `MAX_MCP_OUTPUT_TOKENS` does not change it. |
 | Error text | about 11,000 characters | The text of a result marked `isError: true` becomes the tool's error; longer text keeps its first and last 5,000 characters with a marker between them saying how many were removed (Judgment J8.17). |
@@ -585,9 +599,10 @@ A server marks individual tools in their `tools/list` entries.
   ceiling of 500,000 characters, independently of `MAX_MCP_OUTPUT_TOKENS`. Image data stays under
   the token limit. <!-- req: mcp.behavior.Raise the limit for a specific tool -->
 - **`_meta["anthropic/requiresUserInteraction"]`** set to the JSON Boolean `true` (any other value
-  is ignored): the client shows the tool's permission prompt on every call, in every permission
-  mode including `acceptEdits`, `auto` and `bypassPermissions`, offers no "don't ask again", and
-  lets no allow rule skip it; in `dontAsk` mode it denies the call. With `--permission-prompt-tool`,
+  is ignored): the client shows the tool's permission prompt on every call Claude makes, in every
+  permission mode including `acceptEdits`, `auto` and `bypassPermissions`, offers no "don't ask
+  again", and lets no allow rule skip it; in `dontAsk` mode, and in a `-p` run with nothing to
+  answer the prompt, it denies the call. With `--permission-prompt-tool`,
   an `allow` from the prompt tool becomes a deny, `MCP tool requires user interaction; not supported
   via --permission-prompt-tool`; an SDK `canUseTool` callback may approve. Remote surfaces withhold
   one-tap approval for it (§13). <!-- req: mcp.behavior.Require approval for a specific tool -->
@@ -608,17 +623,19 @@ A server marks individual tools in their `tools/list` entries.
    available. Before sending it, the client flattens the schema into one object and prepends a
    sentence to the description saying which parameters belong together: for `allOf` the branches'
    properties merge and each branch's `required` still applies; for `anyOf` and `oneOf` they merge
-   and each branch's `required` is described rather than enforced. A tool the client cannot
-   rewrite, or any such tool on a deployment without the remote configuration that enables the
-   rewrite, is skipped with a reason in the server's log; the server's other tools stay.
+   and each branch's `required` is described in the description. A tool the client cannot rewrite,
+   or any such tool while feature-flag fetching is on but the flags have not arrived yet, is
+   skipped with a reason in the server's log; the server's other tools stay. With flag fetching
+   off, the rewrite runs (2.1.328 and later; earlier releases skipped the tool).
    Combinators nested inside `properties` are sent unchanged. <!-- req: mcp.behavior.Tool input schemas with a root-level combinator -->
 2. **Invalid schemas.** The client excludes a tool whose top-level property names are not 1 to 64
    characters of ASCII letters, digits, `_`, `.` and `-`, or whose schema, declaring no `$schema` or
    draft 2020-12, is not valid against the draft 2020-12 meta-schema; a schema of another dialect
    skips only the second check. The client logs the reason and tells the model which tools it
-   excluded and why; the tool returns when the server fixes it. Where feature flags are off or have
-   never arrived, the tool is not excluded and the log records `input schema would be rejected by
-   the Anthropic API`. <!-- req: mcp.behavior.Tools with invalid input schemas -->
+   excluded and why; the tool returns when the server fixes it. Only while feature-flag fetching is
+   on but the flags have not arrived yet (such as the first session after an install or upgrade) is
+   the tool not excluded, the log then recording `input schema would be rejected by the Anthropic
+   API`; with flag fetching off the checks apply (2.1.328 and later). <!-- req: mcp.behavior.Tools with invalid input schemas -->
 3. **Refused by the API.** When the API rejects a tool's schema in a request, the client logs a line
    containing `the API refused this tool's input schema`, ending with `The API said:` and the reason,
    and resends the request with that tool declared without parameters. <!-- req: mcp.behavior.Tools whose input schema the API refuses -->
@@ -698,7 +715,9 @@ beta). <!-- docs: mcp.md | MCP tasks that run on the server -->
    `http`, stdio or claude.ai connector server connected on revision 2026-07-28, so neither
    `MCP_SDK_GENERATION=v1` nor `MCP_PROTOCOL_NEGOTIATION=legacy` is set (§8.8 item 9); the session
    fetches feature flags (not on a third-party provider, not with telemetry or flag fetching off);
-   the session is a terminal CLI, Agent SDK or GitHub Actions session; the call comes from the main
+   the session is a terminal CLI, Agent SDK or GitHub Actions session, or a cloud session for an
+   account or organization Anthropic turned tasks on for (VS Code and local desktop sessions have
+   none); the call comes from the main
    conversation, not a subagent; and the session is interactive, or is an SDK session or a `claude
    -p` run reading `--input-format stream-json` with `CLAUDE_AUTO_BACKGROUND_TASKS=1`,
    `CLAUDE_CODE_DISABLE_MCP_TASK_BACKGROUND` not `1` and `CLAUDE_CODE_MCP_AUTO_BACKGROUND_MS` not
@@ -729,6 +748,13 @@ beta). <!-- docs: mcp.md | MCP tasks that run on the server -->
    `taskId`, `status`, `createdAt`, `lastUpdatedAt` and `ttlMs`, and optionally `statusMessage` and
    `pollIntervalMs`. <!-- docs: mcp.md | Report status, results, and questions -->
 
+   A server SHOULD keep a finished task's result for at least an hour, so that a user who exits and
+   later resumes the session still gets it, and SHOULD send `ttlMs` and `pollIntervalMs` in the task
+   answer and every `tasks/get` response: `ttlMs` as how long it keeps the task from its creation
+   (its longest run time plus the time it keeps the result, such as `5400000` for a 30-minute job
+   kept one hour), or `null` for no limit; `pollIntervalMs` as 10000 to 30000 for a job that runs
+   longer than a minute and 2000 for a shorter one. <!-- req: mcp.behavior.Choose a time to live and a poll interval -->
+
    | Status or message | What the client does |
    | --- | --- |
    | `working` | Keeps polling. |
@@ -744,17 +770,19 @@ beta). <!-- docs: mcp.md | MCP tasks that run on the server -->
    so the outcome belongs in the `tasks/get` responses.
 5. **Stopping and the result.** The user stops a task from `/tasks` or by asking Claude; the client
    stops following it and asks the server to cancel it, though the server may still finish it. A
-   disconnected server gets no cancel request, and the client forgets the task. `Esc` does not stop
-   a background task. When a task ends the transcript shows `MCP task <server task id>
+   disconnected server gets no cancel request until the user reconnects it from `/mcp`; the client
+   never follows a stopped task again. `Esc` does not stop a background task. When a task ends the transcript shows `MCP task <server task id>
    (<server>/<tool>) completed.` and the result goes to Claude, which starts on it unprompted when
    idle. <!-- docs: mcp.md | Stop an MCP task or get its result -->
-6. **Questions from a task.** A task may open an elicitation dialog (§8.10.5); declining or `Esc` is
-   an answer to the server. In a non-interactive session the client asks the server to cancel a task
+6. **Questions from a task.** A task may open an elicitation dialog (§8.10.5); declining is an
+   answer to the server. Unless Claude waits for the task's result (item 10), `Esc` closes the
+   dialog without answering, and the user reopens the question from the task's details in `/tasks`
+   (2.1.324 and later). In a non-interactive session the client asks the server to cancel a task
    that requests input, without running `Elicitation` hooks or the SDK's `onElicitation`.
    <!-- docs: mcp.md | Answer a question from an MCP task -->
 7. **Exit, clear and resume.** A task on a remote server keeps running after the client exits; a
-   stdio server's process stops with the client, though its tasks show `runs on the server;
-   survives exiting this session`. After `/clear`, `/branch` or `/resume` of another session, the
+   stdio server's process stops with the client, though `/tasks` says its tasks keep running after
+   exit. After `/clear`, `/branch` or `/resume` of another session, the
    result still arrives in the current conversation while the client stays open. Resuming the
    task's session interactively (`--resume`, `--continue`, `/resume`, or with `--input-format
    stream-json`) follows the task again once the server connects under the same name and connection
@@ -788,7 +816,8 @@ A server MAY offer resources. The client lists them with `resources/list` at dis
 like the other discovery requests, §8.8) and again on a `list_changed` notification in an
 interactive session. It offers them beside files in the `@` mention completion, referenced as
 `@<server>:<protocol>://<path>`, and reads a mentioned resource with `resources/read`, attaching
-its content to the prompt; a prompt may mention several. Claude also gets the
+its content to the prompt; a prompt may mention several. In `claude -p` a resource mention stays
+plain text and nothing is attached. Claude also gets the
 `ListMcpResourcesTool` and `ReadMcpResourceTool` tools when a connected server supports resources.
 An MCP Apps UI resource (a `ui://` URI or the media type `text/html;profile=mcp-app`) is left out of
 the `@` completion and of the list tool's results, so a server with only such resources shows an
@@ -884,7 +913,7 @@ their own.
 | J8.7 | The credential sets (read as empty in remote `url`/`headers`; removed from a supplied helper's environment) are the names the docs give plus the patterns of §3; a client SHOULD use Claude Code's observed set. | mcp.md lists the names "such as"; the reference implementation observed the sets on 2.1.319 and 2.1.321. |
 | J8.8 | A helper that fails, times out or prints anything but a JSON object of strings contributes no headers and is reported as an error of the server; header names compare without regard to case. | mcp.md gives the output rule and the 10 seconds, not the failure. |
 | J8.9 | `CLAUDE_CODE_MCP_SERVER_NAME` of a plugin's server is its scoped name `plugin:<plugin>:<server>`. | mcp.md says "the name of the MCP server" and that the server registers under the scoped name. |
-| J8.10 | A plugin `headersHelper` referencing `${user_config.*}` is refused whether or not the plugin declares options or a value is saved. | errors.md: "The check runs on the command template". `claude plugin validate` 2.1.325 says instead that the loader refuses it "when the plugin declares any options" and otherwise passes the literal text to the shell; the docs of the target release decide. |
+| J8.10 | A plugin `headersHelper` referencing `${user_config.*}` is refused whether or not the plugin declares options or a value is saved. | errors.md: "The check runs on the command template". `claude plugin validate` 2.1.325 and 2.1.330 say instead that the loader refuses it "when the plugin declares any options" and otherwise passes the literal text to the shell; the 2.1.330 docs (`errors.md`, "Plugin command references user_config"; `mcp.md`; `plugins/manifest-reference.md`) still say the server is refused without that condition, and no oracle run observed the loader itself, so the docs decide. |
 | J8.11 | The 128-character limit counts UTF-16 code units, and a tool over it is left out, never shortened. | mcp.md and errors.md say "characters". |
 | J8.12 | A plugin server's prompts are listed under its scoped name and run as `/mcp__plugin_<plugin>_<server>__<prompt>` (normalised); the reserved-name check and the `anthropic-skills` rule apply to a server's registered name, so a plugin's server key `workspace` loads. | mcp.md gives the prompt forms for a server name and the reserved names for "your configuration"; `claude plugin validate` 2.1.325 reports nothing for a plugin server named `workspace`. |
 | J8.13 | An `mcpServers` string that starts with `http://` or `https://` is a URL (only `https://` accepted), one ending `.json` a file, anything else a bundle path; the extension is matched exactly. | The table names the shapes, not how a string is classified. `claude plugin validate` 2.1.325 reports `./x.zip` as `Invalid string: must end with ".json"`, not as a bundle extension error. |

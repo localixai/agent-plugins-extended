@@ -5,11 +5,11 @@ the client loads into its own process and calls when an event happens, such as a
 submitted prompt or a part of the interface being drawn. A mod changes how the client looks and
 behaves from inside it; everything else a plugin ships (skills, agents, MCP servers, settings hooks)
 works from outside. This chapter states what a client does with a mod, so that every mod written
-for Claude Code 2.1.321 runs in an Extended client as it does there.
+for Claude Code 2.1.330 runs in an Extended client as it does there.
 
 Evidence: `plugins/mods/overview.md`, `reference.md`, `events.md`, `create.md`, `gallery.md`,
-`interface.md`, `api.md`, `test.md` and `troubleshoot.md` of the 2.1.321 documentation, and the
-TypeScript declarations Claude Code 2.1.321 writes beside a mod (`claude-code/index.d.ts`, cited as
+`interface.md`, `api.md`, `test.md` and `troubleshoot.md` of the 2.1.330 documentation, and the
+TypeScript declarations Claude Code 2.1.330 writes beside a mod (`claude-code/index.d.ts`, cited as
 *the declarations* with the type they name). The documentation itself calls the declarations the
 complete reference and tells authors to trust them where the two disagree, so on the mods surface
 (events and their fields, `$` and its members, `next`, the elements and their props, the state
@@ -109,19 +109,20 @@ A mod draws in four kinds of place, each specified in the part named:
 
 ### 10.2.1 Hooks and drawing by place
 
-A mod's hooks MUST run in every kind of session that loads the plugin, whichever provider serves the
-model (the Claude API, Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry). Drawing is
-narrower: what a mod draws appears only where an app draws it.
+A mod's hooks MUST run whichever provider serves the model (the Claude API, Amazon Bedrock, Google
+Cloud's Agent Platform, Microsoft Foundry), in the places the table says. What a mod draws appears
+only where an app draws it.
 
 | Where the client runs | Hooks run | What the mod draws appears |
 | --- | --- | --- |
 | `claude` in a terminal, including an editor's integrated terminal and the JetBrains plugin | yes | yes <!-- req: mods.overview.Where mods run.claude --> |
-| The Code tab of the Desktop app, outside a WSL session | yes | yes, except the elements §10.10 marks terminal-only |
+| The Code tab of the Desktop app, outside a WSL or SSH session | yes | yes, except the elements §10.10 marks terminal-only |
 | A WSL session of the Desktop app | no: plugins are not available there | no <!-- req: mods.overview.Where mods run.A WSL session in the Desktop app --> |
+| An SSH session of the Desktop app, for a mod installed only on the user's own computer | no: the Desktop app does not copy its hooks to the remote machine | no |
 | The VS Code extension's chat panel | yes | yes, from extension version 2.1.299; a session that does not fetch feature flags (such as one on Amazon Bedrock) needs 2.1.304. §10.9 and §10.10 mark what the panel draws. <!-- req: mods.overview.Where mods run.The VS Code extension's chat panel --> |
 | `claude -p` and the Agent SDK | yes | no <!-- req: mods.overview.Where mods run.claude -p --> |
 | Remote Control from claude.ai or the mobile app | yes, in the session on the user's machine | in the terminal on that machine |
-| A cloud session | yes, for a plugin that reaches the cloud session | no <!-- req: mods.overview.Where mods run.A cloud session --> |
+| A cloud session | yes, for a plugin that reaches the cloud session | not in every session <!-- req: mods.overview.Where mods run.A cloud session --> |
 
 Where nothing draws, a `ui.render` hook is never asked; a mod that draws SHOULD read where it runs
 (`e.surface`, `$.session.surfaces()`) and fall back to a log line or a command's text reply.
@@ -175,7 +176,8 @@ NOT promise more isolation than this list allows. Once loaded, a mod can:
 Claude Code ships features of its own as built-in mods, listed under **Built-in** on the
 **Installed** tab of `/plugin`. They cannot be updated or uninstalled; the settings and flags that
 stop installed mods (`disableAllHooks`, `--bare`, `--safe-mode`) do not stop them, and the `mods
-active` line omits them.
+active` line omits them. The table names those the documentation lists; `/plugin` shows what any
+other built-in entry does in its details.
 
 | Name in `/plugin` | What it does | Where it is on | How it is turned off |
 | --- | --- | --- | --- |
@@ -185,6 +187,13 @@ active` line omits them.
 | `cc-plugin-sec-default` | The built-in guard (`sec-default@builtin`, §14) | where the guard loads | cannot be; managed `prependPlugins` sets its place |
 | `cc-plugin-telemetry` | Sends the analytics records the client and its built-in mods log | wherever the client's analytics are on | disable it, or turn analytics off |
 | `cc-plugin-you-should-know` | A side agent that shows a note above the prompt | off until the user turns it on | disable it |
+| `cc-plugin-easel` | Gives Claude a tool that draws charts, and draws a chart by itself under an MCP result in a supported time-series format (a Prometheus range query result, for one) | sessions that meet its requirements (below) | disable it; turning off **Auto charts** in `/config` stops only the charts it draws by itself |
+
+`cc-plugin-easel` loads only where all of these hold, among others the documentation does not list:
+
+- **Sign-in**: the session runs on a claude.ai subscription. <!-- req: mods.overview.Check the charts mod requirements.Sign-in -->
+- **Version**: Claude Code 2.1.321 or later; 2.1.326 or later on a Team or Enterprise plan. <!-- req: mods.overview.Check the charts mod requirements.Version -->
+- **Platform**: macOS, or Linux outside WSL. <!-- req: mods.overview.Check the charts mod requirements.Platform -->
 
 An Extended client is not required to ship these features as mods; when it does, it MUST list and
 order them as this section and §10.14 say (Judgment J10.1).

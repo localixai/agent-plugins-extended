@@ -28,6 +28,7 @@ chapter states the command surface and points there.
    | `list` | | 17.8 |
    | `details <name>` | | 17.9 |
    | `configure <plugin>` | | 17.10 |
+   | `restore-set-aside <plugin>` | | 17.10.1 |
    | `prune` | `autoremove` | 17.11 |
    | `tag [path]` | | 17.12 |
    | `validate <path>` | | 17.13 |
@@ -46,16 +47,16 @@ chapter states the command surface and points there.
 ### 17.1.1 Conventions every subcommand shares
 
 - **Exit codes.** `0` on success, `1` on failure. Only `validate` adds `2`, for an unexpected error
-  of the validator itself (§17.13.4).
+  of the validator itself (§17.13.4). <!-- req: cli.plugin.claude plugin commands.Exit codes -->
 - **Plugin arguments.** A `<plugin>` is a plugin `name` or `name@marketplace`. When two
-  marketplaces offer one name the qualified form is needed; `configure` takes the qualified form
-  only. A bare name matches the installed plugins whose name equals it; when two or more match, the
-  command MUST refuse, change nothing and list the qualified command for each (§17.7.2, Judgment
-  J17.5).
+  marketplaces offer one name the qualified form is needed; `configure` and `restore-set-aside`
+  take the qualified form only. A bare name matches the installed plugins whose name equals it;
+  when two or more match, the command MUST refuse, change nothing and list the qualified command for
+  each (§17.7.2, Judgment J17.5). <!-- req: cli.plugin.claude plugin commands.Plugin arguments -->
 - **Scopes.** `--scope` takes `user`, `project` or `local` and names the settings file the command
   writes (§12). `update` also takes `managed`. The plugin commands spell it `-s, --scope <scope>`;
   the marketplace commands have no `-s`. A value a command does not take is a usage error
-  (§17.2.3).
+  (§17.2.3). <!-- req: cli.plugin.claude plugin commands.Scopes -->
 
 ## 17.2 How a command reports
 
@@ -63,7 +64,12 @@ chapter states the command surface and points there.
 
 Without `--json` a command prints a human-readable result. The client SHOULD write a success line
 to stdout and a failure line to stderr (Judgment J17.2). Where this chapter quotes a line, the
-client MUST print it as quoted, with the placeholders filled.
+client MUST print it as quoted, with the placeholders filled. A success line this chapter quotes
+as `Successfully <verb> …` keeps `Successfully` only when stdout or stderr is not a terminal; in a
+terminal the line leaves it out and begins with the capitalised verb, as in `Installed plugin:
+<id> (scope: <scope>)` and `Added marketplace: <name> (declared in <scope> settings)`
+(`plugins/cli-reference.md`, "claude plugin commands"; Judgment J17.33). The `message` of a
+`--json` result keeps `Successfully` either way.
 
 ### 17.2.2 The JSON result line
 
@@ -80,7 +86,15 @@ last line. The object always carries:
 | `message` | The human-readable description, the text the human line would carry. <!-- req: cli.plugin.JSON result format.message --> |
 
 Other fields appear only when they apply: `pluginId`, `scope`, `failureCode` (a stable code for why
-the command failed), and each subcommand's own fields stated in its section. A marketplace command
+the command failed), and each subcommand's own fields stated in its section. For a plugin whose
+marketplace entry installs it by running a command (§15, §17.4.2), `install` adds two booleans
+(2.1.330 or later):
+
+| Field | Value |
+| --- | --- |
+| `commandPrinted` | `true` when the install succeeded and the source's command wrote to stderr; the human line is then a warning, not a success, and shows what the command wrote. <!-- req: cli.plugin.JSON result format.commandPrinted --> |
+| `commandFailed` | `true` when the source's command exited with an error, was killed by a signal, or timed out. <!-- req: cli.plugin.JSON result format.commandFailed --> |
+ A marketplace command
 adds `marketplace`, the name it acted on, and on failure a `failureCode` such as `invalid_source`;
 `claude plugin marketplace remove your-marketplace --json` prints
 
@@ -135,7 +149,11 @@ with the reason's wording for an invalid scope: `Invalid scope: <value>. Use one
 
 ### 17.4.1 Output
 
-- Success: `Successfully installed plugin: <id> (scope: <scope>)`, exit `0`.
+- Success: `Successfully installed plugin: <id> (scope: <scope>)` (`Installed plugin: …` in a
+  terminal, §17.2.1), exit `0`. When a local-folder plugin is outside its `engines` range, the line
+  continues with the note of §2.4. Claude Code's `--json` result also carries `unsetOptionCount`,
+  the number of `userConfig` options not yet set (changelog 2.1.323; the reference does not list
+  it), which a client MAY add.
 - Already installed at that scope: `Plugin "<id>" is already installed (scope: <scope>)`, exit `0`.
 - A declined command-source prompt: `Aborted.`, exit `1`.
 - A declined `headersHelper` prompt, or one that cannot be confirmed without a terminal:
@@ -201,7 +219,7 @@ Judgment J17.8 states. <!-- req: cli.plugin.Accept a displayed install command -
 
 Output:
 
-- Success: `Successfully uninstalled plugin: <name> (scope: <scope>)`, naming the plugin by its
+- Success: `Successfully uninstalled plugin: <name> (scope: <scope>)` (§17.2.1), naming the plugin by its
   `name` even when the argument was qualified, exit `0`. When enabled plugins still depend on it, the
   uninstall succeeds and the line adds ` — warning: required by <names>` (§16.29, Judgment J16.23).
 - Not installed at that scope: a line starting `Failed to uninstall plugin "<plugin>":`, exit `1`.
@@ -226,7 +244,11 @@ except that:
 
 With `--json`, `keptData` (boolean) reports whether the data directory stayed, for any of these
 reasons; `/plugin` shows `· data preserved` beside the plugin when it did. Uninstalling from a scope
-that is not the last deletes none of them. <!-- req: cli.plugin.What an uninstall deletes and keeps -->
+that is not the last deletes none of them. These are examples, not the only cases in which some or
+all of them stay. When the client deletes the options and secrets it also deletes the files it
+extracted into `mcpb/` under the plugins root from the plugin's MCP bundles (§2.9, §16.6), keeping
+them while another plugin uses an identical bundle; extracted files no session has used for the
+`cleanupPeriodDays` period are cleaned up on their own (§12). <!-- req: cli.plugin.What an uninstall deletes and keeps -->
 
 ## 17.6 `plugin enable` and `plugin disable`
 
@@ -242,7 +264,8 @@ plugin's `enabledPlugins` entry (§12). A plugin synced from claude.ai (§16) is
 
 `enable`:
 
-1. Success: `Successfully enabled plugin: <plugin> (scope: <scope>)`, naming the scope used.
+1. Success: `Successfully enabled plugin: <plugin> (scope: <scope>)` (§17.2.1), naming the scope
+   used.
 2. A plugin already enabled at the resolved scope: `Plugin "<plugin>" is already enabled`, exit `1`;
    with `--json` the result carries `"failureCode": "already_in_goal_state"` and
    `"alreadyInGoalState": true`, so that a script can treat it as success.
@@ -253,7 +276,7 @@ plugin's `enabledPlugins` entry (§12). A plugin synced from claude.ai (§16) is
 
 `disable`:
 
-1. Success: `Successfully disabled plugin: <plugin> (scope: <scope>)`.
+1. Success: `Successfully disabled plugin: <plugin> (scope: <scope>)` (§17.2.1).
 2. Neither a name nor `--all`: a usage error (§17.2.3), with the reason `Please specify a plugin
    name or use --all to disable all plugins` on stderr, exit `1`, and no result line even with
    `--json` (Judgment J17.3).
@@ -274,6 +297,10 @@ offers (§16). The new version loads in the next session, or after `/reload-plug
 `-s, --scope <scope>` (also `managed`; §17.3), `-y, --yes` and `--accept-command <sha256>` (as for
 `install`, §17.4.2–17.4.3: they accept a **changed** install command of a command-source plugin, or
 a `headersHelper`; without a terminal one of them is required), and `--json`.
+
+An update also installs a declared dependency the plugin is missing, unless
+`CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` is set; the dependencies left unmet are then listed after
+`still unresolved:` (§16.24.1, §16.30).
 
 Output: `Checking for updates for plugin "<plugin>"…`, then the result. When nothing is newer,
 `<name> is already at the latest version (<version>).` and exit `0`, unless the dependency retry of
@@ -414,6 +441,26 @@ are set, or saves values read from stdin.
 
 Judgment J17.12 fixes the listing's line form. <!-- req: cli.plugin.plugin configure -->
 
+### 17.10.1 `plugin restore-set-aside`
+
+When the organisation's managed settings replace a marketplace the user added with one of the same
+name from another source (§14, §15), the client sets aside the `userConfig` options and secrets
+(§3.4) saved under the ids of that marketplace, so that a plugin of the replacement marketplace does
+not read them, and `claude plugin list` (text) prints a note naming each id. `claude plugin
+restore-set-aside <plugin>@<marketplace> [--discard]` (2.1.321 or later) acts on them:
+
+1. Without `--discard`, it restores them, so any plugin installed under that id reads them,
+   including one from the replacement marketplace. When the id already holds a value for an option,
+   restoring MAY keep that value and drop the set-aside one.
+2. With `--discard`, it deletes them.
+3. Without either, they stay set aside.
+4. `<plugin>` MUST be the full `name@marketplace` id as the note gives it. An id with nothing set
+   aside — a bare `name` always — prints `No options or secrets are set aside for <plugin>.` and
+   changes nothing; Claude Code 2.1.330 exits `0` then (Judgment J17.34).
+5. The command has no session form and takes no `--json`.
+
+<!-- req: cli.plugin.plugin restore-set-aside -->
+
 ## 17.11 `plugin prune`
 
 `claude plugin prune [options]` removes auto-installed dependencies (§16) that no installed plugin
@@ -533,15 +580,17 @@ directories are read without following links, so nothing here was validated. Pas
 directory instead.` for its parent `.claude`, both under the key `directory` (Judgment J17.32).
 
 A plugin run reads each skill, agent and command file, the hooks files (`hooks/hooks.json` and each
-path `hooks` names), and the MCP server files (§17.13.3). It does not read:
+path `hooks` names), and the MCP server files (§17.13.3). A marketplace run also reads the hooks
+files of the plugins it lists by relative path (`Validating hooks: <path>`), reporting them as a
+plugin run does. It does not read:
 
 - a `SKILL.md` at the plugin root (that file is a skill to a session, §4, but not to the validator); <!-- req: cli.plugin.Validate a directory.A SKILL.md at the plugin root -->
 - a `CLAUDE.md` at the plugin root as context: it reports it as a warning,
   `CLAUDE.md at the plugin root is not loaded as project context. To ship context with your plugin, use a skill (skills/<name>/SKILL.md) instead.`; <!-- req: cli.plugin.Validate a directory.A CLAUDE.md at the plugin root -->
-- in a marketplace run, the skill, agent, command and hook files, or bundled MCP server files, of
-  the plugins the marketplace lists in other directories. It reads their entries, and the
-  `plugin.json` a relative entry points at, but finding errors in their files needs a run on each
-  plugin directory. <!-- req: cli.plugin.Validate a directory.Plugin files in a marketplace run -->
+- in a marketplace run, the skill, agent and command files, or bundled MCP server files, of the
+  plugins the marketplace lists in other directories. It reads their entries, the `plugin.json` a
+  relative entry points at and its hooks files, but finding errors in their other files needs a run
+  on each plugin directory (Judgment J17.35). <!-- req: cli.plugin.Validate a directory.Plugin files in a marketplace run -->
 
 
 ### 17.13.2 A manifest file
@@ -597,6 +646,17 @@ With `--json`, stdout is one JSON object with these top-level fields:
 | `manifest` | The manifest's own result, or `null` for a run without a manifest. For a directory with both manifests it is the `marketplace.json` result. <!-- req: cli.plugin.Output and exit codes.manifest --> |
 | `contents` | One result per other file that has an error, a warning or a note, and none for a file with nothing to report, so `contents` is `[]` when nothing is wrong. For a directory with both manifests, the `plugin.json` result is here. Each result names its `file` and carries `errors`, `warnings` and `notes` arrays, and `gatingHooks`: for each mod hook that can refuse an action (such as `tool.call`, §10), an item with `module`, `pattern`, `hook` and `hasCatch`, the last saying whether the hook has a `.catch` handler. Judgment J17.15 fixes the shape of each entry: `errors` and `warnings` items are objects, `notes` items are plain strings, and `gatingHooks` items are the four-field objects. <!-- req: cli.plugin.Output and exit codes.contents --> |
 | `advice` | The run's advice (§17.13.5), each entry with `file` (the README), `message` and `installLine`; `[]` when there is none. <!-- req: cli.plugin.Output and exit codes.advice --> |
+| `provides` | The plugin's components by kind, or `null` when the run cannot list them (a marketplace run, for one). Claude Code 2.1.330 gives an object of arrays under `modules`, `hooks`, `mcpServers`, `lspServers`, `monitors`, `skills`, `commands`, `agents`, `outputStyles`, `themes`, `workflows` and `bin`, each naming its components as a session would (`"<plugin>:<skill>"`). <!-- req: cli.plugin.Output and exit codes.provides --> |
+| `hosts` | The hosts the plugin can reach, or `null` when the run cannot list them: `named`, the hosts it names, each with its `sources` (such as `{ "type": "declared" }` for one in the manifest's `network.hosts`, §2.4), `unread`, the parts of the plugin that could reach other hosts but were not read for them (each with `kind`, `name` and a `reason`, such as `process` for a part that starts a program: a skill, an LSP server), and, in 2.1.330, `declared` (`{ plugin, servers }`, whether the manifest and which servers declare hosts). A plugin can reach hosts not listed. <!-- req: cli.plugin.Output and exit codes.hosts --> |
+
+Each file result in `contents` also carries `modules`, one item per hooks module with fields such
+as `hooks` and `uses` (or `null` when it is unknown which code loads), and `wasm`, the WebAssembly
+each hooks module compiles (§10; 2.1.326 or later). The text output prints the same lists after the
+findings of a plugin run: `Provides:` with one `❯ <kind>: <names>` line per kind that has any,
+then `Hosts: <host> (declared), …` when it names any, `Hosts not read for: <kind> (<n>), …` when
+any part was not read (a valid LSP server alone gives `Hosts not read for: lspServers (1)`) and,
+when the manifest declares no `network.hosts`, `Hosts not declared: list what these parts reach under
+"network.hosts" in plugin.json` (Judgment J17.36). None of these lines is a finding.
 
 On exit `2` the client MUST write nothing to stdout, even with `--json`, and write the message to
 stderr.
@@ -634,7 +694,8 @@ are installed from (§15). These subcommands follow §17.1.1; their `--scope` ha
 
 `claude plugin marketplace add <source> [options]` fetches a marketplace and declares it in a
 settings file (§15). After adding it, the client installs any dependencies (§16) that installed
-plugins were missing. <!-- req: cli.plugin.plugin marketplace add -->
+plugins were missing (`plugins/dependencies.md`, "When a dependency installs automatically";
+§16.24.1). <!-- req: cli.plugin.plugin marketplace add -->
 
 | Flag | Meaning |
 | --- | --- |
@@ -662,12 +723,14 @@ A host whose clone URLs lack `.git` (such as AWS CodeCommit) is added as a `git`
 
 Output:
 
-- Success: `Successfully added marketplace: <name> (declared in <scope> settings)`, `<name>` being
-  the `name` in the marketplace's own manifest.
+- Success: `Successfully added marketplace: <name> (declared in <scope> settings)`
+  (`Added marketplace: …` in a terminal, §17.2.1), `<name>` being the `name` in the marketplace's
+  own manifest, not the repository's name.
 - A marketplace already on disk: `Marketplace '<name>' already on disk — declared in <scope> settings`,
   exit `0`.
 - An unrecognised source: `Invalid marketplace source format. Try: owner/repo, https://..., or ./path`,
-  exit `1`, `failureCode: "invalid_source"`.
+  exit `1`, `failureCode: "invalid_source"`. The documentation also names `That isn't a marketplace
+  source` for this case; Claude Code 2.1.330's shell command prints the first form (Judgment J17.37).
 - A bare host such as `gitlab.example.com/team/plugins` fails as an invalid `owner/repo` shorthand;
   the message tells the user to add `https://` or use a local path.
 - A name that impersonates or respells a reserved name is refused (§17.19).
@@ -693,7 +756,7 @@ section). Every field is a string:
 | `repo` | `owner/repo`; `github` sources only. <!-- req: cli.plugin.plugin marketplace list.repo --> |
 | `url` | The clone or fetch URL; `git` and `url` sources only. <!-- req: cli.plugin.plugin marketplace list.url --> |
 | `path` | The local path; `directory` and `file` sources only. <!-- req: cli.plugin.plugin marketplace list.path --> |
-| `ref` | The pinned branch or tag; `github` and `git` sources, only when pinned. <!-- req: cli.plugin.plugin marketplace list.ref --> |
+| `ref` | The pinned branch, tag or full commit SHA (§15); `github` and `git` sources, only when pinned. <!-- req: cli.plugin.plugin marketplace list.ref --> |
 | `installLocation` | Where the client cached the marketplace (§15). A claude.ai marketplace has no local copy: it carries `marketplaceId` and `organizationUuid` in its place, `scope` when one is recorded, and `status`. <!-- req: cli.plugin.plugin marketplace list.installLocation --> |
 
 ### 17.14.3 `marketplace remove`
@@ -707,7 +770,8 @@ the name `marketplace list` shows, not the source given to `add`.
 2. Removing it from the **last** scope that declares it MUST also delete its cache, uninstall every
    plugin installed from it, and delete their saved options, secrets and data where it can (§3.4,
    §16).
-3. Output: `Successfully removed marketplace: <name>`; when plugins were uninstalled, a line such as
+3. Output: `Successfully removed marketplace: <name>` (`Removed marketplace: <name>` in a terminal,
+   §17.2.1); when plugins were uninstalled, a line such as
    `Also uninstalled 2 plugins from this marketplace:` and their ids follow.
 4. `--json`: the result object, `command: "marketplace-remove"`.
 
@@ -719,7 +783,8 @@ the name `marketplace list` shows, not the source given to `add`.
 name is omitted, from its source (§15). A marketplace added with a branch or tag `ref` updates to the
 newest commit of that ref, not of the default branch. Output:
 `Successfully updated marketplace: <name>`, or for all of them a count,
-`Successfully updated <N> marketplaces`. `--json` gives the result object,
+`Successfully updated <N> marketplaces` (`Updated marketplace: <name>` and `Updated <N> marketplaces`
+in a terminal, §17.2.1). A marketplace pinned to a commit SHA stays on that commit. `--json` gives the result object,
 `command: "marketplace-update"`; without a name, `--json` is refused with exit `1` (Judgment J17.20).
 <!-- req: cli.plugin.plugin marketplace update -->
 
@@ -732,7 +797,7 @@ chapter named holds the rest.
 
 | Flag | Behaviour |
 | --- | --- |
-| `--plugin-dir <path>` | Loads a plugin for this session only, from a directory or a `.zip` archive of one. A folder of plugins loads each direct child folder that has a `.claude-plugin/plugin.json` (§16.8 item 4 says which folders are). Each flag takes exactly one path, never split; the flag is repeatable. A marketplace root is such a folder: `marketplace.json` is not read, so a plugin under its `plugins/` folder does not load, and no error is reported (§2.12). <!-- req: cli.flag.--plugin-dir --> |
+| `--plugin-dir <path>` | Loads a plugin for this session only, from a directory or a `.zip` archive of one. A folder of plugins loads each direct child folder that has a `.claude-plugin/plugin.json` and a name not starting with `.` (§16.8 item 4 says which folders are). Each flag takes exactly one path, never split; the flag is repeatable. A marketplace root is such a folder: `marketplace.json` is not read, so a plugin under its `plugins/` folder does not load, and no error is reported (§2.12). <!-- req: cli.flag.--plugin-dir --> |
 | `--plugin-url <url>` | Fetches a plugin `.zip` archive from a URL for this session only. Repeatable, and one value may hold several URLs separated by spaces. <!-- req: cli.flag.--plugin-url --> |
 
 1. A plugin either flag loads is **session-only**: id `<name>@inline`, `--json` scope `session`.
@@ -775,7 +840,12 @@ plugin failed to load, `plugin_errors`, each entry with `plugin`, `type` and `me
 omitted when there is no error. A plugin that did not load is absent from `plugins`. The errors
 include an unsatisfied dependency version (§16.30) and a `--plugin-dir` value that failed to load,
 such as a missing path or an invalid archive, whose entry also carries `path`, the resolved
-absolute path (2.1.283 or later), so a CI job can fail on a non-empty array. When
+absolute path (2.1.283 or later), so a CI job can fail on a non-empty array. An entry for a
+`--plugin-dir`, SDK, skills-directory or synced copy that a managed `enabledPlugins` entry dropped
+(§14.8.2 item 3, §16) also carries `managed_lock`: `plugin_enabled` (that entry's value), `name` as the
+entry spells it, and `marketplace` when the entry names one (`SDKSystemMessage` of
+`@anthropic-ai/claude-agent-sdk` 0.3.330, `sdk.d.ts`). A reader treats an unknown `type` as a
+generic failure. When
 `CLAUDE_CODE_SYNC_PLUGIN_INSTALL` is set, marketplace plugins install before the first turn and the
 client emits `system/plugin_install` events before `system/init`: `status` `started` and
 `completed` bracket the install, `installed` and `failed` report one marketplace each, with `name`
@@ -786,14 +856,14 @@ and, on `failed`, `error`; each event carries `uuid` and `session_id`. <!-- docs
 | Flag | Behaviour |
 | --- | --- |
 | `--setting-sources <list>` | Comma-separated setting sources to load: `user`, `project`, `local` (§12). Managed settings always load. Sessions started from this one (background sessions, teammates) inherit the list. Plugins enabled in a source not loaded are not enabled by it. <!-- req: cli.flag.--setting-sources --> |
-| `--settings <file-or-json>` | A settings file path or an inline JSON string; its keys override the same keys of the settings files for this session, and keys it omits keep their file values (§12). A file MUST be a regular file of at most 2 MiB; §17.20 states the refusals. <!-- req: cli.flag.--settings --> |
+| `--settings <file-or-json>` | A settings file path or an inline JSON string; its keys override the same keys of the settings files for this session, except that most lists merge with theirs, and keys it omits keep their file values (§12). A file MUST be a regular file of at most 2 MiB; §17.20 states the refusals. <!-- req: cli.flag.--settings --> |
 | `--add-dir <paths…>` | Adds working directories Claude may read and edit. It grants file access; the client does not discover most `.claude/` configuration from them, but loads their `.claude/skills/` (§4), `.claude/commands/` and `.claude/agents/` (§5), and only the `enabledPlugins` and `extraKnownMarketplaces` keys of their `.claude/settings.json` and `.claude/settings.local.json` (§12; `permissions.md`, "Additional directories grant file access, not configuration"). Each path MUST exist as a directory, or the run is refused; most network paths (`\\server\share`) are not accepted. `permissions.additionalDirectories` persists the file access only: a directory listed there loads none of that configuration (§12, §13). <!-- req: cli.flag.--add-dir --> |
 | `--agent <name>` | The agent the main session runs as, overriding the `agent` setting; a plugin agent by its scoped name or an unambiguous bare name (§5). <!-- req: cli.flag.--agent --> |
 | `--agents <json>` | Subagents for this session, as a JSON object (with `--print`, also a path to a JSON file); validated at startup, exiting `1` on an invalid value (§5.5.1, §17.22). <!-- req: cli.flag.--agents --> |
 | `--tools <list>` | Restricts the **built-in** tools: `""` none, `"default"` the default set, or names such as `"Bash,Edit,Read"`. It does not affect MCP tools, plugin servers included; `--disallowedTools "mcp__*"` denies those (§8, §13). <!-- req: cli.flag.--tools --> |
 | `--permission-mode <mode>` | The starting permission mode: `default` (alias `manual`), `acceptEdits`, `plan`, `auto`, `dontAsk` or `bypassPermissions`; it overrides `defaultMode` (§13). A value outside these refuses the run. <!-- req: cli.flag.--permission-mode --> |
 | `--mcp-config <files-or-json…>` | Loads MCP servers from JSON files or strings, space-separated. With `-p` the first turn waits for pending servers up to `MCP_TIMEOUT` (default 30 s), except a server with a cached tool list, which connects on first use (§8). In a self-hosted environment that wait is replaced by a shorter one that covers **stdio servers only**: up to 2 seconds, or `CLAUDE_CODE_MCP_STARTUP_WAIT_MS` milliseconds when set, which changes the length and never which servers it covers; HTTP and SSE servers of the file are not waited for and connect in the background (`self-hosted-environments-configuration.md`, "Wait for MCP servers before the first turn"). <!-- req: cli.flag.--mcp-config --> |
-| `--strict-mcp-config` | Only the servers of `--mcp-config` are used: plugin servers and every other MCP configuration are ignored (§8). <!-- req: cli.flag.--strict-mcp-config --> |
+| `--strict-mcp-config` | Only the servers of `--mcp-config` are used: the servers configured elsewhere — `.mcp.json`, `~/.claude.json`, a plugin — are skipped (§8). <!-- req: cli.flag.--strict-mcp-config --> |
 | `--channels <entries>` | (Research preview) The MCP servers whose channel notifications the session listens for: space-separated `plugin:<name>@<marketplace>` entries (§9). Requires Anthropic authentication through claude.ai or a Console API key. <!-- req: cli.flag.--channels --> |
 | `--dangerously-load-development-channels <entries>` | Enables channels not on the approved allowlist, for local development: `plugin:<name>@<marketplace>` and `server:<name>` entries (§9). It asks for confirmation, so it takes effect only in interactive sessions; with `-p` it is ignored. <!-- req: cli.flag.--dangerously-load-development-channels --> |
 
@@ -860,7 +930,7 @@ A path that does not exist is a mistake in the input, which the user fixes like 
 
 | Id | Judgment | Why, and the evidence |
 | --- | --- | --- |
-| J17.1 | `init`/`new`, `eval`, `eval init` and `test` are outside this specification; a client MAY offer them. The 2.1.325 subcommand `restore-set-aside`, `validate --profile` and the "Plugin directory checks" block (and its `directory` key in `--json`) are not part of 2.1.321: a client MAY print such checks but they MUST NOT change the 2.1.321 verdict or exit code. | Reference `spec/scope-audit.md`: authoring and eval runners do not load or run a plugin. Oracle 2.1.325 `claude plugin --help` and `validate --help` list the extra subcommand and flag, which the 2.1.321 docs do not; its own text says the directory checks "do not change the result". |
+| J17.1 | `init`/`new`, `eval`, `eval init` and `test` are outside this specification; a client MAY offer them. `validate --profile` and the "Plugin directory checks" block (and its `directory` key in `--json`) are not part of the documented contract: a client MAY print such checks, but they MUST NOT change the verdict or the exit code. `restore-set-aside`, undocumented in 2.1.321, is documented in 2.1.330 and stated in §17.10.1. | Reference `spec/scope-audit.md`: authoring and eval runners do not load or run a plugin. The 2.1.330 docs name neither `--profile` nor the directory checks. Oracle 2.1.330, 2026-11-23 (`claude plugin validate` on minimal plugins, private config dir): the block follows the findings, headed `Plugin directory checks for <dir>. The plugin directory is the catalog that plugins are submitted to; this is a subset of what it runs.`, with `README_MISSING`, `LICENSE_MISSING` (problems the directory refuses) and `ICON_MISSING` (a warning: the validator looked for `icon` in plugin.json and for `.claude-plugin/icon.png` or `.svg`, `assets/icon.png` or `.svg`), then `These plugin directory checks do not change the result below. To fail on problems the directory refuses a submission for, run this command with --profile directory.`; a directory holding only a skills tree adds `MANIFEST_NOT_FOUND`; the verdict line was unchanged in each run. |
 | J17.2 | A success line goes to stdout and a failure line to stderr; with `--json` the object's keys are ordered `command`, `outcome`, the other fields, `failureCode`, `message`. | The docs name no stream and no key order. Reference `src/cli/result.ts`. |
 | J17.3 | Usage errors (no result line, reason on stderr, exit `1`): a `--scope` the command does not take (`Invalid scope: <value>. Use one of: <list>`); `--accept-command` with `-y`; `--config` without `=`; `--marketplace` with a qualified plugin; `uninstall --json --prune`; `uninstall --prune` without `-y` and without a terminal; `disable` with neither a name nor `--all` (`Please specify a plugin name or use --all to disable all plugins`); `disable --all` with a name or `--scope`; `marketplace add --claudeai` with `--scope` or `--sparse`; `--sparse` on a source that is not `github` or `git`; `marketplace update --json` without a name. An unlisted word under `plugin` or `plugin marketplace` is an unknown command. | The docs give "an invalid `--scope`" as the example usage error and say which flag pairs cannot combine, but word no reason. Reference `src/cli/scope.ts`, `install-start.ts`, `uninstall-plan.ts`, `disable-plan.ts`, `marketplace-add.ts`, `marketplace-update.ts`, `command-table.ts`. `plugins/cli-reference.md`, "plugin disable", gives the missing-name text and exit `1`; oracle 2.1.325, `claude plugin disable --json` with an empty `CLAUDE_CONFIG_DIR`: that text on stderr, nothing on stdout, exit `1`. |
 | J17.4 | `failureCode` values: documented `already_in_goal_state`, `settings_still_on`, `invalid_source`, `install_records_unreadable` (`plugins/troubleshooting.md`, "installed_plugins.json holds a record … that this version of Claude Code cannot read"); fixed here `not_installed`, `ambiguous_plugin`, `wrong_scope`, `not_found`, `invalid_name`, `invalid_config`, `marketplace_blocked`, `dependency_error`, `dependency_not_installed`, `dependency_blocked`, `dependency_disabled_at_higher_scope`, `dependency_install_failed`, `has_dependents`, `required_by_organization`, `invalid_values`, `command_not_accepted` (an `install` or `update` that displayed a marketplace-declared command and did not run it: no terminal and no accepting flag, or a digest that no longer matches; §17.4.2, §17.4.3). | The docs say codes exist "such as `invalid_source`" and name four, one of them on the troubleshooting page. Reference `src/cli/*-plan.ts`, `install-lookup.ts`, `toggle-target.ts`; `command_not_accepted` in `src/cli/install-plan.ts` and `update-plan.ts`, for the one failure §17.4.3 defines that had no code. |
@@ -873,11 +943,11 @@ A path that does not exist is a mistake in the input, which the user fixes like 
 | J17.11 | The token estimates of `plugin details` and their rounding are the client's; only the headings and the order of §17.9 are normative. | `plugins/measure.md` defines what the figures mean, not a tokenizer. Oracle 2.1.325 prints `Skills (1)  a` rows and `< 20` for small figures. |
 | J17.12 | `configure` lists one `<key> (<labels>): <title>` line per option under `Options of <id>:`; a plugin with no options prints `<id> declares no userConfig options`; "set" means a saved value or a default. | The docs give the labels, not the line. Reference `src/cli/configure-plan.ts`. |
 | J17.13 | A path that does not exist fails validation (`File not found: <path>` under the key `file`, exit `1`); a stat error other than "not found" (such as `ENOTDIR`) is exit `2`. `target` is the manifest file for a manifest run and the directory for a component run. | The docs give "an unreadable path" as an exit-2 example only. Oracle 2.1.325: a missing path exits `1` with `File not found`; `/dev/null/x` exits `2` with `ENOTDIR`, nothing on stdout. |
-| J17.14 | A directory with no manifest and no `.claude` component directory, but with a `skills/<name>/SKILL.md` tree at its root, is validated as that skills tree. E4a deviation. | **Docs:** plugins/cli-reference.md, "Validate a directory": any other directory is validated as "those three directories under its `.claude`". **Claude Code:** 2.1.319 (reference implementation, `src/loading/validate/components-only.ts`) and 2.1.325, re-run 2026-11-16: `claude plugin validate d` on `d/skills/x/SKILL.md` alone prints `Validating components in: d`, then `Validating skill: d/skills/x/SKILL.md`, and fails on that file's unparsable frontmatter; a session loads such a tree as a skills-directory plugin. |
-| J17.15 | In a `--json` result, an entry of `errors` or `warnings` is `{ "path", "message" }`; an entry of `notes` is a plain string (the mod validator's lines, such as `./register.js hooks: tool.call{tool=Bash}, tool.call`); an entry of `gatingHooks` is `{ "module", "pattern", "hook", "hasCatch" }`, where `module` is the path as `modules` writes it, `pattern` the event pattern given to `on` (a string), `hook` that pattern with its matcher in braces (`tool.call{tool=Bash}`), and `hasCatch` a boolean. Each file result carries all four arrays, empty when there is nothing. A client MAY add fields (2.1.325 adds `code` to error and warning entries, and `type` on each file result). | The docs name the arrays and the four `gatingHooks` fields, not the entries. Oracle 2.1.325 (`claude plugin validate --json` on a mod whose `register.js` calls `on('tool.call', { tool: 'Bash' }, …)` and `on('tool.call', …).catch(…)`): `notes` held strings, `gatingHooks` held `{"module":"./register.js","pattern":"tool.call","hook":"tool.call{tool=Bash}","hasCatch":false}` and the same with `"hook":"tool.call","hasCatch":true`; errors were `{"path","message","code":null}`. Reference `src/cli/validate-run.ts`. |
+| J17.14 | A directory with no manifest and no `.claude` component directory, but with a `skills/<name>/SKILL.md` tree at its root, is validated as that skills tree. E4a deviation. | **Docs:** plugins/cli-reference.md, "Validate a directory": any other directory is validated as "those three directories under its `.claude`". **Claude Code:** 2.1.319 (reference implementation, `src/loading/validate/components-only.ts`), 2.1.325 (re-run 2026-11-16) and 2.1.330 (re-run 2026-11-23, the 2.1.330 docs unchanged here): `claude plugin validate d` on `d/skills/x/SKILL.md` alone prints `Validating components in: d`, then `Validating skill: d/skills/x/SKILL.md`, and fails on that file's unparsable frontmatter; a session loads such a tree as a skills-directory plugin. |
+| J17.15 | In a `--json` result, an entry of `errors` or `warnings` is `{ "path", "message" }`; an entry of `notes` is a plain string (the mod validator's lines, such as `./register.js hooks: tool.call{tool=Bash}, tool.call`); an entry of `gatingHooks` is `{ "module", "pattern", "hook", "hasCatch" }`, where `module` is the path as `modules` writes it, `pattern` the event pattern given to `on` (a string), `hook` that pattern with its matcher in braces (`tool.call{tool=Bash}`), and `hasCatch` a boolean. Each file result carries all four arrays, empty when there is nothing. A client MAY add fields (2.1.325 adds `code` to error and warning entries, and `type` on each file result; 2.1.330 also `wasm` and `modules`, §17.13.4). | The docs name the arrays and the four `gatingHooks` fields, not the entries. Oracle 2.1.325 (`claude plugin validate --json` on a mod whose `register.js` calls `on('tool.call', { tool: 'Bash' }, …)` and `on('tool.call', …).catch(…)`): `notes` held strings, `gatingHooks` held `{"module":"./register.js","pattern":"tool.call","hook":"tool.call{tool=Bash}","hasCatch":false}` and the same with `"hook":"tool.call","hasCatch":true`; errors were `{"path","message","code":null}`. Reference `src/cli/validate-run.ts`. |
 | J17.16 | Marketplace-only fields: `owner`, `plugins`. Plugin-only fields: `author`, `commands`, `agents`, `skills`, `hooks`, `mcpServers`, `lspServers`, `userConfig`, `channels`, `monitors`, `dependencies`, `settings`, `defaultEnabled`. | The docs give one example of each set. Reference `src/cli/validate-run.ts`. |
 | J17.17 | The advice's source is filled from an `origin` remote on GitHub (`https://github.com/o/r[.git]`, `git@github.com:o/r[.git]`, `ssh://git@github.com/o/r`) as `o/r`; any other remote leaves the placeholder. 2.1.325 appends `In it, replace <owner>/<repo> with the repository that holds the marketplace.` to a message with the placeholder; 2.1.321 does not. | The install line's `--marketplace` form names a GitHub `owner/repo`. Reference `src/cli/validate-advice.ts`; oracle 2.1.325. |
-| J17.18 | A `marketplace list` text entry is `  ❯ <name>` then `    Source: GitHub (owner/repo[#ref])`, `Git (<url>[#ref])`, `URL (<url>)`, `Directory (<path>)`, `File (<path>)` or `claude.ai`. 2.1.325 also lists the built-in `anthropic-plugin-directory` (`Source: Built in (Anthropic Directory)`) in text, not in `--json`; 2.1.321 lists only added marketplaces, and a client MAY list the built-in one in text. | The docs give `Configured marketplaces:` and "one `Source:` line". Reference `src/cli/marketplace-list.ts`; oracle 2.1.325 with an empty `CLAUDE_CONFIG_DIR`. |
+| J17.18 | A `marketplace list` text entry is `  ❯ <name>` then `    Source: GitHub (owner/repo[#ref])`, `Git (<url>[#ref])`, `URL (<url>)`, `Folder (<path>)` (2.1.330; `Directory (<path>)` before), `File (<path>)` or `claude.ai`. Claude Code also lists the built-in `anthropic-plugin-directory` (`Source: Built in (Anthropic Directory)`) in text, not in `--json`, so its text never reads `No marketplaces configured`; a client MAY list such a built-in marketplace in text. | The docs give `Configured marketplaces:` and "one `Source:` line"; 2.1.330's `plugins/marketplace-reference.md`, "Reserved names", reserves `anthropic-plugin-directory` and `claude-plugin-directory` but does not say `list` shows one. Reference `src/cli/marketplace-list.ts`; oracle 2.1.325 and 2.1.330 (2026-11-23) with an empty `CLAUDE_CONFIG_DIR`: `Configured marketplaces:`, the built-in entry, exit `0`; `--json` prints `[]`. |
 | J17.19 | `marketplace remove` of a name nobody declares fails with `Marketplace '<name>' not found` (`not_found`); one uninstalled plugin reads `Also uninstalled 1 plugin`. | The docs quote the plural form and no unknown-name case. Reference `src/cli/marketplace-remove.ts`. |
 | J17.20 | `marketplace update` of one marketplace counted in bulk reads `Successfully updated 1 marketplace`; none, `0 marketplaces`. A seed-managed marketplace (§14) is refused with `Marketplace '<name>' is seed-managed (<dir>). Ask your administrator to update the seed directory`. | The docs give the plural example. Reference `src/cli/marketplace-update.ts`. |
 | J17.21 | `marketplace add anthropic-plugin-directory` (and `remove`) prints only a reason on stderr and exits `1`; a `local` declaration reads `declared in local settings`; a `--claudeai` add prints `Successfully added marketplace: <name>`. | The docs say "can print no result line … check the exit code" without the code. Reference `src/cli/marketplace-add.ts`. |
@@ -885,5 +955,10 @@ A path that does not exist is a mistake in the input, which the user fixes like 
 | J17.23 | Refusals: `<flag> is disabled by your organization's managed settings (disableSideloadFlags)` (also for `CLAUDE_CODE_PLUGIN_DIRS`, `--agents`, and `--mcp-config` unless every server is `type: "sdk"`); `Error: Invalid permission mode: <value>. Use one of: <list>` (case-sensitive); `Error: --restricted refuses --permission-mode bypassPermissions`; `--add-dir: <path> is not a directory`; `Invalid channel entry "<entry>": expected <form>` (`--channels` takes no `server:` entry); `Error: Settings file not found: <path>`, `Error: Invalid JSON passed to --settings: <problem>`. `--tools` names are separated by commas or spaces. | The docs describe these refusals without quoting them (except §17.20's). Reference `src/cli/flags/sideload.ts`, `session.ts`, `add-dir.ts`, `channels.ts`, `settings.ts`. |
 | J17.24 | What neither `--bare` nor `--safe-mode` names stays loaded: under `--bare`, output styles, workflows, themes, keybindings, status line, file suggestion and LSP servers; `--bare` adds no built-in tool. | The docs list what each mode turns off. Reference `src/cli/flags/customizations.ts`. |
 | J17.26 | `--config`: a key given twice keeps its last value; a value failing its type, bounds or `options` refuses the install before anything changes, reported as `invalid_config` (§17.4.1). | The docs say nothing about checking `--config` values (plugins/cli-reference.md, "plugin install"); they quote the unset-options and undeclared-key lines (plugins/troubleshooting.md, "The userConfig dialog never appears"), which §17.4.1 states as documented. Reference `src/cli/install-config.ts`. |
-| J17.27 | `update`'s success line is `Successfully updated plugin: <name> to version <version> (scope: <scope>)`. | The docs say "then the result". Reference `src/cli/update-plan.ts`. |
+| J17.27 | `update`'s success line is `Successfully updated plugin: <name> to version <version> (scope: <scope>)`, without `Successfully` in a terminal (§17.2.1). | The docs say "then the result". Reference `src/cli/update-plan.ts`. |
 | J17.32 | The validator's link, FIFO and size messages are those §17.13.1 quotes, each a warning under `directory` except the two command-line errors; the hooks and MCP server files are capped at 1,048,576 bytes; the phrase `a project's .claude/skills plugin` is fixed text, the same for `agents` and `commands`. The hooks-file warning says the loader "fails the whole plugin on bad hook config", which concerns the hooks file's verdict (§7.2.1.1), not these warnings. | The 2.1.321 docs (`plugins/cli-reference.md`, "Validate a directory") give the three link cases without wording and nothing on FIFOs, hooks or MCP files. Oracle 2.1.321, corpus (`~/Documents/llx-plugin/.cache/corpus/oracle/2.1.321/`): `devflow` and others (linked plugin component directory, also on `agents`, 8), `launchdarkly` (6, linked entries, plugin), `specforge` (`.claude/skills` plural and `.claude/agents` singular), `browser-harness` (a linked `SKILL.md`: `1 component here`, 6), `obsidian-connector` (linked `hooks` directory and `.mcp.json`), `wordpress-playground`, `obsx`. Oracle 2.1.325, re-run 2026-11-16 on minimal inputs in a scratch directory with an empty `CLAUDE_CONFIG_DIR`, for the cases the corpus does not hold: two linked `SKILL.md` (`2 components here were not read`), a FIFO `SKILL.md` (counted the same), a linked `hooks/hooks.json`, a 1.1 MB `hooks.json` and `.mcp.json`, the `.claude` forms, and the two errors (exit `1`). Not settled: 2.1.325 neither reads nor warns about a linked `agents/<name>.md` or `commands/<name>.md` file; the corpus holds no such case for 2.1.321. |
+| J17.33 | The terminal rule of §17.2.1 covers every quoted `Successfully …` line of `install`, `uninstall`, `enable`, `disable`, `update` and the marketplace commands; the `✔` mark before it is presentation; `--json` messages keep `Successfully`. | The 2.1.330 docs state the rule with one example (`Installed plugin:`) and quote `Added marketplace:`, `Updated marketplace:`. Oracle 2.1.330, 2026-11-23, private config dir and a directory marketplace, each command under `script` (a terminal) and piped: `Installed plugin: p@mk (scope: user)`, `Enabled plugin: p (scope: user)`, `Updated marketplace: mk`, `Updated 2 marketplaces`, `Uninstalled plugin: p (scope: user)`, `Removed marketplace: mk` in a terminal; `✔ Successfully added marketplace: mk (declared in user settings)`, `✔ Successfully disabled plugin: p (scope: user)`, `✔ Successfully updated marketplace: mk` piped; `disable --json` under `script` gave `"message":"Successfully disabled plugin: q (scope: user)"`. |
+| J17.34 | `restore-set-aside` with nothing set aside, a bare name included, prints its line and exits `0`; it takes no `--json` (`error: unknown option '--json'`, exit `1`). | The docs quote the line, not the exit code. Oracle 2.1.330, 2026-11-23, private config dir: `claude plugin restore-set-aside foo` and `foo@bar` print `No options or secrets are set aside for <arg>.` and exit `0`; `--help` lists only `--discard`. |
+| J17.35 | A marketplace run reads the hooks files of the plugins it lists by relative path. | 2.1.330's `plugins/cli-reference.md`, "Validate a directory", drops "hook" from the files a marketplace run does not open. Oracle 2.1.330, 2026-11-23: a marketplace listing `./p` whose `hooks/hooks.json` holds `{"hooks": {` fails with `Validating hooks: <path>` and the `Invalid JSON syntax` error, while the same plugin's skill with unparsable YAML is not reported. |
+| J17.36 | The text form of `Provides:` and `Hosts` lines is as §17.13.4 gives it and is not normative beyond holding the same lists as `provides` and `hosts`. | The docs describe the JSON fields only. Oracle 2.1.330, 2026-11-23: a plugin with one skill and `network.hosts: ["api.example.com"]` prints `Provides:`, `❯ skills: t:s`, `Hosts: api.example.com (declared)`, `Hosts not read for: skills (1)`; `--json` gave `hosts.named[0]` `{"host":"api.example.com","sources":[{"type":"declared"}]}`, `hosts.unread[0]` `{"kind":"skills","name":"t:s","reason":"process"}` and `hosts.declared` `{"plugin":true,"servers":[]}`; a marketplace run gave `provides` and `hosts` `null`. A plugin whose only component is one valid `lspServers` entry and no `network` prints `Provides:`, `❯ lspServers: go gopls`, no `Hosts:` line, `Hosts not read for: lspServers (1)` and `Hosts not declared: …`; `--json` gives `hosts` `{"named":[],"unread":[{"kind":"lspServers","name":"go","reason":"process"}],"declared":{"plugin":false,"servers":[]}}` (same day). |
+| J17.37 | `claude plugin marketplace add` prints `Invalid marketplace source format. Try: owner/repo, https://..., or ./path` for an unrecognised source; `That isn't a marketplace source` is left to the session's add dialog. | 2.1.330's `plugins/troubleshooting.md` gives either message for the shell and the session alike. Oracle 2.1.330, 2026-11-23: `marketplace add marketplace.anthropic.com`, `'foo bar'` and `''` print the first form, exit `1`, piped and in a terminal. |

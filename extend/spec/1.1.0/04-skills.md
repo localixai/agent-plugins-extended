@@ -36,7 +36,9 @@ the plugin layout. The row type of the `/` menu is the Agent SDK's `SlashCommand
 1. **Default location.** Each skill is a directory directly under `skills/` that holds a file named
    `SKILL.md`; the directory's name is the skill's name. Only the immediate children of `skills/`
    are skills, and a skill directory is not searched for further skills. A `SKILL.md` placed
-   directly in `skills/` is not a skill, and the child directories are still read (Judgment J4.2).
+   directly in `skills/` makes `skills/` itself the one skill of the default location, as a listed
+   directory that holds a `SKILL.md` is (item 2): it takes the frontmatter `name`, else `skills`,
+   and its child directories are not read (Judgment J4.2).
    <!-- req: skills.behavior.Choose where skills load.Plugin -->
 2. **Manifest paths.** The manifest `skills` key lists more directories to read. They add to
    `skills/`, which is still read, unlike `commands` and `agents`, which replace their defaults
@@ -192,8 +194,8 @@ out, and then MUST still namespace plugin skills as §4.2.2 says.
 | --- | --- | --- |
 | Enterprise | `.claude/skills/<name>/SKILL.md` in the managed settings directory (§14) | Every session on the machine. <!-- req: skills.behavior.Choose where skills load.Enterprise --> |
 | Personal | `~/.claude/skills/<name>/SKILL.md` | Every project on the machine, not cloud or Cowork sessions. <!-- req: skills.behavior.Choose where skills load.Personal --> |
-| Project | `.claude/skills/<name>/SKILL.md` in the start directory and each parent up to the repository root | Sessions in the repository, not a project's cloud threads. <!-- req: skills.behavior.Choose where skills load.Project --> |
-| Nested | `<subdir>/.claude/skills/<name>/SKILL.md` below the start directory | Sessions started in or below `<subdir>`; above it, once Claude reads or edits a file there; never a project's cloud threads. <!-- req: skills.behavior.Choose where skills load.Nested --> |
+| Project | `.claude/skills/<name>/SKILL.md` in the start directory and each parent up to the repository root | Sessions in the repository. Which of a project's cloud threads load it is the cloud project's rule, outside this specification. <!-- req: skills.behavior.Choose where skills load.Project --> |
+| Nested | `<subdir>/.claude/skills/<name>/SKILL.md` below the start directory | Sessions started in or below `<subdir>`; above it, once Claude reads or edits a file there. A project's cloud threads follow the cloud project's rule. <!-- req: skills.behavior.Choose where skills load.Nested --> |
 | Additional directory | `.claude/skills/<name>/SKILL.md` in a directory passed with `--add-dir` or `/add-dir` | That session. <!-- req: skills.behavior.Choose where skills load.Additional directory --> |
 | Plugin | §4.2 | Wherever the plugin is enabled, as `/<plugin>:<skill>`. |
 | claude.ai account | Skills enabled for the signed-in claude.ai account, downloaded into `~/.claude/skills/synced/` | Cowork and cloud sessions, and terminal sessions signed in with that account (§4.5.6). <!-- req: skills.behavior.Choose where skills load.claude.ai account --> |
@@ -259,11 +261,14 @@ Rules that hold across the folder locations:
 
 1. Except in bare mode, the client MUST watch `~/.claude/skills/`, the project's `.claude/skills/`
    and the `.claude/skills/` of each directory added at launch, and add, update or remove a skill
-   there within the session without a restart. A top-level skills directory created after the
-   session started is not watched; `/reload-skills` reads it, once per change. An added
-   directory's `.claude/commands/` and `.claude/agents/` are not watched.
-2. Watching covers `SKILL.md` text only. For a skill folder that is also a plugin, a change to its
-   `hooks/`, `.mcp.json`, `agents/` or `output-styles/` takes effect on `/reload-plugins` (§16).
+   there within the session. A client MAY leave unwatched a top-level skills directory created
+   after the session started; `/reload-skills` MUST read the skill directories again, so that a
+   skill that did not appear does (Judgment J4.29). An added directory's `.claude/commands/` and
+   `.claude/agents/` are not watched.
+2. Watching covers `SKILL.md` text. For a skill folder that is also a plugin, a change to its
+   `.mcp.json`, `agents/` or `output-styles/` takes effect on `/reload-plugins` (§16), and so does
+   a change to its `hooks/`, except a mod's module file, which reloads on its own as
+   `CLAUDE_CODE_PLUGIN_DIR_WATCH` says (§3.6.3, §10).
 3. A `SessionStart` hook can ask for a re-scan of the skill folders with `reloadSkills` (§7).
    <!-- req: skills.behavior.Edit a skill during a session -->
 
@@ -302,7 +307,9 @@ where each came from:
    authenticates otherwise (an API key, `ANTHROPIC_AUTH_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN`, an
    `apiKeyHelper`), that fetches no flags (Amazon Bedrock, `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC`),
    that runs in bare or safe mode, under a `skills` lock (§14) or with `--setting-sources` lacking
-   `user` does not sync. `CLAUDE_CODE_SYNC_SKILLS=1` makes a non-interactive run wait for the list.
+   `user` does not sync. `CLAUDE_CODE_SYNC_SKILLS=1` makes the client download the account's
+   skills, and in a non-interactive (`-p`) run also wait for the list, up to
+   `CLAUDE_CODE_SYNC_SKILLS_WAIT_TIMEOUT_MS`, before the first query.
    Skills synced earlier keep loading offline for the same account. `syncClaudeAiSkills: false`
    stops syncing and moves the synced skills to `~/.claude/skills/.trash/` at the next start.
 2. The client downloads and never uploads: an edit under `synced/` is not saved to the account and a
@@ -316,9 +323,10 @@ where each came from:
 4. A synced skill's frontmatter applies in every session, and its display text is sanitized:
    control characters removed and, in text that reaches Claude, `<` and `>` escaped. Its body keeps
    local behaviour in a cloud session; in a Cowork session every `!` command is replaced by the
-   `disableSkillShellExecution` text (§4.8.3); in any other session on the user's machine `!`
-   commands do not run (they stay as literal text, or the policy text), `@` file references are not
-   attached, and `${CLAUDE_PROJECT_DIR}` and `${CLAUDE_SESSION_ID}` stay as literal text.
+   `disableSkillShellExecution` text (§4.8.3); in a terminal or editor-extension (VS Code)
+   session `!` commands do not run (they stay as literal text, or the policy text), `@` file
+   references are not attached, and `${CLAUDE_PROJECT_DIR}` and `${CLAUDE_SESSION_ID}` stay as
+   literal text.
 
 ### 4.5.7 Removing a skill
 
@@ -406,14 +414,15 @@ out keeps the file's value (Judgment J4.11).
 
 | Frontmatter | The user can invoke | Claude can invoke | In Claude's context |
 | --- | --- | --- | --- |
-| (default) | Yes | Yes | The description always; the whole skill when invoked. <!-- req: skills.invocation.(default) --> |
+| (default) | Yes | Yes | The description; the whole skill when invoked. <!-- req: skills.invocation.(default) --> |
 | `disable-model-invocation: true` | Yes | Not on its own | No description; the whole skill when invoked. <!-- req: skills.invocation.disable-model-invocation: true --> |
-| `user-invocable: false` | No | Yes | The description always; the whole skill when invoked. <!-- req: skills.invocation.user-invocable: false --> |
+| `user-invocable: false` | No | Yes | The description; the whole skill when invoked. <!-- req: skills.invocation.user-invocable: false --> |
 
 1. With `disable-model-invocation: true`, the client MUST leave the skill out of Claude's listing,
-   MUST refuse Claude's invocation of it, telling Claude not to carry out the skill's steps another
-   way (so Claude suggests the user run `/name`), MUST NOT preload it into a subagent (§5), and MUST
-   NOT run it when a session-scoped scheduled task fires with it as the prompt.
+   MUST refuse Claude's invocation of it unless the user's message names it as §4.7.5 says (Claude
+   then suggests the user run `/name`), MUST NOT preload it into a subagent (§5), and MUST NOT run
+   it when a session-scoped scheduled task fires with it as the prompt. The refusal's wording is the
+   client's own (Judgment J4.30).
 2. With `user-invocable: false`, the client MUST hide the skill from the `/` menu and MUST NOT run
    it when the user types `/name`; Claude may still invoke it.
 3. In a subagent that preloads skills, the whole content of each preloaded skill is injected at
@@ -445,9 +454,11 @@ out keeps the file's value (Judgment J4.11).
 ### 4.7.3 `paths`
 
 `paths` limits when Claude loads the skill on its own: only while working with files that match a
-pattern. Patterns use the glob format of path-specific memory rules, are relative to Claude's
-current working directory, and never match a file outside it (such as one in a sibling worktree,
-even an added one). The skill stays in the `/` menu and the user can type it. Until a matching file
+pattern. Patterns use the glob format of path-specific memory rules and are relative to Claude's
+current working directory; in the main conversation, after a `cd` into a subdirectory of the
+primary working directory in the same Git worktree, they stay relative to the primary working
+directory. A pattern never matches a file outside the directory it is relative to (such as one in
+a sibling worktree, even an added one). The skill stays in the `/` menu and the user can type it. Until a matching file
 is touched, the client lists the skill to Claude by name only (Judgment J4.14).
 
 ### 4.7.4 `skillOverrides`
@@ -507,8 +518,10 @@ and `/security-review`. A deny rule blocks more than the name it writes:
 | The plugin form of a synced skill | `Skill(deploy:deploy)` | The synced skill. <!-- req: skills.behavior.Restrict Claude's skill access.The plugin form of a synced skill --> |
 | A skill in the parameter form | `Skill(skill:deploy)` | The skill under whichever of its names Claude uses, alias and display name included. <!-- req: skills.behavior.Restrict Claude's skill access.A skill in the parameter form --> |
 
-An allow rule matches only the skill's own name and the name in Claude's call. To approve synced
-skills, the rule names the reserved namespace:
+An allow rule skips the permission prompt for the skills it names; it does not limit Claude to
+them, so other skills stay invocable under the rest of the rules. It matches only the skill's own
+name and the name in Claude's call. To approve synced skills, the rule names the reserved
+namespace:
 
 - `Skill(anthropic-skills:pdf)` approves the synced `pdf` skill. <!-- req: skills.behavior.Restrict Claude's skill access.Skill(anthropic-skills:pdf) -->
 - `Skill(anthropic-skills *)` approves every synced skill. <!-- req: skills.behavior.Restrict Claude's skill access.Skill(anthropic-skills *) -->
@@ -594,8 +607,8 @@ Both the user (the text after the name) and Claude (the `Skill` tool's arguments
 3. `disableSkillShellExecution: true` (§12; a managed `true` cannot be overridden) replaces each
    command of a skill or command from a user, project, plugin or added-directory source with
    `[shell command execution disabled by policy]` instead of running it. Bundled skills and skills
-   deployed through managed settings are not affected. A synced skill's commands never run on the
-   user's machine, whatever the setting (§4.5.6).
+   deployed through managed settings are not affected. In a terminal or VS Code session a synced
+   skill's commands never run, whatever the setting (§4.5.6).
 4. Including `ultrathink` anywhere in the content requests deeper reasoning for the turn.
    <!-- req: skills.behavior.Inject dynamic context -->
 
@@ -643,13 +656,24 @@ The PowerShell tool applies the same timeout, backgrounding and ceiling.
    them: ...`, ending with the command and each refused character written `�` (§17). <!-- req: skills.behavior.When no shell command was run -->
 3. **Permission checks.** Injected commands never prompt. Each is checked against the permission
    rules (§13) first: a deny match aborts the invocation with `Shell command permission check
-   failed for pattern "<placeholder>"`. Outside auto mode, any answer other than allow — an ask rule
-   included — aborts with the same message; `allowed-tools` pre-approves a command, and deny and ask
-   rules still win over it. In auto mode, a command that would need approval does not abort: the
-   skill loads with an instruction to Claude to run the command first, and Claude's call then goes
-   through auto mode's checks; it still aborts in a forked skill that sets `agent` and in a session
-   without the tool that runs injected commands. Under `allowManagedPermissionRulesOnly`, §4.9.2
-   applies. <!-- req: skills.behavior.Permission checks on injected commands -->
+   failed for pattern "<placeholder>"`. Outside auto mode, any answer other than allow aborts the
+   invocation; `allowed-tools` pre-approves an otherwise unmatched command, within these limits:
+   - **Deny and ask rules**: a command one of them matches still aborts, `allowed-tools`
+     notwithstanding. <!-- req: skills.behavior.Permission checks on injected commands.Deny and ask rules -->
+   - **Managed-only rules**: under `allowManagedPermissionRulesOnly` the client ignores the
+     `allowed-tools` of the skills §4.9.2 names, lists each such skill in `/status` under
+     `allowed-tools ignored this session`, and a command no managed rule allows aborts.
+     <!-- req: skills.behavior.Permission checks on injected commands.Managed-only rules -->
+   - **Bare repository folders**: a folder looks bare when it holds a `HEAD` file directly beside
+     `refs` or `commondir`. When the closest repository at or above the working directory looks
+     bare, the client ignores `allowed-tools` for a Bash command that contains `git` or that it
+     cannot parse, so such a command aborts unless a permission rule allows it (the user can add
+     one with `/permissions` in the session). <!-- req: skills.behavior.Permission checks on injected commands.Bare repository folders -->
+
+   In auto mode, a command that would need approval does not abort: the skill loads with an
+   instruction to Claude to run the command first, and Claude's call then goes through auto mode's
+   checks; it still aborts in a forked skill that sets `agent` and in a session without the tool
+   that runs injected commands. <!-- docs: skills.md | Permission checks on injected commands -->
 
 ## 4.9 While a skill runs
 
@@ -670,8 +694,9 @@ The PowerShell tool applies the same timeout, backgrounding and ceiling.
 1. `allowed-tools` grants its permission rules for the turn that invokes the skill, so Claude uses
    those tools without a prompt. The grant clears when the user sends the next message, though the
    content stays; invoking the skill again grants them again. It restricts nothing: every tool stays
-   callable and the permission settings govern the rest. Workspace trust does not gate it: a project
-   skill's grant applies even in a `-p` run in an untrusted folder.
+   callable and the permission settings govern the rest. A project skill's grant applies even in a
+   `-p` run in a folder the user never trusted. For the skill's injected commands, §4.8.5 item 3
+   sets the limits of the grant.
 2. `disallowed-tools` removes tools from Claude's pool while the skill is active; the restriction
    clears with the next message. Like a deny rule, it cannot remove `EndConversation` while any
    other tool remains.
@@ -700,6 +725,9 @@ The PowerShell tool applies the same timeout, backgrounding and ceiling.
    and in plan mode while the classifier reviews commands, so is a model auto mode does not support.
    With `context: fork` it sets the forked subagent's model, and an excluded value follows the
    subagent rule (§5).
+   A skill without `context: fork` that Claude runs changes the model of the turn only: the
+   subagents and forks started during that turn, compaction and `/recap` stay on the session's
+   model (Claude Code 2.1.330 or later). <!-- docs: changelog.md | 2.1.330 -->
 2. `effort` sets the effort level for the rest of the turn, over the session's level but not over
    `CLAUDE_CODE_EFFORT_LEVEL`; levels the model does not support fall back as the model
    configuration says. With `context: fork` it sets the subagent's level. Omitted, the level comes
@@ -805,7 +833,7 @@ runs is what the author wrote, filled in.
 | Id | Judgment | Why, and the evidence |
 | --- | --- | --- |
 | J4.1 | A plugin skill a scan finds is listed under its directory name; its frontmatter `name` also invokes it (`/<plugin>:<name>`, and the bare name while free) and names it in an agent's `skills`. A skill whose directory a manifest path names, and the root skill, are listed under the frontmatter `name` (§4.2.2). E4a deviation. | **Docs:** components.md "Skills" ("Command name") and skills.md "How a skill gets its command name" say a plugin skill's frontmatter `name` replaces the directory name in the last segment (`/my-plugin:fancy`). **Claude Code:** 2.1.319 (reference implementation, `init.slash_commands`) lists only `alpha:greet` for `skills/greet/` with `name: fancy`; 2.1.322 (reference, `tests/host/preload-skill-alias.test.ts`) runs the body for `/alpha:fancy`, `/fancy` and `/alpha:greet` and preloads it for every one of those names in an agent's `skills`; 2.1.325, re-run 2026-11-16 (`claude --plugin-dir alpha plugin details alpha`), lists `review` for `skills/review/` with `name: fancy`, and earlier runs listed `three` for `extra/many/three/` with `name: declared-three` and `declared-one` for `extra/one/` named by a path. |
-| J4.2 | A `SKILL.md` directly in the default `skills/` is no skill; its child directories load (§4.2.1). | The docs place each skill in its own directory under `skills/`. Reference implementation, oracle 2.1.319: `skills/SKILL.md` beside `skills/child/SKILL.md` loads only `child`. Oracle 2.1.325 differs: `plugin details` lists only the direct file's skill (`direct`) and not `b`. This text follows the observation nearest the 2.1.321 target. |
+| J4.2 | A `SKILL.md` directly in the default `skills/` makes `skills/` one skill, named by its frontmatter `name` or else `skills`; its child directories do not load (§4.2.1). | The docs place each skill in its own directory under `skills/` and say nothing of this layout. Oracle 2.1.330 (`claude -p --plugin-dir`, `init.skills`, private config dir): `skills/SKILL.md` with `name: direct` beside `skills/b/SKILL.md` lists only `p1:direct`; without `name`, beside `skills/c/SKILL.md`, only `p2:skills`; `claude plugin details` agrees. Oracle 2.1.325 showed the same; 2.1.319 (the reference implementation's run) loaded only the child, so the behaviour changed between 2.1.319 and 2.1.325 and this text follows the target release. |
 | J4.3 | A directory with a `SKILL.md` reached in a commands location is a skill named by its path with `:` (`nest:deep`), nothing below it loads, and a commands location holding `SKILL.md` itself is one skill (§4.6.1). | Docs: §2.6's debug line ("Expected .md files or SKILL.md in subdirectories") implies such skills, without a naming rule. Reference implementation, oracle 2.1.319. |
 | J4.4 | A self-named skill's command drops the plugin's own prefix, then turns every character outside `A-Za-z0-9_-` into `-`; listings show the name as written (§4.2.2). | Docs give the prefix rule only. Reference implementation, oracle 2.1.319 (`init.slash_commands`: `Plan Review` is `plan:Plan-Review`); oracle 2.1.325 `plugin details` shows the name as written. |
 | J4.5 | Refused characters are the Unicode categories Cc, Cf, Co, Cn, Cs, every blank other than one plain space between words, `<` and `>`; each refused character becomes one hyphen in a plugin directory name; a refused frontmatter `name` in a plugin is unused and the directory names the skill (§4.2.2, §4.3). | skills.md lists kinds of characters, not code points, and states the hyphen rule for folders only; errors.md adds the 256-character limit. Reference implementation's reading. |
@@ -832,3 +860,5 @@ runs is what the author wrote, filled in.
 | J4.26 | The validator's frontmatter findings are the table of §4.10: `No description in frontmatter` only when the `description` key is absent; type errors for `name`, `description` (a list or map only), `allowed-tools` and `shell`, at error severity; a non-map `metadata` at warning severity; nothing for any other field. | The docs name `claude plugin validate` and the parse and missing-block messages only. **Oracle 2.1.321, corpus** (2,496 plugins): `No description in frontmatter. … this skill.` 4 times, `… this command.` 7 times, `… this agent.` 27 times, each on a file without the key (a scan of the same files finds no file with an empty, null or non-text `description`, none with a non-text `name`, a non-text `shell` or a non-list `allowed-tools`, so the corpus neither confirms nor refutes the type errors); `'metadata' must be a mapping (key: value pairs); got string. It is dropped at load time.` once, as a warning; the parse error with the `skill` tail 4 times and the `command` tail 2 times. **Oracle 2.1.325**, re-run 2026-11-16 on minimal skills and commands: the same messages, plus `name must be a string, got number.` / `got boolean.` / `got object.` (a list too), `description must be a string, got array. At runtime this value is dropped.` (and `got object.`), `allowed-tools must be a string or array of strings, got number.` / `got object.`, `allowed-tools array must contain only strings.`, `shell must be a string, got number.`, `shell must be 'bash' or 'powershell', got 'zsh'.`, all errors; `metadata` warnings `got number.` and `got array.`; nothing for `description: 42`, `description: true`, an empty `description`, `name:` empty, `shell: Bash` or an empty `metadata`. The type errors are taken from 2.1.325 as the nearest observation; the next snapshot re-checks them. |
 | J4.27 | A command and a skill of one plugin with the same command name: the command is listed and runs; the skill is not reachable by that name (§4.6.1 item 4). | The docs say a skill wins over a command file outside a plugin (J4.10) and are silent within a plugin. Reference implementation, oracle 2.1.319 (`init.slash_commands` and the description in the model request). Oracle 2.1.325, re-run 2026-11-16 with a private config directory and a local stand-in for the Messages API: plugin `p3` with `commands/foo.md` and `skills/foo/SKILL.md` lists `p3:foo` once in `init.slash_commands` and `init.skills`; `claude -p "/p3:foo"` sends the command's body and description, never the skill's. `claude plugin details` counts both, as an inventory. |
 | J4.28 | The instruction that goes with a directory-qualified variant (§4.5.2 item 3) is the client's prompt text; its wording is not part of the contract. | skills.md, "Load skills in monorepos and subdirectories", describes what the instruction asks, not its text; a plugin observes the variant's name and description, which are listing entries, not the instruction. |
+| J4.29 | A top-level skills directory created after the session started MAY stay unwatched, and `/reload-skills` reads the skill directories again (§4.5.3 item 1). | 2.1.321's `skills.md`, "Edit a skill during a session", said such a directory is not watched and `/reload-skills` reads it once per change; 2.1.330 drops that and says only to run `/reload-skills` when a new skill does not appear. Either client behaviour fits the 2.1.330 text; `/reload-skills` is what both releases document. |
+| J4.30 | Claude's refused invocation of a `disable-model-invocation` skill carries no fixed text (§4.7.1 item 1). | 2.1.321 said the refusal instructs Claude not to reproduce the steps another way; 2.1.330's "Control who invokes a skill" says only that the call is blocked and that Claude is expected to suggest the user run the command. |

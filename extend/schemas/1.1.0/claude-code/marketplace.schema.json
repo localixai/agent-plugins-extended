@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/marketplace.schema.json",
   "title": "Claude Code marketplace catalog",
-  "description": "A marketplace's .claude-plugin/marketplace.json as Claude Code 2.1.321 accepts it (Agent Plugins Extended 1.1.0, chapter 15). An unknown key at the top level, in metadata, in an entry, or under an entry's relevance is ignored and accepted here (section 15.1 item 5).",
+  "description": "A marketplace's .claude-plugin/marketplace.json as Claude Code 2.1.330 accepts it (Agent Plugins Extended 1.1.0, chapter 15). An unknown key at the top level, in metadata, in an entry, or under an entry's relevance is ignored and accepted here (section 15.1 item 5).",
   "$comment": "Not expressed here: the reserved and impersonating names of section 15.3.2, duplicate entry names, renames chains, and the checks of each relative-path entry's own plugin.json, which plugin.schema.json covers.",
   "type": "object",
   "required": ["name", "owner", "plugins"],
@@ -198,6 +198,10 @@
         },
         "$schema": { "type": "string" },
         "displayName": { "type": "string" },
+        "engines": {
+          "$ref": "plugin.schema.json#/properties/engines",
+          "description": "As in plugin.json: a malformed value is ignored at load with a validator warning or error at plugins[<i>].engines (section 15.4, section 2.4)."
+        },
         "version": { "type": "string" },
         "description": { "type": "string" },
         "author": { "$ref": "plugin.schema.json#/$defs/person" },
@@ -224,7 +228,7 @@
       },
       "if": { "required": ["headersHelper"] },
       "then": { "required": ["strict"], "properties": { "strict": { "const": false } } },
-      "description": "An entry takes every plugin.json field of section 2.2 but the directory listing fields, which are unknown here (section 15.4)."
+      "description": "An entry takes every plugin.json field of section 2.2 but the directory listing fields, which are unknown here (section 15.4). Unlike plugin.json, an entry's malformed display field still refuses the entry: Claude Code 2.1.330 will not install it (This plugin's marketplace entry is invalid; section 15.5.3, Judgment J15.15)."
     }
   }
 }

@@ -17,9 +17,9 @@ client writes one line that starts with the mod's name. It MUST put it:
 1. in a session that hot-reloads a plugin directory (an interactive session started with
    `--plugin-dir`, or one with hot reloading on for mods Claude wrote): as a dim line in the
    transcript, and in the debug log;
-2. in any other interactive session, as for an installed mod: in the debug log only;
+2. in any other interactive session, as for an installed mod: in the debug log;
 3. in a `claude -p` run with `--plugin-dir`, in the default text output format: on stderr; a
-   refusal by another mod goes to the debug log only (Judgment J10.170).
+   refusal by another mod goes to the debug log (Judgment J10.170).
 
 `claude plugin validate <dir>` reports, without a session, a misspelt event, a bad manifest and a
 module the client cannot read (§17).
@@ -90,7 +90,19 @@ that starts with the mod's name and is one of:
 
 The model does not see the line. <!-- req: mods.troubleshoot.This mod's change didn't load or the earlier version is no longer running -->
 
-### 10.41.7 `$.agent.register refused`
+### 10.41.7 `reload failed`
+
+When a save to a mod that hot-reloads (§10.40.1) breaks its module, the client writes one of two
+lines, and a `reloaded` line once a later save loads:
+
+- `reload failed, the previous version stays loaded: <reason>`: the mod's last working version keeps
+  running. If the change still fails to load the next time the client reloads every plugin (as on
+  `/reload-plugins`), that version unloads.
+- `reload failed: <reason>`: the line does not say whether a version stays; the `mods active` line of
+  `/plugin` (§10.42 item 2) MUST name the mod when its last working version is still loaded, and
+  MUST NOT name it when none is. <!-- req: mods.troubleshoot.reload failed -->
+
+### 10.41.8 `$.agent.register refused`
 
 A call from code still running in a copy of the module that was reloaded or unloaded (a hook that
 had not returned) MUST be refused. For `$.agent.register` the call rejects and the client writes
@@ -128,14 +140,14 @@ Each reason follows `hooks module <mod> not loaded:` in the debug log.
 
 ### 10.42.2 Messages from the built-in guard
 
-Where the built-in guard loads (`admin.md`), it can refuse a mod or one of its answers; each message
-names the setting that changes the rule.
+Where the built-in guard loads (`admin.md`), it can refuse a mod or one of its answers; some
+messages name the setting that changes the rule (in 2.1.330 the first below does).
 
 | Message contains | Meaning | Where |
 | --- | --- | --- |
 | `mods are limited to your organization's by policy (allowManagedModsOnly)` | Only the organisation's own mods load; this one was refused. | The debug log, and the transcript in a session that hot-reloads a plugin directory. |
-| `tried to lift a deny rule in your settings` | A mod's `tool.check` hook approved a call a `deny` rule refuses; the call stays denied. | The transcript and the debug log, once per mod per session; in a `claude -p` run the debug log only. |
-| `the deny rules in your settings could not be checked for this call, so it is refused` | The guard failed while checking a call a mod approved, and refused it. | The reason the model reads for the denied call. |
+| `tried to lift a deny rule in your settings` | A mod's `tool.check` hook approved a call a `deny` rule refuses; the call stays denied. | The transcript and the debug log, once per mod per session; in a `claude -p` run the debug log. |
+| `the rules and hooks in your settings could not be checked for this call, so it is refused` | The guard failed while checking a call a mod approved, and refused it (before 2.1.330 the message began `the deny rules in your settings`). | The reason the model reads for the denied call. |
 
 <!-- req: mods.troubleshoot.Messages from the built-in guard -->
 
@@ -147,11 +159,11 @@ names the setting that changes the rule.
    lists no hooks module. When it holds neither `hooks` nor `modules` (`{}`, or only a misspelt
    `modlues`), the validator MUST report an error at `root` and fail:
    ``hooks.json must have `hooks` (the hook matchers) or `modules` (hooks modules), or both``.
-   The docs say `validate` passes in both cases; Claude Code 2.1.321 does not (Judgment J10.174,
+   The docs say `validate` passes in both cases; Claude Code 2.1.321 and 2.1.330 do not (Judgment J10.174,
    E4a). <!-- deviates: mods.troubleshoot.validate passes and lists no hooks line -->
 2. **`hooks module did not load`.** When the module cannot load, as when its top-level code throws,
    the client writes `<mod>: hooks module did not load: <reason>`, the reason giving the file and
-   line when the fault is in the code. When the reason ends `; the version loaded before is
+   line for a syntax error. When the reason ends `; the version loaded before is
    unloaded`, no version of the mod runs until `/reload-plugins` loads it again. <!-- req: mods.troubleshoot.hooks module did not load -->
 3. **`options do not fit plugin.json userConfig`.** When an option fails validation against its
    `userConfig` field (a number over `max`, a required field without a value, §3.4) the module does
@@ -187,23 +199,42 @@ call's input after auto mode reviewed it`; the repeated call there carries the f
 `tool.call` hook still runs on it, and a further change is dropped (`hooks.md`, "PreToolUse
 updatedInput in auto mode"). <!-- req: mods.troubleshoot.a hook changed this call's input after the model wrote it -->
 
-The two deny-rule messages come from the built-in guard (§10.42.2). <!-- req: mods.troubleshoot.A message about the deny rules in your settings -->
+The two messages about the rules in the user's settings (`tried to lift a deny rule in your
+settings`, `the rules and hooks in your settings could not be checked for this call, so it is
+refused`) come from the built-in guard (§10.42.2). <!-- req: mods.troubleshoot.A message about the deny rules in your settings -->
 
-### 10.43.2 `Stopped: type a message to continue; a mod cannot resume work after Stop`
+### 10.43.2 `stopped · type a message to continue`
 
-After the user stops a turn, a mod's attempt to start work on its own that the client refuses
-(`api.md`, §10.33.1) raises this toast in an interactive session. After the user's next message
-mods start work again and some of it returns by itself. <!-- req: mods.troubleshoot.Stopped: type a message to continue; a mod cannot resume work after Stop -->
+After the user stops a turn (with Esc, for example), a mod's attempt to start work on its own that
+the client refuses (`api.md`, §10.33.1) raises the toast `stopped · type a message to continue` in
+an interactive session; nothing is broken. After the user's next message mods can start work again
+and some of the work started before the interruption returns by itself. Before 2.1.330 the toast
+read `Stopped: type a message to continue; a mod cannot resume work after Stop`. <!-- req: mods.troubleshoot.stopped · type a message to continue -->
 
 ## 10.44 A drawing does not appear or respond
 
 ### 10.44.1 Another mod's band shows and this one's does not
 
-A mod earlier in the chain that returns a tree without the result of `next(e)` in it replaces the
-bands after it (`interface.md`, §10.21). With a debug log the client writes `<mod> (<tier>) answered
-ui.render without next()` for each mod that returned a tree without ever calling `next`; the line
-does not name the site. A mod that calls `next(e)` and drops the result gets no line. A mod whose own
-band tree does not validate is missing while the others stay (§10.44.2). <!-- req: mods.troubleshoot.Another mod's band shows and yours doesn't -->
+Each mod that draws above the prompt gets its own row in the band (`AbovePromptList`, `interface.md`
+§10.21.1), so one mod's tree does not replace another's. A mod's row is missing while another's
+shows for one of these causes, each of which the client MUST keep apart:
+
+1. **Its tree does not validate.** That mod's `ui.render` hook is skipped (§10.41.1, §10.44.2) or the
+   tree is refused (§10.44.3), and the line names the fault; the other rows stay. <!-- req: mods.troubleshoot.Another mod's band shows and yours doesn't.Your tree doesn't validate -->
+2. **The rows together exceed a limit.** The rows share one tree's limits (`reference.md` §10.11);
+   the client drops the rows past them and writes `past the limits of the band` (§10.44.3). <!-- req: mods.troubleshoot.Another mod's band shows and yours doesn't.The rows together exceed a limit -->
+3. **Another mod hides or draws over the row.** With neither line in the debug log, another mod's
+   drawing covers it; turning the other mods off one at a time finds it. <!-- req: mods.troubleshoot.Another mod's band shows and yours doesn't.Another mod hides or draws over your row -->
+
+Before 2.1.323 every mod shared one drawing in the band: a mod earlier in the chain that returned a
+tree without the result of `next(e)` in it replaced the drawings after it. A mod that must also run
+on such a release SHOULD, in a band hook that wraps the others:
+
+- put the result of `await next(e)` among the children of a `Box` in its tree, so later mods'
+  drawings stay; <!-- req: mods.troubleshoot.Another mod's band shows and yours doesn't.Keep later mods' drawings -->
+- give neither that `Box` nor any `Box` around it a `width`, `height`, `minWidth`, `minHeight`,
+  `position`, `top`, `left`, `right`, `bottom`, `display` or `overflow` prop, so the combined tree
+  stays valid. <!-- req: mods.troubleshoot.Another mod's band shows and yours doesn't.Keep the tree valid -->
 
 ### 10.44.2 A pane or band is empty, or shows Claude Code's usual content
 
@@ -220,10 +251,13 @@ does not validate`. <!-- req: mods.troubleshoot.A pane or band is empty or shows
 ### 10.44.3 `ui.render (<site>) refused`
 
 A tree that validates and exceeds a size limit of `reference.md` is not drawn. The client writes
-`ui.render (<site>) refused: <reason>`, the reason naming the limit, in the transcript, and
+`ui.render (<site>) refused: <reason>`, naming the site and then the reason, in the transcript, and
 `ui.render (<site>): the chain settled on a tree that does not validate` in the debug log. When more
-than one loaded mod has a `ui.render` hook for that site the transcript line starts `hooks:`, as in
-`hooks: ui.render (AbovePrompt) refused: deeper than 32; nothing was drawn`. Before 2.1.307 any
+than one loaded mod has a `ui.render` hook for that site the transcript line starts `hooks:`. Rows
+above the prompt that do not fit the band's limits together (`reference.md` §10.11, "The rows above
+the prompt, stacked") give `hooks: ui.render (AbovePrompt) refused: a row past the limits of the
+band; nothing was drawn`; despite that ending, the client MUST still draw the rows that fit. Before
+2.1.330 nested bands deeper than 32 levels gave `refused: deeper than 32`. Before 2.1.307 any
 invalid tree drew a `refused:` line, ending `; the engine drew its own` for `Pane` and
 `AbovePrompt`. <!-- req: mods.troubleshoot.A ui.render line says refused -->
 
@@ -281,10 +315,15 @@ again; no hotkey or `action` binding presses a button in it meanwhile. <!-- req:
 
 ### 10.44.10 Hotkeys do nothing
 
+A button's `hotkey` presses nothing when:
+
 - **No keyboard focus**: the pane or band does not have it; Ctrl+X then Tab, or a click in
-  fullscreen rendering, gives it. <!-- req: mods.troubleshoot.Hotkeys do nothing.No keyboard focus -->
-- **A collapsed band**: no button in it is pressed until it is expanded. <!-- req: mods.troubleshoot.Hotkeys do nothing.The button is in a collapsed band -->
-- **The VS Code extension**: buttons have no hotkeys there. <!-- req: mods.troubleshoot.Hotkeys do nothing.In the VS Code extension -->
+  fullscreen rendering, gives it, and a pane opened with `focus: true` from a command takes it.
+- **A collapsed band**: no button in it is pressed until it is expanded (§10.44.9).
+- **Two rows of the band use the same hotkey**: in the terminal the key MUST press neither button;
+  the client does not pick one of the mods.
+- **The VS Code extension**: buttons have no hotkeys there; a click, or Enter on the focused button,
+  presses it. <!-- req: mods.troubleshoot.Hotkeys do nothing -->
 
 ### 10.44.11 Works in the terminal, not in the Desktop app or VS Code
 
@@ -340,10 +379,8 @@ the events it handles; a mod loaded with `--plugin-dir` is named `<mod>@inline`:
 hooks module first-mod@inline loaded (worker, environment 2, tier user); events: session.start,tool.call,command.run,ui.render
 ```
 
-`$.ui.log(text, { to: 'debug' })` writes a line of the mod's own there. While a mod loaded with
-`--plugin-dir` is edited, the transcript shows a line for each reload naming the mod and its hooks;
-a save that breaks the module writes `reload failed, the previous version stays loaded: <reason>`
-and the last working version runs until plugins are next reloaded.
+`$.ui.log(text, { to: 'debug' })` writes a line of the mod's own there; without the second
+argument `$.ui.log` adds a dim line to the transcript.
 
 ## Design decisions
 
@@ -366,4 +403,4 @@ Fixed wording makes each failure findable across clients.
 | J10.171 | The reply's second sentence is `Add a command.run hook for /<command> that returns { text }.` | troubleshoot.md quotes the first sentence and says the reply "tells you to add a hook". Lead: the reference implementation's `events/command.ts`. |
 | J10.172 | The count of untraced worker stops is per session with no time window; a stop traced to a mod does not count; `/reload-plugins` starts it over and loads a traced mod again. | troubleshoot.md gives the three stops and the line, no window. Lead: the reference implementation's `load/health.ts`. |
 | J10.173 | A fresh copy's repeated call is matched by kind and ordinal within `session.start`; one line is written for each kind; a call that failed in the first copy runs for real. | troubleshoot.md says what the mod sees, not how calls are matched across copies. Lead: the reference implementation's `api/replay.ts`. |
-| J10.174 | A `hooks.json` with no `modules` key loads no mod and writes no session line. With `hooks` present, `validate` checks them and passes; with neither `hooks` nor `modules`, `validate` reports the error ``root: hooks.json must have `hooks` (the hook matchers) or `modules` (hooks modules), or both`` and fails (§10.42.3 item 1). E4a deviation. | **Docs:** troubleshoot.md, "`validate` passes and lists no `hooks` line": a `hooks.json` with no `modules` key, or the key misspelt, passes. **Claude Code:** oracle 2.1.321, corpus: the error on the 5 corpus plugins whose `hooks.json` has other keys at its top level (event names, or names of its own) (`claude-plugins-community/tap`, `ai-dev-kit`, `jhipster-forge`, `claude-cowork-personal-context-loader`, `magellan`); oracle 2.1.325 gives the same for `{}` and for `{"description": "x"}`, and passes `{"hooks": {}}` with no hooks-module line. |
+| J10.174 | A `hooks.json` with no `modules` key loads no mod and writes no session line. With `hooks` present, `validate` checks them and passes; with neither `hooks` nor `modules`, `validate` reports the error ``root: hooks.json must have `hooks` (the hook matchers) or `modules` (hooks modules), or both`` and fails (§10.42.3 item 1). E4a deviation. | **Docs:** troubleshoot.md, "`validate` passes and lists no `hooks` line": a `hooks.json` with no `modules` key, or the key misspelt, passes. **Claude Code:** oracle 2.1.321, corpus: the error on the 5 corpus plugins whose `hooks.json` has other keys at its top level (event names, or names of its own) (`claude-plugins-community/tap`, `ai-dev-kit`, `jhipster-forge`, `claude-cowork-personal-context-loader`, `magellan`); oracle 2.1.325 gives the same for `{}` and for `{"description": "x"}`, and passes `{"hooks": {}}` with no hooks-module line; oracle 2.1.330 (`claude plugin validate` on a minimal plugin whose `hooks.json` is `{}`) gives the same `root` error and fails. The 2.1.330 docs keep the section unchanged. |

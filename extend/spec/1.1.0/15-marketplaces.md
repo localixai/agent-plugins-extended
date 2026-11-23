@@ -130,9 +130,9 @@ plugins installed from it. <!-- req: marketplace.rule.Reserved names -->
    the reserved marketplace name "<reserved>", so it is ignored. Remove it with: claude plugin
    marketplace remove <name>` (`errors.md`, "Marketplace name is another spelling of a reserved
    name"). Requires v2.1.280 or later. <!-- req: marketplace.rule.Reserved names.Another spelling of a reserved name -->
-5. **`npm`, `pip`, `uv`, `cargo`, `github` and `gh`** are reserved in any letter case
-   (v2.1.275 or later). A validator reports the lower-case names as `Marketplace name "<name>" is
-   reserved` (Judgment J15.3). <!-- req: marketplace.rule.Reserved names.npm, pip, uv, cargo, github, and gh -->
+5. **`npm`, `pip`, `uv`, `cargo`, `github` and `gh` are not reserved.** Claude Code 2.1.275 to
+   2.1.324 refused them in any letter case; 2.1.325 and later accept them, and the 2.1.330 docs no
+   longer list them. A client MUST accept a marketplace with one of these names (Judgment J15.3).
 6. **Names of plugins that come from no marketplace**: `inline` (`--plugin-dir`), `builtin`,
    `skills-dir` (plugins loaded from `.claude/skills/`), `synced` (plugins synced from claude.ai)
    and `claude-plugin-test`. A validator reports each as `Marketplace name "inline" is reserved
@@ -182,7 +182,8 @@ reports as unknown in an entry (§2.4). §15.5 says when the `plugin.json` field
 | `dependencies` | array | Plugins that must be enabled for this one: `"name"`, `"name@marketplace"` or an object, as in §2.4; resolution is §16. <!-- req: marketplace.entry.dependencies --> |
 | `defaultEnabled` | boolean | Default `true`. Whether the plugin starts enabled while `enabledPlugins` has no entry for it; it takes precedence over `plugin.json`'s (§2.4). <!-- req: marketplace.entry.defaultEnabled --> |
 | `displayName` | string | The name shown in the UI. With neither the entry nor `plugin.json` setting one, users see `name`. <!-- req: marketplace.entry.displayName --> |
-| `metadata` | object | The author's own free-form object; the client MUST NOT read it (v2.1.222 or later). A value that is not an object draws the warning `'metadata' must be a free-form object; got <type>. It will be ignored at load time.` and is ignored. <!-- req: marketplace.entry.metadata --> |
+| `engines` | object | The Claude Code versions the plugin works on, `{ "claude-code": "<node-semver range>" }`, with the effect and messages of §2.4 at `plugins[<i>].engines.claude-code` and `plugins[<i>].engines` (2.1.323 or later). Claude Code 2.0.15 through 2.1.75 reject the whole `marketplace.json` when any entry has the field. <!-- req: marketplace.entry.engines --> |
+| `metadata` | object | The author's own free-form object; the client MUST NOT read it. A value that is not an object draws the warning `'metadata' must be a free-form object; got <type>. It will be ignored at load time.` and is ignored. <!-- req: marketplace.entry.metadata --> |
 | `headers` | object of strings | HTTP headers sent when this entry's `archive` is downloaded; a header here replaces one of the same name from the marketplace source's `headers` (v2.1.238 or later; §15.15). <!-- req: marketplace.entry.headers --> |
 | `headersHelper` | string | A command that prints this entry's archive-download headers as one JSON object. The entry MUST also set `"strict": false` (v2.1.238 or later; §15.15). <!-- req: marketplace.entry.headersHelper --> |
 
@@ -243,6 +244,15 @@ entry's value, before and after install, whatever `strict` says; for each one it
 see `plugin.json`'s. Before install, the client can read `plugin.json` only for an entry with a
 relative-path source; for any other source, listings show only the entry's own fields until the
 plugin is installed. <!-- req: marketplace.rule.Display fields -->
+
+An entry's display field of the wrong type, or a `homepage` that is not a URL, makes that entry
+invalid, unlike the same field in `plugin.json`, which the client ignores with a note (§2.1 item 3).
+The marketplace still adds and its other entries install, but installing the invalid entry MUST fail
+with `This plugin's marketplace entry is invalid: <field>: <problem>[, <field>: <problem>…]`, each
+problem in the schema check's wording (`description: Invalid input: expected string, received
+number`, `homepage: Invalid URL`), and nothing is installed. An entry's `engines` is not such a
+field: a malformed value is ignored as in `plugin.json` (§2.4) and the entry installs (Judgment
+J15.15).
 
 ### 15.5.4 Metadata precedence
 
@@ -539,12 +549,12 @@ does not exist; and a `github` marketplace source takes `path` and `sparsePaths`
 | `headers` | `url` | A map of HTTP headers sent with the fetch, for authenticated hosts (§15.15). <!-- req: marketplace.sourceField.headers --> |
 | `headersHelper` | `url` | A command printing headers too short-lived for `headers` (v2.1.238 or later; §15.15). <!-- req: marketplace.sourceField.headersHelper --> |
 | `repo` | `github` | One repository, `owner/repo`. The add command refuses `owner/*` as not a valid shorthand; in `extraKnownMarketplaces` the client takes it literally and the clone fails. `owner/*` is valid only in the policy lists (§14). <!-- req: marketplace.sourceField.repo --> |
-| `ref` | `github`, `git` | A branch or tag; default, the repository's default branch. <!-- req: marketplace.sourceField.ref --> |
+| `ref` | `github`, `git` | A branch, a tag, or the full lower-case SHA of a commit on a branch or tag; default, the repository's default branch. A SHA (2.1.324 or later) pins the marketplace, so refreshes and auto-updates do not move it off that commit; earlier clients cannot load a marketplace pinned this way. A SHA is refused for a marketplace with a reserved name (§15.3.2). A plugin entry with its own remote source can still update, so it is pinned with its own `sha` (§15.6). <!-- req: marketplace.sourceField.ref --> |
 | `path` | `github`, `git` | The catalog's path inside the repository; default `.claude-plugin/marketplace.json`. For `file`: the catalog file itself, read in place, whose directory two levels up is the marketplace root, so the file belongs at `<root>/.claude-plugin/marketplace.json`. For `directory`: the marketplace root. <!-- req: marketplace.sourceField.path --> |
 | `sparsePaths` | `github`, `git` | Directories for a sparse checkout, such as `[".claude-plugin", "plugins"]`; `--sparse` on the add command sets it. <!-- req: marketplace.sourceField.sparsePaths --> |
 | `skipLfs` | `github`, `git` | Accepted and without effect (§15.11.4). <!-- req: marketplace.sourceField.skipLfs --> |
 | `name` | `settings` | MUST equal the `extraKnownMarketplaces` key and MUST NOT be a reserved name (§15.3.2). <!-- req: marketplace.sourceField.name --> |
-| `plugins` | `settings` | The inline catalog. Each item takes `name`, `source`, `description`, `version`, `strict`, `headers` and `headersHelper`; each `source` MUST be an object type, because a relative path has no repository to resolve against. <!-- req: marketplace.sourceField.plugins --> |
+| `plugins` | `settings` | The inline catalog. Each item takes `name`, `source`, `description`, `version`, `strict`, `engines` (as an entry's, §15.4; the `Settings` type of `@anthropic-ai/claude-agent-sdk` 0.3.330), `headers` and `headersHelper`; each `source` MUST be an object type, because a relative path has no repository to resolve against. <!-- req: marketplace.sourceField.plugins --> |
 
 ### 15.8.3 What the add command builds
 
@@ -565,8 +575,8 @@ argument, trying the forms in this order (Judgment J15.9):
 
 - An argument in none of the forms, such as a bare name (`claude-plugins-official`) or a bare host
   (`marketplace.anthropic.com`), fails with `Invalid marketplace source format. Try: owner/repo,
-  https://..., or ./path`; the same applies to `claude plugin install <plugin> --marketplace
-  <source>`. <!-- req: marketplace.troubleshooting.Invalid marketplace source format -->
+  https://..., or ./path` (the docs also give `That isn't a marketplace source`, Judgment J17.37);
+  the same applies to `claude plugin install <plugin> --marketplace <source>`. <!-- req: marketplace.troubleshooting.Invalid marketplace source format -->
 - A string with a slash that does not follow GitHub's naming rules for `owner/repo` (a host or an
   extra segment, as in `github.com/owner/repo` or `gitlab.example.com/group/project`) fails with
   `'<source>' is not a valid GitHub owner/repo shorthand.` followed by the accepted forms: the
@@ -578,9 +588,9 @@ argument, trying the forms in this order (Judgment J15.9):
 - A clone or download with no catalog at the expected path fails with `Failed to add marketplace:
   Marketplace file not found at <path>/.claude-plugin/marketplace.json` (or the source's `path`). <!-- req: marketplace.troubleshooting.Marketplace file not found at <path>/.claude-plugin/marketplace.json -->
 
-On success the client prints `Successfully added marketplace: <name>`, the name taken from the
-catalog's `name`, not from the repository or URL; the shell command follows it with
-` (declared in <scope> settings)` (§17.14.1).
+On success the marketplace is listed by `/plugin marketplace list` under the catalog's `name`, not
+the repository's or URL's; the shell command prints `Added marketplace: <name> (declared in <scope>
+settings)` in a terminal and `Successfully added marketplace: …` otherwise (§17.2.1, §17.14.1).
 
 ### 15.8.4 Marketplace names in an install line
 
@@ -606,8 +616,8 @@ A marketplace is refreshed by `claude plugin marketplace update <name>` (`/plugi
 <name>` in a session), by `claude plugin update <plugin>@<name>`, and by background auto-update when
 it is on (§15.14, §16). A git marketplace is refreshed by fetching or re-cloning; a `url` one by
 downloading the file again; a `file` or `directory` one is read in place on each load. A successful
-refresh prints `Successfully updated marketplace: <name>` from the shell and `✔ Updated 1
-marketplace` in a session.
+refresh prints `Updated marketplace: <name>` from the shell in a terminal (`Successfully updated
+marketplace: <name>` otherwise, §17.2.1) and `✔ Updated 1 marketplace` in a session.
 
 `claude plugin marketplace remove <name>` removes the marketplace's declaration; removing it from
 the last scope that declares it also deletes its cache and uninstalls its plugins (§17.14.3;
@@ -757,13 +767,14 @@ can refuse it; the same holds for the names whose refusal depends on what is alr
 | --- | --- | --- |
 | J15.1 | The top-level `description` and `version` win over `metadata.description` and `metadata.version` when both are set (§15.2). | The docs call `metadata.*` an "alternate location" without an order; the top-level key is the primary documented one. |
 | J15.2 | The impersonation test: the name contains a non-ASCII character; or, lower-cased with every run of characters other than letters, digits and `_` read as one `-`, its words put `official` beside `claude`, `anthropic` or `anthropics`, or start with one of those brand words followed by `marketplace`, `marketplaces`, `plugin`, `plugins`, `official` or `directory`, or start with all the words of a reserved name that begins with a brand word. An exact reserved name and another spelling of one (§15.3.2 item 4) are not impersonation (§15.3.2). | The docs give only examples (`official-claude-plugins`, `claude-plugins-v2`, non-ASCII). Lead: the reference implementation's `src/format/marketplace/marketplace-names.ts`. Oracle 2.1.325: `official-claude-plugins`, `claude-plugins-v2` and `café` draw the error; `claude.code.plugins`, `claude_code_plugins` and `claude-plugins-official` pass validation. |
-| J15.3 | A validator reports the six package-manager names in lower case as errors and leaves other casings to the add-time refusal; the `claude-plugin-test` message is `Marketplace name "claude-plugin-test" is reserved for plugins loaded by claude plugin test` (§15.3.2). | The 2.1.321 "Validation messages" table lists `npm` … `gh` as validator errors but gives only the `inline` wording. Oracle 2.1.325 differs: `npm`, `gh` and `NPM` pass validation; it prints the `claude-plugin-test` text adopted here. We follow the 2.1.321 table for the verdict and 2.1.325 for the unwritten wording. |
+| J15.3 | `npm`, `pip`, `uv`, `cargo`, `github` and `gh` are ordinary marketplace names; the `claude-plugin-test` message is `Marketplace name "claude-plugin-test" is reserved for plugins loaded by claude plugin test` (§15.3.2). | The 2.1.321 docs reserved the six names; the 2.1.330 docs drop them from "Reserved names" and from the "Validation messages" table (the id `marketplace.rule.Reserved names.npm, pip, uv, cargo, github, and gh` is gone), and the 2.1.325 changelog reads "Fixed marketplaces named `npm`, `pip`, `uv`, `cargo`, `github` or `gh` being refused as reserved names". Oracle 2.1.325: `npm`, `gh` and `NPM` pass validation. Oracle 2.1.330, 2026-11-23, private config dir: `npm`, `GitHub` and `gh` pass validation and `claude plugin marketplace add ./<dir>` adds each. The `claude-plugin-test` wording is 2.1.325's. |
 | J15.4 | With `plugin.json` present, entry `plugin.json` fields other than the component fields, the display fields, `defaultEnabled`, `version` and `dependencies` (such as `settings`, `workflows`, `types`, `experimental`) do not apply (§15.5.1). | The docs say `plugin.json` "is the manifest" then and name only which fields combine; a field they do not name is not combined. |
 | J15.5 | With `plugin.json` present, the entry's `dependencies` are appended to the manifest's (§15.5.4). | The entry table lists `dependencies` as an entry field without saying how it combines; dropping it would ignore the catalog's declared requirements. Lead: the reference implementation's `entry-merge.ts`. |
-| J15.6 | A `metadata.pluginRoot` without `./`, such as `"plugins"`, is read as `./plugins`; one that climbs out with `..` or is absolute makes bare names fail as `Invalid string: must start with "./"` (§15.6.2). | The docs require "a relative path inside the marketplace" without its spelling. Oracle 2.1.325: `"pluginRoot": "plugins"` with `"source": "p"` passes validation. |
-| J15.7 | A validator does not check the form of a `url` plugin source's `url` beyond its being a non-empty string; an `owner/repo` value fails at install with `Invalid git URL` (§15.6.3). | The docs say the type does not take shorthand but give no validation message. Oracle 2.1.325: `{"source":"url","url":"owner/repo"}` passes validation. |
+| J15.6 | A `metadata.pluginRoot` without `./`, such as `"plugins"`, is read as `./plugins`; one that climbs out with `..` or is absolute makes bare names fail, with `plugins[<i>].source: Bare source name "<name>" cannot resolve: metadata.pluginRoot ("<value>") must be a relative path inside the marketplace (e.g. "./plugins").` beside `Invalid string: must start with "./"` (§15.6.2). | The docs require "a relative path inside the marketplace" without its spelling. Oracle 2.1.325, and 2.1.330 re-run 2026-11-23: `"pluginRoot": "plugins"` with `"source": "p"` passes validation; 2.1.330 on `"../x"` prints both errors quoted. |
+| J15.7 | A validator does not check the form of a `url` plugin source's `url` beyond its being a non-empty string; an `owner/repo` value fails at install with `Invalid git URL` (§15.6.3). | The docs say the type does not take shorthand but give no validation message. Oracle 2.1.325, and 2.1.330 re-run 2026-11-23: `{"source":"url","url":"owner/repo"}` passes validation. |
 | J15.8 | The `command` text rules draw two validator messages: over 500 characters, `command must not be longer than the install consent UI can display`; a non-printable character or a run of four spaces, `command must be printable ASCII (letters, digits, punctuation, single spaces) with no runs of 4 or more spaces`; both can appear for one command. A `timeout` out of range is reported as a range error on `source.timeout` (§15.6.6). An archive `url` that does not parse draws `Invalid URL` beside the https message (§15.6.5); a source matching no type, or a known type missing a required field or holding one of the wrong type, is the bare `plugins.<i>.source: Invalid input` (§15.6.7). | The docs give the rules, not the wording. Oracle 2.1.325 prints these texts (`Too small: expected number to be >0`, `Too big: expected number to be <=600`); a 500-character command validated, 501 characters drew the length message, and 501 with a four-space run drew both. `"url": "not a url"` on `archive` drew `Invalid URL` and the https message; `http://` only the https message. No `source`, `bogus`, `github` without or with a numeric `repo`, `url`, `git-subdir`, `npm`, `archive` and `command` without their required field, and `npm` `../x` each drew only `plugins.0.source: Invalid input`. |
 | J15.9 | The add command tries a local path first, then an `http(s)` URL, then SSH, then GitHub shorthand; a path ending in `.json` in any letter case is a `file` source; an empty `#ref` is refused as an unrecognized format (§15.8.3). | `cli-reference.md` gives the forms as a table without precedence; the forms do not overlap except by these edges. Lead: the reference implementation's `src/marketplace/marketplace-input.ts`. |
 | J15.10 | Relevance limits count UTF-16 code units; a `hosts` entry with an upper-case letter is invalid like one with a scheme (§15.9.1). | The docs say "characters" and "bare lowercase hostname". Oracle 2.1.325 reports `must be a lowercase bare hostname (no scheme, port, or path)`. |
 | J15.11 | A validator that finds an entry failing its own checks (source, name, relevance limits, command text) need not also report the cross-entry checks (duplicate names, `renames`, `headersHelper` without `"strict": false`); the verdict, failed, is the same. A `renames` target is checked against the id grammar only when it names neither an entry nor a `renames` key; such a target draws `chain does not resolve (target-missing)` (§15.10). | Oracle 2.1.325 reports the cross-entry errors only on a file whose entries all parse, and reports `target-missing` for the targets `"bad name"`, `"x@y"`, `""` and `"_p"`; it accepts `"bad key"` as a target that is itself a `renames` key. The 2.1.321 table lists the PluginIdSchema message without saying when it wins. |
 | J15.13 | The validator's messages about the `plugin.json` of a relative-path entry are those §15.2, §15.5.4, §15.6.1 and §15.10 quote: the `plugins` type errors, the full version-mismatch warning, the cross-check parse warning, the linked-source warning with its tail, the link-or-not-a-regular-file warning and the path-component error, at the severities given there. | The 2.1.321 docs give the version and linked-source messages only up to "plugin.json wins" and "was not read", and none of the others. Oracle 2.1.321, corpus (`~/Documents/llx-plugin/.cache/corpus/oracle/2.1.321/`): `kepler` (linked `plugin.json`, warning), `corivo` (`skills/corivo-save.md/.claude-plugin/plugin.json`, error), `claude-voice-cue` (cross-check parse warning beside the `Invalid JSON syntax` error), `pdd-skill` (linked `./`), 54 plugins with the version warning, `lean` and `strale` (`plugins` missing or an object). |
+| J15.15 | A marketplace entry's malformed display field refuses the install of that entry, while a malformed `engines` does not; the marketplace and its other entries are unaffected (§15.5.3). | The docs say nothing of an invalid entry field; 2.1.326's changelog relaxed only `plugin.json` display fields. Oracle 2.1.330, 2026-11-23, private config dir, a directory marketplace with relative-path entries: `claude plugin marketplace add` succeeds; `claude plugin install` fails, exit 1, for an entry with `description: 5` (`This plugin's marketplace entry is invalid: description: Invalid input: expected string, received number`), `homepage: "x"` (`homepage: Invalid URL`), and `author: "A"`, `repository: { "url": "x" }`, `keywords: "a"` together (the three problems joined by `, `); entries with `engines: 5` or `engines: { "claude-code": "banana" }` install. `claude plugin validate` reports each display problem as an error at `plugins.<i>.<field>`. |

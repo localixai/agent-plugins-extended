@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/monitors.schema.json",
   "title": "Claude Code plugin monitors",
-  "description": "A plugin's monitors/monitors.json, a .json file experimental.monitors names, or the inline array, as Claude Code 2.1.321 accepts it (Agent Plugins Extended 1.1.0, section 9.2): an array of strict entries.",
+  "description": "A plugin's monitors/monitors.json, a .json file experimental.monitors names, or the inline array, as Claude Code 2.1.330 accepts it (Agent Plugins Extended 1.1.0, section 9.2): an array of strict entries.",
   "$comment": "Not expressed here: that names are unique within the plugin (section 9.2.2), and the refusal of ${user_config.*} in command (section 3.4.5).",
   "type": "array",
   "items": { "$ref": "#/$defs/monitor" },

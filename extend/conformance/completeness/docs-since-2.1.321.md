@@ -5,6 +5,9 @@ What the official Claude Code documentation changed between the snapshot that
 This is a reading aid for the next update of the snapshot (`SOURCE.md`, "Updating to a new Claude
 Code release"); it changes no requirement and no chapter.
 
+Consumed on 2026-11-23: the snapshot moved to 2.1.330 (`../SOURCE.md`) and the chapters took these
+changes. Kept as the record of what was read; the 2.1.330 documentation is the evidence now.
+
 ## Releases
 
 - **Documentation now describes Claude Code 2.1.325** (changelog's first entry, 2026-11-13).

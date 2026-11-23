@@ -8,9 +8,9 @@ props, each element's full prop list and the numeric limits are in `reference.md
 mod calls are in `api.md`.
 
 Evidence: `plugins/mods/interface.md` unless a section names another page. Shapes follow the
-declarations Claude Code 2.1.321 writes beside a mod (`claude-code/index.d.ts`: `RenderInputOf`,
-`RenderPropsOf`, `PaneOpenArgs`, `UiOpenResult`, `UiPlaceResult`, `ThemeResult`, `UiPane`), which
-win over the prose where the two differ (E2).
+declarations Claude Code 2.1.330 writes beside a mod (`claude-code/index.d.ts`: `RenderInputOf`,
+`RenderPropsOf`, `PaneOpenArgs`, `UiOpenResult`, `UiPlaceResult`, `ThemeSetArgs`, `ThemeResult`,
+`UiPane`), which win over the prose where the two differ (E2).
 
 ## 10.20 The interface protocol
 
@@ -39,23 +39,28 @@ draw on their own side. Everything that crosses between them is plain data.
 
 ## 10.21 Choosing a render site
 
-1. A `ui.render` hook without a matcher runs for every render site. A mod narrows it with a
-   matcher on `component`, as in `{ component: 'Pane' }`. In the hook, `e.component` names the
-   site, `e.surface` the app, and `e.props` the site's own data; for a pane `e.requestId` is the
-   `id` the pane was opened with. <!-- req: mods.interface.Pick where to draw -->
+1. A mod chooses the render site a `ui.render` hook draws at with a matcher on `component`, as in
+   `{ component: 'Pane' }`. A hook without one runs at every site the client draws itself and at the
+   mod's own panes and band row; from 2.1.323 it MUST NOT run at another mod's pane or row unless its
+   matcher names `plugin` (§10.13.3). In the hook, `e.component` names the site, `e.surface` the
+   app, and `e.props` the site's own data; for a pane `e.requestId` is the `id` the pane was opened
+   with. <!-- req: mods.interface.Pick where to draw -->
 2. **Pane.** A pane is a region the mod opens with `$.ui.open` (§10.25) and fills at
    `{ component: 'Pane' }`, recognising its own pane by `e.requestId`. In a wide fullscreen
    terminal it is a sidebar beside the transcript; otherwise it is a framed region above the
    prompt. With several panes open each has a tab that shows its title. A pane is empty until a mod
    fills it.
-3. **The band above the prompt** (`AbovePrompt`) is one strip directly above the prompt input,
-   always present and shared by every mod. A hook returns a tree to show something there or
-   `next(e)` to show nothing. A tree replaces what the mods after it in the chain draw there;
-   to keep theirs, a hook puts the result of `await next(e)` among the children of a `Box` of its
-   tree. Such a `Box`, and every `Box` around it, MUST NOT carry `width`, `height`, `minWidth`,
-   `minHeight`, `position`, `top`, `left`, `right`, `bottom`, `display` or `overflow`; a tree that
-   does is refused like any other invalid tree (troubleshoot.md, "Another mod's band shows and
-   yours doesn't"; Judgment J10.101).
+3. **The band above the prompt** (`AbovePrompt`) is a strip directly above the prompt input. From
+   2.1.323 each mod that draws there gets its own row, and the client MUST stack the rows from the
+   top in the order mods run in (§10.14; `AbovePromptList`, `reference.md` §10.9 item 4). A hook
+   matched `{ component: 'AbovePrompt' }` returns a tree to draw its mod's row, or `next(e)` to draw
+   nothing; one mod's tree no longer replaces another's. Before 2.1.323 every mod shared one drawing,
+   and a tree replaced what the mods after it drew unless it put the result of `await next(e)` among
+   the children of a `Box`; a mod that supports those releases still does so, and on 2.1.323 or
+   later that child draws no other mod's row. Such a `Box`, and every `Box` around it, MUST NOT carry
+   `width`, `height`, `minWidth`, `minHeight`, `position`, `top`, `left`, `right`, `bottom`,
+   `display` or `overflow`; a tree that does is refused like any other invalid tree
+   (troubleshoot.md, "Another mod's band shows and yours doesn't"; Judgment J10.101).
 4. **Placed rows** (`Placed`, §10.25.5) and **the backdrop** (`Backdrop`, §10.25.6) are sites a mod
    asks for with a call and then fills.
 
@@ -80,6 +85,7 @@ unless a mod later in the chain returned a tree of its own.
 | `InfoNotice` | The status lines under the logo. <!-- req: mods.interface.Change what Claude Code already draws.InfoNotice --> |
 | `SessionMode` | The mode labels in the footer. <!-- req: mods.interface.Change what Claude Code already draws.SessionMode --> |
 | `PromptHint` | The hint line under the prompt. <!-- req: mods.interface.Change what Claude Code already draws.PromptHint --> |
+| `AgentRow` | A subagent's or teammate's row in the agent panel (`reference.md` §10.9 item 5; 2.1.326 or later). <!-- req: mods.interface.Change what Claude Code already draws.AgentRow --> |
 
 `Pane`, `AskUserQuestion`, `Spinner`, `UserMessage`, `AssistantMessage` and the three tool call
 sites MUST be raised in the terminal, the Desktop app and the VS Code extension; where each other
@@ -132,8 +138,8 @@ that is a `.tsx` or `.jsx` file MAY write the tree as JSX with the destructured 
 
 | Element | What it draws, and the rules a client enforces | Surfaces |
 | --- | --- | --- |
-| `Box` | A flex container: layout props such as `flexDirection` (`row`, `column`, `row-reverse`, `column-reverse`), `borderStyle`, `width`; spacing props such as `columnGap` and `padding` take a number or a step name from `'xs'` to `'xl'`. <!-- req: mods.interface.Build a tree from elements.Box --> | all |
-| `Text` | Styled text: `color` (a theme key or a colour such as `'red'`), `bold`, `dimColor`, `italic`, `weight` and the others in `reference.md`; `wrap` is `'wrap'`, `'truncate'`, `'truncate-start'`, `'truncate-middle'` or `'truncate-end'`. <!-- req: mods.interface.Build a tree from elements.Text --> | all |
+| `Box` | A flex container: layout props such as `flexDirection` (`row`, `column`, `row-reverse`, `column-reverse`), `borderStyle`, `width`, `overflowX` (2.1.326 or later); spacing props such as `columnGap` and `padding` take a number or a step name from `'xs'` to `'xl'`. <!-- req: mods.interface.Build a tree from elements.Box --> | all |
+| `Text` | Styled text: `color` (a theme key or a colour such as `'red'`), `bold`, `dimColor`, `italic`, `weight`, `maxLines` (2.1.326 or later) and the others in `reference.md`; `wrap` is a value such as `'wrap'`, `'truncate'`, `'truncate-start'`, `'truncate-middle'`, `'truncate-end'` or `'clip'` (2.1.326 or later). <!-- req: mods.interface.Build a tree from elements.Text --> | all |
 | `Button` | A control that runs `onPress(e)`, `e.surface` being the app the press came from. Bracketed by default (`[ Add one ]`); with `plain: true` no brackets and its hotkey shown before the label (`1: One`). <!-- req: mods.interface.Build a tree from elements.Button --> | all |
 | `Link` | A link with `href` and an optional `label` (§10.23.1). <!-- req: mods.interface.Build a tree from elements.Link --> | all |
 | `Code` | A code block. <!-- req: mods.interface.Build a tree from elements.Code --> | all |
@@ -144,6 +150,8 @@ that is a `.tsx` or `.jsx` file MAY write the tree as JSX with the destructured 
 | `Client` | A region drawn by a second file of the mod's (§10.20 item 4, §10.24 item 4). <!-- req: mods.interface.Build a tree from elements.Client --> | terminal, desktop |
 | `Raster` | A grid of coloured cells (§10.23.2). <!-- req: mods.interface.Build a tree from elements.Raster --> | terminal |
 | `Image` | A picture. <!-- req: mods.interface.Build a tree from elements.Image --> | terminal |
+| `Progress` | How far along a task is (`reference.md` §10.10; declarations only). | all |
+| `Shader` | A scene the Desktop app plays on the GPU, in a `Backdrop` only (`reference.md` §10.10; declarations only). | desktop, mobile |
 
 The surfaces column follows the per-surface `Elements` tables of the declarations: the mobile
 app's table has `Svg` and not `Client`, though the interface page names only the Desktop app and
@@ -203,8 +211,9 @@ the mod's own, of another size, or the cells do not decode (declarations, `ui.bl
 
 `$.ui.open({ id, ... })` opens a pane; `id` is its name (1 to 64 letters, digits, `_` or `-`),
 which the `ui.render` hook checks and `$.ui.close({ id })` closes. Opening draws nothing by itself:
-the client then fires `ui.render` for the pane. One pane exists per id; opening an open id retitles
-it. Closing an id that is not open does nothing. The optional fields:
+the client then fires `ui.render` for the pane. One pane exists per id; opening an id the mod has
+open retitles it, and opening an id another mod has open MUST reject (2.1.330). Closing an id that
+is not open does nothing. The optional fields:
 
 | Field | Meaning |
 | --- | --- |
@@ -215,6 +224,7 @@ it. Closing an id that is not open does nothing. The optional fields:
 | `rows` | The height asked for when the pane sits above the prompt; default a third of the space. <!-- req: mods.interface.Open a pane at the right time.rows --> |
 | `columns` | The width asked for when the pane sits beside the transcript, at most 45% of the terminal's width. Once the user has resized a pane beside the transcript, in this session or an earlier one, panes open there at the user's width instead, under the same 45% limit. <!-- req: mods.interface.Open a pane at the right time.columns --> |
 | `backgroundColor` | What is painted under the pane's body: a theme key or a colour. Declared, not in the interface page. |
+| `placement` | `'widget'` asks the Desktop app to draw the pane as a widget (`Pane` props then say `placement: 'widget'`); a surface without widgets opens it as without the field, and any other value is ignored. Declared from 2.1.330 (`claude-code/index.d.ts:9478`), not in the interface page. |
 
 1. `focus`, `closeOnEscape` and `holdToasts` accept only `true`. Any other value, `false` included,
    MUST make the call throw `ui.open: <field> is true or left out` (`ui.open: focus is true or left
@@ -289,19 +299,71 @@ hook MUST check both.
 `$.theme.set({ backdrop })` and `$.theme.clear()` (Claude Code 2.1.319 or later) replace
 `$.ui.backdrop`, which 2.1.319 removed; a client MUST NOT offer `$.ui.backdrop`. A backdrop is drawn
 behind the conversation by the Desktop app and the mobile app, from what `ui.render` answers at the
-`Backdrop` site (`e.requestId` is `backdrop`; `e.props` holds `plugin`, `id`, `glass` with its
-defaults filled in or `false`, and `colorScheme` when the mod gave one). The terminal draws none.
+`Backdrop` site (`e.requestId` is `backdrop`; `e.props` holds `plugin`, `scene`, `glass` with its
+defaults filled in or `false`, and `overrideColorScheme` when the mod gave one). The terminal draws
+none.
 
-1. **The fields.** `backdrop.id`, a name under the rule of `reference.md`, is required; `colorScheme`
-   (`'light'` or `'dark'`, whether the drawing is light or dark) and `glass` (`blur`, `tint`,
-   `opacity`, or `false`) are optional. <!-- req: mods.interface.Put a backdrop behind the conversation.The backdrop fields -->
+1. **The fields** (2.1.323 or later; `ThemeSetArgs`, `claude-code/index.d.ts:17320`). A backdrop is
+   a scene or a ground (`ThemeBackdrop`, `16859`). A scene is `{ scene, glass? }`: `scene`, a name
+   under the rule of `reference.md`, names a backdrop the mod's `Backdrop` hook draws, and `glass`
+   (`blur` 0 to 64, `tint` a raw colour, `opacity` 0 to 1, or `false`) is how a surface frosts its
+   panels over it. A still ground, which no hook draws, is `{ color }`, `{ gradient }` or `{ vector
+   }` (2.1.330 declarations, `ThemeGround`, `17128`). `overrideColorScheme` (`'light'` or `'dark'`)
+   is a field of the call beside `backdrop`, not of the backdrop: it overrides the user's mode so a
+   surface draws its own text to suit. Before 2.1.323 `scene` was `id` and `overrideColorScheme`
+   was `backdrop.colorScheme`; a client that serves mods written for those releases MAY accept both
+   spellings (Judgment J10.113). <!-- req: mods.interface.Put a backdrop behind the conversation.The backdrop fields -->
 2. **Whether it is drawn.** `$.theme.set` resolves `{ isDrawn: true, requestId }` when a Desktop or
    mobile app connected to the session says it draws backdrops, else `{ isDrawn: false, reason }`. <!-- req: mods.interface.Put a backdrop behind the conversation.Whether the backdrop is drawn -->
-3. **One per session.** The session has one theme. A `$.theme.set` replaces it, whichever mod set
-   the one before, and what the call leaves out is gone; `$.theme.clear()` removes it, whichever mod
-   set it, and resolves with a `reason` such as `the theme is cleared`. Neither a reload of the
+3. **One theme for each session.** The session has one theme: its backdrop, its colours (§10.25.7)
+   and, in the declarations, its sound and style. A `$.theme.set` replaces all of it, whichever mod
+   set the one before, and what the call leaves out is gone; it names at least one attribute, and an
+   attribute the build does not know is refused by name. `$.theme.clear()` removes it, whichever
+   mod set it, and resolves with a `reason` such as `the theme is cleared`. Neither a reload of the
    setting mod nor `--resume` keeps it, so a mod sets it in `session.start`; a mod that unloads
-   takes its own backdrop with it. A mod SHOULD call `$.theme.clear()` only when the user asks. <!-- req: mods.interface.Put a backdrop behind the conversation.One backdrop for each session -->
+   takes its own theme with it. A mod SHOULD call `$.theme.clear()` only when the user asks, and
+   SHOULD pass `colors` and `backdrop` in one call. <!-- req: mods.interface.Put a backdrop behind the conversation.One theme for each session -->
+4. **A click on the backdrop.** Where the user clicks or taps the backdrop where no part of the app
+   covers it, the client fires `ui.pointer` to the hooks of the mod that set the theme alone
+   (`events.md` §10.19.4).
+
+### 10.25.7 The colours of the Desktop app
+
+From 2.1.324, in the Desktop app's Code tab, `$.theme.set({ colors })` sets the colours the app
+paints; the terminal keeps its own. `colors` is a `ThemeColors` (`claude-code/index.d.ts:16980`):
+`{ v: 1, label, id?, inputs: { light?, dark? } }`, each mode a map from the design system's token
+names (such as `surface-0`, `text-primary`, `text-muted`) to six-digit hex colours. The client
+does not read it and passes it to the surface; a surface keeps its own colour for a token left out,
+and given one mode alone acts as if `overrideColorScheme` named it. The 2.1.330 declarations add
+`sound` (an ambience and cues the Desktop app plays once the user turns the theme's sound on) and
+`style` (how the Desktop app draws the conversation's own rows: `Text`, `Heading`, `UserMessage`,
+`AssistantMessage`, `ToolUse`), both passed to the surface like `colors` (`ThemeSound`, `17375`;
+`ThemeStyle`, `17443`; Judgment J10.113).
+
+1. **Ask Claude for a colors mod.** In a local Code tab session the user describes the colours and
+   Claude writes a mod under the rules of `reference.md` §10.8.4; the Code tab changes colour when
+   it loads. <!-- req: mods.interface.Ask Claude for a colors mod -->
+2. **Write a colors mod yourself.** The built-in `plugin-authoring` skill carries `make-colors.js`
+   and `make-colors.d.ts`, whose `makeColors({ label, light, dark })` builds `{ theme, problems }`
+   from a few hex anchors per mode; a mod under `~/.claude/skills/<name>/` (§4, loaded at session
+   start) calls `await $.theme.set({ colors: theme })` in `session.start`. A client that offers the
+   skill MUST ship those two files in it. <!-- req: mods.interface.Write a colors mod yourself -->
+3. **When the colours do not appear.** The Code tab keeps its own colours with a third-party
+   provider in Claude Desktop 5.11492.5 or earlier. Otherwise the documented causes, which a client
+   MUST keep observable:
+   - **an old version**: the Desktop app or its Claude Code is older than 2.1.324; <!-- req: mods.interface.Fix missing mod colors in the Desktop app.Old version -->
+   - **the mod is not loaded**; <!-- req: mods.interface.Fix missing mod colors in the Desktop app.Mod not loaded -->
+   - **a refused theme**: `makeColors` threw, or its `problems` list has an entry that starts
+     `Desktop won't paint this theme`, and the Desktop app does not paint it; <!-- req: mods.interface.Fix missing mod colors in the Desktop app.Refused theme -->
+   - **another `$.theme` call**: any mod's later `$.theme.set` or `$.theme.clear()` removes the
+     colours and backdrop an earlier call set (item 3 of §10.25.6). <!-- req: mods.interface.Fix missing mod colors in the Desktop app.Another $.theme call -->
+4. **Removing the colours.** A mod that is still on sets its colours again, so the user turns it off
+   first, then starts a new local session; colours that stay are removed from the Desktop app's
+   **Settings**, `code appearance`, **Remove colors**. Turning a mod off is:
+   - for a mod Claude wrote, moving its directory out of the session's mods folder; <!-- req: mods.interface.Remove mod colors from the Desktop app.Claude wrote the mod -->
+   - for a mod under `~/.claude/skills/`, moving its directory out of that folder; <!-- req: mods.interface.Remove mod colors from the Desktop app.You put the mod under ~/.claude/skills/ -->
+   - for an installed mod, disabling or uninstalling its plugin, in the Desktop app's **Manage
+     plugins** or from the shell (§16). <!-- req: mods.interface.Remove mod colors from the Desktop app.You installed the mod -->
 
 ## 10.26 Controls
 
@@ -315,8 +377,9 @@ defaults filled in or `false`, and `colorScheme` when the mod gave one). The ter
    `key each once` (Judgment J10.176).
 3. Tests and other mods identify a control by its key. Before running a control's callback the
    client fires `ui.press`, `ui.input` or `ui.select` with the key in `e.element`; another mod's
-   hook there sees what the user typed into an `Input` and MAY change that text or keep the
-   callback from running. The mods API gives no method to press another mod's button. <!-- req: mods.interface.Which controls need a key -->
+   hook there, which from 2.1.323 runs only when its matcher names `plugin` (§10.13.3), sees what
+   the user typed into an `Input` and MAY change that text or keep the callback from running. The
+   mods API gives no method to press another mod's button. <!-- req: mods.interface.Which controls need a key -->
 
 ### 10.26.2 Input
 
@@ -391,8 +454,10 @@ A mod MUST NOT be able to bind Tab or the arrow keys.
    prompt, no `action` binding. If the band had keyboard focus it returns to the prompt, and Ctrl+X
    then Tab skips the band.
 4. The band stays collapsed until the user expands it, through `/clear`, and is expanded when the
-   client next starts: the state belongs to the process. A mod can neither expand it nor tell it is
-   collapsed: its `ui.render` hook keeps running and no prop says so. <!-- req: mods.interface.When the user collapses the band -->
+   client next starts: the state belongs to the process. A mod cannot expand it. Its `ui.render`
+   hook keeps running, and `e.props.isCollapsed` (2.1.321 or later) is `true` while the band is
+   collapsed, so a mod MAY show elsewhere, while it is collapsed, what the user must answer; a mod
+   SHOULD NOT make the band the only place for it. <!-- req: mods.interface.When the user collapses the band -->
 
 ### 10.27.5 Keybinding contexts and default actions
 
@@ -524,3 +589,4 @@ the hook leaves the site to the rest of the chain, the client's own drawing incl
 | J10.112 | A `$.state` write inside a `ui.render` hook is refused at run time and listed by the validator under `state writes` without an error. | interface.md says a render hook "can't write" state and gives no message; the declarations' `state.set` say it is "Refused while a `ui.render` hook draws", and they win (E2). The reference implementation lets the write take effect without a redraw, which this chapter does not follow. Oracle 2.1.325: `claude plugin validate` on such a module prints `state writes: <plugin>.<key>` and no error. |
 | J10.175 | The keymap of §10.27.5 (contexts, actions, defaults, chords, unbinding, `keybindings.json`) is the presenting client's; a library that runs mods takes the focus and surface facts and an action's binding from its host and returns which button a hotkey, a digit or an `action` binding presses, and the host runs the above-prompt and pane actions. | `keybindings.md` describes one keymap the user edits for the whole terminal interface ("Contexts", "Unbind default shortcuts"); a mod declares only a button's `hotkey` and `action` (`reference.md`, "Elements"), so the part a mod can observe is which button a key presses, and that is all a library without a terminal can decide. |
 | J10.176 | Buttons that share a key, written or taken from one label, leave the tree valid; only `press` by that key in a test fails, `key each once`. `is drawn twice` is for `Input` and `Select`. | interface.md, "Which controls need a `key`", requires a key of `Input` and `Select` only; troubleshoot.md gives `key each once` for a drawing with more than one button with the key passed, so such a drawing is drawn, and its `is drawn twice` example is an `Input`. Lead: the reference implementation's row for `src/mods/ui/elements/button.ts`. |
+| J10.113 | The theme's newer attributes (`colors`, and the declarations' `sound` and `style`) and a ground backdrop are passed to the surface as given; the client checks their shape against the declarations and reads none of them. A client MAY also accept the pre-2.1.323 spellings `backdrop.id` and `backdrop.colorScheme`. | interface.md of 2.1.330 says `$.theme.set` takes `colors` and points to the types for the rest; the 2.1.330 declarations (`ThemeSetArgs`, `claude-code/index.d.ts:17320`) say the engine "doesn't read" `colors` and that `sound` and `style` are the Desktop app's to play and draw. Whether 2.1.330 still accepts `id` is not documented; the note "Before v2.1.323, write `id`" implies it does not. |

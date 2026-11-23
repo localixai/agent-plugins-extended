@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/output-style-frontmatter.schema.json",
   "title": "Claude Code output style frontmatter",
-  "description": "The YAML frontmatter of an output style file as Claude Code 2.1.321 reads it (Agent Plugins Extended 1.1.0, section 6.1.1). Every field is optional; an unknown key is ignored.",
+  "description": "The YAML frontmatter of an output style file as Claude Code 2.1.330 reads it (Agent Plugins Extended 1.1.0, section 6.1.1). Every field is optional; an unknown key is ignored.",
   "$comment": "A style always loads: YAML that does not parse leaves its fields unset, and a value of the wrong type is treated as absent (section 6.1.1 items 4 and 5). So the root accepts any parsed frontmatter, and $defs/effective states the values that take effect.",
   "$defs": {
     "effective": {

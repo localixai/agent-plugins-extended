@@ -3,6 +3,7 @@
   "revision": "018f293+rename",
   "pass": "a05-tools-lsp-mcp-policy",
   "date": "2026-11-16",
+  "release": "2.1.321",
   "files": [
     "07-hooks/tools.md",
     "09-lsp-monitors-channels.md",

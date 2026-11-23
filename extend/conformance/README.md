@@ -7,7 +7,7 @@ compatibility (E5).
 
 | File | What it is | Produced by | When it changes |
 | --- | --- | --- | --- |
-| [`requirements.json`](requirements.json) | Every requirement of the Claude Code plugin-host contract for one release: 2,730 ids in 28 categories, from 50 documentation pages | `bun run spec:extract`, from the documentation of Claude Code 2.1.321 ([`SOURCE.md`](SOURCE.md)) | Only with a new Claude Code release (C2) |
+| [`requirements.json`](requirements.json) | Every requirement of the Claude Code plugin-host contract for one release: 2,816 ids in 28 categories, from 52 documentation pages | `bun run spec:extract`, from the documentation of Claude Code 2.1.330 ([`SOURCE.md`](SOURCE.md)) | Only with a new Claude Code release (C2) |
 | [`SOURCE.md`](SOURCE.md) | Where the snapshot came from: release, source revision, hash, scope; how to update it | By hand, with the snapshot | With the snapshot |
 | [`out-of-scope.json`](out-of-scope.json) | Every section of an audited page the snapshot leaves out, with its page and reason; and the rows of the mixed settings, environment and CLI tables it rejects | `bun run spec:extract`, with `requirements.json` | With the snapshot |
 | [`out-of-scope-pages.json`](out-of-scope-pages.json) | Every documentation page not audited, with its reason | By hand: a person classifies each page ("Pages and scope") | When a release adds or removes a page |
@@ -36,8 +36,8 @@ requirements.json --(ids)--> markers in extend/spec/ ----> REPORT.md    stated, 
         |                            |
         |                            +-- read against docs --> verification/*.json --> VERIFIED.md
         |
-Claude Code docs, 2.1.321  --spec:extract-->  requirements.json, out-of-scope.json, docs-tables.json
-mods declarations, 2.1.321 --types:extract-->  mods-declarations.json
+Claude Code docs, 2.1.330  --spec:extract-->  requirements.json, out-of-scope.json, docs-tables.json
+mods declarations, 2.1.330 --types:extract-->  mods-declarations.json
 
 extend/schemas/ + corpus of real plugins + claude plugin validate verdicts ----> CORPUS.md
 ```
@@ -46,7 +46,7 @@ extend/schemas/ + corpus of real plugins + claude plugin validate verdicts ---->
 
 ```json
 {
-  "claudeCode": "2.1.321",
+  "claudeCode": "2.1.330",
   "requirements": [
     { "id": "agents.behavior.Available tools.Agent", "category": "agents",
       "page": "sub-agents.md", "section": "Available tools" }
@@ -87,7 +87,7 @@ section, and re-examined the judgments of those files.
 | `judgment removed` | The judgment was not needed. |
 
 The outcome counts are ledger entries, not distinct ids: a requirement or judgment examined by two
-passes counts twice, while the category table counts each id once. That is why the judgments re-examined (407) exceed the judgments that exist ([405](../spec/judgments.md)).
+passes counts twice, while the category table counts each id once. That is why the judgments re-examined (483) exceed the judgments that exist ([470](../spec/judgments.md)).
 "Not verified yet" lists the ids no pass has named; an incomplete ledger is progress, not a failure.
 
 ## The ledger format
@@ -118,14 +118,18 @@ One file per pass in `verification/`, named `v<nn>-<topic>.json`:
 | `requirements[]` | `id` (from `requirements.json`), `file` (where it is marked), `status` (`verified`, `fixed` or `deviates`), `note` |
 | `judgments[]` | `id` (`J<chapter>.<n>`), `status` (`kept`, `fixed`, `removed` or `promoted`), `note` |
 
-`bun run verification --check` fails on an unknown requirement id, an unknown status or a stale
-`VERIFIED.md`. A later pass that re-checks an id adds its own entry in its own file.
+`bun run verification --check` fails on an unknown requirement id in a pass of the snapshot's
+release, an unknown status or a stale `VERIFIED.md`. A later pass that re-checks an id adds its own
+entry in its own file. A ledger is never rewritten for a new release: an id that a pass of an
+earlier release named and the new snapshot no longer has is listed under "Retired" in
+`VERIFIED.md` and counts nowhere else, and the headline says how many verified ids were read
+against the snapshot's own release.
 
 ## Reading `CORPUS.md`
 
 Every file a schema of [`extend/schemas/1.1.0/claude-code/`](../schemas/1.1.0/claude-code/README.md)
 covers, in every plugin of the corpus, is validated and compared, file by file, with the errors
-Claude Code 2.1.321's `claude plugin validate` printed for the same plugin (the *oracle*).
+the targeted Claude Code release's `claude plugin validate` printed for the same plugin (`RELEASE` in `extend/tools/src/corpus/main.ts`, 2.1.330) (the *oracle*).
 
 | Line | Means |
 | --- | --- |
@@ -133,7 +137,7 @@ Claude Code 2.1.321's `claude plugin validate` printed for the same plugin (the 
 | False rejects | Files we refuse and the oracle has no error for. The target is zero: a false reject is a plugin Claude Code runs and our schema turns away |
 | Refusals no oracle error confirms | Errors of ours that reach no oracle error on the same file, even where that file has others |
 | Matched | Oracle errors one of ours names on the same file: the same field, or a part or a whole of it |
-| Remainder | Oracle errors none of ours matches: what a JSON Schema cannot state (a reserved name, a path on disk, a directory with nothing to validate), and what our schemas could state but do not yet |
+| Remainder | Oracle errors none of ours matches: what a JSON Schema cannot state (a reserved name, a path on disk, a directory with nothing to validate), validator errors on values Claude Code ignores at load (a malformed `plugin.json` display field or `engines`, which the schemas accept on purpose), and what our schemas could state but do not yet. It counts the errors on every file, also those on a file no schema covers (a plugin with nothing to read): the per-schema table's **All** row counts only the files a schema covers, so the headline can be larger |
 | Values Claude Code ignores | Values that `$defs/effective` refuses in files Claude Code never fails for their values (frontmatter, themes, plugin default settings); none is a false reject |
 
 The per-schema table counts errors on validated files only; the remainder in the summary also

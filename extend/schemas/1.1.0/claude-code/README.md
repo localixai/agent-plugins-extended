@@ -1,6 +1,6 @@
 # Claude Code plugin schemas
 
-JSON Schema 2020-12 schemas for the files of a Claude Code plugin, as Claude Code 2.1.321 accepts
+JSON Schema 2020-12 schemas for the files of a Claude Code plugin, as Claude Code 2.1.330 accepts
 them (Agent Plugins Extended 1.1.0, rule W4 of [`extend/AGENTS.md`](../../../AGENTS.md)). Each
 `$id` is `https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/<name>.schema.json`.
 **These identifiers are not published**: nothing is served at them yet, so a validator loads the
@@ -24,9 +24,14 @@ files of this folder and refers to them by `$id` (the schemas refer to one anoth
 ## Open where Claude Code is open
 
 A schema refuses what Claude Code refuses: a file or entry it does not load, which its validator
-reports as an error. It accepts what Claude Code ignores: an unknown top-level key of a manifest, a
-hook entry dropped under an event other than `PreToolUse` and `PermissionRequest` (§7.2.1.1), and
-every value of a file Claude Code never fails for its values. Frontmatter (after the YAML parses),
+reports as an error. It accepts what Claude Code ignores: an unknown top-level key of a manifest; a
+malformed display field of `plugin.json` (`$schema`, `displayName`, `description`, `author`,
+`homepage`, `repository`, `license`, `keywords`), which loads with a note though the validator
+reports an error (§2.1 item 3); a malformed `engines` or `network` (§2.4); a hook entry dropped
+under an event other than `PreToolUse` and `PermissionRequest` (§7.2.1.1); and every value of a
+file Claude Code never fails for its values. `plugin.schema.json#/$defs/effective` states the
+values of those manifest fields that take effect. A marketplace entry's display fields stay strict:
+Claude Code still refuses to install an entry with a malformed one. Frontmatter (after the YAML parses),
 themes and plugin default settings are such files: Claude Code drops a bad value and loads the file.
 Their root accepts any value, and `$defs/effective` states the values that take effect, the schema
 an editor or a linter wants (`…/skill-frontmatter.schema.json#/$defs/effective`).

@@ -4,7 +4,7 @@ Each object in a matcher group's `hooks` array is a handler: what runs when the 
 There are five types. Evidence: `hooks.md`, "Hook handler fields", "Prompt-based hooks",
 "Agent-based hooks" and "Run hooks in the background", unless a rule names another section or page.
 Shapes follow the handler union of the `hooks` member of the official `Settings` type
-(`@anthropic-ai/claude-agent-sdk` 0.3.321, `sdk.d.ts`).
+(`@anthropic-ai/claude-agent-sdk` 0.3.330, `sdk.d.ts`).
 
 | `type` | Runs | Result read from |
 | --- | --- | --- |
@@ -43,7 +43,7 @@ Shapes follow the handler union of the `hooks` member of the official `Settings`
 | `shell` | no | `"bash"` or `"powershell"`, for shell form (§7.3.2.2). <!-- req: hooks.handler.command.shell --> |
 | `async` | no | When `true`, runs in the background without blocking (§7.3.3). <!-- req: hooks.handler.command.async --> |
 | `asyncRewake` | no | When `true`, runs in the background and wakes Claude on exit code 2 (§7.3.3). <!-- req: hooks.handler.command.asyncRewake --> |
-| `onFailure` | no | `"continue"` or `"block"`: whether the action goes ahead when the hook fails (§7.4.3). Claude Code 2.1.295 or later. <!-- req: hooks.handler.command.onFailure --> |
+| `onFailure` | no | `"continue"` or `"block"`: whether the action that triggered the hook goes ahead when the hook fails; §7.4.3 says what `"block"` and an unset field do. Claude Code 2.1.295 or later. <!-- req: hooks.handler.command.onFailure --> |
 
 ### 7.3.2.1 Exec form and shell form
 
@@ -190,7 +190,7 @@ undefined variable (`$null`), and the client logs a warning in the debug log.
 | `url` | yes | The URL the client POSTs to. <!-- req: hooks.handler.http.url --> |
 | `headers` | no | Extra request headers. Values interpolate `$VAR_NAME` and `${VAR_NAME}`, for the variables `allowedEnvVars` lists only. <!-- req: hooks.handler.http.headers --> |
 | `allowedEnvVars` | no | The environment variable names that may be interpolated into header values; a reference to any other variable becomes the empty string. Without it nothing interpolates. <!-- req: hooks.handler.http.allowedEnvVars --> |
-| `onFailure` | no | `"continue"` (the default) or `"block"` (§7.4.3). Claude Code 2.1.295 or later. <!-- req: hooks.handler.http.onFailure --> |
+| `onFailure` | no | `"continue"` or `"block"`, as for a command hook (§7.4.3). Claude Code 2.1.295 or later. <!-- req: hooks.handler.http.onFailure --> |
 
 1. The client MUST send the event's JSON input (§7.5) as the body of a POST to `url`, with
    `Content-Type: application/json`, which replaces a header of that name in `headers` (Judgment
@@ -199,10 +199,12 @@ undefined variable (`$null`), and the client logs a warning in the debug log.
 2. Header interpolation is one pass: the value a variable brings in is not read again, and a line
    break in it is dropped, so a variable cannot add a header (Judgment J7.56).
    <!-- req: hooks.handler.http.headers -->
-3. When any settings level defines `allowedHttpHookUrls`, the client MUST run an HTTP hook only if
-   its URL matches the merged allowlist; a hook whose URL matches no entry sends nothing. When
-   `httpHookAllowedEnvVars` is defined, a hook's effective `allowedEnvVars` is the intersection with
-   it. Both apply to hooks of every source (§12). <!-- req: hooks.handler.http.allowedEnvVars | hooks.handler.http.url -->
+3. `allowedHttpHookUrls` and `httpHookAllowedEnvVars` set in managed settings cover the HTTP hooks
+   of managed settings; set in any settings file they cover every other HTTP hook (§12.7.1,
+   Judgment J12.18). The client MUST run a covered hook only if its URL
+   matches the list merged across settings files, and a covered hook whose URL matches no entry
+   sends nothing; a covered hook's effective `allowedEnvVars` is the intersection with the merged
+   `httpHookAllowedEnvVars`. <!-- req: hooks.handler.http.allowedEnvVars | hooks.handler.http.url | hooks.behavior.Limit HTTP hooks -->
 4. `SessionStart` and `Setup` do not accept HTTP hooks (§7.3.9).
 
 ```json
@@ -222,6 +224,7 @@ undefined variable (`$null`), and the client logs a warning in the debug log.
 | `server` | yes | The name of a configured MCP server. A plugin's server is named by its scoped name `plugin:<plugin>:<server>`, such as `plugin:my-plugin:db`, not by its bare key (§8). <!-- req: hooks.handler.mcp_tool.server --> |
 | `tool` | yes | The tool to call on that server. <!-- req: hooks.handler.mcp_tool.tool --> |
 | `input` | no | The tool's arguments. String values substitute `${path}` from the hook's JSON input, such as `"${tool_input.file_path}"`. <!-- req: hooks.handler.mcp_tool.input --> |
+| `onFailure` | no | `"continue"` or `"block"` (§7.4.3). Claude Code 2.1.328 or later. <!-- req: hooks.handler.mcp_tool.onFailure --> |
 
 1. **Substitution.** A `${path}` is input keys joined by dots, a number indexing an array; strings
    nested in objects and arrays are substituted too; a non-string value is written as text (an
@@ -229,15 +232,27 @@ undefined variable (`$null`), and the client logs a warning in the debug log.
    alone; the substituted text is not read again (Judgment J7.57). <!-- req: hooks.handler.mcp_tool.input -->
 2. **The result.** The client reads the tool's text content as it reads a command hook's stdout on
    exit 0 (§7.4.1.1). A tool result with `isError: true` is a non-blocking error and execution
-   continues. <!-- req: hooks.handler.mcp_tool.tool -->
-3. **A connecting server.** On an event where a hook can block or change the result, such as
+   continues, unless `onFailure: "block"` makes it block (§7.4.3). <!-- req: hooks.handler.mcp_tool.tool | hooks.handler.mcp_tool.onFailure -->
+3. **An answer the client cannot read.** When the server's message was too large to read, or the
+   result arrived without its text (which a too-large result causes), the hook gives no verdict and
+   the client MUST report a hook error naming the tool and the server, such as `MCP tool
+   "security_scan" on server "my_server" gave no answer that could be read, because a message from
+   the server was too large, so this hook gave no verdict. If this keeps happening, the tool must
+   send a smaller answer.` or `MCP tool "security_scan" on server "my_server" answered without its
+   text, which happens when a result is too large, so this hook gave no verdict. If this keeps
+   happening, the tool must send a smaller answer.` On `PreToolUse` the client refuses the tool call
+   the hook was checking; on other events, such as `UserPromptSubmit`, `PostToolUse` and `Stop`, the
+   error is non-blocking. <!-- req: hooks.handler.mcp_tool.tool -->
+4. **A connecting server.** On an event where a hook can block or change the result, such as
    `PreToolUse` or `Stop`, the client waits for a server that is still connecting before calling
    the tool, for at most `MCP_TIMEOUT` and within the hook's own `timeout`. On an observational
    event, such as `Notification` or `SessionEnd`, it does not wait. A server in the `cached` status
-   connects when the hook calls it. A server not connected at call time makes the run a
-   non-blocking error. A hook never starts an OAuth flow. <!-- req: hooks.handler.mcp_tool.server -->
-4. **Before servers exist.** `SessionStart` at launch (with `--continue` and `--resume` too) and
-   every `Setup` fire before the session's MCP servers are available. The client MUST skip their
+   connects when the hook calls it. A server not connected at call time makes the run a failure
+   (§7.4.3): a non-blocking error unless `onFailure: "block"` is set. A hook never starts an OAuth
+   flow. <!-- req: hooks.handler.mcp_tool.server -->
+5. **Before servers exist.** `SessionStart` at launch (with `--continue` and `--resume` too) and
+   every `Setup` fire before the session's MCP servers are available (`Setup` accepts only command
+   hooks, §7.3.9). The client MUST skip their
    `mcp_tool` hooks without calling the tool and record `mcp_tool hooks are not available for the
    'SessionStart' hook event (no MCP client context)` (or the same naming `Setup`) in the debug log.
    A `SessionStart` that fires later, after `/clear` or a compaction, runs its `mcp_tool` hooks.
@@ -312,7 +327,8 @@ A handler's `timeout` is in seconds. When unset, the default is:
 | `PermissionDenied`, `PostToolBatch`, `PostToolUse`, `PostToolUseFailure`, `PreToolUse`, `Stop`, `SubagentStop`, `TaskCompleted`, `TaskCreated`, `TeammateIdle`, `UserPromptExpansion`, `UserPromptSubmit` | all five types |
 | `PermissionRequest` | `command`, `http`, `mcp_tool`, `prompt` |
 | `ConfigChange`, `CwdChanged`, `DirectoryAdded`, `Elicitation`, `ElicitationResult`, `FileChanged`, `InstructionsLoaded`, `MessageDisplay`, `Notification`, `PostCompact`, `PostModelSwitch`, `PreCompact`, `PreModelSwitch`, `SessionEnd`, `StopFailure`, `SubagentStart`, `WorktreeCreate`, `WorktreeRemove` | `command`, `http`, `mcp_tool` |
-| `SessionStart`, `Setup` | `command`, `mcp_tool` (with §7.3.5 item 4) |
+| `SessionStart` | `command`, `mcp_tool` (with §7.3.5 item 5) |
+| `Setup` | `command` (an `mcp_tool` hook is always skipped, §7.3.5 item 5) |
 
 A handler of a type its event does not accept MUST be skipped, and the event proceeds as if it were
 absent; an `agent` hook on `PermissionRequest` leaves the permission flow unchanged. The client

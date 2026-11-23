@@ -9,7 +9,7 @@ the order mods run in and every event are in `events.md`; how a mod draws is in 
 what each API method does is in `api.md`.
 
 Evidence: `plugins/mods/reference.md` unless a section names another page; `create.md` for the
-static analysis and for mods Claude writes. Shapes follow the declarations Claude Code 2.1.321
+static analysis and for mods Claude writes. Shapes follow the declarations Claude Code 2.1.330
 writes beside a mod (`claude-code/index.d.ts`), named by type, which win over the prose on the mods
 surface (README.md).
 
@@ -84,7 +84,7 @@ client SHOULD write, into the mod's `.claude-plugin/types/`, the declarations of
 `<plugin>/index.d.ts` per plugin in the mod's `dependencies`, and a `tsconfig.json` fitting a hooks
 module; and, when the mod has no `tsconfig.json`, one at the mod's root that extends it. The first
 line of `claude-code/index.d.ts` names the version that wrote it (`// Written by Claude Code
-2.1.321.`), and the file is written again, never edited, after an update (`create.md`, "Get type
+2.1.330.`), and the file is written again, never edited, after an update (`create.md`, "Get type
 definitions for your version").
 
 ### 10.3.4 `options`
@@ -112,11 +112,16 @@ activation: a change to them reloads the mod, and `register` runs again with the
    files by relative path and "claude-code", nothing else`).
 3. The module runs in an environment of its own, apart from the interface (§10.20), with the
    globals the declarations list and no others: no DOM, no Node, no timers (a module waits on
-   `$.clock`), no `eval` or `new Function` over a string, no `WebAssembly`. It has `URL`,
-   `TextEncoder`, `TextDecoder`, `AbortController`, `AbortSignal`, `crypto.subtle` and the JSX
-   factory `h` with `Fragment`. A `.tsx` or `.jsx` file compiles against `h`, with no pragma of its
-   own. `obj.__proto__ = p` on anything but a function writes an own key (declarations, the global
-   block).
+   `$.clock`), no `eval` or `new Function` over a string. It has `URL`, `URLSearchParams`,
+   `TextEncoder`, `TextDecoder`, `AbortController`, `AbortSignal`, `crypto.subtle`,
+   `performance.now()` and the JSX factory `h` with `Fragment`. A `.tsx` or `.jsx` file compiles
+   against `h`, with no pragma of its own. `obj.__proto__ = p` on anything but a function writes an
+   own key (declarations, the global block, `claude-code/index.d.ts:20769`–`20990` of 2.1.330).
+5. **`WebAssembly`** (2.1.330; before it the global was absent) is the standard API, frozen, over the
+   modules `$.wasm.compile` answers (api.md, §10.35): `new WebAssembly.Module`, and `compile` and
+   `instantiate` over bytes, MUST throw or reject naming `$.wasm.compile`; `instantiate` of a module
+   `$.wasm.compile` returned works; no memory is shared; `validate` answers `true` for what
+   `$.wasm.compile` would take (`claude-code/index.d.ts:20883`).
 4. The module's own variables are shared by all its hooks and live until the module reloads
    (§10.8).
 
@@ -151,6 +156,7 @@ the module's absolute path; `<message>` is the table's text, joined to the fixed
 | A telemetry hook in a mod outside the `builtin` tier carries the filter `{ to: 'collector' }` (Judgment J10.19). | `its hooks stand on the telemetry stream "anthropic" ... name the collector on each telemetry hook: on("telemetry.log", { to: "collector" }, hook)` |
 | A `$.state` value it reads or writes is declared (§10.3.2). | `<plugin>.<key> is not declared ...` |
 | No file nests functions, blocks and loops more than 2,000 deep (§10.11). | — |
+| A `$.wasm.compile` path is a string literal naming a file, relative to the calling file, that parses as a WebAssembly module (2.1.326 or later). | `<absolute path>: no such file` (an error); `<path>: WebAssembly.Module doesn't parse at byte <n>: <reason>` (a warning; Claude Code 2.1.330) |
 
 These rules let the analysis find every hook and call, and they are binding on a mod. <!-- req: mods.create.Check what Claude Code reads from your mod -->
 
@@ -164,9 +170,10 @@ each led by the module's path as written in `modules`:
 
 | Line | Lists |
 | --- | --- |
-| `hooks:` | each `on` call's pattern, with its matcher in braces as `field=value` pairs joined by commas: `session.start, tool.call{tool=Bash}, command.run{command=tally}` |
+| `hooks:` | each `on` call's pattern, with its matcher in braces as `field=value` pairs joined by commas: `session.start, tool.call{tool=Bash}, command.run{command=tally}`. A hook whose matcher leaves out a default matcher key (§10.13.3) is followed by ` (default matcher key: <keys>)`, as `ui.render{component=AbovePrompt} (default matcher key: plugin)` and `ui.press (default matcher key: plugin, component)` (Claude Code 2.1.330) |
 | `calls:` | every `$` method called, as `$.command.register`, `$.store.get (via loadNotes)`; `nothing on $` when none |
-| `gating hook without .catch:` / `gating hook with .catch:` | one line per hook that can refuse an action (`tool.call`, `tool.check`, `prompt.submit`, `config.set`, `plugin.register`, the telemetry events, and a glob or negation that selects one) |
+| `gating hook without .catch:` / `gating hook with .catch:` | one line per hook that can refuse an action (`tool.call`, `tool.check`, `tool.judge`, `tool.run`, `prompt.submit`, `config.set`, `plugin.register`, the telemetry events, and a glob or negation that selects one) |
+| `wasm <path>:`, `wasm <path> imports:`, `wasm <path> exports:` | for each file a `$.wasm.compile` call names: its size and SHA-256 (`wasm hooks/a.wasm: 8 bytes, sha256 <hex>`), then its imports and exports, `nothing` when none (Claude Code 2.1.330) |
 | `answers its own command:` | a `command.run` hook whose matcher names a command |
 | `env reads:`, `env writes:` | the names given to `$.env.get` and `$.env.set`; a computed name is `(computed)` |
 | `state reads:`, `state writes:` | `<plugin>.<key>` of each `$.state` value; `nothing` when none |
@@ -175,10 +182,15 @@ each led by the module's path as written in `modules`:
 | `hooks telemetry for:` | the telemetry streams its hooks stand on |
 | `types <path> declares on $:`, `types <path> declares state:` | what the types file declares |
 
-`--strict` turns warnings into failures and `--json` prints the same report as data. `e.uses` of
-`plugin.register` (§10.19.5) carries the same lists. A misspelt event name is the usual reason an
-event is missing from `hooks:`, and the client does not call that hook either. (Line names follow
-Claude Code 2.1.325; Judgment J10.2.)
+From 2.1.323 a long list continues on further lines with the same label, so a reader reads every
+`hooks:` and `calls:` line (`admin.md`, "Review what a mod can do"). After the module's lines the
+report lists, for the whole plugin, `Provides:` (each kind of part and its entries, as `modules:
+hooks/register.js`) and `Hosts:` (the hosts its `$.http.fetch` and `$.audio.play` calls spell, as
+`Hosts: example.com`). `--strict` turns warnings into failures and `--json` prints the same report as
+data. `e.uses`, `e.provides` and `e.hosts` of `plugin.register` (§10.19.5) carry the same lists. A
+misspelt event name is the usual reason an event is missing from the `hooks:` lines, and the client
+does not call that hook either. (Line names follow Claude Code 2.1.325 and, for the lines marked,
+2.1.330; Judgment J10.2.)
 
 ## 10.5 `register` and `on`
 
@@ -242,25 +254,21 @@ Every hook is called as `hook($, e, next)` (an async generator for a streaming e
 
 In a `.catch` handler (§10.15) `next` also carries:
 
-8. **`next.error`**, why the hook failed, frozen: `kind` is `throw` (it threw, returned a result of
-   the wrong shape, or its worker ended under it) or `timeout` (it outran its budget); `message` is
-   what was thrown, or for a timeout what its last `next()` rejected with, and is absent for a
-   timeout with nothing rejected; `budget` is the handler's grace in milliseconds. These two are the
-   only kinds: a hook skipped for re-entry is not a failure and no handler is asked (below,
-   Judgment J10.7). <!-- deviates: mods.hookArgument.next.error -->
+8. **`next.error`**, why the hook failed, frozen (declarations, `HookFailure`): `kind` is `throw`
+   (it threw, returned a result of the wrong shape, or its worker ended under it) or `timeout` (it
+   outran its budget); `message` is what was thrown, or for a timeout what its last `next()`
+   rejected with, and is absent for a timeout with nothing rejected; `budget` is the handler's grace
+   in milliseconds. These two are the only kinds: a hook skipped for re-entry is not a failure and
+   no handler is asked (below). <!-- req: mods.hookArgument.next.error -->
 9. **`next.called`**, `true` when the failed hook had called `next()` or `next.to()` at least once,
    settled or in flight; the handler runs once that call settled. <!-- req: mods.hookArgument.next.called -->
 
 A hook is **skipped for re-entry** when the event it would handle came from inside a `$` call made
-by that same hook, or by the mod's code outside its hooks (then every hook of the mod is skipped).
-The documentation calls the second cause `lent` when a method another mod added to `$` raised the
-event, and `rewritten` when a `tool.call` or `PreToolUse` hook changed the call, or an
-`agent.spawn` hook changed an agent the call started. The client MUST skip such a hook, run the next
-handler in its place, ask no `.catch` handler and report no skip line: the declarations of 2.1.321
-give `next.error.kind` only `throw` and `timeout` and no `cause`, where the documentation describes
-a `re-entry` kind (v2.1.292) with a `cause` (`lent` v2.1.292, `rewritten` v2.1.300); this rule
-follows the declarations and Claude Code's behaviour (Judgment J10.7, E4a).
-<!-- deviates: mods.hookArgument.next.error.cause -->
+by that same hook, or by the mod's code outside its hooks (then every hook of the mod is skipped),
+including when a method another mod added to `$` raised the event, or a `tool.call` or `PreToolUse`
+hook changed the call, or an `agent.spawn` hook changed an agent the call started. The client MUST
+skip such a hook, run the next handler in its place, ask no `.catch` handler and report no skip
+line (Judgment J10.7).
 
 ## 10.7 The mods API
 
@@ -273,31 +281,35 @@ row's version note is the documentation's. `api.md` specifies what each method d
 | Namespace | Methods | Notes |
 | --- | --- | --- |
 | `$.plugin` | `name`, `root` | Values, not calls: this plugin's name and directory. No event is raised for them. <!-- req: mods.api.$.plugin --> |
-| `$.ui` | `resolve`, `invalidate`, `open`, `close`, `panes`, `place`, `focus`, `scroll`, `toast`, `notify`, `cancelNotify`, `status`, `log`, `notice`, `ask`, `copy`, `selection`, `blit`, `view` | `view` from v2.1.300, `place` from v2.1.314. `resolve`, `invalidate`, `log`, `toast`, `status` and `notice` are synchronous. `invalidate` takes `ui.render`, `prompt.section`, `prompt.context`, `prompt.attachment`, `tool.describe`, `command.describe` or `config.describe`. §10.20–§10.28. <!-- req: mods.api.$.ui --> |
-| `$.theme` | `set`, `clear` | Set and take off a backdrop the Desktop or mobile app draws; from v2.1.319 (§10.25.6). <!-- req: mods.api.$.theme --> |
+| `$.ui` | `resolve`, `invalidate`, `open`, `close`, `panes`, `place`, `focus`, `scroll`, `toast`, `notify`, `cancelNotify`, `status`, `log`, `notice`, `ask`, `copy`, `selection`, `blit`, `view` | `view` from v2.1.300, `place` from v2.1.314. `resolve`, `invalidate`, `log`, `toast`, `status` and `notice` are synchronous. `invalidate` takes `ui.render`, `prompt.section`, `prompt.context`, `prompt.attachment`, `tool.describe`, `tool.list` (2.1.330), `command.describe` or `config.describe`. `open` takes `placement: 'widget'` (2.1.330): a request that the Desktop app draw the pane as a widget, whose `Pane` props then say `placement: 'widget'`; a surface without widgets ignores it (`claude-code/index.d.ts:9478`). `copy` MAY resolve `{ isCopied: false, reason: 'unanswered' }` (2.1.330). §10.20–§10.28. <!-- req: mods.api.$.ui --> |
+| `$.theme` | `set`, `clear` | Set and take off the session's theme: a backdrop the Desktop or mobile app draws, and from 2.1.324 the Desktop app's colours, and in the declarations of 2.1.330 its sound and the style of its rows; from v2.1.319 (§10.25.6, §10.25.7). <!-- req: mods.api.$.theme --> |
 | `$.command` | `register`, `run`, `list` | <!-- req: mods.api.$.command --> |
 | `$.tool` | `register`, `call`, `check`, `list` | <!-- req: mods.api.$.tool --> |
-| `$.agent` | `register`, `spawn`, `list` | `list()` returns the session's subagents and teammates, each with `status` `pending`, `running`, `waiting`, `idle`, `completed`, `failed` or `killed` (`idle` and `waiting` from v2.1.289). <!-- req: mods.api.$.agent --> |
+| `$.agent` | `register`, `spawn`, `call`, `list`, `limits` | `call` and `limits` from v2.1.326. `list()` returns the session's subagents and teammates (`AgentInfo`, `claude-code/index.d.ts:194`), each with `status` `pending`, `running`, `waiting`, `idle`, `completed`, `failed` or `killed` (`idle` and `waiting` from v2.1.289); the 2.1.330 declarations add `kind` (`local_agent`, `in_process_teammate`), `taskStatus` (adds `paused`), `label`, `cwd`, `startTime`, `hasRow`, `tokenCount`, `tokenSamples`, `model?`, `effort?`, `contextWindowSize?`, `lastRequest?` (`{ at, model, effort?, cacheTtl? }`), `usage?` and `cost?`. `call({ tool, input, agentId? }, { signal? })` runs a tool as that agent's own call (main conversation when `agentId` is absent): it raises `agent.call` and beneath it `tool.call` in that agent's loop, meets the agent's rules, hooks, dialog and `tool.judge` as its model's call would, adds nothing to its conversation, and resolves to the tool's `ToolCallResult` or `{ deny }`; it rejects on an `agent.call` hook's deny; `Workflow` is refused (`claude-code/index.d.ts:3922`). `limits()` resolves `{ concurrent, depth, isBackgroundEnabled }` (`AgentLimits`, `claude-code/index.d.ts:364`). <!-- req: mods.api.$.agent --> |
 | `$.model` | `complete`, `fork`, `classify` | <!-- req: mods.api.$.model --> |
 | `$.prompt` | `submit`, `read`, `media`, `fill`, `paint`, `suggest`, `compose` | Claude reads text from `submit({ text })` after a sentence naming the mod as sender; `submit({ text, asUser: true })` sends it as the user's own words without that sentence. <!-- req: mods.api.$.prompt --> |
 | `$.turn` | `abort` | <!-- req: mods.api.$.turn --> |
-| `$.session` | `messages`, `cwd`, `root`, `model`, `turns`, `id`, `repo`, `surfaces`, `surface`, `usage`, `version`, `compact`, `send`, `append`, `authorize`, `identity` | `usage()` resolves to `{ startedAt, context, rateLimits, cost }`: `context` holds `tokens`, `window` and `percent`; `rateLimits` is a list of `{ kind, percentUsed, resetsAt }`. <!-- req: mods.api.$.session --> |
+| `$.session` | `messages`, `cwd`, `root`, `model`, `turns`, `id`, `repo`, `surfaces`, `surface`, `usage`, `version`, `info`, `machine`, `compact`, `send`, `append`, `authorize`, `identity` | `usage()` resolves to `{ startedAt, context, rateLimits, cost }`: `context` holds `tokens`, `window` and `percent`; `rateLimits` is a list of `{ kind, percentUsed, resetsAt }`; `cost` is `{ usd, hasUnknownPrice? }` (2.1.330). `info()` (v2.1.326) resolves to `SessionInfo`: `transcriptPath`, `scratchpadDir?`, `promptId?`, `agentType?`, `configRoot?`, `platform?` (`macos`, `linux`, `windows`, `wsl`, `unknown`) and `isHosted?` (`claude-code/index.d.ts:3449`, `14833`). `machine()` (declarations only) resolves to `{ sysname, release, machine, packageManagers, runtimes }` as `uname -s`, `-r`, `-m` print them and which of npm, yarn, pnpm, bun, deno and node are on the `PATH`, read without running a program (`claude-code/index.d.ts:3470`, `14888`). `messages({ last?, after? })` (2.1.330): `last` the newest entries (1 to 4,096), `after` a row's `uuid` to read on from; rows of such a read carry `uuid`; the two are exclusive (`claude-code/index.d.ts:15081`). `identity()` MAY carry `contextEmail` (2.1.330). <!-- req: mods.api.$.session --> |
 | `$.config` | `list`, `set` | <!-- req: mods.api.$.config --> |
 | `$.settings` | `read` | §10.18.3. <!-- req: mods.api.$.settings --> |
 | `$.env` | `get`, `set` | <!-- req: mods.api.$.env --> |
-| `$.fs` | `read`, `write`, `list`, `exists`, `stat`, `ancestors` | `write` is not atomic: it replaces the file's content in place, so another process can read a partly written file. <!-- req: mods.api.$.fs --> |
+| `$.fs` | `read`, `write`, `list`, `exists`, `stat`, `ancestors` | `write` is not atomic: it replaces the file's content in place, so another process can read a partly written file. `read(path, { as?, offset?, length? })`: `as` `text` (the default) or `bytes` (`{ base64 }`); from v2.1.326 `offset` and `length`, in bytes, read a range, so a file larger than the 4 MiB limit is read in parts (`FsReadBytesOptions`, `claude-code/index.d.ts:6539`). <!-- req: mods.api.$.fs --> |
 | `$.store` | `get`, `set`, `delete`, `keys` | A JSON key-value store every session on the machine shares (§10.28). <!-- req: mods.api.$.store --> |
 | `$.state` | `get`, `set` | Session values with versions, and the helpers of §10.7.2. <!-- req: mods.api.$.state --> |
 | `$.clock` | `now`, `sleep`, `after`, `every` | `after` and `every` return a timer; a reload cancels a mod's pending waits. <!-- req: mods.api.$.clock --> |
 | `$.http` | `fetch` | <!-- req: mods.api.$.http --> |
-| `$.process` | `run`, `spawn` | `spawn` streams (§10.13.1). <!-- req: mods.api.$.process --> |
+| `$.process` | `run`, `spawn`, `hookEnv` | `spawn` streams (§10.13.1). `hookEnv()` (v2.1.326) resolves to the variables a command hook of this plugin gets, to pass as a child's `env`: `CLAUDECODE`, `CLAUDE_CODE_SESSION_ID`, `CLAUDE_CODE_CHILD_SESSION`, `CLAUDE_CODE_SESSION_ATTENDED`, `CLAUDE_PID`, `CLAUDE_PROJECT_DIR`, `CLAUDE_PLUGIN_ROOT`, `CLAUDE_PLUGIN_DATA` (the call creates that folder and rejects when it cannot) and `TRACEPARENT` while a trace is passed on; `run` and `spawn` set none of them (`claude-code/index.d.ts:4361`). <!-- req: mods.api.$.process --> |
+| `$.wasm` | `compile` | v2.1.326 or later. `compile(source)` takes a string literal path, relative to the calling file, of a file up to 64 MiB, or the binary's bytes, and resolves to a `WebAssembly.Module` to pass to `WebAssembly.instantiate` (§10.4.1); it rejects for a module with no room or a file changed since the mod loaded (`claude-code/index.d.ts:4605`). <!-- req: mods.api.$.wasm --> |
+| `$.vcs` | `detect`, `diff`, `isolate`, `list`, `release`, `status` | Experimental in the 2.1.330 declarations, not in the documentation; each raises its event (§10.19.8) and rejects in a session with no disk (`claude-code/index.d.ts:4440`; Judgment J10.23). |
 | `$.mcp` | `call`, `connect` | `connect(server)` connects an MCP server the mod's own plugin's manifest lists. <!-- req: mods.api.$.mcp --> |
 | `$.audio` | `play`, `speak` | <!-- req: mods.api.$.audio --> |
 | `$.telemetry` | `log`, `mark` | A record is sent only when the client or a built-in mod makes the call. <!-- req: mods.api.$.telemetry --> |
 
-`$.ui.cancelNotify`, `$.prompt.media`, `$.prompt.paint`, `$.session.surface` and
-`$.session.identity` are in the declarations and not in the documentation's table; a client MUST
-offer them (Judgment J10.8). A namespace another mod adds in `engine.create` (§10.19.5) is on `$`
+`$.ui.cancelNotify`, `$.prompt.media`, `$.prompt.paint`, `$.session.surface`,
+`$.session.identity` and `$.session.machine` are in the declarations and not in the documentation's
+table; a client MUST offer them (Judgment J10.8). `$.prompt.fill` MAY resolve with `refusal:
+'unanswered'`, `$.tool.list` entries carry `inputSchema?`, and `$.audio.speak` takes `{ signal }`
+(2.1.330 declarations). A namespace another mod adds in `engine.create` (§10.19.5) is on `$`
 beside these.
 
 ### 10.7.2 `$.state` and its helpers
@@ -335,22 +347,29 @@ A client loads each mod the policy lets load (§14), in the order of §10.14:
    (§10.19.5); builds the mod's `$`, firing `engine.create`; imports the module and calls
    `register`. A failure at any step loads nothing of the mod, and the client reports `<plugin>:
    hooks module did not load: <reason>` or `<plugin>: refused by <mod>: <reason>`
-   (`troubleshooting.md`). The rest of the plugin still loads.
+   (`troubleshooting.md`). The rest of the plugin still loads, except after a `plugin.register`
+   refusal, which from 2.1.326 keeps the whole plugin out; a `plugin.register` hook that removes
+   `modules` from `e.provides` keeps only the module out, and the line reads `hooks module left out
+   by <mod>` (§10.19.5, §14). From 2.1.326 `plugin.register` also fires for a plugin with no hooks
+   module.
 2. Once loaded, `session.start` fires for that mod before the first prompt (§10.19.2), and
    `ui.resolve` once for each app, render site and mod.
 
 ### 10.8.2 Reloading
 
-1. A plugin loaded with `--plugin-dir` is watched: in an interactive session, saving a file of it
-   reloads its hooks module; a long-running non-interactive session does so when
-   `CLAUDE_CODE_PLUGIN_DIR_WATCH` is `1` (§3, §10.12.2).
+1. A plugin loaded with `--plugin-dir` is watched: in an interactive terminal session, saving a file
+   of it reloads its hooks module. A mod of a skills-directory plugin (§4) reloads on save in any
+   session that takes more than one prompt, a non-interactive one included.
+   `CLAUDE_CODE_PLUGIN_DIR_WATCH=1` makes `--plugin-dir` mods reload as skills-directory mods do, and
+   `0` turns reloading off everywhere (§3, §10.12.2; `env-vars.md`).
 2. `/reload-plugins` reloads plugins when run (§10.12.3); an install or update from the shell while
    a session is open loads in that session only through it.
 3. A reload unloads the old module (§10.8.3), then loads the new one as in §10.8.1, which runs
    `register` again: module-level variables start over, and `$.state` values survive. A transcript
-   line names the mod and lists its hooks. A reload that fails keeps the previous version loaded,
-   unless its reason ends `; the version loaded before is unloaded`, when no version runs until
-   `/reload-plugins` (§10.42.3, §10.46). The mod keeps its place in its tier (Judgment J10.9).
+   line names the mod and lists its hooks. A reload that fails writes `reload failed` and keeps the
+   previous version loaded, or not, as §10.41.7 says; a reason that ends `; the version loaded
+   before is unloaded` means no version runs until `/reload-plugins` (§10.42.3). The mod keeps its
+   place in its tier (Judgment J10.9).
 
 ### 10.8.3 Unloading
 
@@ -366,18 +385,26 @@ When the user asks for a mod, Claude writes it from the built-in `plugin-authori
 modes each file is approved before it is written. On the first file, the client asks whether to
 enable hot reloading for the session; **Turn them on** loads the session's mods when the turn ends
 and reloads them at the end of each turn that changes them, for the session and after it is resumed;
-**Not now** loads nothing until the session next starts. In `auto` and `bypassPermissions` modes the
-mods load when the turn ends without the question. Such a mod loads only in the session that made it,
-and the folder is deleted once older than `cleanupPeriodDays` (`create.md`, "Ask Claude for a mod").
+**Not now** loads nothing until the session next starts. Such a mod loads only in the session that
+made it, and the folder is deleted once older than `cleanupPeriodDays` (`create.md`, "Ask Claude for
+a mod").
 
-A mod Claude writes MUST NOT load in these sessions (`create.md`, "Sessions where a mod Claude
-writes can't load"):
+**Sessions that load a mod without asking.** In `auto` and `bypassPermissions` modes the client MAY
+enable hot reloading without the question, and the mods load when the turn ends; a user who wants to
+be asked starts, or switches to, `default` or `acceptEdits` mode before asking for the session's
+first mod. When a session is resumed, interactively or with `claude -p`, the mods already in its
+mods folder load without asking, unless the session is one below; deleting a mod's directory keeps
+it from loading. <!-- req: mods.create.Sessions that load a mod without asking -->
 
-- **Nobody is there to approve**: the session can show no prompt, as `claude -p` outside `auto` and
-  `bypassPermissions`, or `dontAsk` mode. <!-- req: mods.create.Sessions where a mod Claude writes can't load.Nobody is there to approve -->
-- **The workspace isn't trusted**: the trust prompt for the directory has not been accepted. <!-- req: mods.create.Sessions where a mod Claude writes can't load.The workspace isn't trusted -->
-- **Mods are disabled**: the session started with `--safe-mode` or `--bare`, `disableAllHooks` is
-  set, or managed settings block it (§14). <!-- req: mods.create.Sessions where a mod Claude writes can't load.Mods are disabled -->
+**Sessions where a mod Claude writes can't load.** A mod Claude writes MUST NOT load, and the client
+MUST NOT ask to load it, when:
+
+- **nobody is there to approve**: the session is in `dontAsk` mode, or it is the `claude -p` run that
+  writes the mod, in `default` or `acceptEdits` mode, which cannot show the question;
+- **an interactive session's workspace isn't trusted**: the trust prompt for the directory has not
+  been accepted;
+- **mods are disabled**: the session started with `--safe-mode` or `--bare`, `disableAllHooks` is
+  set, or managed settings block it (§14). <!-- req: mods.create.Sessions where a mod Claude writes can't load -->
 
 ## 10.9 Render sites
 
@@ -388,23 +415,26 @@ MUST raise each site where the last column says, and nowhere else.
 
 | Site | `e.props` | `e.requestId` | Raised in |
 | --- | --- | --- | --- |
-| `Pane` | `title`, `isFocused`, `bodyColumns`, `placement` (`dock` or `inline`), `scroll` (`{ bodyRows, offset }`), `view` (`{ agentId? }`) | the pane's `id` | terminal, Desktop, VS Code <!-- req: mods.site.Pane --> |
-| `AbovePrompt` (the band) | `hasSurvey`, `isCollapsed`, `isWorking`, `maxRows`, `bodyColumns`, `scroll`, `view` | one instance | terminal, Desktop <!-- req: mods.site.AbovePrompt --> |
+| `Pane` | `title`, `isFocused`, `bodyColumns`, `placement` (`dock`, `inline`, or `widget` in the Desktop app, 2.1.330), `scroll` (`{ bodyRows, offset }`), `view` (`{ agentId? }`) | the pane's `id` | terminal, Desktop, VS Code <!-- req: mods.site.Pane --> |
+| `AbovePrompt` (one mod's row of the band) | `hasSurvey`, `isCollapsed` (2.1.321), `isWorking`, `maxRows`, `bodyColumns`, `scroll`, `view`; `e.plugin` names the mod whose row it is | one instance | terminal, Desktop <!-- req: mods.site.AbovePrompt --> |
+| `AbovePromptList`, the stack of `AbovePrompt` rows | `rows`, one `{ plugin, tree }` for each mod's row that settled and fits, in chain order, plus the `AbovePrompt` props (`hasSurvey`, `isCollapsed`, `isWorking`, `maxRows`, `bodyColumns`, `scroll`, `view`) | one instance | terminal, Desktop; 2.1.323 or later <!-- req: mods.site.AbovePromptList --> |
 | `Placed` | `id`, `plugin`, `onScreen` | the `requestId` `$.ui.place` returned | terminal <!-- req: mods.site.Placed --> |
-| `Backdrop` | `id`, `plugin`, `glass` (`{ blur, opacity, tint? }` or `false`), `colorScheme` (`light` or `dark`) | `backdrop` | the `desktop` and `mobile` surfaces, when the app asks to draw a backdrop <!-- req: mods.site.Backdrop --> |
-| `UserMessage` | `text`, `origin`, `isExpanded`, `task` or `from` by origin, `onScreen` | the message id | terminal, Desktop, VS Code <!-- req: mods.site.UserMessage --> |
-| `AssistantMessage` | `text`, `isFirstOfReply`, `isSummary`, `onScreen` | the message id | terminal, Desktop, VS Code <!-- req: mods.site.AssistantMessage --> |
+| `Backdrop` | `scene`, `plugin`, `glass` (`{ blur, opacity, tint? }` or `false`), `overrideColorScheme` (`light` or `dark`). Before 2.1.323 `scene` was `id` and `overrideColorScheme` was `colorScheme` | `backdrop` | the `desktop` and `mobile` surfaces, when the app asks to draw a backdrop <!-- req: mods.site.Backdrop --> |
+| `UserMessage` | `text`, `origin`, `isExpanded`, `task` or `from` by origin, `onScreen` | the drawn row's id | terminal, Desktop, VS Code <!-- req: mods.site.UserMessage --> |
+| `AssistantMessage` | `text`, `isFirstOfReply`, `isSummary`, `onScreen` | the drawn row's id | terminal, Desktop, VS Code <!-- req: mods.site.AssistantMessage --> |
 | `ToolUse` | `tool_use_id`, `tool`, `input`, `isRunning`, `isErrored`, `isInterrupted`, `isExpanded`, `output`, `onScreen` | the tool call id | terminal, Desktop, VS Code <!-- req: mods.site.ToolUse --> |
 | `ToolResult` | `tool_use_id`, `tool`, `output`, `isErrored`, `isExpanded`, `onScreen` | the tool call id | terminal, Desktop, VS Code <!-- req: mods.site.ToolResult --> |
 | `ToolGroup` | `calls`, `isActive`, `isExpanded`, `isCallsOnly`, `onScreen` | the tool call id | terminal, Desktop, VS Code <!-- req: mods.site.ToolGroup --> |
-| `CommandOutput` | `command`, `args`, `text`, `isErrored`, `onScreen` | the message id | terminal, Desktop <!-- req: mods.site.CommandOutput --> |
+| `CommandOutput` | `command`, `args`, `text`, `isErrored`, `onScreen` | the drawn row's id | terminal, Desktop <!-- req: mods.site.CommandOutput --> |
 | `AskUserQuestion` | `tool`, `questions`, `metadataSource` | the tool call id | terminal, Desktop, VS Code <!-- req: mods.site.AskUserQuestion --> |
 | `ToolProgress` | `tool_use_id`, `kind` (`background_hint`), `hint` | the tool call id | terminal <!-- req: mods.site.ToolProgress --> |
 | `Spinner` | `word`, `message`, `suffix`, `mode` (`requesting`, `responding`, `thinking`, `tool-input`, `tool-use`) | the agent id | terminal, Desktop, VS Code <!-- req: mods.site.Spinner --> |
-| `TurnDuration` | `word`, `durationMs`, `isExpanded`, `waitingFor`, `onScreen` | the message id | terminal <!-- req: mods.site.TurnDuration --> |
-| `InfoNotice` | `text`, `command`, `onScreen` | the message id | terminal <!-- req: mods.site.InfoNotice --> |
+| `TurnDuration` | `word`, `durationMs`, `isExpanded`, `waitingFor`, `onScreen` | the drawn row's id | terminal <!-- req: mods.site.TurnDuration --> |
+| `InfoNotice` | `text`, `command`, `onScreen` | the notice's `text` led by `notice:` | terminal <!-- req: mods.site.InfoNotice --> |
 | `SessionMode` | `modes` | one instance | terminal, Desktop <!-- req: mods.site.SessionMode --> |
 | `PromptHint` | `isDraft`, `isWorking`, `hint`, `tail` | one instance | terminal, Desktop <!-- req: mods.site.PromptHint --> |
+| `AgentRow` | the agent's `$.agent.list()` fields (`AgentInfo`), `parentId?`, `rowIds`, `columns?`, `body?`, `isHidden` | the agent id | terminal, and the VS Code extension's Focus view; 2.1.326 or later of Claude Code or the extension <!-- req: mods.site.AgentRow --> |
+| `ContextMenu` | `row?` (`{ component, requestId }`), `link?` (`{ href, text? }`), `selection?`, `code?` (`{ text, isBlock }`) | the menu | the Desktop app only; declarations only (Judgment J10.24) |
 
 1. Rendering in the VS Code extension requires extension version 2.1.299, and 2.1.304 in a session
    that does not fetch feature flags.
@@ -415,6 +445,22 @@ MUST raise each site where the last column says, and nowhere else.
    the band; a docked pane (`placement: 'dock'`) has `e.props.scroll.bodyRows` rows; an inline pane
    (`'inline'`) grows with its tree up to `bodyRows` (the `rows` field of `$.ui.open` asks for
    another limit). A tree taller than its pane scrolls as a whole.
+4. **The band's rows.** From 2.1.323 the client asks `AbovePrompt` once for each mod that hooks it,
+   `e.plugin` naming the mod, and that mod's hook draws its row or passes; `AbovePromptList` then
+   stacks the rows from the top in chain order. A row that does not validate, or that falls past a
+   tree's limits (counted across the rows, kept from the top, stacking adding one level of depth),
+   draws nothing while the other rows draw. A hook on `AbovePromptList`, which hears a bare
+   `on('*')` or a matcher naming it, MAY hide or reorder the rows it is handed and wrap them; a
+   rewrite MUST hold only rows it received, unchanged, each at most once, or the hook fails. A
+   `ui.render` hook on another mod's row needs `{ plugin }` (§10.13.3). In the terminal a tree that
+   throws while drawn empties the band (`RenderPropsOf`, `claude-code/index.d.ts:13538`–`13660`).
+5. **`AgentRow`** is one agent's row in the at-a-glance agent list (the terminal's under the prompt,
+   VS Code's running subagents). Its props are read-only but for `label`, `body` (text drawn as the
+   whole body of the row, `""` hiding it) and `isHidden` (whether the row is left out of the list,
+   its count and its keys; what the last `next` in the chain passed decides). It is asked for every
+   agent with `hasRow` and again as a prop changes; `tokenCount`, `tokenSamples`, `lastRequest`,
+   `usage` and `cost` are refreshed every five seconds. It is not raised for the main row, a
+   workflow's row or the folded idle summary (`claude-code/index.d.ts:13702`).
 
 ## 10.10 Elements
 
@@ -424,8 +470,8 @@ MUST refuse in a tree an element its surface's table lacks.
 
 | Element | Props (`?` optional) | terminal | Desktop | mobile | VS Code |
 | --- | --- | :-: | :-: | :-: | :-: |
-| `Box` | `key?`, the flex layout props `flexDirection?`, `flexGrow?`, `flexShrink?`, `flexWrap?`, `alignItems?`, `alignSelf?`, `justifyContent?`, the spacing props of §10.10.2, `width?`, `height?`, `minWidth?`, `minHeight?`, `borderStyle?` (§10.10.1), `borderColor?`, `borderDimColor?`, `backgroundColor?`, `position?`, `top?`, `left?`, `right?`, `bottom?`, `overflow?`, `display?`, `hover?` | ✓ | ✓ | ✓ | ✓ <!-- req: mods.element.Box --> |
-| `Text` | `color?`, `backgroundColor?`, `bold?` (§10.10.4), `italic?`, `underline?`, `strikethrough?`, `dimColor?`, `inverse?`, `wrap?`, `size?`, `weight?`, `mono?`, `tabular?` (§10.10.3), `dir?`, `hover?` | ✓ | ✓ | ✓ | ✓ <!-- req: mods.element.Text --> |
+| `Box` | `key?`, the flex layout props `flexDirection?`, `flexGrow?`, `flexShrink?`, `flexWrap?`, `alignItems?`, `alignSelf?`, `justifyContent?`, the spacing props of §10.10.2, `width?`, `height?`, `minWidth?`, `minHeight?`, `borderStyle?` (§10.10.1), `borderColor?`, `borderDimColor?`, `backgroundColor?`, `position?`, `top?`, `left?`, `right?`, `bottom?`, `overflow?`, `overflowX?`, `display?`, `hover?` | ✓ | ✓ | ✓ | ✓ <!-- req: mods.element.Box --> |
+| `Text` | `color?`, `backgroundColor?`, `bold?` (§10.10.4), `italic?`, `underline?`, `strikethrough?`, `dimColor?`, `inverse?`, `wrap?`, `maxLines?`, `size?`, `weight?`, `mono?`, `tabular?` (§10.10.3), `dir?`, `hover?` | ✓ | ✓ | ✓ | ✓ <!-- req: mods.element.Text --> |
 | `Button` | `onPress`, `key?`, `label?`, children, `hotkey?`, `plain?`, `dimColor?`, `autoFocus?`, `action?`, `variant?`, `role?`, `hover?` (§10.10.5) | ✓ | ✓ | ✓ | ✓ <!-- req: mods.element.Button --> |
 | `Link` | `href`, `label?` | ✓ | ✓ | ✓ | ✓ <!-- req: mods.element.Link --> |
 | `Code` | `source`, `language?`, `path?`, `startLine?`, `format?` (`'diff'` for a diff), `wrap?` | ✓ | ✓ | ✓ | ✓ <!-- req: mods.element.Code --> |
@@ -436,6 +482,19 @@ MUST refuse in a tree an element its surface's table lacks.
 | `Client` | `key`, `module`, `props?`, `width?`, `height?`, `flexGrow?` | ✓ | ✓ | | <!-- req: mods.element.Client --> |
 | `Raster` | `key`, `columns` (at most 512), `rows` (at most 256), `cells` | ✓ | | | <!-- req: mods.element.Raster --> |
 | `Image` | `source` (PNG or RGBA bytes up to 2 MiB, or a file path), `columns` and `rows` (each at most 255), `alt`, `key?` | ✓ | | | <!-- req: mods.element.Image --> |
+| `Progress` | `label` (not blank), `value?` (0 to `max`; absent, the task runs with no known end), `max?` (default 1), `valueText?`, `color?`; no children | ✓ | ✓ | ✓ | ✓ |
+| `Shader` | `module` (a string-literal path of the mod's shader file, TypeScript against `claude-code/shader`), `values?` (at most 8 finite numbers the file declares); exactly one `Svg` child | | ✓ | ✓ (its `Svg` alone) | |
+
+`Progress` and `Shader` are in the 2.1.330 declarations' per-surface `Elements` tables
+(`claude-code/index.d.ts:4819`–`4891`, `ProgressProps` `10940`, `ShaderProps` `15868`) and not in
+the documentation; a client MUST offer them where those tables do (Judgment J10.24). A `Shader`
+draws only in a `Backdrop`, at most one, at the root or in a `Box`; anywhere else, or over anything
+but one `Svg`, the tree is refused. The Desktop app plays it on the GPU; where it plays no shader
+the `Svg` shows alone. The 2.1.330 declarations also add `Text` `maxLines?` (the most rows drawn,
+the last ending in an ellipsis) and `wrap: 'clip'` (as well as `end` and `middle`), and `Box`
+`overflowX?` (`visible` or `scroll`: the lines inside keep their full width and scroll sideways
+together; the terminal and VS Code cut each `Text` at the `Box`'s edge instead), each from 2.1.326
+(`claude-code/index.d.ts:1382`, `16833`, `16840`).
 
 1. `autoFocus` accepts only `true`, on any control.
 2. The VS Code extension draws an element as if these props were absent: `Box` `position` with
@@ -505,7 +564,9 @@ An app that ignores one of these draws the text as if it were absent. They exist
 2. **A digit `hotkey`** on a button in the band also fires when the user types that digit alone into
    an empty prompt and pauses.
 3. While the band is collapsed, neither an `action` binding nor a hotkey presses a button in it.
-4. Two buttons of one drawing with the same `hotkey`: the later one gets it.
+4. Two of one mod's buttons in one drawing with the same `hotkey`: the later one gets it. Buttons
+   of two mods' rows of the band on the same key: in the terminal the key presses neither
+   (§10.44.10).
 5. **`variant`** is `primary` or `secondary`, and any other value throws; in the terminal a `primary`
    button draws in the accent colour unless `plain`.
 6. **`role`** is `dismiss`, and any other value throws. It marks a close button; the mod does the
@@ -527,12 +588,13 @@ nesting, element, `Raster` cell or `Image` byte limit is not drawn (§10.24).
 | --- | --- |
 | A hook's own time for one event, not counting time inside `next` or a `$` call other than `$.clock.sleep` | 10 seconds; 50 milliseconds for a `prompt.edit` hook |
 | A `.catch` handler's time | 1 second, a fresh budget from when it is called <!-- req: mods.limit..catch --> |
+| Time a `ui.render` or `plugin.register` hook waits on `$` calls for one event, all together | 30 seconds for `ui.render`; 10 seconds for `plugin.register`, not counting `$.ui.ask`. The `ui.render` bound and the `$.ui.ask` exemption from v2.1.326. A hook past it is skipped. |
 | All `session.end` hooks together | the SessionEnd hook budget (§7), 1.5 seconds unless the user changes it, counted from when the settings `SessionEnd` hooks finish; this clock never stops, `$` waits included, and a later hook starts with what earlier ones left <!-- req: mods.limit.session.end --> |
 | `$.process.run` timeout | 30 seconds by default, 10 minutes at most <!-- req: mods.limit.$.process.run --> |
 | `$.process.run` `stdout` | 4 MiB; `isStdoutTruncated` is `true` when cut <!-- req: mods.limit.stdout --> |
 | `$.process.run` `stderr` | 4 MiB; `isStderrTruncated` is `true` when cut <!-- req: mods.limit.stderr --> |
 | `$.model.complete` `maxTokens` | 1,024 by default, up to 64,000 or the model's output limit <!-- req: mods.limit.$.model.complete | mods.limit.maxTokens --> |
-| `$.fs.read` | 4 MiB for one file <!-- req: mods.limit.$.fs.read --> |
+| `$.fs.read` | 4 MiB for one file, or for one range read with `{ offset, length }` (from v2.1.326) <!-- req: mods.limit.$.fs.read --> |
 | `$.fs.write` | 4 MiB for one file <!-- req: mods.limit.$.fs.write --> |
 | `$.http.fetch` | a request body of at most 4 MiB counted in characters, or the call rejects; a response body read to its first 4 MiB in `text`, the rest unread, except that a `Content-Length` declaring more rejects the call with a reason ending `is over the 4194304-byte limit` (not when the last request after redirects is `HEAD`, from v2.1.296); 30 seconds for the whole call, redirects and body included; at most 5 redirects <!-- req: mods.limit.$.http.fetch --> |
 | A hook's `drop` reason, or a `config.set` `deny` reason | 4,096 characters; the end of a longer reason is cut and the drop or deny still applies (before v2.1.292 the hook failed instead) <!-- req: mods.limit.drop --> |
@@ -540,7 +602,9 @@ nesting, element, `Raster` cell or `Image` byte limit is not drawn (§10.24).
 | A `Code`'s `language` or `path`, a `Select` option's `value`, a `Client`'s `module` | 10,000 characters; a longer one fails the `ui.render` hook that returned it <!-- req: mods.limit.Code --> |
 | A `Link`'s `href` | 2,048 characters; a longer one fails the `ui.render` hook <!-- req: mods.limit.Link --> |
 | Nesting depth of one tree | 32 levels below the root element <!-- req: mods.limit.Nesting depth of one tree --> |
+| Depth and size of a tree counted with its prop values | refused when `nested more than 100 lists and objects deep` or with `more than 1000000 values once written out` (from v2.1.326) <!-- req: mods.limit.Depth and size of a tree counted with its prop values --> |
 | Elements and text children in one tree | 20,000 <!-- req: mods.limit.Elements and text children in one tree --> |
+| The rows above the prompt, stacked | elements, `Raster` cells and `Image` bytes add up across the rows against the limits for one tree; the rows past them are left out (§10.9 item 4) <!-- req: mods.limit.The rows above the prompt, stacked --> |
 | `Raster` cells in one tree, each `Raster`'s `columns` × `rows` | 262,144 <!-- req: mods.limit.Raster --> |
 | PNG or RGBA bytes of all `Image`s in one tree | 2 MiB <!-- req: mods.limit.Image --> |
 | `$.store` | 4 MiB of JSON in total <!-- req: mods.limit.$.store --> |
@@ -550,10 +614,10 @@ nesting, element, `Raster` cell or `Image` byte limit is not drawn (§10.24).
 | A pane opened without the user asking | placed from 144 terminal columns, 110 once the user has opened it <!-- req: mods.limit.A pane opened without the user asking --> |
 | Rows one mod has placed with `$.ui.place` in a conversation at one time | 500; at the limit a call with a new `id` resolves to `{ isPlaced: false, reason: 'a plugin holds at most 500 placed rows' }` <!-- req: mods.limit.$.ui.place --> |
 | Nesting depth of a `$` call's arguments | 28,000 levels; past it the call rejects with a message ending `nesting deeper than 28000 levels is not supported` <!-- req: mods.limit.Nesting depth of a mods API call's arguments --> |
-| Nesting depth of a changed event passed to `next`, outside async generator hooks | 28,000 levels; past it `next` rejects with a message ending as above <!-- req: mods.limit.next --> |
+| Nesting depth of a changed event passed to `next`, outside `ui.render` and async generator hooks | 28,000 levels; past it `next` rejects with a message ending as above <!-- req: mods.limit.next --> |
 | Nesting depth of a hook's return value, outside `ui.render`, `ui.resolve` and async generator hooks | 28,000 levels; past it the result is refused and the skip line includes `nesting deeper than 28000 levels is not supported` <!-- req: mods.limit.ui.render --> |
 | Scopes (functions, blocks, loops) nested in one another in one file of a hooks module | 2,000 <!-- req: mods.limit.Scopes, such as functions, blocks, and loops, nested inside one another in one file of a hooks module --> |
-| Command, tool, subagent type and pane names, and the `id` of a placed row or a backdrop | letters, digits, `_` and `-`, up to 64 characters <!-- req: mods.limit.id --> |
+| Command, tool, subagent type and pane names, the `id` of a placed row, and the `scene` of a backdrop | letters, digits, `_` and `-`, up to 64 characters <!-- req: mods.limit.id --> |
 | One `claude plugin test` test | 5 seconds unless the test sets `timeoutMs` <!-- req: mods.limit.claude plugin test --> |
 
 The 28,000-level limits exist from v2.1.299. A level is one array or object: a scalar is 0 levels
@@ -582,7 +646,7 @@ built-in guard. Where it loads (§14) it runs ahead of every mod a person instal
 | Name | Read from | What it does |
 | --- | --- | --- |
 | `CLAUDE_CODE_PLUGIN_DIRS` | the environment, or `env` in `~/.claude/settings.json` | Plugin directories to load as `--plugin-dir` does, for apps no flag can be passed to: absolute paths separated by `:`, or `;` on Windows (§3). <!-- req: mods.setting.CLAUDE_CODE_PLUGIN_DIRS --> |
-| `CLAUDE_CODE_PLUGIN_DIR_WATCH` | the environment | `1` makes a long-running non-interactive session reload `--plugin-dir` mods on save (§3, §10.8.2). <!-- req: mods.setting.CLAUDE_CODE_PLUGIN_DIR_WATCH --> |
+| `CLAUDE_CODE_PLUGIN_DIR_WATCH` | the environment | Whether mods reload on save. Unset: skills-directory mods reload in any session that takes more than one prompt, `--plugin-dir` mods only in interactive terminal sessions; `1` reloads `--plugin-dir` mods as skills-directory mods; `0` turns reloading off everywhere (§3, §10.8.2; `env-vars.md`). <!-- req: mods.setting.CLAUDE_CODE_PLUGIN_DIR_WATCH --> |
 
 ### 10.12.3 Commands
 
@@ -591,6 +655,22 @@ built-in guard. Where it loads (§14) it runs ahead of every mod a person instal
 | `/plugin` | Show, under its tabs, a line such as `1 mod active · first-mod` when a mod that is not built in has loaded: the count and the names, joined by `, ` (Judgment J10.11). <!-- req: mods.command./plugin --> |
 | `claude plugin validate <directory>` | Read the plugin's manifest and hooks module and report errors, the events the module handles and the `$` calls it makes (§10.4.3); `--strict` treats warnings as errors and `--json` prints a machine-readable report (§17). <!-- req: mods.command.claude plugin validate <directory> --> |
 | `claude plugin test [directory]` | Run every file under the directory, or the current directory, whose name ends in `.test.ts` or `.test.tsx`, and exit with status 1 when a test fails (`test.md`). <!-- req: mods.command.claude plugin test [directory] --> |
+
+The test kit's `expect(value)` (module `claude-code/testing`) MUST offer the assertions of the
+declarations' `Matchers` type (`toBe`, `toEqual`, `toStrictEqual`, `toMatchObject`, `toContain`,
+`toContainEqual`, `toHaveLength`, `toHaveProperty`, `toBeUndefined`, `toBeDefined`, `toBeNull`,
+`toBeTruthy`, `toBeFalsy`, `toBeNaN`, `toBeGreaterThan`, `toBeGreaterThanOrEqual`, `toBeLessThan`,
+`toBeLessThanOrEqual`, `toMatch`, `toStartWith`, `toEndWith`, `toBeInstanceOf`, `toThrow`, and the
+asymmetric `expect.any`, `anything`, `stringContaining`, `stringMatching`;
+`claude-code/index.d.ts:21391`), each after the value checked; `.not` before an assertion checks
+the opposite; `.resolves` or `.rejects` right after `expect(...)`, awaited, checks what a promise
+settles with, as `await expect(promise).rejects.toThrow()`. <!-- req: mods.test.Check a result with expect -->
+
+In the test kit, a mount whose `ui.render` hook returns `next(e)` succeeds with no stub (from
+2.1.321; before, it failed `no implementation for ui.render`); a `ui.render` stub chooses what
+`next(e)` returns, and for the band from 2.1.323 the test's hook needs `{ plugin: '<mod>' }` for the
+stub to answer it. `ui.keepsBeneath()` resolves `true` when the drawing includes what `next(e)`
+returned, in a test without a `ui.render` stub (`test.md`, "Follow the test kit's rules").
 | `claude --plugin-dir <directory>` | Load the directory as a plugin for one session and reload its hooks module on save (§10.8.2); the flag repeats to load several. <!-- req: mods.command.claude --plugin-dir <directory> --> |
 | `/reload-plugins` | Reload plugins when run. <!-- req: mods.command./reload-plugins --> |
 
@@ -613,14 +693,15 @@ mod type-checked against them run unchanged in an Extended client.
 
 | Id | Judgment | Why, and the evidence |
 | --- | --- | --- |
-| J10.2 | The messages and report lines this part quotes are Claude Code 2.1.325's; a client SHOULD use them word for word. | The documentation quotes some (`"tool.calls" is not an event`, `$.ui is used as a value`, the `hooks:`/`calls:` lines) and not others. Oracle 2.1.325, `claude plugin validate` on minimal mods of ours (two modules, a `.txt` module, a duplicate `on`, an undeclared state value, a bare import, a missing export, a generator mismatch, a telemetry hook without a filter). Oracle 2.1.326, plugins whose directory name differs from the manifest `name`: `const x = $`, `const u = $.ui` and `$["store"]` each print `<directory>: <absolute file>:1: <message>; $ is always spelled …` at `modules../register.js`, with the bare-`$` and computed-access texts of §10.4.2. The installed release is 2.1.325, not the target 2.1.321. |
+| J10.2 | The messages and report lines this part quotes are Claude Code 2.1.325's; a client SHOULD use them word for word. | The documentation quotes some (`"tool.calls" is not an event`, `$.ui is used as a value`, the `hooks:`/`calls:` lines) and not others. Oracle 2.1.325, `claude plugin validate` on minimal mods of ours (two modules, a `.txt` module, a duplicate `on`, an undeclared state value, a bare import, a missing export, a generator mismatch, a telemetry hook without a filter). Oracle 2.1.326, plugins whose directory name differs from the manifest `name`: `const x = $`, `const u = $.ui` and `$["store"]` each print `<directory>: <absolute file>:1: <message>; $ is always spelled …` at `modules../register.js`, with the bare-`$` and computed-access texts of §10.4.2. Oracle 2.1.330 (`claude --version` 2.1.330), a mod of ours hooking `ui.press`, `ui.render{component=AbovePrompt}`, `tool.run`, `tool.judge` and `session.stop` and calling `$.http.fetch`, `$.wasm.compile` and `$.process.hookEnv`: the `(default matcher key: …)` notes, `tool.run` and `tool.judge` under `gating hook without .catch:`, the `wasm` lines, `Provides:` and `Hosts:`, and the two `$.wasm.compile` file messages of §10.4.2. |
 | J10.3 | A mod that adds a `$` namespace without a types file loads. | reference.md, "Files", says the file is required then; oracle 2.1.325 validates such a mod and lists `adds to $: topo`. A module that only withholds a namespace cannot be told from one that adds by its source alone. |
 | J10.4 | A `userConfig` field with no saved value and no default is absent from `options`, unless it is `required: true`: then the mod does not load (`options do not fit plugin.json userConfig`), as it does not for a value that does not fit its field. Outside mods `required` binds only the dialog (§3.4.1). | reference.md says "with defaults filled in" and nothing of a field with none; troubleshoot.md, "`options do not fit plugin.json userConfig`", names "a required field has no value" as a reason the module does not load. Lead: the reference implementation's rows for `src/mods/load/options.ts`. |
 | J10.5 | A module that calls `require` is refused. | create.md says to write every file "with `import` and not `require`", and the environment has no `require`. Oracle 2.1.325 and the reference implementation's oracle on 2.1.321 both found Claude Code validates and loads such a module; refusing it is the documented rule and costs no working mod. |
 | J10.6 | `next.to` accepts `user` from a `prepend` hook, skipping only its `prepend` peers below it. | The declarations' `TargetTier` excludes only `prepend` and say `user` "is for a prepend hook alone"; reference.md lists `append`, `builtin` and `core`. Declarations win (E2). |
-| J10.7 | A hook skipped for re-entry runs no `.catch` handler and reports nothing; `next.error` has no `re-entry` kind and no `cause`. E4a deviation, on `next.error` and `next.error.cause`. | **Docs:** reference.md, "The hook function", describes a `re-entry` kind of `next.error` with a `cause` (`lent`, `rewritten`). **Claude Code:** the 2.1.321 declarations' `HookFailure` is `{ kind: 'throw' \| 'timeout', message?, budget }` (E2), and the reference implementation's oracle on 2.1.322 found the `.catch` handler is not asked for a re-entry skip. |
-| J10.8 | `$.ui.cancelNotify`, `$.prompt.media`, `$.prompt.paint`, `$.session.surface` and `$.session.identity` are part of `$`. | They are in the declarations' `EngineInterface` and not in reference.md's table, which the page itself says is not complete. |
+| J10.7 | A hook skipped for re-entry (an event raised from inside a `$` call of that hook, or of the mod's code outside its hooks) runs no `.catch` handler and reports nothing; `next.error` has no `re-entry` kind and no `cause`. | reference.md of 2.1.330, "The hook function", gives `next.error.kind` as `throw` or `timeout` only and no longer describes re-entry, so the documentation now agrees with the 2.1.321 and 2.1.330 declarations' `HookFailure` (`{ kind: 'throw' \| 'timeout', message?, budget }`, E2); until 2.1.321 it described a `re-entry` kind with a `cause`, an E4a deviation then. How a re-entry is handled is the reference implementation's oracle on 2.1.322: the `.catch` handler is not asked. |
+| J10.8 | `$.ui.cancelNotify`, `$.prompt.media`, `$.prompt.paint`, `$.session.surface`, `$.session.identity` and `$.session.machine` are part of `$`. | They are in the declarations' `EngineInterface` (2.1.330: `machine` at `claude-code/index.d.ts:3470`) and not in reference.md's table, which the page itself says is not complete. |
 | J10.9 | A reloaded mod keeps its place among the mods of its tier. | events.md orders mods by tier and by `dependencies`, and does not say whether a reload is a new load; moving a mod on each save would change what a guard sees. Lead: the reference implementation's rows for `src/mods/chain/registry.ts`. |
 | J10.10 | A nesting level is one array or object; 28,000 are allowed and the 28,001st refused. | reference.md gives "28,000 levels. Past that, ..." without defining a level. |
 | J10.11 | The `mods active` line is plural for several mods (`2 mods active · a, b`). | overview.md shows the line for one mod only. |
 | J10.21 | The `capabilities` warning is given whatever the field's value, and the plugin still loads. | The docs do not name the field. Oracle 2.1.321, corpus (`claude-plugins-community/dominion-flow`, `gatekeeper-ai`, object values): a warning, no error; oracle 2.1.325 gives the same warning for `"capabilities": 5`. |
+| J10.24 | The render site `ContextMenu` (the Desktop app's menu on a transcript row, the rows a mod adds to it) and the elements `Progress` (every surface) and `Shader` (Desktop, and on mobile its `Svg` alone) are part of the surface; a client offers them where the declarations' tables put them. | In the 2.1.330 declarations (`RenderComponent`, `claude-code/index.d.ts:12541`; `RenderPropsOf.ContextMenu` `13771`; the per-surface `Elements` `4819`–`4891`; `ProgressProps` `10940`; `ShaderProps` `15868`) and not in the documentation's tables (E2). `Shader` reads a second file written against the module `claude-code/shader`, which this chapter does not specify further. |

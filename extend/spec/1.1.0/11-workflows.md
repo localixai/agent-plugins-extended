@@ -111,7 +111,10 @@ plugin's script is written against them.
 | `schema` | A JSON Schema the agent's output must match; the agent returns JSON instead of prose. |
 | `label` | The agent's name in the progress view. |
 | `stallMs` | This agent's stall window in milliseconds (§11.7). |
-| `model` | The model for this agent; it counts as the per-invocation model in the subagent model order (§5), and an `availableModels` allowlist substitutes as it does for subagents. |
+| `model` | The model for this agent; it counts as the per-invocation model in the subagent model order (§5.8.2), and an `availableModels` allowlist substitutes as it does for subagents (§5.8.4). |
+
+A workflow agent's effort level follows the subagent rules of §5.8.7, `CLAUDE_CODE_SUBAGENT_EFFORT`
+included (`env-vars.md`, "Variables").
 
 1. **Schemas.** Before starting an agent with `schema`, the client MUST check the schema and fail
    the call, naming the contradiction, when it can prove the schema contradicts itself; at least a
@@ -225,17 +228,18 @@ not pause or limit the run, and does not appear while ultracode is on.
    relaunches it with a `Workflow` call (`resumeFromRunId`, same session); while agents of the
    stopped run have not exited, the client MUST refuse the relaunch.
 2. A relaunch replays the run in the order agents start. Each agent either returns its saved result
-   or runs again:
+   or runs again: <!-- req: workflows.behavior.Which agents run again -->
 
    | State in the previous run | On relaunch |
    | --- | --- |
    | Completed | Returns its saved result. The first agent whose prompt differs from the previous run's, because the script was edited or an earlier agent returned something else, runs again, and so does every agent after it. <!-- req: workflows.behavior.Which agents run again.Completed --> |
    | Still running when the run stopped | Starts over. Stopping the whole run does not count any agent as failed, so it does not make later agents run again (Judgment J11.7). <!-- req: workflows.behavior.Which agents run again.Still running when you stopped --> |
-   | Failed | Runs again, and so does every agent the script starts after it. Stopping one agent alone (`x` on it) counts as failing. <!-- req: workflows.behavior.Which agents run again.Failed --> |
+   | Failed at a usage limit (§11.9) | Runs again, and agents that completed return their saved results. Only when the script called another agent after the failure and that agent returned a result does every agent the script starts after the failed one run again too. <!-- docs: workflows.md | Which agents run again — Failed at a usage limit --> |
+   | Failed, otherwise | Runs again, and so does every agent the script starts after it, even one that completed. Stopping one agent alone (`x` on it) counts as failing. <!-- req: workflows.behavior.Which agents run again.Failed --> |
 
-   For a script that starts A, B, C, D where B failed, a relaunch returns A from the record and runs
-   B, C and D. An edit that makes it start A, C, B, D runs C, B and D. A call is compared by its
-   prompt and its options (Judgment J11.7).
+   For a script that starts A, B, C, D where B failed other than at a usage limit, a relaunch
+   returns A from the record and runs B, C and D. An edit that makes it start A, C, B, D runs C, B
+   and D. A call is compared by its prompt and its options (Judgment J11.7).
 3. A run does not continue on its own when the session is backgrounded or the client exits. The
    client MUST keep the run's saved results under the session's directory, so that after
    `claude --resume` (or in the background session) a relaunch replays them. A relaunch for which no
@@ -252,13 +256,21 @@ waiting agents run again and the run continues. The progress line and the `/work
 when the limit resets. The run pauses only when all of these hold, and otherwise the affected agent
 fails:
 
-1. the session is interactive and signed in with a claude.ai subscription (not `claude -p`, the
-   SDK, a background session, a Remote Control or agent team teammate session);
+1. the session is signed in with a claude.ai subscription without usage-based billing, and is an
+   interactive terminal session (not `claude -p`, the SDK, a background session, a Remote Control
+   or agent team teammate session) or a local session started in the desktop app's Code tab (not an
+   SSH, WSL, Dispatch or scheduled-task session, not one started from Remote Control or through a
+   corporate launcher, and not while `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` is set);
 2. `autoContinueAtUsageLimit` is on (§12); turning it off during a wait ends the wait and the
    waiting agents fail;
-3. the limit resets within 24 hours;
-4. the run has not already waited twice: the third hit fails the agent.
-   <!-- req: workflows.behavior.When a run hits your usage limit -->
+3. in the Code tab, the session-limit card's auto-continue choice is left on (the default);
+   turning it off stops runs in Code tab sessions from pausing, unless managed settings set
+   `autoContinueAtUsageLimit` to `true`;
+4. the limit resets within 24 hours;
+5. the run has not already waited twice: the third hit fails the agent.
+
+A run whose agents failed at the limit is finished by relaunching it after the reset (§11.8).
+<!-- req: workflows.behavior.When a run hits your usage limit -->
 
 ## 11.10 Turning workflows off
 
@@ -267,7 +279,7 @@ fails:
    turns them off; on the Pro plan they are off unless `enableWorkflows` is `true`. Nothing that turns
    them off is undone by `enableWorkflows: true` (§12, §14). The rules are the same on every surface:
    the terminal, the desktop app, the IDE extensions, `claude -p` and the SDK.
-2. While workflows are off, the client MUST NOT offer `/workflows`, any workflow command (bundled,
+2. While workflows are off, the client MUST NOT offer the `/workflows` progress view, any workflow command (bundled,
    saved or a plugin's) or the `/workflow-authoring` skill; the `ultracode` keyword does not start a
    run and the ultracode toggle is removed from `/effort`. A plugin with workflows still loads; only
    its workflow commands are absent.

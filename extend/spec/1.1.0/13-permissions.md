@@ -25,7 +25,7 @@ managed settings may set (`allowManagedPermissionRulesOnly`, the `allowManaged*O
    | --- | --- | --- | --- |
    | Read-only | Read, Grep, Glob | No inside the working directories (§13.12), except a network path (§13.5.7) | — <!-- req: permissions.behavior.Permission system.Read-only --> |
    | Bash commands | Bash, PowerShell | Yes, except Bash's read-only commands (§13.4.5); no PowerShell command is in that set (Judgment J13.37) | A rule per repository and command, saved <!-- req: permissions.behavior.Permission system.Bash commands --> |
-   | File modification | Edit, Write, NotebookEdit | Yes | An approval for the rest of the session, not saved <!-- req: permissions.behavior.Permission system.File modification --> |
+   | File modification | Edit, Write, NotebookEdit | Yes, except files such as the client's own plan and auto memory files | An approval for the rest of the session, not saved <!-- req: permissions.behavior.Permission system.File modification --> |
    | Web fetch | WebFetch | Yes, except the preapproved documentation domains | A rule per repository and domain, saved <!-- req: permissions.behavior.Permission system.Web fetch --> |
    | Web search | WebSearch | Yes | A rule per repository, saved <!-- req: permissions.behavior.Permission system.Web search --> |
 
@@ -77,7 +77,7 @@ managed settings may set (`allowManagedPermissionRulesOnly`, the `allowManaged*O
    non-interactive text run (`ask` in place of `deny` for an ask rule; errors.md, "Matches no tool ·
    check for typos"). In a background session or with `--output-format json` or `stream-json` the
    warning goes to the debug log instead of stderr. A name holding `_` or `*`, and the name of a tool
-   Claude Code removed (`TaskOutput`), is exempt. `MultiEdit` is not a known tool in 2.1.321 and is
+   Claude Code removed (`TaskOutput`), is exempt. `MultiEdit` is not a known tool (2.1.321 to 2.1.330) and is
    not exempt: a `MultiEdit` or `MultiEdit(<path>)` deny or ask rule draws this warning, and a path
    form also draws the warning of §13.5.2 (Judgment J13.34). The rule is kept. Where the warning appears is
    the output of the client that presents the session; a rule engine that presents none, such as a
@@ -110,6 +110,11 @@ managed settings may set (`allowManagedPermissionRulesOnly`, the `allowManaged*O
    dialog and in `claude doctor`; an MCP parameter is matched only by a `--disallowedTools` deny
    rule. A `Skill(skill:<name>)` deny rule matches the skill under any of its names (§4).
 5. How `name:value` is told from a command or path that holds a colon is Judgment J13.5.
+6. The parameter names and values Claude sends to a tool are visible in the `input` of the
+   `tool_use` block a `claude -p ... --output-format stream-json --verbose` run prints for a prompt
+   that calls for that tool (for example a subagent on Opus: an `Agent` block with `model:
+   "opus"`). Those are the field names and literal values a parameter rule matches.
+   <!-- req: permissions.behavior.Check the parameters Claude sends -->
 
 ## 13.3 Evaluation order
 
@@ -221,7 +226,7 @@ managed settings may set (`allowManagedPermissionRulesOnly`, the `allowManaged*O
    changes this for outside paths (§13.12.2), and in auto mode such a command MAY wait for the
    classifier. <!-- req: permissions.behavior.Read-only commands -->
 2. Unquoted globs are allowed for a command whose every flag is read-only (`ls *.ts`,
-   `wc -l src/*.py`). A redirect adds a check on its target (§13.4.6).
+   `head src/*.py`). A redirect adds a check on its target (§13.4.6).
 3. In Manual mode a command of the set still prompts when:
    - **an unquoted glob meets a write- or exec-capable command** (`find`, `sort`, `sed`, `git`),
      since the glob could expand to `-delete`;
@@ -281,10 +286,11 @@ managed settings may set (`allowManagedPermissionRulesOnly`, the `allowManaged*O
 2. A `Read` deny rule MUST also refuse the Edit and Write tools on the same path, a new file
    included, with `File is covered by a Read deny rule in your permission settings and cannot be edited.`
    (`cannot be written` for Write). NotebookEdit is not covered; an `Edit` deny covers it.
-3. Read and Edit deny rules apply to the built-in file tools, to the file commands the client
-   recognises in Bash (`cat`, `head`, `tail`, `sed`, `tee`) and to redirect targets. They do not
-   reach a command that reads files without naming them (`grep -r x .`) or a program that opens
-   files itself; only the sandbox does.
+3. Read and Edit deny rules apply to the built-in file tools and, in a Bash command the client
+   can analyze (§13.4.5), to redirect targets and to the file commands it recognises (`cat`, `head`,
+   `tail`, `sed`, `tee`). They do not reach a command that reads files without naming them
+   (`grep -r x .`) or a program that opens files itself; for sandboxed shell commands, only the
+   sandbox with its unsandboxed retry turned off does.
 4. A `.claudeignore` file has no effect; its entries belong in `Read` deny rules.
 
 ### 13.5.2 `Write`, `Glob` and `Grep` path rules
@@ -357,8 +363,9 @@ rule as written, its behaviour, its source, the kind `never matches`, and the ru
 1. A path approved with "don't ask again" MUST be saved with its gitignore characters (`[`, `]`,
    `*`) escaped, so the rule names only that literal path. Rules a user writes are not escaped.
    Parentheses need no escaping: `Edit(./Finance (2024)/**)` names that folder. <!-- req: permissions.behavior.Special characters and ! negation -->
-2. A deny or ask rule whose path is not a usable gitignore pattern still guards the exact path it
-   spells; an allow rule with an unusable pattern approves nothing.
+2. Paths in Read and Edit rules are read as gitignore patterns. An allow rule whose path is not a
+   usable gitignore pattern approves nothing. A deny or ask rule with such a path still guards the
+   exact path it spells (Judgment J13.38).
 3. A deny or ask pattern starting with `!` is a negation: it carves the paths it matches out of the
    `path` and `./path` rules listed before it in the same list of the same source.
    `Read(*.env)` then `Read(!sample.env)` in one `deny` list blocks every `*.env` except
@@ -449,7 +456,12 @@ rule as written, its behaviour, its source, the kind `never matches`, and the ru
    written (Judgment J13.19). <!-- req: permissions.behavior.MCP.A <server> that contains __ or ends in _ -->
 4. A connector tool the organisation set to `ask` (`mcp__claude_ai_<server>__<tool>`, when that
    setting reaches the session) prompts on every call whatever the allow rules and the mode,
-   `auto` and `bypassPermissions` included; `dontAsk` denies it.
+   `auto` and `bypassPermissions` included; `dontAsk`, and a `-p` run with nothing to answer the
+   prompt, deny it.
+5. An allow rule for an MCP tool takes no specifier (no `ruleContent` in a permission update entry,
+   §7.4.7): an MCP allow rule with one matches no call. Some calls of a tool are blocked with a
+   deny parameter rule instead, which for an MCP tool only `--disallowedTools` carries (§13.2.2).
+   <!-- req: permissions.behavior.MCP -->
 
 ## 13.8 Agent, Skill and Cd rules
 
@@ -487,7 +499,7 @@ rule as written, its behaviour, its source, the kind `never matches`, and the ru
 
    | Mode | Runs without asking | Status bar |
    | --- | --- | --- |
-   | `default` | Reads; every other tool prompts on first use. <!-- req: permissions.mode.default --> | `⏸ manual mode on` |
+   | `default` | File reads inside the working directories and other actions that need no approval, such as starting a subagent; it prompts before most edits, shell commands and network requests. <!-- req: permissions.mode.default --> | `⏸ manual mode on` |
    | `acceptEdits` | Also file edits and common filesystem commands on paths in the working directories (§13.9.2). <!-- req: permissions.mode.acceptEdits --> | `⏵⏵ accept edits on` |
    | `plan` | Reads and read-only shell commands, plus classifier-approved commands when auto mode is available; edits wait for an approved plan (§13.9.3). <!-- req: permissions.mode.plan --> | `⏸ plan mode on` |
    | `auto` | Everything the classifier approves (§13.9.4). <!-- req: permissions.mode.auto --> | `⏵⏵ auto mode on` |
@@ -514,7 +526,7 @@ rule as written, its behaviour, its source, the kind `never matches`, and the ru
    | --- | --- |
    | Any settings file sets `disableAutoMode` to `"disable"` | `default` <!-- req: permissions.modes.Which mode a session starts in.disableAutoMode --> |
    | `claude -p` or the Agent SDK | `default` <!-- req: permissions.modes.Which mode a session starts in.claude -p --> |
-   | The organisation's HIPAA configuration applies to the session | `default`; auto stays selectable |
+   | The organisation's HIPAA configuration applies to the session, on Claude Code 2.1.285 through 2.1.325 | `default`; auto stays selectable (from 2.1.326 the next row applies) |
    | A terminal or the VS Code extension | `auto` |
 
 4. A mode of `auto` from any source starts the session in `default` when auto mode is not
@@ -533,7 +545,9 @@ rule as written, its behaviour, its source, the kind `never matches`, and the ru
    the cycle when available; `bypassPermissions` only when the session was started with it enabled
    (`--permission-mode bypassPermissions`, `--dangerously-skip-permissions`,
    `--allow-dangerously-skip-permissions`, or `defaultMode` `"bypassPermissions"` in user,
-   `--settings` or managed settings); `dontAsk` never, only by flag.
+   `--settings` or managed settings); `dontAsk` never, only by flag. At plan mode's approval prompt
+   Shift+Tab approves the plan; `Esc` closes the prompt first, and Shift+Tab with no approval
+   prompt open leaves plan mode.
 
 ### 13.9.2 `acceptEdits`
 
@@ -587,20 +601,39 @@ rule as written, its behaviour, its source, the kind `never matches`, and the ru
    lets Claude name them supplies them with the call; sandboxing.md, "Per-command allowed domains in
    auto mode"); content-scoped ask rules (`Bash(git push *)`)
    prompt; a write the symlink check resolves to a protected path the requested path does not name
-   prompts; network reads prompt; the first read outside the working directories by Read, Grep or Glob prompts once,
-   except in `-p` runs and background sessions.
+   prompts; network reads prompt; a PowerShell command flagged `could not fully check your
+   permission rules` is not auto-approved; the first read outside the working directories by Read,
+   Grep or Glob prompts once, except in `-p` runs, Agent SDK sessions, background sessions, the VS
+   Code chat panel and the desktop app, where the read runs.
 3. Entering auto mode MUST suspend allow rules that grant arbitrary code execution — `Bash(*)`,
-   `PowerShell(*)`, wildcarded interpreters and shell-wrapper prefixes, package-manager run commands, `Agent` and `Monitor`
-   allow rules (Judgment J13.24) — and restore them on leaving. `autoMode.classifyAllShell: true`
+   `PowerShell(*)`, wildcarded interpreters and shell-wrapper prefixes, a wrapper followed only by a
+   wildcard (`Bash(timeout *)`), shell rules that start with a wildcard (`Bash(* --version)`), some
+   wildcarded paths (`Bash($HOME/bin/*)`, `PowerShell(C:\tools\x.exe *)`), package-manager run
+   commands, `Agent` and `Monitor` allow rules (Judgment J13.24) — and restore them on leaving. `autoMode.classifyAllShell: true`
    suspends every Bash and PowerShell allow rule while auto mode is active. A subagent's
    `permissionMode` is ignored under auto mode.
 4. After 3 blocks in a row or 20 in a session, auto mode pauses and the client prompts; a `-p` run
    without a prompt tool skips the action and continues.
+5. **What the classifier reviews beyond tool calls.** Outside Code Mode, a message Claude sends to
+   another agent with `SendMessage` is reviewed before delivery (also in plan mode while the
+   classifier reviews commands, v2.1.222+), unless an allow rule matches `SendMessage` or a
+   `PreToolUse` hook returns `"allow"`, either of which lets it skip the review. In Code Mode the
+   code goes to the classifier once before it runs and the tool calls inside it do not; deny and ask
+   rules and `PreToolUse` hooks still meet each call (§7.6.11.2). Where the server reviews actions
+   as part of the session's model requests, file edits, read-only and sandboxed shell commands wait
+   for that review and are blocked if it flags them.
+6. **Subagents.** For a subagent Claude starts with the Agent tool, the classifier checks the
+   delegation and the subagent's own calls as for the main session, and, for a subagent other than
+   an agent-team teammate, reviews its work and final report before the parent reads it. For the
+   `web-fetch` subagent the first two checks MAY be skipped when `WebFetch(domain:...)` allow rules
+   or the preapproved domains cover every URL of its task; it then starts in `dontAsk`, so any
+   other fetch that needs approval is denied.
 
 ### 13.9.5 `dontAsk`
 
-Every call that would prompt MUST be denied, though a mod (§10) may still approve some. Calls that
-need no approval in Manual mode, allowed calls and calls a PreToolUse hook approves run. Calls
+Every call that would prompt MUST be denied, though in some setups a mod (§10, §13.11) may still
+approve some; `dontAsk` does not stop a tool call a mod makes itself. Calls that need no approval in
+Manual mode, and most calls an allow rule or a PreToolUse hook approves, run. Calls
 matching an ask rule are denied; `AskUserQuestion`, MCP tools marked
 `_meta["anthropic/requiresUserInteraction"]` and connector tools set to `ask` are denied even when
 allowed. No allow rule or hook approves a critical-path removal or a network read. Cloud sessions
@@ -616,14 +649,19 @@ ignore `defaultMode: "dontAsk"`. <!-- req: permissions.modes.Allow only pre-appr
    and critical-path removals still prompt. <!-- req: permissions.modes.Skip all checks with bypassPermissions mode -->
 2. The mode MUST be enabled at launch (`--permission-mode bypassPermissions`,
    `--dangerously-skip-permissions`, or `defaultMode` from user, `--settings` or managed settings);
-   a session started without it cannot enter it. It is refused under `--restricted`, under
+   a session started without it cannot enter it. It is refused under `--restricted` (Claude Code
+   2.1.248 or later) with `Error: bypassPermissions not supported in restricted mode`; the user
+   removes the flag or setting that enables bypass, or starts without `--restricted` and
+   `CLAUDE_CODE_RESTRICTED`. <!-- req: permissions.modes.Restricted mode refuses bypassPermissions -->
+   It is refused under
    `disableBypassPermissionsMode` (`--dangerously-skip-permissions` is rejected and a `defaultMode`
    of bypass starts in `default`; an agent's `permissionMode: bypassPermissions` is ignored), and on
    Linux and macOS as root or under `sudo` outside a recognised sandbox, with
    `--dangerously-skip-permissions cannot be used with root/sudo privileges for security reasons`.
 3. The first interactive session entering the mode MUST show a warning dialog; accepting writes
-   `skipDangerousModePermissionPrompt: true` to `~/.claude/settings.json`, declining exits. A
-   non-interactive run shows no dialog. Cloud sessions ignore `defaultMode` `"bypassPermissions"`.
+   `skipDangerousModePermissionPrompt: true` to `~/.claude/settings.json`, declining exits. Under
+   `--setting-sources` without `user` the dialog can appear again, since the user file is not read.
+   A non-interactive run shows no dialog. Cloud sessions ignore `defaultMode` `"bypassPermissions"`.
 4. A background session honours the acceptance only from user or managed settings: with none
    recorded `claude --bg --permission-mode bypassPermissions` is refused; with it only in
    `.claude/settings.local.json` the request is ignored (bypass left out of the cycle, or the
@@ -680,7 +718,7 @@ own surfaces is Judgment J13.25.
    | `default` | Prompts <!-- req: permissions.modes.Protected paths.default --> |
    | `acceptEdits` | Prompts <!-- req: permissions.modes.Protected paths.acceptEdits --> |
    | `plan` | Allowed at an interactive terminal with bypass available; else to the classifier when auto mode is available, else prompts <!-- req: permissions.modes.Protected paths.plan --> |
-   | `auto` | Goes to the classifier; under `--restricted` it prompts (Judgment J13.26) <!-- req: permissions.modes.Protected paths.auto --> |
+   | `auto` | Goes to the classifier, which decides; under `--restricted` it prompts (Judgment J13.26) <!-- req: permissions.modes.Protected paths.auto --> |
    | `dontAsk` | Denied <!-- req: permissions.modes.Protected paths.dontAsk --> |
    | `bypassPermissions` | Allowed <!-- req: permissions.modes.Protected paths.bypassPermissions --> |
 
@@ -740,20 +778,26 @@ own surfaces is Judgment J13.25.
 2. A mod that handles `tool.check` answers after the PreToolUse hooks (§10). With managed settings,
    a `managed-mcp.json` or a Team or Enterprise login as the session's credential, a mod's approval
    leaves deny rules refusing, ask rules, hook asks and the read block prompting, hook blocks
-   blocking, and the prompt tool or `canUseTool` callback asked; the managed guard option
-   `allowModsToOverrideDenyRules` lifts the rule outcomes and those of hooks outside managed
-   settings, never a managed hook's decision or the callback (§14.9.6, Judgment J14.14). Without
-   managed settings, a `managed-mcp.json` or such a login, a mod's approval lifts all of these. In every setup: under auto mode a mod's approval skips the
-   classifier unless the callback could not be bypassed; under plan mode a mod cannot approve a call
-   that is not read-only; under `dontAsk` it may approve what only the mode would deny. A mod never
-   skips the prompt of a tool that requires user interaction.
+   blocking, and the prompt tool or `canUseTool` callback asked, because the built-in guard loads by
+   default there; these hold against a mod that is not the organisation's own (§14). The managed
+   guard option `allowModsToOverrideDenyRules` lifts the rule outcomes and those of hooks outside
+   managed settings, never a managed hook's decision or the callback (§14.9.6, Judgment J14.14).
+   Without managed settings, a `managed-mcp.json` or such a login, a mod's approval can lift a hook
+   block, some deny-rule refusals, the prompts of ask rules, hook asks and the read block, and the
+   prompt tool or callback. The modes add outcomes of their own in that setup only: under auto mode
+   a call the mod approves can run without the classifier's check, under plan mode the mod cannot
+   approve a call that is not read-only (item 3), and under `dontAsk` it may approve a call that
+   nothing but the mode would deny. Where the guard loads, a mod's approval skips neither the
+   classifier nor what `dontAsk` denies. A mod never skips the prompt of a tool that requires user
+   interaction (Claude Code 2.1.292 or later). A permission rule does not stop a tool call a mod
+   makes itself (`$.tool.call`, `$.mcp.call`, `$.fs`, `$.process`; §10, §14.9.2 item 5).
 3. In plan mode, apart from `ExitPlanMode`, a PreToolUse `"allow"` MUST have no effect on a call that
    is not read-only: the call gets what it would get with no hook, and any `updatedInput` still
    applies. `ExitPlanMode` answered `"allow"` with `updatedInput` runs without a prompt. A mod may
    block but not approve such a call. Approving the plan or leaving plan mode lifts this. <!-- req: permissions.behavior.Hook approvals in plan mode -->
-4. With sandboxing on and `autoAllowBashIfSandboxed` at its default `true`, a sandboxed Bash command
-   runs without a prompt despite a bare `Bash` (or `Bash(*)`) ask rule, except in plan mode;
-   content-scoped ask rules still prompt.
+4. With sandboxing on and `sandbox.autoAllowBashIfSandboxed` set to `true` (its default is `false`
+   from Claude Code 2.1.324, `true` before), a sandboxed Bash command runs without a prompt despite a
+   bare `Bash` (or `Bash(*)`) ask rule, except in plan mode; content-scoped ask rules still prompt.
 
 ## 13.12 Working directories
 
@@ -761,12 +805,15 @@ own surfaces is Judgment J13.25.
    adds directories at startup with `--add-dir <path>`, during the session with `/add-dir`, and
    persistently with `permissions.additionalDirectories`. Files there follow the same rules: readable
    without a prompt apart from the network check, editable as the mode says. A network path cannot
-   be added; one given at startup is dropped with a debug-log warning.
+   be added; one given at startup is dropped with a debug-log warning. In an interactive terminal
+   session, `--add-dir` or `/add-dir` naming a folder the workspace trust does not cover MUST ask
+   the user to trust it first (Claude Code 2.1.326 or later; §13.15).
    <!-- req: permissions.behavior.Working directories.During startup | permissions.behavior.Working directories.During session | permissions.behavior.Working directories.Persistent configuration -->
 2. An added directory grants file access, not configuration. From `--add-dir` and `/add-dir`
    directories only (and the SDK's `additionalDirectories`, passed as `--add-dir`), the client loads
    `.claude/skills/` (live), `.claude/commands/` (the project's command wins a name clash),
-   `.claude/agents/`, the `enabledPlugins` and `extraKnownMarketplaces` keys of their settings, and
+   `.claude/agents/`, the `enabledPlugins` and `extraKnownMarketplaces` keys of their settings
+   (skipped until the directory is trusted, §16.4.6), and
    `CLAUDE.md`, `.claude/rules/` and `CLAUDE.local.md` only with
    `CLAUDE_CODE_ADDITIONAL_DIRECTORIES_CLAUDE_MD=1` (`CLAUDE.local.md` also needs the `local` setting
    source). Skills, commands and agents from these directories load through the `project` setting
@@ -838,7 +885,7 @@ activate. `Cd` rules (§13.8) restrict targets. <!-- req: permissions.behavior.M
 | --- | --- | --- |
 | `permissions` | Any file | Object holding the keys below. <!-- req: permissions.setting.permissions --> |
 | `permissions.allow` | Any file; a project's only after trust (§13.15) | Rules approved without a prompt; `--allowedTools` adds for one session. <!-- req: permissions.setting.permissions.allow --> |
-| `permissions.ask` | Any file | Rules that prompt even where the mode would approve; `dontAsk` denies them. <!-- req: permissions.setting.permissions.ask --> |
+| `permissions.ask` | Any file | Rules that prompt even where the mode would approve; `dontAsk` denies them. A `PermissionRequest` hook (§7.5.12) or a mod (§13.11) that allows a matching call lets it run without the user's approval, and sandbox auto-allow skips a bare `Bash` ask rule (§13.11). <!-- req: permissions.setting.permissions.ask --> |
 | `permissions.deny` | Any file | Rules that block; matching files are also left out of discovery and search results. `--disallowedTools` adds for one session. Replaces the deprecated `ignorePatterns`. <!-- req: permissions.setting.permissions.deny --> |
 | `permissions.additionalDirectories` | Any file; a project's only after trust | Directory paths added as working directories (§13.12). <!-- req: permissions.setting.permissions.additionalDirectories --> |
 | `permissions.defaultMode` | Any file, with §13.9.1's exceptions | A `PermissionMode` or `manual`. <!-- req: permissions.setting.permissions.defaultMode --> |
@@ -851,7 +898,7 @@ activate. `Cd` rules (§13.8) restrict targets. <!-- req: permissions.behavior.M
 | `autoMode.classifyAllShell` | Wherever `autoMode` is read | Boolean, default `false` (§13.9.4). <!-- req: permissions.setting.autoMode.classifyAllShell --> |
 | `useAutoModeDuringPlan` | User, local or managed; a `false` in any of them or `--settings` wins | Boolean, default `true` (§13.9.3). <!-- req: permissions.setting.useAutoModeDuringPlan --> |
 | `skipAutoPermissionPrompt` | User or managed | Boolean: skip the first-entry auto notice. <!-- req: permissions.setting.skipAutoPermissionPrompt --> |
-| `skipDangerousModePermissionPrompt` | User, local or managed | Boolean: skip the bypass dialog (§13.9.6). <!-- req: permissions.setting.skipDangerousModePermissionPrompt --> |
+| `skipDangerousModePermissionPrompt` | User, local or managed, and `--settings` files; a background session counts only user and managed settings | Boolean: skip the bypass dialog (§13.9.6). <!-- req: permissions.setting.skipDangerousModePermissionPrompt --> |
 | `allowManagedPermissionRulesOnly` | Managed | §13.3 and §14. |
 
 A `false` for any Boolean block or lock key is the same as unset: another file's `true` still
@@ -862,7 +909,8 @@ applies. How an unreadable value of these keys is read in managed settings is §
 1. With the key `true`, a call that would wait on a prompt MUST be denied and the turn continue; a
    call an allow rule, the mode or the classifier approves runs, and a `PermissionRequest` hook (§7)
    may still answer. It applies in `-p` runs, terminal sessions, the IDE and desktop surfaces,
-   subagents and agent teams.
+   subagents and agent teams. Unlike `dontAsk`, a permission mode of its own (§13.9.5), the key
+   works with whichever mode the session is in.
 2. With it on, the client also leaves out `AskUserQuestion`, `EnterPlanMode` and `ExitPlanMode` (a
    teammate keeps the two plan tools) <!-- req: permissions.reference.What else denyInsteadOfPrompting stops.Question and plan tools -->;
    cancels an MCP elicitation no `Elicitation` hook answers <!-- req: permissions.reference.What else denyInsteadOfPrompting stops.MCP elicitation -->;
@@ -949,7 +997,8 @@ hooks are the places that see the program.
 | J13.28 | The settings files the write block refuses everywhere are `settings.json` and `settings.local.json` in a `.claude` directory or the configuration directory, `managed-settings.json`, and the files of errors.md's list (`--agents`, `--mcp-config` files, the stored server-managed settings and the files kept with it, and any `.json` file while the `managed-settings.d/` folder cannot be resolved). | settings-reference.md says "Claude Code settings files" without a list; errors.md, "Writes to Claude Code settings files are blocked", lists only the files beyond "your settings files"; *reference* `src/rules/decide/block-exceptions.ts`. |
 | J13.32 | `acceptEdits` approves exactly the seven Bash commands `mkdir`, `touch`, `rm`, `rmdir`, `mv`, `cp` and `sed` (§13.9.2). | Not a silence but two lists: permission-modes.md, "Auto-approve file edits with acceptEdits mode", names all seven as the mode's set, while permissions.md ("Permission modes" table) and the summary table of permission-modes.md say "such as `mkdir`, `touch`, `mv`, and `cp`" / "`mkdir`, `touch`, `mv`, `cp`, etc.", which mark their lists as examples. The same section lists "Recognized `rm` and `rmdir` critical-path removals" among what still prompts in this mode, which presupposes that other `rm` and `rmdir` calls are approved. *reference* `src/rules/decide/fs-operands.ts` approves the seven and `src/rules/decide/critical-removal.ts` carves the critical paths out. |
 | J13.33 | Where a rule warning goes (a row, stderr, the debug log) belongs to the client that presents the session; a rule engine without output returns each warning as a value (rule as written, behaviour, source, kind, and for `never matches` the suggested rule), and its caller formats and routes it as §13.2.1 item 3 and §13.5.2 say. | errors.md, "Matches no tool · check for typos" and "Is not matched by file permission checks", describes the texts and surfaces of the CLI only; a library embedded in another host has no row or stderr of its own, and returning the parts keeps both texts derivable. |
-| J13.34 | `MultiEdit` is not a known tool name in 2.1.321: a bare `MultiEdit` deny or ask rule draws `matches no tool`, and `MultiEdit(<path>)` draws both `matches no tool` and `is not matched by file permission checks`; the `TaskOutput` exemption does not extend to it (§13.2.1 item 3). | permissions.md and errors.md call `MultiEdit` legacy and list its path rules among those file checks skip; §18 notes 2.1.321 offers no such tool. Oracle 2.1.325 (`claude -p` with `--settings` deny `MultiEdit`, `MultiEdit(docs/**)`, `Bsh`, `TaskOutput`, private config dir): stderr printed `Permission deny rule "MultiEdit" matches no known tool — check for typos.`, the same for `MultiEdit(docs/**)` and `Bsh`, then the `MultiEdit(docs/**) is not matched by file permission checks` line; nothing for `TaskOutput`. |
+| J13.34 | `MultiEdit` is not a known tool name in the target release, as in 2.1.321: a bare `MultiEdit` deny or ask rule draws `matches no tool`, and `MultiEdit(<path>)` draws both `matches no tool` and `is not matched by file permission checks`; the `TaskOutput` exemption does not extend to it (§13.2.1 item 3). | permissions.md and errors.md call `MultiEdit` legacy and list its path rules among those file checks skip; §18 notes neither 2.1.321 nor 2.1.330 offers such a tool, and `tools-reference.md` of 2.1.330 does not list it. Oracle 2.1.325 (`claude -p` with `--settings` deny `MultiEdit`, `MultiEdit(docs/**)`, `Bsh`, `TaskOutput`, private config dir): stderr printed `Permission deny rule "MultiEdit" matches no known tool — check for typos.`, the same for `MultiEdit(docs/**)` and `Bsh`, then the `MultiEdit(docs/**) is not matched by file permission checks` line; nothing for `TaskOutput`. |
 | J13.35 | The signature, sync and consent files kept beside `remote-settings.json` are protected by the client that writes them, under its own names: the contract is that every file the client keeps with its server-managed settings cache is protected, not a list of names. A library protects `remote-settings.json` in the configuration directory and the files its host names to it; it does not guess names (no prefix match). | permission-modes.md, "Protected paths", names the files by role only ("the signature, sync, and consent files Claude Code keeps with it"); claude-directory.md and server-managed-settings.md name only `remote-settings.json`. A guessed pattern would protect files Claude Code does not, and miss ones it does. |
 | J13.36 | `Tool(*)` is the bare tool name only for the command format (Bash, Monitor); `Read(*)`, `Agent(*)` or `PowerShell(*)` is a specifier rule, so as a deny rule it refuses the calls its pattern matches and does not remove the tool. | permissions.md, "Match all uses of a tool", makes only `Bash(*)` equal to `Bash` and says only of those two forms that a deny removes the tool; "PowerShell" says `PowerShell(*)` matches every command, not that it removes the tool. tools-reference.md gives Monitor Bash's rule format. Lead: the reference implementation's row for `src/rules/specifier-formats.ts`. |
 | J13.37 | The read-only set of §13.4.5 is of Bash commands; a PowerShell command is never read-only, so in Manual mode every PowerShell command prompts unless a rule, a hook or `acceptEdits` (§13.9) approves it. | permissions.md, "Read-only commands", says "a built-in set of Bash commands" and lists only Bash commands; "PowerShell" gives rules and the AST split but no read-only set; the network-path check "applies to PowerShell tool commands" without naming any that would run unprompted. A client that guessed PowerShell members would approve commands Claude Code may prompt for. Lead: the reference implementation's row for `src/rules/decide/powershell-edits.ts`. |
+| J13.38 | A deny or ask rule whose path is not a usable gitignore pattern still guards the exact path it spells; only an allow rule with such a path approves nothing (§13.5.5). | `permissions.md` up to 2.1.321 said both; 2.1.330 ("Special characters and ! negation") keeps only the allow half and says nothing of deny and ask rules. Dropping the guard would let a typo in a deny rule fail open, so the older, safer reading is kept. |

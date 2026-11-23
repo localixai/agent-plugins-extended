@@ -3,6 +3,7 @@
   "revision": "018f293+rename+fixes",
   "pass": "r02-hooks-mods-permissions-policy",
   "date": "2026-11-16",
+  "release": "2.1.321",
   "files": [
     "07-hooks/README.md",
     "07-hooks/events.md",

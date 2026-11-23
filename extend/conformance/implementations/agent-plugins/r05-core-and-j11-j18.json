@@ -3,6 +3,7 @@
   "revision": "018f293+rename+fixes+core",
   "pass": "r05-core-and-j11-j18",
   "date": "2026-11-16",
+  "release": "2.1.321",
   "files": [
     "11-workflows.md",
     "12-settings.md",

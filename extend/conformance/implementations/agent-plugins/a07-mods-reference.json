@@ -3,6 +3,7 @@
   "revision": "018f293+rename",
   "pass": "a07-mods-reference",
   "date": "2026-11-16",
+  "release": "2.1.321",
   "files": [
     "10-mods/README.md",
     "10-mods/reference.md",

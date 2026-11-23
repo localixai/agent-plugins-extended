@@ -33,10 +33,11 @@ names another page.
 
 ### 16.23.1 Bundles
 
-A manifest with only `name` and `dependencies` is a valid plugin, so a **bundle** — a plugin whose
-install installs a curated set — needs nothing else. A new member is added by publishing a new
+A manifest with only `name` and `dependencies` is a valid plugin, so a **bundle** — one plugin that
+users install to get a curated set — needs nothing else. A new member is added by publishing a new
 version of the bundle; users receive it through auto-update of the marketplace, or with
-`claude plugin update <bundle>` and then `/reload-plugins`, which installs the added dependencies.
+`claude plugin update <bundle>`, either of which installs the added dependency (§16.24.1), then
+`/reload-plugins`.
 An admin deploys a bundle to everyone by enabling it in managed `enabledPlugins` (§14).
 <!-- req: dependencies.guide.Bundle plugins for a team -->
 
@@ -59,10 +60,22 @@ dependencies too (`plugins/install.md`, "Plugins with dependencies"):
 4. **Uninstall** leaves auto-installed dependencies in place until `claude plugin prune` (§16.29).
    <!-- req: install.guide.Plugins with dependencies.Uninstall -->
 
-Besides `claude plugin install`, these also install any missing declared dependency, under the
-same limits: `/reload-plugins` (§16.12), auto-update of the dependent's marketplace (§16.19),
-running `claude plugin install` again on the dependent, and `claude plugin marketplace add`. A
-client MUST NOT itself install a dependency with a `command` source, nor run a dependency entry's
+### 16.24.1 When a dependency installs automatically
+
+Besides `claude plugin install`, each of these MUST install a missing declared dependency, under the
+same limits as an install:
+
+1. `/reload-plugins` (§16.12);
+2. auto-update of the dependent plugin's marketplace (§16.19);
+3. running `claude plugin install` again on the dependent;
+4. updating the dependent with `claude plugin update` or **Update now** in `/plugin` (§16.18),
+   except while `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` is set: the update then installs no
+   dependency and reports the ones left as §16.30 states;
+5. `claude plugin marketplace add`.
+
+<!-- req: dependencies.guide.When a dependency installs automatically -->
+
+A client MUST NOT itself install a dependency with a `command` source, nor run a dependency entry's
 `headersHelper`; the user installs such a dependency first, by itself. Until then the dependent fails
 to install (`plugins/host-marketplace.md`, "Installs and updates that refuse a command instead of
 asking"; §15.15.4); a dependency its marketplace does not list refuses the install too.
@@ -199,24 +212,28 @@ other claude.ai plugins`.
 ## 16.30 Dependency errors
 
 A dependency that cannot be satisfied fails the install, or leaves the plugin installed and
-**disabled** until it is resolved (`plugins/troubleshooting.md`, "Dependency errors"). At install the
-refusal is the install's error; at load the problem is shown in `claude plugin list` and the **Errors**
-tab, and the client MUST keep the affected plugin, and what depends on it, out of the session.
+**disabled** until it is resolved (`plugins/troubleshooting.md`, "Dependency errors"). Most messages
+arrive at one of two moments: at install the refusal is the install's error; at load the problem is
+shown in the **Errors** tab and in `claude plugin list`, whose wording the table quotes, and the
+client MUST keep the affected plugin, and what depends on it, out of the session.
 
 | Message | Meaning | `errorDetails.type` |
 | --- | --- | --- |
-| `Dependency "<dep>" is not installed` | A declared dependency is not installed. Adding its marketplace and running `/reload-plugins` installs what it can resolve. <!-- req: install.troubleshooting.Dependency errors.Dependency "<dep>" is not installed --> | `dependency-unsatisfied` |
+| `Dependency "<dep>" is not installed` | A declared dependency is not installed. Adding its marketplace and running `/reload-plugins` installs that dependency when it can be resolved. <!-- req: install.troubleshooting.Dependency errors.Dependency "<dep>" is not installed --> | `dependency-unsatisfied` |
 | `Dependency "<dep>" is disabled — enable it or remove the dependency` | Installed but off. <!-- req: install.troubleshooting.Dependency errors.Dependency "<dep>" is disabled --> | `dependency-unsatisfied` |
 | `Requires "<dep>" <range>, installed <version>` | The installed version is outside the range. | `dependency-version-unsatisfied` |
 | `<Plugin or Dependency> "<name>" has conflicting version requirements` | No version satisfies every range; the message lists them (§16.26). | |
 | `… has version requirements too complex to intersect` / `… has an invalid version requirement: "<range>"` | The combined ranges cannot be intersected, or a range is not valid semver. <!-- req: install.troubleshooting.Dependency errors.has an invalid version requirement --> | |
 | `… has no git tag satisfying <range>` | The dependency's repository has no `<name>--v*` tag in the range (§16.25). <!-- req: install.troubleshooting.Dependency errors.... has no git tag satisfying <range> --> | |
 | `Dependency "<dep>" (required by <plugin>) is in marketplace "<marketplace>", which is not in the allowlist` | §16.27; the user can install the dependency at the same scope and retry. | |
+| `… still unresolved: <names>` | After an update, the named dependencies are still not met; each has its own error in `claude plugin list`, one of the rows above. <!-- req: install.troubleshooting.Dependency errors.... still unresolved: <names> --> | |
+| `Dependencies are not installed while non-essential traffic is turned off.`, after the `still unresolved` list | `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` is set, so the update installed no dependency (§16.24.1); the user installs each with `claude plugin install <dep>@<marketplace>`. | |
 
 `claude plugin list --json` carries an `errors` array with the messages and an `errorDetails` array
-whose items have `type`, `plugin` and `dependency` (§17). Claude Code 2.1.325 appends `` — run
-`claude plugin install <dep>`, or check that its marketplace is added `` to the `is not installed`
-line; a client MAY append its own guidance after the documented text (Judgment J16.24).
+whose items have `type`, `plugin` and `dependency` (§17). Claude Code 2.1.325 and 2.1.330 append
+`` — run `claude plugin install <dep>`, or check that its marketplace is added `` to the
+`is not installed` line; a client MAY append its own guidance after the documented text (Judgment
+J16.24).
 
 ## Design decisions
 
@@ -236,11 +253,11 @@ decision, so it needs no allowlist.
 
 | Id | Judgment | Why, and the evidence |
 | --- | --- | --- |
-| J16.17 | A dependency string with two `@` and an object without `name` fail the manifest; an unknown object key is ignored; an invalid range is not a manifest error but `has an invalid version requirement` at resolution or load; a blank `version` is no constraint (§16.23). | The docs say only that the fields are strings. Oracle 2.1.325 (`claude plugin validate`): `"a@b@c"` → `dependencies.1: Invalid input`; `{ "version": "^1" }` → `dependencies.0: Invalid input`; `{ "name": "x", "version": "not a range" }` and an extra key pass. Reference: `src/marketplace/dependencies.ts`. |
+| J16.17 | A dependency string with two `@` and an object without `name` fail the manifest; an unknown object key is ignored; an invalid range is not a manifest error but `has an invalid version requirement` at resolution or load; a blank `version` is no constraint (§16.23). | The docs say only that the fields are strings. Oracle 2.1.330 (2026-11-23) passes `{ "name": "z", "version": "not a range" }` in validation as 2.1.325 did. Oracle 2.1.325 (`claude plugin validate`): `"a@b@c"` → `dependencies.1: Invalid input`; `{ "version": "^1" }` → `dependencies.0: Invalid input`; `{ "name": "x", "version": "not a range" }` and an extra key pass. Reference: `src/marketplace/dependencies.ts`. |
 | J16.18 | The dependency walk has no depth limit, plans each plugin once in dependencies-first order, never plans the root as its own dependency, and ends on a cycle; a dependency installed only at another scope is installed again at the target scope (§16.24). | The docs say dependencies install "at the same scope", not how deep or what a cycle does. Reference: `src/marketplace/dependency-install-walk.ts`, `dependency-install-plan.ts`. |
 | J16.19 | A release tag is exactly `<name>--v<strict semver>`; `v`, `=` or blanks before the version, or fewer than three parts, are not tags of the plugin; build metadata is dropped (§16.25). | The docs give `<plugin-name>--v<version>` only. Reference: `src/marketplace/dependency-tags.ts`. |
 | J16.20 | Every installed plugin's range counts, whatever its scope or enabled state, except that the plugin being installed or updated is planned against its current declaration only (§16.26). | The docs say "several installed plugins"; counting a plugin's stale range against its own new one would refuse its update. Reference: `src/marketplace/dependency-install-plan.ts`. |
 | J16.21 | Ranges overlap when some combination of their `||` alternatives meets pairwise; over 64 combinations the requirement is "too complex to intersect" (§16.26). | The docs name the message, not the limit or method. Reference: `src/marketplace/semver.ts`. |
 | J16.22 | The cross-marketplace refusal continues `; add it to "allowCrossMarketplaceDependenciesOn" in the marketplace.json of "<root>"` (§16.27). | The docs quote the start and say it "names the field to set". Reference: `src/marketplace/cross-marketplace.ts`. |
 | J16.23 | Uninstalling a dependency of enabled plugins succeeds, the success line ending ` — warning: required by <names>` (the enabled dependents, by name); `uninstall` has no `--force` (§16.29; §17 cites this row). | The docs refuse a disable in that case and say nothing about uninstall. Reference oracle 2.1.322: `✔ Successfully uninstalled plugin: b (scope: user) — warning: required by a`, exit 0 (`tests/cli/uninstall-dependents.test.ts`). Not re-run here: an uninstall writes state. |
-| J16.24 | The `is not installed` line is the documented text; guidance after it is the client's own. A disabled dependency is named by the id its entry resolves to: `<name>@<marketplace>` when a marketplace is named or implied by the dependent's, the bare declared name when none is (a `--plugin-dir` dependent), never `<name>@inline`; the same id is the `dependency` of the `errorDetails` item. The docs' "when the error names the dependency as `<name>@inline`" is read as saying what that id means where it appears (in `plugin list` and the session-only rows of §16.8), not that the error uses it (§16.28.1, §16.30). | Oracle 2.1.325 (`claude --plugin-dir … plugin list`, private config dir): `Dependency "q3" is not installed — run \`claude plugin install q3\`, or check that its marketplace is added`; a disabled local `q2` gave `Dependency "q2" is disabled — enable it or remove the dependency`, naming `q2`, not `q2@inline`. Oracle 2.1.325, private config dir, a directory marketplace `m` with `p` declaring `["q2"]`, both installed, `q2@m` then set `false` in `enabledPlugins` (`plugin disable q2@m` refuses while `p` needs it): `plugin list --json` gave `Dependency "q2@m" is disabled — enable it or remove the dependency` and `errorDetails` `{"type":"dependency-unsatisfied","plugin":"p","dependency":"q2@m"}`. The 2.1.321 docs quote only the opening. |
+| J16.24 | The `is not installed` line is the documented text; guidance after it is the client's own. A disabled dependency is named by the id its entry resolves to: `<name>@<marketplace>` when a marketplace is named or implied by the dependent's, the bare declared name when none is (a `--plugin-dir` dependent), never `<name>@inline`; the same id is the `dependency` of the `errorDetails` item. The docs' "when the error names the dependency as `<name>@inline`" is read as saying what that id means where it appears (in `plugin list` and the session-only rows of §16.8), not that the error uses it (§16.28.1, §16.30). | Oracle 2.1.325, and 2.1.330 re-run 2026-11-23 (`claude --plugin-dir … plugin list` and `--json`, private config dir; `errorDetails` `{"type":"dependency-unsatisfied","plugin":"dp","dependency":"q3"}`): `Dependency "q3" is not installed — run \`claude plugin install q3\`, or check that its marketplace is added`; a disabled local `q2` gave `Dependency "q2" is disabled — enable it or remove the dependency`, naming `q2`, not `q2@inline`. Oracle 2.1.325, private config dir, a directory marketplace `m` with `p` declaring `["q2"]`, both installed, `q2@m` then set `false` in `enabledPlugins` (`plugin disable q2@m` refuses while `p` needs it): `plugin list --json` gave `Dependency "q2@m" is disabled — enable it or remove the dependency` and `errorDetails` `{"type":"dependency-unsatisfied","plugin":"p","dependency":"q2@m"}`. The 2.1.321 docs quote only the opening. |

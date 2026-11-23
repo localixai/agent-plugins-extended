@@ -8,8 +8,9 @@ and the members of `next` are in `reference.md` (§10.6); what each `$` method d
 
 Evidence: `plugins/mods/events.md` and `plugins/mods/reference.md`, "Events", unless a section names
 another page. Each event's input and result are the declarations' `<Event>Input` and `<Event>Result`
-types of 2.1.321 (`ToolCallInput`, `ToolCallResult`, and so on, named after the event), which win
-where the prose differs; this part names their fields and states the behaviour around them.
+types of 2.1.330 (`ToolCallInput`, `ToolCallResult`, and so on, named after the event; the event map
+`claude-code/index.d.ts:4986`–`9132` of 2.1.330 lists every event), which win where the prose
+differs; this part names their fields and states the behaviour around them.
 
 ## 10.13 How a hook handles an event
 
@@ -69,7 +70,31 @@ a copy with the named field changed; an object such as `{ deny: reason }` answer
    declarations' `Pattern` adds namespace globs and negations (Judgment J10.13).
 3. **Once per matcher.** An event registered twice with no matcher keeps the whole module from
    loading: `on("session.start") is registered twice without a matcher` (§10.4.2). The same event
-   once per matcher is allowed. <!-- req: mods.events.Filter which events a hook handles -->
+   once per matcher is allowed.
+4. **`*` and telemetry.** `*` selects most events, never the telemetry events (§10.19.6).
+
+#### Other mods' drawings and controls
+
+`plugin` is a **default matcher key** (declarations, `Matcher`, `claude-code/index.d.ts:7505`; Claude
+Code 2.1.323 or later). Where the client sets `e.plugin` on an event (`ui.press`, `ui.input`,
+`ui.select`, `ui.focus`, and `ui.render` at a mod's `Pane` and at a mod's row of the band,
+`AbovePrompt`), a matcher that leaves `plugin` out is read as naming the hook's own plugin:
+
+1. A hook on `ui.press`, `ui.input`, `ui.select` or `ui.focus` whose matcher has no `plugin` MUST
+   NOT run for another mod's controls, and a `ui.render` hook without `plugin` MUST NOT run for
+   another mod's panes or rows above the prompt. Sites the client draws itself are unaffected.
+2. `{ plugin: '<name>' }`, the plugin's name without its marketplace, runs the hook for that mod;
+   `{ plugin: '*' }` for every mod, and also for an event that carries no `plugin` (the one exception
+   to "a field the event lacks matches nothing", item 1).
+3. A wildcard pattern with no matcher at all (`on('*', hook)`, `on('ui.*', hook)`) still runs for
+   every mod; a wildcard with a matcher needs `plugin` like any other.
+4. A matcher on `ui.render` that names `component` keeps the hook off `AbovePromptList` (§10.21.1).
+5. `claude plugin validate` notes each such hook on its `hooks:` line with ` (default matcher key:
+   plugin)` after it (`admin.md`, "Review what a mod can do"; §10.4.3).
+
+Before 2.1.323 a hook without `plugin` ran for every mod and one with `{ plugin: '*' }` ran for none;
+a mod that must run on both matches `{ plugin: /./ }` on `ui.press`, `ui.input` and `ui.select`, and
+for `ui.focus` and `ui.render` hooks `ui.*` with no matcher and tests `next.event`. <!-- req: mods.events.Hook other mods' drawings and controls -->
 
 ## 10.14 The order mods run in
 
@@ -142,7 +167,9 @@ When `next.called` is false, a handler answers with the refusal of its event: `{
 after `next` resolved still holds, so a handler returns it without testing `next.called`:
 
 - **`tool.check`**: `{ decision: 'deny', reason }`. <!-- req: mods.events.Handle a hook that fails.tool.check -->
-- **`plugin.register`**: `{ refuse: reason }` (§14). <!-- req: mods.events.Handle a hook that fails.plugin.register -->
+- **`plugin.register`**: `{ refuse: reason }`, which from 2.1.326 keeps the other mod's whole plugin
+  out; a handler that stops only the hooks module passes `next` the event with `provides.modules`
+  emptied (§10.19.5, §14). <!-- req: mods.events.Handle a hook that fails.plugin.register -->
 
 At `tool.call`, a `deny` returned after `next` resolved withholds the result (§10.16.1).
 
@@ -152,7 +179,20 @@ At `tool.call`, a `deny` returned after `next` resolved withholds the result (§
 | --- | --- | --- |
 | `tool.call` | a tool is about to run | `next(e)`, `{ deny: reason }`, `{ result }` <!-- req: mods.event.tool.call --> |
 | `tool.check` | the client decides whether a tool call may run (§10.16.3) | `next(e)`'s result, or `{ decision, reason? }` with `decision` `allow`, `ask` or `deny` <!-- req: mods.event.tool.check --> |
+| `tool.judge` | auto mode is about to ask its classifier about a call (§10.16.5; 2.1.326 or later) | `next(e)` or `{ decision }` <!-- req: mods.event.tool.judge --> |
+| `tool.run` | an allowed call is about to run (§10.16.6; 2.1.326 or later) | `next(e)`, `{ deny: reason }` or `{ result }` <!-- req: mods.event.tool.run --> |
 | `tool.describe` | once for each tool, when its description is first sent to Claude (§10.16.4) | `{ description, isDeferred?, breakPromptCache? }` <!-- req: mods.event.tool.describe --> |
+
+The declarations add two tool events the documentation does not table, which a client MUST fire
+(Judgment J10.22):
+
+- **`tool.list`** (`claude-code/index.d.ts`, event map): shapes the pool of tools; a tool its result
+  leaves out is gone for the model, every agent and a mod's own `$.tool.call`.
+- **`tool.offer`** (`claude-code/index.d.ts:5400`, `ToolOfferInput`: `tool`, `provider`,
+  `agentId?`, `subagentType?`): fires once for each tool before a loop's first request and again
+  when that loop's model calls it; `{ isOffered: false }` keeps the tool from that loop's model for
+  the loop's life, or, at a call, refuses that call alone; `next(e)` resolves `{ isOffered: true }`.
+  A hook that fails passes the tool through.
 
 ### 10.16.1 `tool.call`
 
@@ -189,8 +229,8 @@ A `tool.call` hook that throws or times out is skipped and the call goes on (§1
 A `tool.call` hook MAY await before it calls `next` or returns; the call stays pending until then.
 `$.ui.ask(question, options)` shows the question above a numbered list of the options in the dialog
 Claude asks in, adds a row for typing another answer and a **Chat about this** row, and resolves to
-the label picked. Time inside a `$` call does not count against the hook's limit; time awaiting a
-promise of the hook's own does. For a hook that asks before a risky Bash command:
+the label picked. Time inside `$.ui.ask` does not count against the hook's limit (§10.11); time
+awaiting a promise of the hook's own does. For a hook that asks before a risky Bash command:
 
 - **The user picks Run it**: `$.ui.ask` resolves to `Run it`, the hook calls `next(e)`, and the usual
   permission check still runs after it. <!-- req: mods.events.Hold a tool call until the user decides.The user picks Run it -->
@@ -217,6 +257,14 @@ the `PreToolUse` hooks, and before the permission prompt, auto mode's classifier
    - `e.isReadOnly` is `true` when the tool reports this call as read-only, and otherwise absent,
      never `false` (from v2.1.304). <!-- req: mods.reference.The e.isReadOnly field on tool.check -->
    - `e.approver` is `host` or `person` (declarations, `ToolCheckInput`).
+   - `e.isCeilingUnread`, set by the client and pinned, is `true` on a mod's or a settings hook's own
+     call when managed deny rules exist and whether one covers the call cannot be told; the client
+     refuses nothing on it (`claude-code/index.d.ts:17959`, 2.1.330).
+   - `e.op` (`fs.read`, `fs.list`, `fs.write`, `process.run`, `process.spawn`) is set where no tool is
+     called: the mod's `$` call that `tool` and `input` stand for (a file call as `Read` or `Write`, a
+     process as the `Bash` line of its argv). Such an event is raised only with `ceiling: 'deny'` or
+     `isCeilingUnread`, and only to a hook whose matcher names `op`; nobody is asked, and a `deny`
+     refuses the call (`claude-code/index.d.ts:17969`, 2.1.330).
 2. **What `await next(e)` gives.** The client's own decision, `{ decision, reason?, rule?, hook?,
    setting?, plugin?, ceiling? }` (declarations, `ToolCheckResult`), with `decision` `allow`, `ask`
    or `deny`, reached by the rules, the permission mode and the `PreToolUse` hooks. No permission
@@ -252,8 +300,11 @@ absent rather than `false` (§10.13.3). <!-- req: mods.events.Filter a tool.chec
 
 `tool.describe` fires once for each tool, when its description is first sent to Claude, and a
 second time for an MCP tool Claude loads through tool search, with `e.description` the text Claude
-reads for the loaded tool. Its fields are `tool`, `description`, `isDeferred` and `provider` (`{
-plugin, tier }` of whoever defined the tool). A hook returns `{ description }`, with `isDeferred:
+reads for the loaded tool. Its fields are `tool`, `description`, `isDeferred`, `provider` (`{
+plugin, tier }` of whoever defined the tool) and, for an MCP tool whose server is known, `mcpServer`
+(`{ type, connectorId?, origin? }`, read off the connection that listed the tool; pinned: a rewrite
+that changes it is refused; `claude-code/index.d.ts:18111`, 2.1.330). It fires again when an MCP
+server replaced under the same name brings another `mcpServer`. A hook returns `{ description }`, with `isDeferred:
 true` to put the tool behind tool search or `false` to load it up front.
 
 To change a tool description or a system prompt section in a running conversation, a mod calls
@@ -263,6 +314,41 @@ client MUST send the changed text on the next turn, and the prompt cache starts 
 field, Claude keeps the text saved with the conversation, for a section or a tool loaded up front,
 until a new conversation or a compaction. The field exists from v2.1.321; from v2.1.299 to before
 v2.1.321 a running conversation got the changed text on the next turn without it. <!-- req: mods.reference.Send a changed system prompt section or tool description with breakPromptCache -->
+
+### 10.16.5 `tool.judge`
+
+`tool.judge` (Claude Code 2.1.326 or later; `ToolJudgeInput`, `claude-code/index.d.ts:5021`) fires
+when auto mode is about to ask its classifier about a call, after every rule, hook and check that
+only a person may answer. Its fields are `tool`, `input`, `tool_use_id`, and `agentId`, `approver`,
+`ceiling`, `isCeilingUnread`, `isReadOnly` and `op` as on `tool.check`.
+
+1. `next(e)` asks the classifier, once however often the hook calls it, and runs no tool: it
+   resolves to the server's verdict where the server judged the model's call, else the local
+   classifier's, `{ decision, reason?, plugin? }`.
+2. A hook returns `{ decision }` (`allow`, `ask` or `deny`) to decide in the classifier's place. A
+   call auto mode settles without the classifier raises no `tool.judge`.
+3. A hook that fails is skipped and the classifier decides; a guard SHOULD carry a `.catch` that
+   returns `{ decision: 'deny' }`. An `allow` here does not prove the call ran: a hook's `ask` or a
+   change of mode may still hold it. <!-- req: mods.event.tool.judge -->
+
+### 10.16.6 `tool.run`
+
+`tool.run` (Claude Code 2.1.326 or later; its input is `ToolCallInput`, `claude-code/index.d.ts:5049`)
+fires when a call has been allowed and is about to run: after `tool.call`, the `PreToolUse` hooks,
+`tool.check` and whoever settled an ask; never for a refused call.
+
+1. `e` is the call as allowed, every field pinned: a hook that passes a changed event to `next`
+   fails.
+2. `next(e)` runs the tool and resolves to its `ToolCallResult`. `{ result, context? }` answers in
+   the tool's place, and `PostToolUse` sees it as a success; `{ deny: reason }` is the call's error,
+   read by Claude as the tool's own.
+3. One check, one run: a second `next(e)` starts nothing and resolves to a `{ deny }`.
+4. A hook that fails is skipped and the tool runs; a guard SHOULD carry
+   `.catch(($, e, next) => next.called ? next(e) : { deny: reason })`.
+5. Where a tool still runs on an aborted turn, `tool.run` fires with `next.signal` aborted; a turn
+   aborted while a hook holds the call does not run it. As at `tool.call`, a hook that may match a
+   tool turns off for it what would carry its output past the hook (moving to the background, a
+   served call's live output). <!-- req: mods.event.tool.run -->
 
 ## 10.17 Prompt events
 
@@ -411,7 +497,7 @@ A turn is everything Claude does in answer to one prompt.
 | --- | --- | --- | --- |
 | `turn.start` | a turn begins | `turnId`, which names the turn in the other two; `text`; `agentId` | observe: `next(e)` <!-- req: mods.event.turn.start | mods.events.Follow a turn.turn.start --> |
 | `turn.step` | one request is about to go to the model; a turn with tool calls has several | `turnId`, `index`, `model`, `effort`, `messageCount`; `agentId` for a subagent's request | stream it (`yield* next(e)`), send it to another model (`next({ ...e, model })`) or effort (`next({ ...e, effort })`), or answer without calling the model <!-- req: mods.event.turn.step | mods.events.Follow a turn.turn.step --> |
-| `turn.complete` | the turn ended, one the user interrupted included | `turnId`, `answer` (Claude's final text), `durationMs`, `usage` (the turn's token totals), `isAborted`, `reason` (`answer`, `aborted`, `refusal`, `error`), `refusal`, `agentId` | observe, or return `{ text }` to show a line under the answer <!-- req: mods.event.turn.complete | mods.events.Follow a turn.turn.complete --> |
+| `turn.complete` | the turn ended, one the user interrupted included | `turnId`, `answer` (Claude's final text), `durationMs`, `usage` (the turn's token totals; from 2.1.330 also `ephemeral_5m_input_tokens` and `ephemeral_1h_input_tokens`, the parts of `cache_creation_input_tokens` written for five minutes and for one hour, present together or not at all, `claude-code/index.d.ts:19084`), `isAborted`, `reason` (`answer`, `aborted`, `refusal`, `error`), `refusal`, `agentId` | observe, or return `{ text }` to show a line under the answer <!-- req: mods.event.turn.complete | mods.events.Follow a turn.turn.complete --> |
 
 1. `turn.step`'s result is `{ turnId, index, answer, toolUses, stopReason, usage, serverToolUses? }`.
    `usage` holds the token counts the Claude API reported (`input_tokens`, `output_tokens`,
@@ -430,20 +516,27 @@ A turn is everything Claude does in answer to one prompt.
 | --- | --- | --- | --- |
 | `session.start` | once for each loaded mod, before the first prompt, and again after a reload of that mod; not after `/clear`, `/resume` or `/branch` | `cwd`, `isInteractive`, `surface` | `next(e)` <!-- req: mods.event.session.start --> |
 | `session.end` | the session ends, or `/clear`, `/resume` or `/branch` runs | `reason` (`clear`, `resume`, `logout`, `prompt_input_exit`, `other`; `/branch` reports `resume`), `sessionId`, `resume` (what `claude --resume` takes to return) | `next(e)`. The hooks share the bound of §10.11. <!-- req: mods.event.session.end --> |
-| `session.compact` | the conversation is about to be compacted | `trigger` (`auto`, `manual`, `plugin`, `precompute`), `messages`, `instructions`, `agentId` | `{ skip: reason }` to skip it; `next(e)`'s result is `{ messages, tokensBefore?, tokensAfter?, usage? }` <!-- req: mods.event.session.compact --> |
+| `session.compact` | the conversation is about to be compacted | `trigger` (`auto`, `manual`, `plugin`, `precompute`), `messages` (each `{ role, text, toolUses, toolResults?, handle?, uuid? }`, `uuid` from 2.1.330), `instructions`, `agentId` | `{ skip: reason }` to skip it; `next(e)`'s result is `{ messages, tokensBefore?, tokensAfter?, usage? }` <!-- req: mods.event.session.compact --> |
 | `session.receive` | a message arrives from another agent or session | `text`, `origin`, `event`, `agentId` | `next({ ...e, text })`, or `{ consumed: reason }`: the delivery is not queued, not written to the transcript and never reaches Claude <!-- req: mods.event.session.receive --> |
 | `session.send` | a message is about to go to another agent or session | `text`, `to`, `origin`, `agentId` | `{ isDelivered: false, reason }` <!-- req: mods.event.session.send --> |
 | `session.append` | once for each row the conversation keeps (a prompt, a response block, a tool result, a notice) before it is stored | `uuid`, `door`, `message`, `origin`, `agentId` | `next({ ...e, message })` with a changed `message.content`, rewriting the row's text blocks or a `tool_result` block's `content`; other changes are ignored (Judgment J10.17) <!-- req: mods.event.session.append --> |
 | `session.attach`, `session.detach` | another app connects to or disconnects from the session | `clientId`, `surface`; `viewport` on attach, `reason` (`detach`, `end`) on detach | `next(e)` <!-- req: mods.event.session.attach | mods.event.session.detach --> |
-| `session.measure` | after each turn, and when a plan limit's percent used changes | `changed` (`context`, `cost`, `rateLimits`), `context`, `cost`, `rateLimits` | `next(e)` <!-- req: mods.event.session.measure --> |
+| `session.measure` | after each turn, and when a plan limit's percent used changes | `changed` (`context`, `cost`, `rateLimits`), `context`, `cost` (`{ usd, hasUnknownPrice? }`; `hasUnknownPrice: true` once `usd` includes a model with no known price, `claude-code/index.d.ts:14657`), `rateLimits` | `next(e)` <!-- req: mods.event.session.measure --> |
+| `session.stop` | the user stops Claude: Esc or Ctrl+C on a turn, an app's Stop, Ctrl+C at an idle prompt where it stops running scripts (2.1.326 or later) | `isTurnRunning` | `next(e)`, which resolves `{ isTurnRunning }` <!-- req: mods.event.session.stop --> |
 
 `session.send` and `session.receive` are specified with `$.session.send` in `api.md`.
+
+`session.stop` (`SessionStopInput`, `claude-code/index.d.ts:5900`) is observe-only: the stop goes on
+whatever a hook does, the client raises it before the abort and waits on no hook, and work a hook
+queues in it is refused as §10.33.1 says. It does not fire for a priority message, `$.turn.abort` or
+a denied permission. An app's Stop sent two ways MAY fire it twice; with no turn running it fires
+in a headless session and not at a terminal. `next.signal` may already be aborted.
 
 ### 10.19.3 Subagents
 
 | Event | Fires when | A hook can return |
 | --- | --- | --- |
-| `agent.offer` | a subagent type is offered to Claude; `e.agent`, `e.description`, `e.source`, `e.provider` | `{ isOffered: false }` to withhold it <!-- req: mods.event.agent.offer --> |
+| `agent.offer` | a subagent type is offered to Claude, in the agent listing and again at dispatch; `e.agent`, `e.description`, `e.source`, `e.provider`, and `e.agentId` on the offer to resume an agent of that type (2.1.330) | `{ isOffered: false }` to withhold it from the listing and refuse its dispatch <!-- req: mods.event.agent.offer --> |
 | `agent.spawn` | a subagent or an agent-team teammate is about to start, or a subagent that finished or stopped is about to run again | `next({ ...e, model })` to choose the model of one starting, or `{ deny: reason }` <!-- req: mods.event.agent.spawn --> |
 
 1. `agent.spawn`'s fields are `subagentType`, `prompt`, `description`, `model`, `parentModel`,
@@ -457,6 +550,14 @@ A turn is everything Claude does in answer to one prompt.
    when a `SendMessage` call asked for it Claude reads `a plugin declined the resume: ` followed by
    the reason as that call's result. A changed event passed to `next` for a resumed run, such as
    another `model`, is ignored by the client's behaviour.
+3. **`agent.report`** (declarations only, `AgentReportInput`, `claude-code/index.d.ts:5219`: `agentId`,
+   `parentAgentId?`, `subagentType`, `status` `completed`, `failed` or `stopped`, `text`,
+   `provider`) fires before a subagent's report reaches its parent, once for each run that ends or is
+   stopped. What the outermost hook returns is delivered: `{ text }`, or `{ consumed: reason }`,
+   after which the parent gets no notice and a call that waited answers the reason. `next(e)` runs
+   auto mode's review of the report and delivers nothing; a `review` or `warning` a hook writes is
+   dropped. It is not raised for a workflow's `agent()`, a teammate (`session.receive` serves
+   those), a remote agent, or a run with hooks off (Judgment J10.22).
 
 ### 10.19.4 The interface
 
@@ -472,16 +573,42 @@ A turn is everything Claude does in answer to one prompt.
 | `ui.close` | a pane is about to close; `e.id` is the pane and `e.origin.kind` is `plugin`, `person` or `unload` <!-- req: mods.event.ui.close --> |
 | `ui.message` | a `Client` element posts data to its mod; `e.module`, `e.element`, `e.data`; `{ props }` answers it <!-- req: mods.event.ui.message --> |
 | `ui.fault` | a `Client` element the mod drew failed to load, draw or run; `e.phase` is `load`, `render` or `run`, `e.reason` the error message (from v2.1.289) <!-- req: mods.event.ui.fault --> |
+| `ui.pointer` | the user clicks or taps the backdrop where no part of the app covers it; `e.type` `click`, `e.x`, `e.y`, `e.scene`, `component` `Backdrop`. Only the hooks of the mod that set the theme see it; observe only, never a request of the user's (declarations only, `UiPointerInput`, `claude-code/index.d.ts:5134`; Judgment J10.22) |
 
-Each also carries `component`, `surface` and `requestId` where it concerns a site. Their behaviour
-is §10.20–§10.27.
+Each also carries `component`, `surface` and `requestId` where it concerns a site, and `plugin`
+where the client sets it for a mod's own drawing or control (§10.13.3, "Other mods' drawings and
+controls"; `ui.render`'s `plugin` from 2.1.330, `claude-code/index.d.ts:5063`). Their behaviour is
+§10.20–§10.27.
 
 ### 10.19.5 Other mods
 
 | Event | Fires when | A hook can return |
 | --- | --- | --- |
-| `plugin.register` | a hooks module is about to load; `e.name`, `e.root`, `e.version`, `e.tier`, `e.provenance`, and `e.uses`: `{ events, calls, env?, state? }`, as `claude plugin validate` lists them, each call written without `$.` (`fs.read`) | `{ refuse: reason }`: the module does not load, and the debug log names the refusing plugin and the reason; `{ allow: true }` lets it load <!-- req: mods.event.plugin.register --> |
-| `engine.create` | the mods API is being built for a mod; `e.plugins` | a changed `$`: `next(e)` resolves to `$` as built so far, and a returned namespace it lacks is added; a mod outside the `user` tier MAY also withhold a namespace, which is then a stub <!-- req: mods.event.engine.create --> |
+| `plugin.register` | a hooks module is about to load, or, from 2.1.326, a plugin without one; `e.name`, `e.root`, `e.version`, `e.tier`, `e.provenance`, `e.requiredByOrganization`, `e.uses`, `e.provides`, `e.unread` and `e.hosts` (below) | `{ refuse: reason }`: from 2.1.326 the whole plugin does not load (before, only its module); `next(e)` with entries removed from `e.provides` keeps those parts out; `{ allow: true }` lets it load. The debug log names the refusing plugin and the reason <!-- req: mods.event.plugin.register --> |
+| `engine.create` | the mods API is being built for a mod; `e.plugins` | a changed `$`: `next(e)` resolves to `$` as built so far (from 2.1.330 with `vcs` and `wasm`), and a returned namespace it lacks is added; a mod in the `prepend` or `append` tier MAY also withhold a namespace, which is then a stub <!-- req: mods.event.engine.create --> |
+
+`plugin.register`'s event (`PluginRegisterInput`, `claude-code/index.d.ts:9937`, 2.1.330):
+
+1. **`e.uses`** is `{ events, calls, env?, state?, hosts? }`, as `claude plugin validate` lists them,
+   each call written without `$.` (`fs.read`); empty for a plugin with no module. `hosts` (2.1.330) is
+   `{ named, unread }`: the hosts the module's `$.http.fetch` and `$.audio.play({ url })` calls spell,
+   and which of those two methods it calls with a URL the scan cannot read.
+2. **`e.provides`** lists every part the plugin ships, by kind: `agents`, `bin`, `commands`, `hooks`,
+   `lspServers`, `mcpServers`, `modules`, `monitors`, `outputStyles`, `skills`, `themes`,
+   `workflows`. A hook passes it to `next` or `next.to` with entries removed, and those parts stay
+   out while the rest load; `next({ ...e, provides: { ...e.provides, modules: [] } })` loads every
+   part but the hooks module, and the debug log then has `hooks module left out by <mod>`. The
+   client MUST refuse a list that is not a subset, by value, of the one received, and `themes` or
+   `bin` narrowed; left out, `provides` is restored. What loads is what every mod's `next` in the
+   dispatch left in. Settings are not listed, and a narrowing leaves them on. A client before
+   2.1.326 ignores `provides` and loads the module. <!-- req: policy.mods.Enforce a policy with a mod of your own.e.provides -->
+3. **`e.unread`** names the kinds whose list in `provides` may be short because something could not
+   be read; a kind over 131,072 characters of JSON is named and its list empty (`modules` never is).
+4. **`e.hosts`** is the whole plugin's `PluginHosts` (`claude-code/index.d.ts:9715`), unchanged by a
+   narrowing of `provides`.
+5. **`e.requiredByOrganization`** is `true` where the app that started the session handed the plugin
+   over by path as required or auto-installed by the organization, or, in a hosted cloud session,
+   where claude.ai lists it as required. It grants nothing.
 
 When another mod's hook calls a method of a namespace a mod added in `engine.create`, that method's
 `$` calls run in the calling hook's context until every hook on that event returns: a relative path
@@ -520,7 +647,44 @@ return `next(e)`, `{ deny: reason }` (the call rejects with `<calling mod>: $.<n
 the client fires itself (`tool.call`, `tool.check`, `command.run`, `prompt.submit`, `prompt.fill`,
 `prompt.suggest`, `session.send`, `agent.spawn`, `config.set`, `session.compact` and the others of
 §10.16–§10.19), the call takes that event's result instead (Judgment J10.18). A guard on a call that
-fails is skipped and the call goes on. <!-- req: mods.reference.Mods API calls -->
+fails is skipped and the call goes on.
+
+Some of these events also fire for the client's own actions, with `next.origin` `{ plugin: 'engine',
+tier: 'core' }`: `mcp.connect` for each MCP server the client is about to connect by itself (a hook
+that answers without `next` holds the server back, and `/mcp` lists it as held by that hook's mod;
+`claude-code/index.d.ts:8740`, 2.1.330), and `http.fetch` for the client's own requests. A hook that
+refuses SHOULD check `next.origin.plugin` first. A `mcp.connect` event carries `provider`, `{
+plugin, tier }` of whoever configured the server (2.1.330).
+
+#### Fields on Claude Code's own `http.fetch` requests
+
+An `http.fetch` event whose `next.origin` is `{ plugin: 'engine', tier: 'core' }` is one of the
+client's own requests, such as a model request, not a mod's `$.http.fetch` (2.1.321 or later).
+Where the built-in guard loads, only a mod that counts as the organisation's (§14) gets these
+events. On them `e.init` and the `value` `next(e)` resolves to MAY carry, among others:
+
+| Field | Meaning |
+| --- | --- |
+| `e.init.compress` | Set when the client compresses the body after the hook; `e.init.body` is the uncompressed body. A hook that passes `next` the event with `compress` unset sends the body uncompressed. |
+| `value.isStreaming` | `true` because the client reads the response body itself, so `value.text` is empty; a hook reads `value.status` and `value.headers`. A hook that answers with a `value` without `isStreaming` answers with its own `text`. |
+
+<!-- req: mods.reference.Fields on Claude Code's own http.fetch requests -->
+
+### 10.19.8 Version control
+
+The declarations of 2.1.330 add, as experimental, the namespace `$.vcs` (§10.7.1) and these events,
+through which a mod serves a version-control system other than Git (`claude-code/index.d.ts:5552`–
+`5787`). A client SHOULD fire them as the declarations describe, the client's own behaviour (core)
+answering for Git or with nothing (Judgment J10.23):
+
+| Event | Fires when | Core answers |
+| --- | --- | --- |
+| `vcs.detect` | a working copy is looked for at `e.path` (also `$.vcs.detect`) | the Git working copy, or `null`; a result is `{ vcs, root, mainRoot, revision, branch, defaultBranch, remote }` |
+| `vcs.diff` | a mod, or `/diff` where `vcs.detect` names another system, asks what changed (`path`, `vcs`, `base` `default` or `head`, `paths?`, `isStatOnly?`) | `{ unknown: null }`; a hook answers `{ base, files }`, each file `{ path, renamedFrom, added, removed, isBinary, isUntracked, patch? }` |
+| `vcs.isolate` | a working copy is needed: a subagent run with `isolation: "worktree"`, EnterWorktree, `--worktree`, a Remote Control spawn (`for` `agent` or `session`, `from`, `name`, `base` `fresh` or `head`, `agentId?`, `parentAgentId?`) | a Git worktree; a hook answers `{ path, vcs, revision?, branch? }` or `{ deny }` |
+| `vcs.list` | the working copies of the repository holding `path` are asked for | a list of `{ path, vcs, branch? }` |
+| `vcs.status` | the client asks what changed in a working copy and what removing it would lose (`path`, `vcs?`, `name?`, `since?`, `agentId?`) | `{ changes, revision?, unpublished?, unknown? }` |
+| `vcs.release` | the client would remove a working copy (`path`, `vcs`, `name`, `isDiscard`, `reason`, `agentId?`) | removes a copy the client made and answers `{ kept }` for any other; a hook answers `{ isReleased: true }` or `{ kept }` |
 
 ## Design decisions
 
@@ -540,7 +704,7 @@ first and by install order only inside a tier means no user action reorders a gu
 
 | Id | Judgment | Why, and the evidence |
 | --- | --- | --- |
-| J10.12 | A matcher is tested against the event as it reaches the hook, after earlier hooks rewrote it; a field the event lacks matches nothing; a regular expression is tested unanchored, its `g` and `y` flags ignored. | events.md says the matcher's fields "are compared with the event's" and the chain passes changed copies; it is silent on when and on the edges. The declarations' `Matcher` give the four kinds. Lead: the reference implementation's rows for `src/mods/chain/matcher.ts`. |
+| J10.12 | A matcher is tested against the event as it reaches the hook, after earlier hooks rewrote it; a field the event lacks matches nothing, except `plugin: '*'`, which the 2.1.330 declarations' `Matcher` say "hears an `e` without the key"; a regular expression is tested unanchored, its `g` and `y` flags ignored. | events.md says the matcher's fields "are compared with the event's" and the chain passes changed copies; it is silent on when and on the edges. The declarations' `Matcher` give the four kinds. Lead: the reference implementation's rows for `src/mods/chain/matcher.ts`. |
 | J10.13 | Namespace globs (`ui.*`) and negations (`!tool.describe`) are patterns; `telemetry.*` selects the telemetry events. | The declarations' `Pattern`, `Glob` and `Negation`; events.md names `*` and `classic.*` only. Oracle 2.1.325 validates `on('ui.*')`, `on('!tool.describe')` and `on('telemetry.*', { to: 'collector' })`. |
 | J10.14 | A hook that called `next` and failed before the call resolved keeps that call's result, the latest of several. | events.md gives "failed after `next` resolved" only; the declarations' `Caught` say the handler runs "once that call settled" and replays "the hook's last call". |
 | J10.15 | Decisions order allow, ask, deny for "tighten" and "loosen"; with `e.ceiling` `ask`, a hook's `allow` becomes `ask` in every mode. | events.md says a hook "can tighten ... but can't loosen it" in plan mode; the declarations' `ToolCheckResult.ceiling` name the ceiling as "the most permissive verdict". Neither orders `ask` against `deny`. |
@@ -549,3 +713,5 @@ first and by install order only inside a tier means no user action reorders a gu
 | J10.18 | A `$` call whose method shares its name with an event the client fires resolves to that event's result; every other call resolves to `{ value }` and rejects on `{ deny }` as `<calling mod>: $.<namespace>.<method>: <reason>`. | reference.md says a hook "can return `next(e)`, `{ deny: reason }`, or `{ value }`" and events.md quotes the `settings.read` rejection in that form; the declarations type `$.tool.call`, `$.command.run` and the others by their event's result. Lead: the reference implementation's rows for `src/mods/api/call.ts`. |
 | J10.19 | The `{ to: 'collector' }` filter is required of a telemetry hook in every mod outside the `builtin` tier (`prepend`, `user`, `append`), and any matcher whose `to` lets `collector` through counts as giving it (§10.19.6). | reference.md, "Telemetry", says only "In a mod you install" and that such a mod "fails `claude plugin validate`" without the filter; it names no tier. A `prepend` or `append` mod is installed too, by the organisation, and the validator cannot tell a mod's tier from its files, so one rule covers every mod the client does not build in. Lead: the reference implementation's row for `src/mods/chain/validate.ts`, which decides the same. |
 | J10.20 | A `telemetry.mark` event has no `to`, so no hook filtered `{ to: 'collector' }` runs on it; a mod outside the `builtin` tier may register such a hook, which never runs (§10.19.6). | The 2.1.321 declarations (`claude-code/index.d.ts`, `TelemetryMarkInput` and `$.telemetry.mark`) say a mark "takes no `to` and always means `anthropic`" and that the built-in plugins hooking it "serve built-ins and the engine alone"; reference.md requires the filter of every telemetry hook in a mod you install. Read together (E2), an installed mod cannot see marks, which keeps first-party feature marks to built-in mods. The reference implementation leaves this open (its D6) and fires the mark with `to: 'collector'` so the filter passes; this specification does not, because that adds a field the declarations rule out. |
+| J10.22 | The events the 2.1.330 declarations define and the documentation does not table (`tool.list`, `tool.offer`, `agent.report`, `ui.pointer`) are fired as the declarations describe. | E2: the declarations are the complete surface on mods; reference.md, "Events", lists a subset and points authors at the declarations (`claude-code/index.d.ts:5134`, `5219`, `5400`). `tool.list` was already in the 2.1.321 declarations and unstated here. |
+| J10.23 | The `vcs.*` events and `$.vcs` are a SHOULD, not a MUST: the declarations mark each "Experimental: may change", and no documentation page names them. A client that fires them follows the declarations; core answers for Git as Claude Code does without a hook. | 2.1.330 declarations, `claude-code/index.d.ts:4440`–`4470` (`$.vcs`) and `5552`–`5787` (events). |

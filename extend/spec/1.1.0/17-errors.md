@@ -21,7 +21,7 @@ commands themselves are in [17-cli.md](17-cli.md).
 3. A diagnostic about a plugin also appears in `claude plugin list` (its `errors` or `notes`, with
    `errorDetails` / `noteDetails`, §17.8.2) and in the `/plugin` **Errors** tab.
 4. The documentation records how earlier releases behaved ("Before v2.1.…"). Those sentences are
-   history: a client follows the 2.1.321 behaviour stated here (Judgment J17.28).
+   history: a client follows the 2.1.330 behaviour stated here (Judgment J17.28).
 
 ## 17.18 Plugin and component loading
 
@@ -63,8 +63,9 @@ NOT load what the path names, and MUST report it; a path that simply does not ex
   plugin's other components still load.
 - The plugin's own directory: nothing of the plugin loads.
 
-`/plugin` shows `<component> path could not be checked: <path> (<code>)`, for instance
-`skills path could not be checked: /home/user/my-plugin/skills (ELOOP)`; `claude plugin list` shows
+`/plugin` shows `<component> path couldn't be checked: <path> (<code>)`, for instance
+`skills path couldn't be checked: /home/user/my-plugin/skills (ELOOP)` (`errors.md` also lists the
+`path could not be checked` spelling); `claude plugin list` shows
 `Path not found: <path> (<component>, <code>)`. Fixing the path and running `/reload-plugins` (or
 restarting) loads it. <!-- req: cli.errors.Path could not be checked -->
 
@@ -101,8 +102,10 @@ its marketplace directory`). The component the message names is fixed per file:
 | --- | --- |
 | `hooks/hooks.json` | `hooks` <!-- req: cli.errors.Path escapes plugin directory.hooks/hooks.json --> |
 | `monitors/monitors.json` | `monitors` <!-- req: cli.errors.Path escapes plugin directory.monitors/monitors.json --> |
-| `settings.json` | `settings` <!-- req: cli.errors.Path escapes plugin directory.settings.json --> |
 | `SKILL.md` at the plugin root | `skills` <!-- req: cli.errors.Path escapes plugin directory.SKILL.md --> |
+
+A root `settings.json` (§2.4, Judgment J2.9), which the 2.1.330 docs no longer list, is reported
+under `settings` in the same way (2.1.321's `errors.md`, "Path escapes plugin directory").
 
 A message ending in `EACCES` means a directory on the way to the path, or to where a link on it
 points, denies traversal; other codes are as §17.18.3.
@@ -184,6 +187,25 @@ change reported no error`; `it is still switched on in <file>, and the settings 
 (<error>)`; `<file> is there and could not be read`; or `<file> (not read: it is on a network path
 or is a link to one, or could not be checked)`. Text after the colon that starts with
 `installed_plugins.json` instead means a record that this release cannot read (§16). <!-- req: cli.errors.Plugin was not uninstalled -->
+
+### 17.18.12 A server file path not read
+
+An MCP or LSP server file that a plugin names — in `mcpServers` or `lspServers` of `plugin.json` or
+of its marketplace entry — by a path that is absolute or has a `..` part MUST NOT be read, even when
+the path stays inside the plugin; the rest of the plugin loads, without the servers that file
+defines (§2.5, §8, §9.1). The message names the component and the path:
+
+```text
+mcp-servers path not read: ./sub/../x.json is absolute or has a ".." part
+```
+
+The fix is a path inside the plugin that starts with `./` and has no `..`, such as
+`./servers/x.json`; one server file shared by plugins of a marketplace is linked into each under
+the marketplace's symlink rules (§15). A validator reports the same path as `Path contains ".."
+which could be a path traversal attempt: <path>` (§2.5). <!-- req: cli.errors.Server file path not read -->
+(Oracle 2.1.330, 2026-11-23: `"mcpServers": "./sub/../x.json"` loads the plugin with
+`MCP servers (0)` in `claude plugin details`, and `(1)` once the path is `./x.json`; `claude plugin
+list --json` carries no error for it.)
 
 ## 17.19 Marketplace names
 
@@ -268,7 +290,7 @@ the path, and a directory an `EISDIR` reason. <!-- req: cli.errors.Settings file
 | A managed source that cannot be read | A deployed source that exists but cannot be read for a reason other than the system denying it (an I/O error), with no other source supplying a policy, MUST make the client exit at startup with `Unable to read managed policy settings.`, `This machine may require organization login enforcement, but the policy file failed to load.`, `Contact your administrator.` and `Detail: <source>: <reason>`. In the same state, sign-in flows, API requests from a session already running and the `claude gateway` server are refused with a variant of the first line that names `allowedProviders`. A read the system denies starts the session without that source (§14). <!-- req: cli.errors.Unable to read managed policy settings --> |
 | Approval needed but not askable | A `claude plugin` command whose server-managed settings need the user's approval, and that cannot read the keyboard (piped input, and on macOS and Linux no `/dev/tty`), MUST stop before changing anything: ``Your organization's managed settings need your approval, which couldn't be asked for here. Run `claude` in a terminal and approve them, then run this command again.`` The approval is kept in the configuration directory. <!-- req: cli.errors.Managed settings need your approval --> |
 | Approval declined | The user declines the security approval dialog: `Managed settings were not approved; exiting without applying them.` and exit. A decline is not remembered. <!-- req: cli.errors.Managed settings were not approved --> |
-| Remote managed settings failed | The session is eligible for server-managed settings that could not be fetched or applied. Interactive sessions and the desktop Code tab warn with the cause in parentheses (`network error`, `request timed out`, `authentication rejected (401)`, `no setting in the server response could be applied as written`) and which policy the session runs on. <!-- req: cli.errors.Remote managed settings failed to load --> With settings cached from an earlier fetch the session runs on that cache, except the withheld environment variables, and the line reads `using cached policy`; with **no cache** it runs without server-managed settings: `no remote policy applied`. <!-- req: cli.errors.Remote managed settings failed to load.No cache --> In the desktop Code tab the warning is a line in the conversation, and a new line reports each change of the fetch's state: `Remote managed settings are still loading` when the session went ahead during the fetch; `Remote managed settings did not load` when it ended without an answer <!-- req: cli.errors.Remote managed settings failed to load.Remote managed settings did not load -->; and `Remote managed settings have now loaded` when it succeeded after a warning, saying whether a remote policy now applies. <!-- req: cli.errors.Remote managed settings failed to load.Remote managed settings have now loaded --> |
+| Remote managed settings failed | The session is eligible for server-managed settings that could not be fetched or applied. Interactive sessions and the desktop Code tab warn with the cause in parentheses (`network error`, `request timed out`, `authentication rejected (401)`, `no setting in the server response could be applied as written`) and which policy the session runs on. <!-- req: cli.errors.Remote managed settings failed to load --> With settings cached from an earlier fetch the session runs on that cache, except the withheld environment variables, and the line reads `using cached policy`; with **no cached settings to apply** — none fetched yet on this machine, or the last fetch more than 24 hours ago — it runs without server-managed settings: `no remote policy applied`. <!-- req: cli.errors.Remote managed settings failed to load.No cached settings to apply --> In the desktop Code tab the warning is a line in the conversation, and a new line reports each change of the fetch's state: `Remote managed settings are still loading` when the session went ahead during the fetch; `Remote managed settings did not load` when it ended without an answer <!-- req: cli.errors.Remote managed settings failed to load.Remote managed settings did not load -->; and `Remote managed settings have now loaded` when it succeeded after a warning, saying whether a remote policy now applies. <!-- req: cli.errors.Remote managed settings failed to load.Remote managed settings have now loaded --> |
 | Sandbox allow entries under a lock | Managed `allowManagedReadPathsOnly` or `allowManagedDomainsOnly` makes the `allowRead` or `allowedDomains` entries of a non-managed file not apply; `/status` and `claude doctor` warn, naming the key, the lock, the entry count and the file: `sandbox.filesystem.allowRead is ignored — managed settings set allowManagedReadPathsOnly, so only allowRead paths from managed settings are honored. The <N> entries in <file> will NOT apply (see https://code.claude.com/docs/en/settings#sandbox-settings).` For the network lock the warning names `sandbox.network.allowedDomains` and `allowManagedDomainsOnly` and says `only allowed domains (and WebFetch domain rules) from managed settings are honored`. <!-- req: cli.errors.Sandbox allow entries are ignored under a managed lock --> |
 | `crossSessionInbound` out of range | A value other than `accept`, `hold`, `refuse` is ignored with a warning: in a user, project, local or `--settings` file messages are held for approval while it is present (`"crossSessionInbound" must be one of "accept", "hold", "refuse"; received "<value>". This value was ignored; while it is present, cross-session messages are held for your approval instead of being delivered. Set it to one of the values above.`); in managed settings it is read as `refuse` and the warning says messages are turned away. <!-- req: cli.errors.crossSessionInbound must be one of accept, hold, refuse --> |
 | Workspace not trusted | `permissions.allow` rules and `permissions.additionalDirectories` of the project's `.claude/settings.json` or `.claude/settings.local.json` are not applied until the workspace is trusted (§13); `deny` and `ask` apply. The client warns with the count, the setting and the file, and how to trust: `Ignoring <N> permissions.allow entries from <file>: this workspace has not been trusted. Run Claude Code interactively here once and accept the trust dialog, or set projects["<path>"].hasTrustDialogAccepted: true in <home>/.claude.json.` <!-- req: cli.errors.Workspace has not been trusted --> |
@@ -332,7 +354,7 @@ visible at once.
 
 | Id | Judgment | Why, and the evidence |
 | --- | --- | --- |
-| J17.28 | Version-history sentences of `errors.md` ("Before v2.1.…, …") state no requirement; the 2.1.321 behaviour around them is the contract. | They describe earlier releases, which this specification does not target. |
+| J17.28 | Version-history sentences of `errors.md` ("Before v2.1.…, …") state no requirement; the 2.1.330 behaviour around them is the contract. | They describe earlier releases, which this specification does not target. |
 | J17.29 | `ESTALE` is reported and handled as `EIO`; any other code other than "not found" is reported with its own name and handled as §17.18.3. | `errors.md` lists causes "include", naming `EIO or ESTALE` together. |
 | J17.30 | The parenthesised list of `Cannot install … does not stay inside the marketplace directory (…)` is the client's wording; the prefix and the `Plugin source path refused` line are as quoted. | The docs quote one long parenthesis that names implementation categories. |
 | J17.31 | The startup-row and stderr routing of §17.17 rule 2 applies to every diagnostic `errors.md` gives a non-interactive stderr form for, unless its section says otherwise. | `errors.md` states it per section in the same words; a single rule avoids divergence. |

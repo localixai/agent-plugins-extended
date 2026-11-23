@@ -1,10 +1,10 @@
 # Agent Plugins Extended
 
 The [Agent Plugins Specification](../README.md) grown to the whole plugin contract of Claude Code
-2.1.321. A client that implements it runs every Agent Plugins package as the core specification
+2.1.330. A client that implements it runs every Agent Plugins package as the core specification
 says, and every Claude Code plugin exactly as Claude Code does.
 
-- [The specification](../extend/spec/1.1.0/README.md), version `1.1.0+claude-code.2.1.321`,
+- [The specification](../extend/spec/1.1.0/README.md), version `1.1.0+claude-code.2.1.330`,
   working draft
 - [Schemas](../extend/schemas/1.1.0/claude-code/README.md), twelve, for the files of a Claude Code
   plugin
@@ -50,7 +50,7 @@ Eighteen chapters, one area each. Every chapter ends with "Design decisions" (wh
 ## How it relates to the core
 
 ```text
-                 Agent Plugins Extended 1.1.0+claude-code.2.1.321
+                 Agent Plugins Extended 1.1.0+claude-code.2.1.330
   +---------------------------------------------------------------------+
   |  extend/spec/1.1.0/   the Claude Code form: chapters 1-17           |
   |                       both forms in one client: chapter 18          |
@@ -78,13 +78,13 @@ Compatibility is not claimed from reading; it is counted, and every count below 
 generated report.
 
 ```text
- Claude Code docs (2.1.321)      requirements.json        extend/spec/          REPORT.md
- 50 pages              ------->  2,730 ids, 28  -------> <!-- req: id -->  ---> stated share
+ Claude Code docs (2.1.330)      requirements.json        extend/spec/          REPORT.md
+ 52 pages              ------->  2,816 ids, 28  -------> <!-- req: id -->  ---> stated share
                        extracted categories      markers   per paragraph
                                                                 |
                          each id read against its docs section  +-------->  VERIFIED.md
                                                                 |
- 2,495 real plugins + claude plugin validate verdicts  --------------------> CORPUS.md
+ 2,489 real plugins + claude plugin validate verdicts  --------------------> CORPUS.md
 ```
 
 **Requirements and markers.** [`requirements.json`](../extend/conformance/requirements.json) holds
@@ -92,36 +92,41 @@ every requirement of the Claude Code plugin-host contract, extracted from the of
 of the targeted release, each with its page and section
 ([where it came from](../extend/conformance/SOURCE.md)). Each normative paragraph of the
 specification ends with a marker naming the requirements it states, and `bun run coverage` counts
-them. [`REPORT.md`](../extend/conformance/REPORT.md): **2,723 of 2,730 stated (99.7%), 7
+them. [`REPORT.md`](../extend/conformance/REPORT.md): **2,810 of 2,816 stated (99.8%), 6
 deviations, none missing.**
 
 **Verification.** A marker says a paragraph claims a requirement; it does not say the paragraph is
-right. Fourteen verification passes read every requirement against its documentation section and
-recorded the outcome in a ledger. [`VERIFIED.md`](../extend/conformance/VERIFIED.md): **2,730 of
-2,730 verified**; the passes found 115 statements to correct and corrected them, re-checked the 7
-deviations, and re-examined judgments 407 times (389 kept, 15 corrected, 2 promoted to normative
-text, 1 removed).
+right. Verification passes read every requirement of Claude Code 2.1.321 against its documentation
+section and recorded the outcome in a ledger. [`VERIFIED.md`](../extend/conformance/VERIFIED.md):
+**2,689 of 2,816 verified**, all of them against the 2.1.321 documentation; the 127 requirements
+2.1.330 added, and the changed sections under the others, await a pass on 2.1.330. The passes
+found 170 statements to correct and corrected them, and re-examined judgments 483 times (392 kept,
+88 corrected, 2 promoted to normative text, 1 removed).
 
 **The corpus.** The [schemas](../extend/schemas/1.1.0/claude-code/README.md) are run over every file
 they cover in the plugins of the official and community marketplaces, and each verdict is compared
-with what Claude Code 2.1.321's own `claude plugin validate` reports for the same plugin.
-[`CORPUS.md`](../extend/conformance/CORPUS.md): **2,495 plugins, 25,514 files, 0 false rejects**
-(a file we refuse and Claude Code accepts). Of Claude Code's errors, 436 are matched by ours and 278
-remain; the remainder is what a JSON Schema cannot state: reserved names (151), paths on disk (94),
-and directories with nothing to validate (33).
+with what Claude Code's own `claude plugin validate` reports for the same plugin.
+[`CORPUS.md`](../extend/conformance/CORPUS.md), against Claude Code 2.1.330's verdicts: **2,489
+plugins, 25,347 files, 0 false rejects** (a file we refuse and Claude Code accepts). Of Claude Code's
+errors, 380 are matched by ours and 334 remain: what a JSON Schema cannot state, reserved names
+(151), paths on disk (94) and directories with nothing to validate (33); 55 validator errors on
+malformed `repository` and `author` values, which Claude Code 2.1.330 ignores while it loads the
+plugin, so the schema accepts them on purpose; and one about a hooks module's code.
 
-**Deviations (E4a).** In 7 requirements the documentation and Claude Code's behaviour disagree:
-how a skill's listed command name is formed, which file a validator reports as missing, what a
-directory validation reads, and the error a mod hook receives on re-entry. The specification follows
+**Deviations (E4a).** In 6 requirements the documentation and Claude Code's behaviour disagree:
+how a skill's listed command name is formed, whether a skill without a description is listed to
+Claude, which file a validator reports
+as missing, what a directory validation reads, and a mod's hooks file that the docs say passes
+validation. The specification follows
 the behaviour, because running plugins as Claude Code does is what it promises. Each deviation
-carries a judgment that states both sides (J2.1, J4.1, J4.13, J10.7, J17.14) and the black-box runs
+carries a judgment that states both sides (J2.1, J4.1, J4.13, J10.174, J17.14) and the black-box runs
 of Claude Code releases around the target that show the behaviour. A deviation is reported apart
 and never counted as stated.
 
 **Judgments (E4).** Where the documentation is silent, a chapter decides, names the decision in the
 text ("Judgment J7.3") and records it with its evidence: a black-box run of Claude Code's own
 commands on an input of ours, with the release named, or a reading of the reference implementation
-checked against the documentation. There are 405, [indexed by chapter](../extend/spec/judgments.md).
+checked against the documentation. There are 470, [indexed by chapter](../extend/spec/judgments.md).
 A judgment is normative but carries no requirement marker: it never raises the stated share.
 
 ## Quick start
@@ -220,8 +225,10 @@ change are in [`extend/AGENTS.md`](../extend/AGENTS.md) and
 
 ## Status
 
-A working draft. It targets Claude Code 2.1.321: the requirements, the oracle verdicts of the corpus
-and the official types it follows are all of that release. What comes next:
+A working draft. It targets Claude Code 2.1.330: the requirements, the documentation and the mods
+declarations are of that release; the Agent SDK types it follows are those of 0.3.330 (built for
+2.1.330), and the corpus verdicts are 2.1.330's. The verification passes are still of 2.1.321 until
+a pass reads the 2.1.330 documentation. What comes next:
 
 - **Newer Claude Code releases.** Each release that changes the contract becomes a new version of
   the specification, from a new snapshot of the requirements (`extend/conformance/SOURCE.md`,

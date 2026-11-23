@@ -6,7 +6,7 @@ the marketplace allowlist and blocklist, seeds, the other plugin controls, chann
 and the messages a user reads when policy refuses. Evidence: `plugins/org.md` unless a section names
 another page; each key's entry in `settings-reference.md`. §15 defines marketplace sources and §16
 installs; this part states only what policy adds to them. The keys' types follow the `Settings` type
-of `@anthropic-ai/claude-agent-sdk` 0.3.321.
+of `@anthropic-ai/claude-agent-sdk` 0.3.330.
 
 ## 14.8.1 Which managed source carries the plugin keys
 
@@ -49,12 +49,13 @@ of `@anthropic-ai/claude-agent-sdk` 0.3.321.
    contributors. Its `extraKnownMarketplaces` entries apply only in a trusted folder: interactively
    after the workspace trust dialog, and in `-p` only in a folder already trusted interactively or
    whose `hasTrustDialogAccepted` is set in `~/.claude.json`; in an untrusted folder they are ignored
-   with no message. Its `enabledPlugins` apply at session start. A plugin the marketplace lists by
-   relative path loads from the marketplace copy once the entries apply; one with an external source
-   does not install from the repository's settings alone, and each contributor sees `Plugin
-   "<name>" is enabled in project settings but isn't installed here` (§16.4.2) until they install it
-   with `--scope project`. A relative `directory` or `file` source path resolves against the repository's main
-   checkout, so every worktree shares it. <!-- req: policy.org.Require plugins per repository -->
+   with no message. Its `enabledPlugins` apply at session start but install nothing: once the
+   marketplace is registered, each contributor installs the plugin with `claude plugin install
+   <name>@<marketplace> --scope project`, and until then the `/plugin` **Errors** tab can show a line
+   ending in `isn't installed here` (§16.4.2). No install is needed for a plugin that a local
+   `directory` or `file` marketplace lists by a relative-path `source`, or one a seed supplies
+   (§14.8.4); §16 states the rest. A relative `directory` or `file` source path resolves against the
+   repository's main checkout, so every worktree shares it. <!-- req: policy.org.Require plugins per repository -->
 7. **Surfaces.** In an interactive terminal, managed keys apply at session start; in `-p` and CI they
    apply at session start with installs in the background, so a plugin can be missing from the first
    turn unless `CLAUDE_CODE_SYNC_PLUGIN_INSTALL=1` makes the run wait. An Anthropic-hosted cloud
@@ -270,9 +271,11 @@ rewrite `additionalMarketplaces` to the canonical name when it updates the file.
 2. Seed marketplaces follow these rules:
    - **Read-only**: the client never writes to a seed and forces `autoUpdate` off for its
      marketplaces. <!-- req: policy.org.Seed containers and CI.Read-only -->
-   - **Seed entries take precedence**: at each startup a marketplace declared in the seed overwrites
-     the user's entry of the same name; a user opts out of a seed plugin with `claude plugin
-     disable`. <!-- req: policy.org.Seed containers and CI.Seed entries take precedence -->
+   - **Build from the declared source**: when user or managed settings declare a seed marketplace's
+     name in `extraKnownMarketplaces`, the operator builds the seed from that same source and `ref`,
+     so the seed and the declaration agree (Judgment J14.16). <!-- req: policy.org.Seed containers and CI.Build from the declared source -->
+   - **Opting out**: when the repository's settings enable a seed plugin, a user opts out with
+     `claude plugin disable`, not by removing the marketplace. <!-- req: policy.org.Seed containers and CI.Opting out -->
    - **Update and remove fail**: `claude plugin marketplace update <name>` and `remove` without
      `--scope` on a seed marketplace fail with a message naming the seed directory (§14.8.8); a bulk
      `marketplace update` skips it. <!-- req: policy.org.Seed containers and CI.Update and remove fail -->
@@ -297,7 +300,7 @@ option of the built-in guard under managed `pluginConfigs`, §14.9). <!-- req: p
 | `disableSideloadFlags` | See item 1. | Restrict `.mcp.json`, `claude mcp add` or SDK-provided servers; `allowedMcpServers` does (§8.11.5). <!-- req: policy.org.Control matrix.disableSideloadFlags --> |
 | `disableCommandPluginSources` | See item 2. | Affect other source types. <!-- req: policy.org.Control matrix.disableCommandPluginSources --> |
 | `allowManagedHooksOnly` | See item 3. | Trust hooks of plugins users enable themselves. <!-- req: policy.org.Control matrix.allowManagedHooksOnly --> |
-| `strictPluginOnlyCustomization` | See item 4. | Restrict which plugins users install; pair it with the allowlist. <!-- req: policy.org.Control matrix.strictPluginOnlyCustomization --> |
+| `strictPluginOnlyCustomization` | See item 4. | Restrict which plugins users install, or reject the flags that sideload plugins, agents and MCP servers; pair it with the allowlist and `disableSideloadFlags`. <!-- req: policy.org.Control matrix.strictPluginOnlyCustomization --> |
 | `pluginSuggestionMarketplaces` | See item 5. | Affect the built-in tips. <!-- req: policy.org.Control matrix.pluginSuggestionMarketplaces --> |
 | `pluginTrustMessage` | See item 6. | Change the warning's own text. <!-- req: policy.org.Control matrix.pluginTrustMessage --> |
 | `allowedChannelPlugins` | Replaces the default channel allowlist; needs `channelsEnabled: true` (§14.8.6). | Register a channel the user did not opt in. <!-- req: policy.org.Control matrix.allowedChannelPlugins --> |
@@ -329,8 +332,8 @@ option of the built-in guard under managed `pluginConfigs`, §14.9). <!-- req: p
    (§14.9.5). It blocks user, project and local hooks, the hooks and mods of every other plugin,
    agent-frontmatter hooks, and the monitors of plugins not force-enabled; built-in mods keep
    running. It disables command-sourced plugins and blocks marketplace `headersHelper` commands
-   unless `disableCommandPluginSources` is explicitly `false`; reads `statusLine`, `fileSuggestion`
-   and `subagentStatusLine` from managed settings only; and `/goal` cannot run. §7 states the hook
+   unless `disableCommandPluginSources` is explicitly `false`; reads `statusLine` and
+   `fileSuggestion` from managed settings only; and `/goal` cannot run. §7 states the hook
    side.
 4. **`strictPluginOnlyCustomization`**. `true` locks all four surfaces; an array locks those it
    names of `"skills"`, `"agents"`, `"hooks"` and `"mcp"`; an unrecognized name locks nothing.
@@ -348,8 +351,8 @@ option of the built-in guard under managed `pluginConfigs`, §14.9). <!-- req: p
    effect only when the marketplace is registered on the machine and its registered source is
    declared in the same managed settings, as that name's `extraKnownMarketplaces` entry or as a
    `strictKnownMarketplaces` entry; a marketplace registered under the name from another source is
-   ignored. `claude-plugins-official` needs only its name. In a cloud session's conversation Claude
-   may suggest plugins regardless. <!-- req: policy.relevance.Enable suggestions in managed settings | policy.org.Recommend plugins -->
+   ignored. `claude-plugins-official` needs only its name. In a cloud session's conversation and in
+   the desktop app's Code tab Claude may suggest plugins regardless. <!-- req: policy.relevance.Enable suggestions in managed settings | policy.org.Recommend plugins -->
 6. **`pluginTrustMessage`**: a string the client appends to the trust warning `/plugin` shows before a
    plugin installs, after the standard text (Judgment J14.9).
 
@@ -381,8 +384,10 @@ option of the built-in guard under managed `pluginConfigs`, §14.9). <!-- req: p
    and stops the client's own updates; `FORCE_AUTOUPDATE_PLUGINS=1` beside it keeps plugin
    auto-update on. Neither governs a `command`-sourced plugin, whose command re-runs each session
    (§16).
-3. Per-group release channels need per-group endpoint-managed settings or gateway policies, each
-   listing every marketplace its group needs; server-managed settings cannot target a group.
+3. Per-group release channels need settings delivered per group: separate endpoint-managed settings,
+   gateway policies, or on an Enterprise plan the server-managed group configurations (§14.3.7).
+   A group configuration does not merge with the organization-wide one, so each lists every
+   marketplace its group needs.
 
 ## 14.8.8 Messages users read
 
@@ -402,8 +407,8 @@ organization"). Placeholders are as shown; a source is written `<type>:<locator>
 
 ## 14.8.9 Limits and troubleshooting
 
-1. Managed settings have no key for: per-user or per-group targeting (use per-group endpoint
-   settings or gateway policies); restricting entries inside an allowed marketplace (use managed
+1. Managed settings have no key for: per-user or per-group targeting (deliver each group its own
+   settings, as §14.8.7 item 3 says); restricting entries inside an allowed marketplace (use managed
    `enabledPlugins` `false`); hiding `/plugin` (combine an allowlist of the organization's
    marketplace, managed `enabledPlugins` and `disableSideloadFlags`); gating `--plugin-dir` through
    the allowlist (`disableSideloadFlags` does); and enforcing the claude.ai plugin toggles, which
@@ -442,3 +447,4 @@ the current policy the one in force.
 | J14.9 | `pluginTrustMessage` follows the standard warning after a blank line; an empty or blank value adds nothing. | The docs say "appends" and name no separator. |
 | J14.10 | The string form of an `allowedChannelPlugins` entry splits at its last `@`. | settings-reference.md gives `"telegram@claude-plugins-official"` and no rule for a name containing `@`; plugin names cannot contain `@` (§2.3). |
 | J14.11 | A source in a refusal message is written `<type>:<locator>` (`github:<repo>`, `git:<url>`, `url:<url>`, `file:<path>`, `directory:<path>`, `settings:<name>`, `npm:<package>`, `hostPattern:<pattern>`, `pathPattern:<pattern>`, `skills-dir`). | troubleshooting.md quotes the messages with `<source>` and no spelling; the reference implementation's reading. |
+| J14.16 | A seed marketplace whose name user or managed settings also declare is built from the declared source and `ref`; which of the two applies when they differ is not specified (§14.8.4). | plugins/org.md of 2.1.321 said a seed entry overwrites the user's entry of the same name at each startup; 2.1.330 drops that rule and tells operators to build the seed from the declared source. A run of `claude plugin marketplace list` with a seed and a differing declaration in a scratch configuration (2.1.330) listed neither, since seeds register at session start, so the behaviour on a mismatch was not observed. |

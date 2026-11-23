@@ -5,7 +5,7 @@ servers a user or an organization configures, which settings keys approve, rejec
 servers, and the organization's managed MCP configuration, as each applies to plugin servers.
 Evidence: `mcp.md` ("MCP installation scopes", "Managed MCP configuration"), `managed-mcp.md` and
 `settings-reference.md` ("MCP"). The keys' types follow the `Settings` type of
-`@anthropic-ai/claude-agent-sdk` 0.3.321. §12 defines how settings files merge and §14 the managed
+`@anthropic-ai/claude-agent-sdk` 0.3.330. §12 defines how settings files merge and §14 the managed
 tier in general.
 
 ## 8.11.1 Scopes, precedence and project approval
@@ -21,7 +21,8 @@ tier in general.
    "Local scope" here is not `.claude/settings.local.json`.
 2. **Precedence.** When one server is defined in more than one place, the client connects it once,
    from the highest source below, using that source's entry whole; fields are never merged:
-   local, then project, then user, then plugin-provided servers, then claude.ai connectors. A
+   local, then project, then user, then plugin-provided servers, then claude.ai connectors; in
+   `claude -p`, Agent SDK and VS Code sessions the connectors rank above plugin-provided servers. A
    server provided through `managedMcpServers` (§8.11.4) ranks above all five. The three scopes
    match duplicates by name. Plugins and connectors match by **endpoint**: a plugin server whose
    URL, or command and arguments, equals that of an enabled server above it is a duplicate and is
@@ -83,17 +84,20 @@ is stripped as §14 says for invalid managed entries.
    | Linux and WSL | `/etc/claude-code/managed-mcp.json` <!-- req: mcpSettings.managed.Deploy managed-mcp.json.Linux and WSL --> |
    | Windows | `C:\Program Files\ClaudeCode\managed-mcp.json` <!-- req: mcpSettings.managed.Deploy managed-mcp.json.Windows --> |
 
-   A file that is empty, not JSON or not an object takes no control, and `claude mcp list` marks the
-   enterprise config as failed to parse in its `MCP config diagnostics` (Judgment J8.22).
+   A file that is empty, not JSON or not an object takes no control, and `claude mcp list` lists
+   errors for the enterprise config in its `MCP config diagnostics` (Judgment J8.22).
 2. While a readable file is deployed, the client loads only: the servers it defines; the servers
    provided through `managedMcpServers`; in-process servers the host application registers; and
-   the built-in Claude in Chrome server when allowed (item 8). **Plugin servers do not load**, nor do
+   the built-in Claude in Chrome server when allowed (item 8); and the server the client creates for
+   the tools a mod adds (§10), which only stopping user-installed mods keeps out. **Plugin servers do
+   not load**, nor do
    the user's own servers or the claude.ai connectors the client fetches itself, unless item 7
    allows the connectors. `claude mcp add` fails with `Cannot add MCP server: enterprise MCP
-   configuration is active and has exclusive control over MCP servers`.
+   configuration is active and has exclusive control over MCP servers`. <!-- req: mcpSettings.managed.Exclusive control with managed-mcp.json -->
 3. **Disable MCP.** A file whose `mcpServers` is the empty object blocks every server but those of
-   item 2; servers configured earlier stop loading at the next session with no warning. Leaving
-   `managedMcpServers` and the item 7 and 8 keys unset turns MCP off completely.
+   item 2; servers configured earlier stop loading by each user's next session. The servers of item
+   2 still load under the empty map, so an organization that wants no server leaves
+   `managedMcpServers` and the item 7 and 8 keys unset.
    <!-- req: mcpSettings.managed.Disable MCP entirely -->
 4. **Credentials.** Every user of the machine can read the file, so an organization SHOULD NOT put
    credentials in its `env` blocks, and passes per-user credentials through `${VAR}` expansion,
@@ -222,9 +226,9 @@ is stripped as §14 says for invalid managed entries.
    (Judgment J8.25). An entry relied on for enforcement SHOULD be literal.
    <!-- req: mcpSettings.managed.Environment variables in serverCommand and serverUrl entries -->
 7. **Servers that skip the allowlist** (the denylist still applies): every `managedMcpServers` entry
-   and every `managed-mcp.json` entry with no `${VAR}` outside `env`; built-in servers, such as Claude
-   in Chrome, the `ide` server and servers the CLI configures itself; and the Slack tools of a Claude
-   Tag session. In-process `type: "sdk"` servers skip both lists. Every server a user, **a plugin** or
+   and every `managed-mcp.json` entry with no `${VAR}` outside `env`; some built-in servers, such as
+   the `ide` server of a running VS Code or JetBrains IDE and Claude in Chrome in terminal sessions
+   (Judgment J8.30); and the Slack tools of a Claude Tag session. In-process `type: "sdk"` servers skip both lists. Every server a user, **a plugin** or
    claude.ai adds, and every `--mcp-config` server, is checked. <!-- req: mcpSettings.managed.Servers that skip the allowlist check -->
 8. **Managed-only allowlist.** `allowManagedMcpServersOnly: true` with `allowedMcpServers`, both in
    managed settings, makes the managed allowlist the only one: allowlists in user, project and local
@@ -257,8 +261,9 @@ organization that wants a plugin's server lists it in the file or in `managedMcp
 | --- | --- | --- |
 | J8.19 | An endpoint is a URL normalised as mcp.md lists (scheme and host case, default port, trailing slash on a path longer than `/`) or a stdio command with its arguments as a list; the transport `type` is not part of it; two plugin servers at one endpoint are one server, the first loaded winning. | mcp.md lists the spellings that merge and that make two, not the stdio identity or a tie between plugins; the reference implementation's reading. |
 | J8.20 | `enableAllProjectMcpServers`, `enabledMcpjsonServers` and `disabledMcpjsonServers` do not apply to a plugin's servers. | settings-reference.md scopes all three to "a project's `.mcp.json`"; mcp.md says enabling a plugin starts its servers automatically. |
-| J8.21 | `--strict-mcp-config` excludes plugin servers from the run. | mcp.md ("Project scope"): the client "then uses only the MCP servers you pass with `--mcp-config`"; the reference implementation reads it so. |
+| J8.21 | `--strict-mcp-config` excludes plugin servers from the run. | mcp.md ("Project scope"), 2.1.321: the client "then uses only the MCP servers you pass with `--mcp-config`"; 2.1.330 words it as loading those servers and skipping "the ones configured in places such as `.mcp.json`", without naming plugins either way. The reference implementation reads it so. |
 | J8.22 | A `managed-mcp.json` that is empty, not JSON or not an object takes no control; one with some invalid entries takes control and the other entries load. | managed-mcp.md says only that a file that fails to parse is reported in the diagnostics and its servers do not appear. |
 | J8.23 | For the allowlist, `ws` servers count as remote (matched by `serverUrl`). | The table names "Remote (HTTP or SSE)" and stdio only. |
 | J8.24 | A plugin's server is matched by `serverName` against its scoped name, and by `serverCommand`/`serverUrl` against its substituted command or URL. | mcp.md: the scoped name is the name "where a configured server name is expected"; managed-mcp.md compares "the server's configured value" after expansion. |
 | J8.25 | The pinned environment of a policy entry takes the startup value first, then managed `env`; the denylist fills from user, managed, `--settings` and parent settings, never from project, local or `--add-dir` files. | managed-mcp.md gives the two sources and "outside the repository" without an order; the reference implementation's reading. |
+| J8.30 | The built-in servers that skip the allowlist include the `ide` server and Claude in Chrome in terminal sessions; which other built-in servers skip it is the client's own (§8.11.5 item 7). | 2.1.321's `managed-mcp.md`, "Servers that skip the allowlist check", named "built-in servers, such as Claude in Chrome, the `ide` server … and servers the CLI itself configures"; 2.1.330 narrows it to "some built-in servers" and names only those two, Claude in Chrome for terminal sessions. No plugin server is built in, so plugins are unaffected either way. |

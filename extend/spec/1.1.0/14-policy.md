@@ -14,7 +14,7 @@ further files of this chapter state the managed keys that govern plugins:
 
 Evidence: `managed-settings.md` and `server-managed-settings.md` unless a section names another page;
 `settings-reference.md` for each key's entry. The keys' types follow the `Settings` type of
-`@anthropic-ai/claude-agent-sdk` 0.3.321. MCP policy (`managed-mcp.json`, `managedMcpServers`,
+`@anthropic-ai/claude-agent-sdk` 0.3.330. MCP policy (`managed-mcp.json`, `managedMcpServers`,
 `allowedMcpServers`, `deniedMcpServers`) is §8.11; permission rules and their locks are §13; settings
 files and their merge are §12. This chapter does not repeat them.
 
@@ -33,18 +33,23 @@ files and their merge are §12. This chapter does not repeat them.
    | HKCU registry (Windows and WSL) | A Windows `HKCU` registry value | Read at startup, checked every 30 minutes; used only when no admin document is present above it (§14.2.2) and no parent settings supply a restrictive key (§14.2.6) <!-- req: policy.managed.Choose a delivery mechanism.HKCU registry, Windows and WSL --> |
 
    The MDM and file mechanisms are *endpoint-managed*: the policy is stored on the device. Every
-   mechanism applies one policy to everyone it reaches; a per-group policy needs a different file or
-   profile per group, or a gateway policy per group.
-2. A few keys are tied to particular sources: the delivery controls `policyHelper` (§14.2.5),
-   `wslInheritsWindowsSettings` (§14.2.7) and `managedSourcesBehavior` (§14.2.3), and the gateway
-   login keys `forceLoginGatewayUrl`, `gatewayInternalNetworks` and the `"gateway"` value of
-   `forceLoginMethod`. Each key's scope in the settings reference says which.
+   file or profile applies one policy to everyone it reaches, so a per-group policy needs a
+   different file or profile per group; a gateway delivers a policy per identity-provider group,
+   and on an Enterprise plan server-managed settings can give each group its own configuration
+   (§14.3.7).
+2. A few keys are tied to particular sources; each key's scope in the settings reference says
+   which:
+   - **Delivery controls**: `policyHelper` (§14.2.5), `wslInheritsWindowsSettings` (§14.2.7) and
+     `managedSourcesBehavior` (§14.2.3). <!-- req: policy.managed.Choose a delivery mechanism.Delivery controls -->
+   - **Gateway login keys**: `forceLoginGatewayUrl`, `gatewayInternalNetworks` and the `"gateway"`
+     value of `forceLoginMethod` (§14.2.4). <!-- req: policy.managed.Choose a delivery mechanism.Gateway login keys -->
+   - **Sign-in requirement**: `enforceAnthropicSignIn` (§14.2.8). <!-- req: policy.managed.Choose a delivery mechanism.Sign-in requirement -->
 
 ### 14.1.2 Where each mechanism stores the policy
 
 | Mechanism | Store |
 | --- | --- |
-| Server-managed | Anthropic's servers or the gateway hold it; the client keeps a local cache, `~/.claude/remote-settings.json`, which it applies at startup and replaces on each successful fetch (§14.3.2). <!-- req: policy.managed.Where each mechanism stores the policy.Server-managed --> |
+| Server-managed | Anthropic's servers or the gateway hold it; the client keeps a local cache, `~/.claude/remote-settings.json`, which it can apply at startup until it expires and replaces on each successful fetch (§14.3.2). <!-- req: policy.managed.Where each mechanism stores the policy.Server-managed --> |
 | macOS configuration profile | The managed preferences domain `com.anthropic.claudecode`, with the top-level keys of `managed-settings.json`, nested settings as dictionaries and lists as plist arrays. <!-- req: policy.managed.Where each mechanism stores the policy.macOS configuration profile --> |
 | Windows HKLM registry | The whole JSON document as a `REG_SZ` or `REG_EXPAND_SZ` value named `Settings` under `HKLM\SOFTWARE\Policies\ClaudeCode`. <!-- req: policy.managed.Where each mechanism stores the policy.Windows HKLM registry --> |
 | Windows HKCU registry | The same `Settings` value under `HKCU\SOFTWARE\Policies\ClaudeCode`. <!-- req: policy.managed.Where each mechanism stores the policy.Windows HKCU registry --> |
@@ -104,13 +109,17 @@ The system directory, and the path of the managed settings file in it, is one pe
       value also sets `wslInheritsWindowsSettings`. Read only when no admin document is present
       above it and no parent settings supply a restrictive key.
 3. Within the managed tier, server-managed settings and endpoint-managed settings stand together
-   above every other tier (§12); the ranking above decides between them. A `policyHelper` that the
-   selected MDM or file source names and that emits settings replaces that source (§14.2.5). While
-   server-managed settings deliver a policy key, the client does not consult a helper configured in
-   MDM or file settings. When an organization clears its server-managed configuration, the cached
-   copy (§14.3.2) applies until the next successful fetch, and keys that apply only at the next
-   launch, such as `model`, stay until each client relaunches.
-   <!-- req: policy.server.Settings precedence -->
+   above every other tier (§12); the ranking above decides between them. A managed value wins over
+   the user's files and `--settings` apart from the exceptions of §12.3.3, while lists such as the
+   user's allow rules still merge with the managed ones (§14.6).
+4. **When endpoint-managed settings take over.** A `policyHelper` that the selected MDM or file
+   source names and that emits settings replaces that source as §14.2.5 says. While server-managed
+   settings deliver a policy key, the client does not consult a helper configured in MDM or file
+   settings; when a later fetch finds the server-managed settings removed, it runs that helper at
+   once rather than at the next launch (§14.2.5 item 5). When an organization clears its
+   server-managed configuration, the cached copy (§14.3.2) applies until the next successful fetch,
+   and keys that apply only at the next launch, such as `model`, stay until each client relaunches.
+   <!-- req: policy.server.When endpoint-managed settings take over -->
 
 ### 14.2.2 When an admin document is present
 
@@ -148,7 +157,8 @@ Windows documents stand above it.
    | Every other key | The highest source that sets it | `model`, `cleanupPeriodDays` |
 
    Further conditions: `policyHelper` is honoured only when the highest source carrying a policy key
-   is an MDM policy or a managed settings file; `modelOverrides` is taken from the highest source
+   is an MDM policy or a managed settings file; `enforceAnthropicSignIn` comes from the sources
+   §14.2.8 names, under either behaviour; `modelOverrides` is taken from the highest source
    that sets it unless a higher source sets `availableModels` without it, in which case no source's
    `modelOverrides` applies; `allowedProviders` is further limited by the machine's own list.
 3. Under `"merge"` a lower source's list entries, such as `permissions.allow` rules and hooks, join
@@ -192,7 +202,8 @@ login keys from it, even for a key remote settings also set. With both, it uses 
 that policy sets any policy key, the file's login keys are ignored, under `"merge"` too.
 `forceLoginOrgUUID` and the `"claudeai"` and `"console"` values of `forceLoginMethod` fall back to
 remote settings when the endpoint source omits them; the gateway login keys are never read from
-remote settings.
+remote settings, and among the admin sources on the machine only the highest-ranked one carrying a
+policy key supplies them, whether or not server-managed settings are present.
 
 ### 14.2.5 `policyHelper`
 
@@ -217,13 +228,17 @@ A `policyHelper` is an executable that computes managed settings at startup.
 3. **Running.** The client runs the helper with no arguments and `CLAUDE_CODE_VERSION` in its
    environment, before it accepts the first prompt, and reads one JSON object from stdout, capped at
    1 MiB. The settings go under `managedSettings`; an envelope without that key applies nothing,
-   with no error, and the other sources apply as usual; other envelope keys are ignored (Judgment J14.4). With `--debug` the helper's stderr from
-   every run goes to the debug log. <!-- req: policy.reference.Write the helper output -->
-4. **Effect.** When the helper emits `managedSettings`, that object is the only managed settings of
-   the session: the client ignores the MDM, file and HKCU sources, reads the cross-source keys
-   (§14.2.4) from the helper's output alone, and never merges parent settings, whatever
-   `parentSettingsBehavior` says. The exception is `forceRemoteSettingsRefresh`, whose startup check
-   runs before the helper and reads every admin source.
+   with no error, and the other sources apply as usual; other envelope keys are ignored (Judgment
+   J14.4). With `--debug` the helper's stderr from every run goes to the debug log. <!-- req: policy.reference.Write the helper output -->
+   The helper's environment takes nothing from the `env` of user settings or `--settings`; what it
+   needs comes from the managed `env` or the launching shell (2.1.323 and later).
+   <!-- docs: changelog.md | 2.1.323 -->
+4. **Effect.** When the helper emits `managedSettings`, that object is the managed settings source
+   of the session: the client reads the cross-source keys (§14.2.4) from it, never merges parent
+   settings, whatever `parentSettingsBehavior` says, and ignores the MDM, file and HKCU sources,
+   apart from two keys: `forceRemoteSettingsRefresh`, whose startup check runs before the helper and
+   reads every admin source, and `enforceAnthropicSignIn`, which it still reads from the MDM policy
+   or managed settings file (§14.2.8).
 5. **Failures.** A run fails when `path` breaks the rules above; no regular file is at `path`
    (checked within the same `timeoutMs`); the helper exits non-zero, times out or cannot start; it
    writes more than 1 MiB to stdout or stderr; or stdout is not a single JSON object, or its
@@ -248,8 +263,9 @@ settings*. <!-- req: policy.managed.Let an embedding host add policy -->
    filtered to restrictive values.
 2. `parentSettingsBehavior`, read from the highest-priority admin source only, is `"first-wins"`
    (default: drop parent settings while an admin tier exists) or `"merge"` (apply them under the
-   admin tier through a restrictive-only filter). Under `"merge"` the host's permission allow rules
-   and sandbox allowlists still apply unless the `allowManaged*Only` locks are set. A `policyHelper`
+   admin tier through a filter that keeps restrictive keys). Under `"merge"` the host's permission
+   allow rules and sandbox allowlists pass the filter too, unless the `allowManaged*Only` locks are
+   set. A `policyHelper`
    that emits settings turns parent merging off. <!-- req: policy.key.parentSettingsBehavior | policy.managed.Keys only a managed source can set.parentSettingsBehavior -->
 3. Whatever the key says, the client applies these checks to parent-supplied values:
    - When any admin source sets `allowManagedPermissionRulesOnly`, parent allow rules and
@@ -288,6 +304,20 @@ settings*. <!-- req: policy.managed.Let an embedding host add policy -->
    Windows-folder file that exists but cannot be read keeps `/etc/claude-code` from applying whether
    or not the chain is on. <!-- req: policy.key.wslInheritsWindowsSettings | policy.managed.Keys only a managed source can set.wslInheritsWindowsSettings -->
 
+### 14.2.8 `enforceAnthropicSignIn`
+
+1. `enforceAnthropicSignIn: true` (a Boolean, unset by default; 2.1.329 and later) requires a
+   claude.ai login on Anthropic's API, or a sign-in through the Enterprise Admin Console. Such a
+   console sign-in counts only when `forceLoginOrgUUID` names the organization and no `policyHelper`
+   is set. The key also stops desktop-app sessions that run on a cloud provider or gateway.
+2. **Sources.** The client reads the key from a managed settings file, where it applies even beneath
+   server-managed settings; on a machine that also has an MDM policy, from that policy. It ignores
+   the key in server-managed settings, in HKCU and in a `policyHelper`'s output, and still reads it
+   from the MDM policy or file while a helper supplies the rest (§14.2.5). The startup message
+   `Claude Code could not read the managed settings that apply to this computer, which may require
+   a sign-in to Anthropic` belongs to this key (`errors.md`; §17).
+   <!-- docs: settings-reference.md | enforceAnthropicSignIn -->
+
 ## 14.3 Server-managed settings
 
 ### 14.3.1 Eligibility and configuration
@@ -304,8 +334,8 @@ settings*. <!-- req: policy.managed.Let an embedding host add policy -->
    non-default `ANTHROPIC_BASE_URL` in the shell skips the fetch; neither a server-managed nor an
    endpoint-managed `env` block undoes that, since eligibility is checked first; an empty value in
    the user settings `env` does.
-3. **Limitations.** Settings apply to every user of the organization: there is no per-group
-   configuration. `managed-mcp.json` cannot be delivered this way; `allowedMcpServers`,
+3. **Limitations.** On a Team plan the settings apply to every user of the organization; group
+   configurations need an Enterprise plan (§14.3.7). `managed-mcp.json` cannot be delivered this way; `allowedMcpServers`,
    `deniedMcpServers` and `managedMcpServers` can, and a `managed-mcp.json` at its system path still
    applies beside them (§8.11). Keys restricted to OS-level sources, `policyHelper` and
    `wslInheritsWindowsSettings`, are not honoured from server-managed settings.
@@ -322,7 +352,8 @@ settings*. <!-- req: policy.managed.Let an embedding host add policy -->
    seconds for the fetch; a policy that arrives in time applies from the first screen, and one that
    needs approval ends the wait and applies once approved. Otherwise the session opens while the
    fetch continues. A failed fetch continues without server-managed settings, with a warning in
-   interactive sessions and the Code tab; endpoint-managed settings still apply. Under
+   interactive sessions and the Code tab that no remote policy applies; endpoint-managed settings
+   still apply. Under
    `forceRemoteSettingsRefresh` the client exits instead (§14.3.3). For a Team or Enterprise claude.ai
    login stored on the machine, Anthropic MAY require the organization's settings before a session
    starts; the session then cannot start while the sign-in has expired, or while the client has
@@ -332,13 +363,22 @@ settings*. <!-- req: policy.managed.Let an embedding host add policy -->
    variables (item 4) wait too; a cached `prependPlugins`, `appendPlugins` or `enabledPlugins` cannot
    remove, move or turn off the built-in guard (§14.9) until confirmation; and where an
    endpoint-managed source lists or enables plugins of its own, a plugin that only a cached list
-   enables counts as the user's until confirmation. The cache survives network failures, with a
-   warning; values withheld at startup stay withheld until a fetch succeeds.
+   enables counts as the user's until confirmation. When the session's provider is not on a cached
+   `allowedProviders` list, the client MAY wait for the fetch and check again before refusing; a
+   failed fetch then refuses the session. The cache expires 24 hours after the last successful
+   fetch: a startup fetch that fails before then applies the cache, with a warning in interactive
+   sessions and the Code tab that the cached policy is in effect; one that fails after then starts
+   without server-managed settings, the warning saying no remote policy applies, unless
+   `forceRemoteSettingsRefresh` makes the client exit (§14.3.3). Values withheld at startup stay
+   withheld until a fetch succeeds.
 4. **Withheld variables.** Until confirmation the client withholds from the cached `env` the proxy
    and TLS variables, API routing and provider selection, authentication credentials,
    `CLAUDE_CONFIG_DIR`, the Workload Identity Federation variables, `ANTHROPIC_PROFILE`,
    `ANTHROPIC_CONFIG_DIR`, `HOME`, `XDG_CONFIG_HOME`, `APPDATA` and `USERPROFILE`. Endpoint-managed
    `env` blocks are not withheld, and per variable they fill what the withheld cache leaves unset.
+   The fetch itself goes through the proxy `HTTPS_PROXY` names, from an endpoint-managed `env`
+   (2.1.223 and later), the launch environment or user settings; `ALL_PROXY` alone does not serve
+   it, and on a first launch only these sources can carry it.
 5. Most updates apply to a running session; OpenTelemetry exporter configuration, `model` and the
    removal of an `env` variable apply at the next launch.
 6. A user who edits the cache gets the tampered file at startup, minus withheld values, until the
@@ -402,6 +442,7 @@ settings*. <!-- req: policy.managed.Let an embedding host add policy -->
 | Cross-source lock keys | The keys of §14.2.4 are honoured from any admin source, HKCU excluded; a `policyHelper`'s output is the only source they read, apart from `forceRemoteSettingsRefresh`. <!-- req: policy.server.Per-key exceptions across managed sources.Cross-source lock keys --> |
 | The `env` block | Merged per variable across admin sources: the highest source defining a variable wins, lower ones fill the rest, so an endpoint `env` entry applies whenever the server payload leaves it unset or withholds it. Two units are exceptions: the telemetry unit (`OTEL_EXPORTER_OTLP_*`, `OTEL_LOG_*`, `OTEL_LOGS_EXPORTER`, `ENABLE_BETA_TRACING_DETAILED`, `BETA_TRACING_ENDPOINT`) comes whole from the highest source that sets any of them, and a source delivering `otelHeadersHelper` claims it but fills it only when selected; routing variables paired with a selected-source-only credential key such as `apiKeyHelper` come only from the source that wins that key. An exporter endpoint never pairs with another source's credentials. <!-- req: policy.server.Per-key exceptions across managed sources.The env block --> |
 | `allowedProviders` | A list set on the machine and a server-managed list combine as the key's entry states: the machine's own list still limits the result. <!-- req: policy.server.Per-key exceptions across managed sources.allowedProviders --> |
+| `enforceAnthropicSignIn` | Read from the managed settings file or MDM policy, never from server-managed settings, even when those are the selected source (§14.2.8). <!-- req: policy.server.Per-key exceptions across managed sources.enforceAnthropicSignIn --> |
 | First-party sign-in keys | `forceLoginOrgUUID` and the `"claudeai"` and `"console"` values of `forceLoginMethod` come from the MDM policy or file when one sets them, otherwise from remote settings (§14.2.4). <!-- req: policy.server.Per-key exceptions across managed sources.First-party sign-in keys --> |
 | Gateway sign-in keys | `forceLoginGatewayUrl`, `gatewayInternalNetworks` and the `"gateway"` value of `forceLoginMethod` are never read from server-managed settings, so a value there neither applies nor hides an endpoint one; the highest admin source on the machine carrying a policy key supplies them. <!-- req: policy.server.Per-key exceptions across managed sources.Gateway sign-in keys --> |
 
@@ -419,6 +460,28 @@ settings*. <!-- req: policy.managed.Let an embedding host add policy -->
    `forceRemoteSettingsRefresh` exits instead.
 4. The approval dialog evaluates the salvaged payload, so a stripped entry is never shown for
    approval and never runs.
+
+### 14.3.7 Group configurations
+
+On an Enterprise plan an organization can replace its one organization-wide configuration with a
+configuration per group of members; with HIPAA enabled it cannot yet. <!-- req: policy.server.Give groups different settings -->
+
+1. A group is one the identity provider syncs through SCIM or a custom group of the admin console.
+   The groups' configurations are ranked. A member of a group with a configuration receives the
+   highest-ranked one among their groups; anyone else, a member whose only such group was deleted
+   included, receives the catch-all configuration if one is set, and otherwise no server-managed
+   settings in local sessions, where the device's endpoint-managed settings still apply. A member
+   receives one configuration, the same on every device.
+2. Configurations never merge with each other or with the organization-wide one: each holds every
+   setting its group gets, and to the client the delivered configuration is the whole
+   server-managed source (§14.2).
+3. Members keep the organization-wide configuration until the organization switches to group-based
+   mode; then each receives its configuration within about an hour, apart from the keys that apply
+   only at the next launch (§14.3.2). Switching back restores the organization-wide configuration and
+   keeps the group configurations.
+4. A group's `availableModels` holds only in local sessions; cloud and remote Cowork sessions take
+   `availableModels` from the catch-all, or from the organization-wide configuration when no
+   catch-all is set, even in group-based mode. A group's API routing binds the client only.
 
 ## 14.4 Values the client cannot read
 
@@ -541,6 +604,7 @@ MUST NOT treat them as a lock:
 | Local admin rights | A developer who administers the machine can edit the managed source itself. <!-- req: policy.managed.What a developer can change.Local admin rights --> |
 | The server-managed cache | An edit to the local cache lasts until the next successful fetch (§14.3.2). <!-- req: policy.managed.What a developer can change.The server-managed cache --> |
 | Other tools | Managed settings bind the client only. <!-- req: policy.managed.What a developer can change.Other tools --> |
+| Allow rules and allowlists | A developer can add entries to lists such as `permissions.allow` and `allowedMcpServers`, which merge with the managed ones (§12.4); only the list's `allowManaged*Only` key, where it has one, confines it to managed entries, and under `allowManagedPermissionRulesOnly` the user's deny and ask rules stop applying too, so the managed source carries those it relies on (§13). <!-- req: policy.managed.What a developer can change.Allow rules and allowlists --> |
 
 ## 14.7 Keys only a managed source can set
 
@@ -560,6 +624,7 @@ in the section named.
 | `channelsEnabled` | Allows channels for the organization (§14.8.6). <!-- req: policy.managed.Keys only a managed source can set.channelsEnabled --> |
 | `disableCommandPluginSources` | Blocks `command` plugin sources and marketplace `headersHelper` commands (§14.8.5). <!-- req: policy.managed.Keys only a managed source can set.disableCommandPluginSources --> |
 | `disableSideloadFlags` | Rejects `--plugin-dir`, `--plugin-url`, `--agents` and `--mcp-config` at startup; a cloud session starts and drops the delivered `--mcp-config` servers instead (§14.8.5). <!-- req: policy.managed.Keys only a managed source can set.disableSideloadFlags --> |
+| `enforceAnthropicSignIn` | Requires a claude.ai or Enterprise Admin Console sign-in; read from the file or MDM policy only (§14.2.8). |
 | `forceRemoteSettingsRefresh` | Fail-closed startup on the server fetch (§14.3.3). <!-- req: policy.managed.Keys only a managed source can set.forceRemoteSettingsRefresh --> |
 | `managedMcpServers` | Remote MCP servers provided to every user; provides, locks nothing (§8.11.4). <!-- req: policy.managed.Keys only a managed source can set.managedMcpServers --> |
 | `managedSourcesBehavior` | First-wins or merge of the managed sources (§14.2.3). |

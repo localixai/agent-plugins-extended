@@ -130,7 +130,7 @@ its own for a `github` source, printing `SSH not configured, cloning via HTTPS`,
 **Users without a git-host account** can add a marketplace served as a `marketplace.json` URL or a
 shared directory, but install only the plugins whose sources they can reach: a private `github`
 entry still fails, fetched by the same non-interactive git. The sources that need no account are
-`archive` (HTTPS only, v2.1.224 or later; an entry should pin it with `sha256` so a changed
+`archive` (HTTPS only; an entry should pin it with `sha256` so a changed
 download is refused; credentials through §15.15) and a
 public git repository given as an `https://` URL in a `url` or `git-subdir` source, which the client
 clones without credentials; a `github` source, or a `git-subdir` written as `owner/repo`, needs
@@ -149,8 +149,8 @@ account connected there (`github-enterprise-server.md`). <!-- req: marketplace.t
 ## 15.14 Background auto-update and credentials
 
 Background auto-update refreshes marketplaces and installed plugins after a session starts. For a
-third-party marketplace it is off until the user turns it on (**Marketplaces** in `/plugin`,
-**Enable auto-update**) or an `extraKnownMarketplaces` entry sets `"autoUpdate": true`; §16.19.2
+third-party marketplace it is off until the user turns it on (the marketplace's menu on the
+**Marketplaces** tab of `/plugin`) or an `extraKnownMarketplaces` entry sets `"autoUpdate": true`; §16.19.2
 gives the defaults, which are on for most official names, and §16.19.1 when it runs. For a private git marketplace, the background check for new commits uses the user's
 configured credential helpers and MUST NOT prompt: <!-- req: marketplace.hosting.What background auto-update does with credentials -->
 
@@ -315,8 +315,8 @@ anywhere other than `null` or an entry's name (§15.10).
 reports `Plugin "<name>" not found in marketplace` when a session loads it. With
 `"forceRemoveDeletedPlugins": true`, at each session start the client treats every plugin installed
 from the marketplace that is neither listed nor renamed as removed, uninstalls it from the user,
-project and local scopes (a plugin only managed settings installed stays), and lists it under a
-**Flagged** heading in `/plugin` with the status `Removed from marketplace`.
+project and local scopes (a plugin only managed settings installed stays), and lists it under
+**Needs attention** on the **Installed** tab of `/plugin` (§16.21.1).
 
 **Dependencies and suggestions.** An entry declares dependencies with `dependencies` (§15.4), which
 may carry semver ranges resolved against `<plugin>--v<version>` git tags; a dependency from another

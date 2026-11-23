@@ -1,13 +1,13 @@
 # 7.5 Hook events
 
-This section defines every hook event Claude Code 2.1.321 fires: when it fires, what its matcher
+This section defines every hook event Claude Code 2.1.330 fires: when it fires, what its matcher
 filters on, the input its handlers receive, the output the client honours and how several
 handlers' outputs combine, and what exit code 2 does. Where a hook is configured and how a matcher
 is evaluated is §7.2; the handler types and which events run each is §7.3; exit codes, stdout
 classification, the JSON output schema and its validation are §7.4; tool names and the shapes of
 `tool_input` and `tool_response` are §7.6. Evidence: `hooks.md`, the section named after each event
 and its "input", "decision control" or "output" subsection, unless a paragraph names another. Shapes
-follow the official types of `@anthropic-ai/claude-agent-sdk` 0.3.321 (`HookInput` and its 33
+follow the official types of `@anthropic-ai/claude-agent-sdk` 0.3.330 (`HookInput` and its 33
 variants, `SyncHookJSONOutput`, the `*HookSpecificOutput` types).
 
 ## 7.5.1 The events
@@ -110,13 +110,14 @@ A hook's JSON output (§7.4 says when stdout is one) MAY carry these fields on e
 "JSON output"; type `SyncHookJSONOutput`). Each event section says which of them it discards.
 
 - **`continue`** (boolean, default `true`). `false` makes Claude stop processing after the hook
-  runs, and takes precedence over every event-specific decision field. On `PreToolUse` and
-  `PostToolUse` the stop holds even when the tool call fails or completes while Claude is still
-  streaming. <!-- req: hooks.output.common.continue | hooks.output.JSON.continue -->
+  runs. It does not block a `PreToolUse` tool call: a hook that must block one also returns
+  `permissionDecision: "deny"`. On `PreToolUse` and `PostToolUse` the stop holds even when the tool
+  call fails or completes while Claude is still streaming, but not when the permission check
+  refuses a `PreToolUse` call. With exit code 2 on `Stop` and `SubagentStop`, it wins over the
+  exit code (§7.4.1.2). <!-- req: hooks.output.common.continue | hooks.output.JSON.continue -->
 - **`stopReason`** (string). Shown to the user when `continue` is `false`; it stays in the
   conversation, so Claude sees it if the conversation goes on. <!-- req: hooks.output.common.stopReason | hooks.output.JSON.stopReason -->
-- **`suppressOutput`** (boolean, default `false`). Accepted and without effect: a successful hook's
-  stdout is never shown in the transcript and goes to the debug log in every case. <!-- req: hooks.output.common.suppressOutput | hooks.output.JSON.suppressOutput -->
+- **`suppressOutput`** (boolean, default `false`). Accepted and without effect. <!-- req: hooks.output.common.suppressOutput | hooks.output.JSON.suppressOutput -->
 - **`systemMessage`** (string). A warning shown to the user. In Agent SDK and `--output-format
   stream-json` output it MAY arrive as an `SDKInformationalMessage`. Some events discard it or route
   it elsewhere (`DirectoryAdded`, §7.5.27). <!-- req: hooks.output.common.systemMessage | hooks.output.JSON.systemMessage -->
@@ -281,13 +282,16 @@ output fields (`systemMessage`, `continue`, `hookSpecificOutput`), except `termi
 **When.** The client MUST fire `UserPromptSubmit` when a prompt is submitted, before Claude
 processes it, and also on the turns it starts itself: a session-scoped scheduled task firing
 (a `/loop` iteration included), a background subagent reporting back to the session that started
-it, and a message another session sends to the main conversation. Its default timeout is 30
+it, and a message another session sends to the main conversation. From 2.1.328 it MUST NOT fire
+on the output of code Claude runs in Code Mode, managed hooks included; before 2.1.328, `command`,
+`http` and `mcp_tool` handlers received background code output as a prompt (§7.6.11.3). Its default timeout is 30
 seconds for `command`, `http` and `mcp_tool` handlers (§7.3). A handler that reaches its timeout,
 other than a command hook run with `async: true`, is cancelled and its output, `additionalContext`
 included, discarded; the prompt reaches Claude without it and the transcript shows a notice naming
 the hook, the timeout and that the output was discarded. A `command` or `http` hook with
-`onFailure: "block"` blocks the prompt instead (§7.4), and so does an Agent SDK callback that times
-out, with a message naming the hook and the timeout; the session continues. If the user presses `Esc` or interrupts while hooks check the
+`onFailure: "block"` blocks the prompt instead (§7.4), and from 2.1.328 so does an `mcp_tool` hook with it, and so does an Agent SDK callback that times
+out, with a message naming the hook and the timeout; the session continues. If the user presses
+`Esc` or interrupts while hooks check the
 prompt, the check stops, the prompt does not reach Claude, typed text returns to the input and is
 checked again when resent; a hook that blocks at that moment keeps the prompt blocked, its block
 message shows, and the text does not return. <!-- req: hooks.event.UserPromptSubmit | hooks.behavior.Esc during a prompt check -->
@@ -304,27 +308,28 @@ the line as typed (`/deploy staging`), not its expansion. `session_title` (strin
 stdout on exit 0 is added to Claude's context; it and `additionalContext` are each injected as a
 system reminder that starts with the hook's name, with no visible transcript entry.
 
-- `decision` (`"block"`): the prompt stops before it reaches Claude; omit it to let the prompt
-  through. <!-- req: hooks.output.UserPromptSubmit.decision -->
-- `reason` (string): shown to the user when `decision` is `"block"`; not added to context. <!-- req: hooks.output.UserPromptSubmit.reason -->
+- `decision` (`"block"`): rejects the prompt; omit it to let the prompt through. <!-- req: hooks.output.UserPromptSubmit.decision -->
+- `reason` (string): shown to the user when `decision` is `"block"`; not added to context, except
+  when, before 2.1.328, the hook blocked Code Mode output (§7.6.11.3). <!-- req: hooks.output.UserPromptSubmit.reason -->
 - `additionalContext` (string): added to Claude's context alongside the submitted prompt. <!-- req: hooks.output.UserPromptSubmit.additionalContext -->
 - `sessionTitle` (string): sets the session title. <!-- req: hooks.output.UserPromptSubmit.sessionTitle -->
 - `suppressOriginalPrompt` (boolean): when `true` in the output of a handler that itself blocks the
   prompt (by `decision` or exit 2), the block message omits the prompt text. Set by a handler that
   does not block, it has no effect, even when another handler blocks (Judgment J7.144). <!-- req: hooks.output.UserPromptSubmit.suppressOriginalPrompt -->
 
-A blocked prompt never reaches Claude. The block message shown to the user, and written to the
-transcript file, MUST end with `Original prompt:` and the submitted text, on a line of its own
-(Judgment J7.49, §7.4), unless a blocking handler set `suppressOriginalPrompt`, whether it blocked
-by `decision` or by exit 2. That flag changes only the message: the text can still be in the
-transcript and the prompt history (`hooks.md`, "What a blocked prompt leaves behind"). <!-- req: hooks.behavior.What a blocked prompt leaves behind -->
+A blocked prompt never reaches Claude. The block message shown to the user MUST end with
+`Original prompt:` and the submitted prompt, on a line of its own (Judgment J7.49, §7.4), unless a
+blocking handler set `suppressOriginalPrompt`, whether it blocked by `decision` or by exit 2.
+Either way the prompt can still be in local files such as the session transcript and the prompt
+history, so a blocking hook is no way to keep a secret off disk (`hooks.md`, "What a blocked prompt
+leaves behind"). <!-- req: hooks.behavior.What a blocked prompt leaves behind -->
 
 A blocked typed command does not run, nor do the shell commands its skill injects. **Several handlers:** any
 `decision: "block"` blocks; last `sessionTitle`; the prompt text is left out when any of the
 handlers that blocked set `suppressOriginalPrompt`.
 
-**Exit 2.** Blocks the prompt, which never reaches Claude; the stderr is the block message shown to
-the user and is not added to context. A plugin's hook that exits 2 with empty stdout and a stderr
+**Exit 2.** Blocks the prompt, which never reaches Claude; the stderr is treated as `reason` is: the
+block message shown to the user, not added to context. A plugin's hook that exits 2 with empty stdout and a stderr
 saying a file is missing (`No such file or directory`) is a non-blocking error instead (§7.4).
 <!-- req: hooks.exit2.UserPromptSubmit -->
 
@@ -339,7 +344,8 @@ path `PreToolUse` does not: typing `/skillname` never calls the `Skill` tool. <!
 **Input** (`UserPromptExpansionHookInput`): `expansion_type` (`"slash_command"` for skills and
 custom commands, `"mcp_prompt"` for MCP prompts), `command_name` (string), `command_args`
 (string), `command_source` (string, optional; for example `"plugin"`), `prompt` (string, the line
-as typed). <!-- req: hooks.behavior.UserPromptExpansion input -->
+as typed). A plugin's skill is named by its scoped name in both: `command_name`
+`my-plugin:example-skill`, `prompt` `/my-plugin:example-skill arg1 arg2`. <!-- req: hooks.behavior.UserPromptExpansion input -->
 
 **Output** (`UserPromptExpansionHookSpecificOutput`); all universal fields are honoured, and
 plain-text stdout on exit 0 is added to Claude's context.
@@ -444,9 +450,9 @@ prefixed with the event, tool and hook (`PreToolUse:Bash hook error: [<command>]
 ## 7.5.12 `PermissionRequest`
 
 **When.** The client MUST fire `PermissionRequest` when it is about to ask the user for permission
-for a tool call, and, in a session that cannot show a prompt (such as a background subagent in
-non-interactive mode), when it would otherwise deny such a call; there, if no hook decides, the
-call is denied. For a call that goes to a `--permission-prompt-tool` or an Agent SDK `canUseTool`
+for a tool call. In a `-p` run outside `dontAsk` mode with neither a `--permission-prompt-tool` nor
+a `canUseTool` callback nobody can answer a prompt: a call that would prompt is denied there unless
+something approves it, such as a `PermissionRequest` hook, so the hooks still run. For a call that goes to a `--permission-prompt-tool` or an Agent SDK `canUseTool`
 callback, the hooks run alongside the host and whichever decides first applies. It does not fire for
 a sandboxed command's network request, nor for `EndConversation`. It fires at once, unlike the
 `permission_prompt` notification (§7.5.17). <!-- req: hooks.event.PermissionRequest -->
@@ -461,26 +467,27 @@ suggests for this request (§7.4.7). The array is not the list of options the di
 **Output** (`PermissionRequestHookSpecificOutput`): a `decision` object. The top-level `decision`
 is discarded (Judgment J7.121).
 
-- `behavior` (`"allow" | "deny"`): grants or denies the permission. Deny and ask rules are still
-  evaluated, so `allow` does not override a matching deny rule. <!-- req: hooks.output.PermissionRequest.behavior -->
+- `behavior` (`"allow" | "deny"`): grants or denies the permission. The hook cannot approve what a
+  deny rule refuses, unless a mod overrides the rule (§13.11). <!-- req: hooks.output.PermissionRequest.behavior -->
 - `updatedInput` (object, `allow` only): replaces the whole tool input; the result is re-evaluated
   against deny and ask rules. `AskUserQuestion` and `ExitPlanMode` need it. <!-- req: hooks.output.PermissionRequest.updatedInput -->
-- `updatedPermissions` (permission update entries, `allow` only): applied as §7.4 says, for example
-  an allow rule or a mode change; a hook MAY echo an entry of `permission_suggestions`. <!-- req: hooks.output.PermissionRequest.updatedPermissions -->
+- `updatedPermissions` (permission update entries, `allow` only): applied as §7.4.7 says, for
+  example an allow rule or a mode change; a hook MAY echo an entry of `permission_suggestions`. <!-- req: hooks.output.PermissionRequest.updatedPermissions -->
 - `message` (string, `deny` only): tells Claude why the permission was denied. <!-- req: hooks.output.PermissionRequest.message -->
 - `interrupt` (boolean, `deny` only): when `true`, stops Claude. <!-- req: hooks.output.PermissionRequest.interrupt -->
 
 **Several handlers:** Judgment J7.113.
 
-**Exit 2.** Not honoured: an exit-2 hook without a `decision` object leaves the permission flow
-unchanged, and its stderr is discarded. A failure under `onFailure: "block"` denies the request
+**Exit 2.** Not read as a decision: an exit-2 hook without a `decision` object leaves the
+permission flow unchanged. A failure under `onFailure: "block"` denies the request
 (§7.4). <!-- req: hooks.exit2.PermissionRequest -->
 
 ## 7.5.13 `PostToolUse`
 
 **When.** The client MUST fire `PostToolUse` immediately after a tool call completes successfully,
-for every tool but `EndConversation`. A `Bash` matcher does not select Monitor here (§7.2).
-<!-- req: hooks.event.PostToolUse -->
+for every tool but `EndConversation`. In the main conversation, `PostToolUse` hooks from managed
+settings also run after some failed calls, so such a hook handles both (Judgment J7.215). A `Bash`
+matcher does not select Monitor here (§7.2). <!-- req: hooks.event.PostToolUse -->
 
 **After an interrupt** (`hooks.md`, "PostToolUse after an interrupt"):
 
@@ -501,6 +508,8 @@ A hook that must outlive the 10 seconds runs `async`, and so cannot block or rew
 on `PreToolUse`), `tool_response` (the tool's structured output, §7.6), `tool_use_id`,
 `mcp_server` for an MCP tool, and:
 
+- for a failed call (the managed-settings case above), `tool_response` is the error text as a
+  string. <!-- req: hooks.event.PostToolUse -->
 - `duration_ms` (number, optional): the tool's execution time in milliseconds, excluding
   permission prompts and `PreToolUse` hooks. <!-- req: hooks.input.PostToolUse.duration_ms -->
 
@@ -521,9 +530,11 @@ on `PreToolUse`), `tool_response` (the tool's structured output, §7.6), `tool_u
 - `updatedToolOutput` (any): replaces the output before Claude sees it. For a built-in tool a value
   that does not match the tool's output shape is ignored and the original used; an MCP tool's
   value is passed through unchecked (Judgment J7.138). The tool has already run, and telemetry
-  keeps the original. <!-- req: hooks.output.PostToolUse.updatedToolOutput -->
-- `updatedMCPToolOutput` (any): replaces the output of an MCP tool only; `updatedToolOutput` is
-  preferred and wins when a hook sets both (Judgment J7.138). <!-- req: hooks.output.PostToolUse.updatedMCPToolOutput -->
+  keeps the original. In a Cowork cloud session the client ignores it for `AskUserQuestion` and
+  `ExitPlanMode`, and Claude reads the original answer or plan. For `REPL`, §7.6.11.3 gives the
+  shape it must keep. <!-- req: hooks.output.PostToolUse.updatedToolOutput -->
+- `updatedMCPToolOutput` (any): replaces the output of an MCP tool only; `updatedToolOutput`, which
+  also works for built-in tools, is preferred and wins when a hook sets both (Judgment J7.138). <!-- req: hooks.output.PostToolUse.updatedMCPToolOutput -->
 
 **Several handlers:** the last accepted replacement wins; a rejected one does not hide an earlier
 accepted one (Judgment J7.111).
@@ -550,7 +561,8 @@ for an MCP tool, and:
 | `duration_ms` | number, optional | As on `PostToolUse`. <!-- req: hooks.input.PostToolUseFailure.duration_ms --> |
 
 **Output** (`PostToolUseFailureHookSpecificOutput`); all universal fields are honoured, and a
-top-level `decision: "block"` adds its `reason` next to the error as on `PostToolUse`.
+top-level `decision: "block"` adds its `reason` next to the error as on `PostToolUse`. It cannot
+rewrite the result, so it cannot redact a failing command's output.
 
 - `additionalContext` (string): added to Claude's context alongside the error. <!-- req: hooks.output.PostToolUseFailure.additionalContext -->
 
@@ -584,9 +596,9 @@ when the conversation continues.
 
 ## 7.5.16 `PermissionDenied`
 
-**When.** The client MUST fire `PermissionDenied` when auto mode denies a tool call, including a
-denial without a classifier verdict (a separate safety check refused the classifier's request, or
-its response did not parse). It MUST NOT fire when the user denies a dialog, a `PreToolUse` hook
+**When.** The client MUST fire `PermissionDenied` when the auto mode classifier denies a tool call,
+including a denial without a classifier verdict (a separate safety check refused the classifier's
+request, or its response did not parse). It MUST NOT fire when the user denies a dialog, a `PreToolUse` hook
 blocks, or a deny rule matches. <!-- req: hooks.event.PermissionDenied -->
 
 **Matcher:** `tool_name`.
@@ -594,10 +606,11 @@ blocks, or a deny rule matches. <!-- req: hooks.event.PermissionDenied -->
 **Input** (`PermissionDeniedHookInput`): `tool_name`, `tool_input`, `tool_use_id`, `mcp_server`
 for an MCP tool, and:
 
-- `reason` (string): the denial reason. For a classifier verdict, in most sessions the matched rule
-  in square brackets (`[Data Exfiltration]`); for a no-verdict denial, text starting with
-  `Auto mode could not evaluate this action and is blocking it for safety`; when the classifier
-  model was unavailable, exactly `Classifier unavailable`. <!-- req: hooks.input.PermissionDenied.reason -->
+- `reason` (string): the denial reason. For a classifier verdict, in most sessions the matched
+  policy or rule in square brackets (`[Destructive or Unwanted Actions]`); for a no-verdict denial,
+  text starting with `Auto mode could not evaluate this action and is blocking it for safety`; when
+  the classifier model was unavailable, or a server check failed or timed out, the text
+  `Classifier unavailable`. <!-- req: hooks.input.PermissionDenied.reason -->
 
 **Output** (`PermissionDeniedHookSpecificOutput`): `retry` (boolean). When `true`, the client adds
 a message telling the model it may retry the call; it does not reverse the denial. Without it, or
@@ -635,7 +648,8 @@ below, whether or not desktop notifications are on (`preferredNotifChannel`, inc
 | `plugin_notification` | a mod raises a notification with `$.ui.notify` (§10); `title` is the mod's name unless the mod set one. <!-- req: hooks.matcherValue.Notification.plugin_notification --> |
 
 A permission request or elicitation arriving while another dialog is open keeps the six-second
-gate, timed from its arrival.
+timing, counted from its arrival, and its notification can come while the request still waits
+behind the open dialog.
 
 **Input** (`NotificationHookInput`): `message` (string, the notification text), `title` (string,
 optional), `notification_type` (string, the type that fired; Judgment J7.128).
@@ -650,7 +664,9 @@ optional), `notification_type` (string, the type that fired; Judgment J7.128).
 
 **When.** The client MUST fire `SubagentStart` when Claude spawns a subagent with the Agent tool,
 when Claude resumes a subagent, and each time an in-process agent-team teammate handles a new
-message. <!-- req: hooks.event.SubagentStart -->
+message. For the built-in `web-fetch` subagent it runs only `SubagentStart` hooks from managed
+settings; a hook set elsewhere matches `WebFetch` in `PreToolUse` instead (§7.6.3 item 8).
+<!-- req: hooks.event.SubagentStart -->
 
 **Matcher:** `agent_type`: a built-in's name (`general-purpose`, `Explore`, `Plan`), a custom
 agent's frontmatter `name` (not its file name), or a plugin agent's scoped name such as
@@ -666,7 +682,7 @@ top-level `decision` is discarded (Judgment J7.121).
 - `additionalContext` (string): added to the subagent's context at the start of its conversation,
   before its first prompt. When the hook runs again for the same subagent, the client injects the
   returned context only if the subagent's context does not already hold the copy from an earlier
-  run, keeping the launch copy in place; after auto-compaction drops that copy, it injects the next
+  run; after auto-compaction drops that copy, it injects the next
   run's context again. <!-- req: hooks.input.SubagentStart.additionalContext -->
 
 **Exit 2.** Cannot block. The stderr is shown to the user only, as a `<hook name> hook error`
@@ -676,7 +692,9 @@ proceeds. <!-- req: hooks.exit2.SubagentStart -->
 ## 7.5.19 `SubagentStop`
 
 **When.** The client MUST fire `SubagentStop` when a subagent has finished responding, and also
-when one of the client's internal agents finishes (prompt suggestions, `/btw` side questions).
+when one of the client's internal agents finishes (prompt suggestions, `/btw` side questions). For
+the built-in `web-fetch` subagent it runs only `SubagentStop` hooks from managed settings; a hook
+set elsewhere matches `WebFetch` in `PostToolUse` instead (§7.6.3 item 8).
 <!-- req: hooks.event.SubagentStop -->
 
 **Matcher:** `agent_type`, the same values as `SubagentStart`. For an internal agent, `agent_type`
@@ -746,10 +764,11 @@ tasks in progress. <!-- req: hooks.event.TaskCompleted -->
 | `team_name` | string, optional | Deprecated: a session-derived team name, to be removed. <!-- req: hooks.input.TaskCompleted.team_name --> |
 | `agent_id` | string, optional | The common field, here the subagent or in-process teammate completing the task. <!-- req: hooks.input.TaskCompleted.agent_id --> |
 
-**Output.** No top-level `decision` (Judgment J7.121). `continue: false` with `stopReason` stops the
-teammate entirely, as on `Stop`, with `stopReason` shown to the user, when a teammate finishing its
-turn fired the event; when `TaskUpdate` fired it, the client MUST ignore `continue: false`
-(Judgment J7.135). <!-- req: hooks.behavior.TaskCompleted decision control -->
+**Output.** A top-level `decision: "block"` keeps the task open: Claude receives `reason` and keeps
+working. `continue: false` with `stopReason`, at the end of a teammate's turn, lets the teammate go
+idle with the task still in progress, even when another `TaskCompleted` handler blocks, and
+`stopReason` appears in the teammate's transcript; on a `TaskUpdate` call the client MUST ignore
+`continue: false` (Judgment J7.135). <!-- req: hooks.behavior.TaskCompleted decision control -->
 
 **Exit 2.** The task is not marked completed and the stderr is fed back to the model. `onFailure`
 has no effect, and an exit 2 with empty stdout whose stderr says a file is missing is a non-blocking
@@ -775,7 +794,7 @@ entry (`BackgroundTaskSummary`) describes one task in flight:
 | `type` | string | A label naming the feature that created the task: `shell`, `subagent`, `monitor`, `workflow`, `teammate`, `cloud session` or `MCP task`; an unrecognised type gives its raw discriminant. <!-- req: hooks.input.Stop.type --> |
 | `status` | string | Current task status. <!-- req: hooks.input.Stop.status --> |
 | `description` | string | Free text, capped at 1,000 characters with an in-string `… [+N chars]` marker when clipped (Judgment J7.127). <!-- req: hooks.input.Stop.description --> |
-| `command` | string, optional | The shell command line, capped the same way; `shell` tasks only. <!-- req: hooks.input.Stop.command --> |
+| `command` | string, optional | The shell command line, capped the same way; `shell` tasks, and `monitor` tasks that run a command. <!-- req: hooks.input.Stop.command --> |
 | `agent_type` | string, optional | The subagent type; `subagent` tasks only. <!-- req: hooks.input.Stop.agent_type --> |
 | `server` | string, optional | The MCP server name; `monitor` and `MCP task` tasks only. <!-- req: hooks.input.Stop.server --> |
 | `tool` | string, optional | The MCP tool name; `monitor` and `MCP task` tasks only. <!-- req: hooks.input.Stop.tool --> |
@@ -814,19 +833,20 @@ non-blocking error (§7.4). <!-- req: hooks.exit2.Stop -->
 ## 7.5.23 `StopFailure`
 
 **When.** The client MUST fire `StopFailure` instead of `Stop` when the turn ends on an API error.
-It runs for notification and logging only. <!-- req: hooks.event.StopFailure -->
+It has no decision control. <!-- req: hooks.event.StopFailure -->
 
 **Matcher:** `error`, with the narrow exact-match grammar of §7.2. Values: `rate_limit`,
-`overloaded`, `authentication_failed`, `oauth_org_not_allowed`, `account_on_hold`, `billing_error`,
+`authentication_failed`, `oauth_org_not_allowed`, `account_on_hold`, `billing_error`,
 `invalid_request`, `model_not_found`, `server_error`, `max_output_tokens`,
 `cloud_credential_error` (a credential-load failure, reported under this value since v2.1.267) and
-`unknown` (Judgment J7.105).
+`unknown` (Judgment J7.105). An HTTP `529` overloaded response is reported as `server_error`; there
+is no `overloaded` value.
 
 **Input** (`StopFailureHookInput`):
 
 | Field | Type | Meaning |
 | --- | --- | --- |
-| `error` | string | The error type, one of the matcher values. <!-- req: hooks.input.StopFailure.error --> |
+| `error` | string | The error type, one of the matcher values; `server_error` for an HTTP `529` overloaded response. <!-- req: hooks.input.StopFailure.error --> |
 | `error_details` | string, optional | More detail when available, such as `429 Too Many Requests`. <!-- req: hooks.input.StopFailure.error_details --> |
 | `last_assistant_message` | string, optional | The rendered error text shown in the conversation, such as `API Error: Rate limit reached`, not Claude's output. <!-- req: hooks.input.StopFailure.last_assistant_message --> |
 
@@ -849,8 +869,9 @@ finishing its turn. <!-- req: hooks.event.TeammateIdle -->
 | `team_name` | string | Deprecated: a session-derived team name, to be removed. <!-- req: hooks.input.TeammateIdle.team_name --> |
 | `agent_id` | string, optional | The common field, here the in-process teammate about to go idle. <!-- req: hooks.input.TeammateIdle.agent_id --> |
 
-**Output.** No top-level `decision` (Judgment J7.121). `continue: false` with `stopReason` stops the
-teammate entirely, as on `Stop`; `stopReason` is shown to the user. <!-- req: hooks.behavior.TeammateIdle decision control -->
+**Output.** A top-level `decision: "block"` keeps the teammate working: it receives `reason`.
+`continue: false` with `stopReason` lets the teammate go idle even when another `TeammateIdle`
+handler blocks; `stopReason` appears in the teammate's transcript. <!-- req: hooks.behavior.TeammateIdle decision control -->
 
 **Exit 2.** Prevents the teammate from going idle: it receives the stderr as feedback and keeps
 working. `onFailure` has no effect (§7.4). <!-- req: hooks.exit2.TeammateIdle -->
@@ -861,7 +882,9 @@ working. `onFailure` has no effect (§7.4). <!-- req: hooks.exit2.TeammateIdle -
 policy file (`managed-settings.json` or a file in `managed-settings.d/`) or a skill file changes.
 It MUST NOT fire for server-managed settings arriving or refreshing, for macOS managed preferences
 or Windows registry policy, nor on WSL for a Windows-side managed file applied on the policy poll;
-those apply without hooks. <!-- req: hooks.event.ConfigChange -->
+those apply without hooks. Rules and settings the user saves with **Yes, and don't ask again**,
+`/permissions` or `/model` take effect without the hooks in the session they were saved from;
+another open session that loads the same file runs its hooks. <!-- req: hooks.event.ConfigChange -->
 
 **Matcher** (`source`):
 
@@ -1025,7 +1048,8 @@ branch. <!-- req: hooks.event.WorktreeRemove -->
 returned.
 
 **Output.** None: the exit code decides, and the client discards the JSON output fields. Exit 0
-counts as removed; the client reads nothing else. <!-- req: hooks.behavior.WorktreeRemove input -->
+counts as removed; the client reads nothing else and does not fall back to git, so a directory the
+hook left in place stays. <!-- req: hooks.behavior.WorktreeRemove input -->
 
 **Exit 2.** Any non-zero exit code fails the removal if the directory at `worktree_path` still
 exists afterwards: the worktree stays, with no git fallback, and the command and stderr go to the
@@ -1214,8 +1238,8 @@ hook exits 0, ignores a `hookSpecificOutput` with no `action`, and discards `rea
 | To | The hook returns | The server receives |
 | --- | --- | --- |
 | Answer for the user | `action: "accept"`, the form values in `content` keyed by `requested_schema` property names. In URL mode the URL is never opened. <!-- req: hooks.output.Elicitation.Answer for the user --> | `accept` with that `content` |
-| Decline | `action: "decline"`, as the dialog's **Decline** sends. <!-- req: hooks.output.Elicitation.Decline the request --> | `decline` |
-| Cancel | `action: "cancel"`, as `Esc` in the dialog sends. <!-- req: hooks.output.Elicitation.Cancel the request --> | `cancel` |
+| Decline | `action: "decline"`. <!-- req: hooks.output.Elicitation.Decline the request --> | `decline` |
+| Cancel | `action: "cancel"`. <!-- req: hooks.output.Elicitation.Cancel the request --> | `cancel` |
 | Leave it to the user | nothing, exit 0. <!-- req: hooks.output.Elicitation.Leave the request to the user --> | the user's answer from the dialog |
 
 Besides `action: "decline"`, a hook declines by exiting 2 (its `hookSpecificOutput` is then
@@ -1225,8 +1249,8 @@ stderr of a decline. **Several handlers:** a decline from any handler overrides 
 `cancel` from another (Judgment J7.114). <!-- req: hooks.behavior.Other ways to decline an elicitation -->
 
 A hook that prints an `accept` with its `content` answers the request without a dialog; one that
-prints nothing leaves the dialog to appear. The client records a debug line ending `Elicitation
-resolved by hook: <the action and content as JSON>`. <!-- req: hooks.behavior.Answer a form request from a script -->
+prints nothing leaves the dialog to appear. The client records a debug line that contains
+`Elicitation resolved by hook:` and the action (Judgment J7.216). <!-- req: hooks.behavior.Answer a form request from a script -->
 
 **Exit 2.** Declines the request, and no dialog appears; a `hookSpecificOutput` the same hook
 printed is ignored. <!-- req: hooks.exit2.Elicitation -->
@@ -1300,7 +1324,7 @@ whether the JSON is valid, and this section decides what of it has effect.
 | J7.117 | A winning `defer` drops every handler's `updatedInput`; a `defer` that is ignored (interactive session, several tool calls) leaves no hook decision, and the lower-ranked `ask` or `allow` of other handlers do not stand in for it (§7.5.11). | `updatedInput` is "for `defer`, ignored" and the call "proceeds through the normal permission flow"; neither says whose input or what becomes of the other answers. |
 | J7.118 | A `Stop` or `SubagentStop` output with `decision: "block"` and no `reason` fails validation and is a non-blocking error (§7.5.22). | `reason` is "Required when `decision` is `"block"`"; the docs do not say what a missing one does. |
 | J7.120 | `terminalSequence` is honoured on every event, including those that discard all JSON output (`Setup`, `InstructionsLoaded`, `SessionEnd`, `WorktreeRemove`, `StopFailure`), within the limits of §7.5.3 (§7.5.3). | "The field works on events that discard `systemMessage` and `continue`"; its exceptions are about the session and the handler, not the event. |
-| J7.121 | The top-level `decision` is discarded on `PermissionRequest`, `PermissionDenied`, `SessionStart`, `SubagentStart`, `PostModelSwitch`, `TaskCompleted` and `TeammateIdle`, and on every event with no decision control (§7.5.5 and others). | The "Decision control" table lists no top-level `decision` for them; `PermissionDenied` reads only `retry`. |
+| J7.121 | The top-level `decision` is discarded on `PermissionRequest`, `PermissionDenied`, `SessionStart`, `SubagentStart` and `PostModelSwitch`, and on every event with no decision control (§7.5.5 and others). `TaskCompleted` and `TeammateIdle` read it (§7.5.21, §7.5.24). | The "Decision control" table lists no top-level `decision` for them; `PermissionDenied` reads only `retry`. Up to 2.1.321 the table gave `TaskCompleted` and `TeammateIdle` only an exit code or `continue: false`; 2.1.330 adds `decision: "block"` to both ("TaskCompleted decision control", "TeammateIdle decision control"), which settles them. |
 | J7.122 | An empty-string `displayContent` replaces the delta with nothing; only an absent field displays the original (§7.5.10). | The docs say only "Omit it to display the original". |
 | J7.123 | The stderr of an exit-2 `MessageDisplay` hook is discarded; of `WorktreeCreate`, written to the debug log (§7.5.10, §7.5.29). | The per-event table gives these rows no stderr route. |
 | J7.124 | An exit-2 `PostToolBatch` hook's stderr is shown to the user as a transcript warning and stays in the conversation for Claude (§7.5.15). | The table says only "Stops the agentic loop"; the decision-control text routes the blocking message, "or from stderr on exit 2", that way. |
@@ -1319,3 +1343,5 @@ whether the JSON is valid, and this section decides what of it has effect.
 | J7.143 | When several `WorktreeCreate` handlers return a path, the last in handler order is used; an HTTP hook's `worktreePath` and a command hook's stdout count alike (§7.5.29). | The docs describe one hook returning one path. |
 | J7.144 | `suppressOriginalPrompt` counts only in the output of a handler that blocks the prompt itself (`decision: "block"` or exit 2); a non-blocking handler's flag is ignored, so of several handlers the prompt text is left out when one of those that blocked set it (§7.5.8). | `hooks.md`, "UserPromptSubmit decision control", defines the field as "if `true` when the hook blocks the prompt", and "What a blocked prompt leaves behind" says it works "whether the hook blocks with `decision: "block"` or by exiting 2": both tie the flag to the hook that blocks. The reference implementation takes it from any handler (`src/hooks/output/merge-simple.ts`); that reading lets a hook that never blocked change another hook's message. Oracle 2.1.325 cannot tell the two apart: in `claude -p` the block message, in the result and the transcript, is `UserPromptSubmit operation blocked by hook:` and the reason, without an `Original prompt:` line whether the flag is set or not. |
 | J7.211 | The report line of a blocked model switch is the host's to choose and to place; a library returns the verdict, the reason and both forms of the line, the one an Agent SDK host or Remote Control gets written `Model switch blocked by a PreModelSwitch hook: <reason>`. | `errors.md`, "Model switch was blocked by a PreModelSwitch hook", gives the user's form with the model and says the SDK and Remote Control form leaves the model out "with the reason" without spelling the joint; `: ` is the user form's joint. Who requested the switch (a typed `/model`, a picker, `set_model`) is known only to the host that received the request. |
+| J7.215 | Which failed calls run managed `PostToolUse` hooks is left to the client; when it runs them, the input's `tool_response` is the error string, the other fields are as for a successful call, and `PostToolUseFailure` still fires for the same failure. Hooks from any other source never run on a failure. | `hooks.md` (2.1.330), "PostToolUse", says managed hooks "also run after some failed calls" in the main conversation and, under "PostToolUse input", that a failed call's `tool_response` is the error text; it does not name the calls, nor say that `PostToolUseFailure` stops firing. |
+| J7.216 | The debug line for an elicitation a hook answered is `Elicitation resolved by hook: <the action and content as JSON>`; a reader matches only the prefix and the action. | `hooks.md` up to 2.1.321 said the line "ends with" the JSON of the action and content; 2.1.330 says only that it "contains" `Elicitation resolved by hook:` and `accept`. The debug log is the client's output (J7.67), so the rest of the wording is not a contract. |

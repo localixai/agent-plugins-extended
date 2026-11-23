@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/mcp.schema.json",
   "title": "Claude Code plugin MCP servers file",
-  "description": "A plugin's .mcp.json, or an MCP configuration file the manifest names, as Claude Code 2.1.321 accepts it (Agent Plugins Extended 1.1.0, chapter 8). The file wraps the servers in a top-level mcpServers key, or is itself the map of server name to configuration (section 8.1 item 2). $defs/inlineMap is the manifest's inline mcpServers.",
+  "description": "A plugin's .mcp.json, or an MCP configuration file the manifest names, as Claude Code 2.1.330 accepts it (Agent Plugins Extended 1.1.0, chapter 8). The file wraps the servers in a top-level mcpServers key, or is itself the map of server name to configuration (section 8.1 item 2). $defs/inlineMap is the manifest's inline mcpServers.",
   "$comment": "An entry of the file that fails section 8.2 is dropped by the client and reported as an error by the validator (section 8.3), so the schema refuses it. Not expressed here: ${user_config.KEY} references to undeclared options, and the warnings of section 8.3 item 3.",
   "type": "object",
   "if": {

@@ -1,11 +1,11 @@
 # Agent Plugins Extended
 
-**Version: 1.1.0+claude-code.2.1.321**
+**Version: 1.1.0+claude-code.2.1.330**
 
 **Status: Working Draft**
 
 Agent Plugins Extended is the [Agent Plugins Specification 1.1.0](../../../spec/1.1.0.md) (the
-*core*) grown to the whole plugin contract of Claude Code 2.1.321. A client that implements it runs
+*core*) grown to the whole plugin contract of Claude Code 2.1.330. A client that implements it runs
 every Agent Plugins package as the core says, and every Claude Code plugin as Claude Code does:
 the same files found, the same fields accepted and refused, the same hooks run with the same
 inputs and outputs, the same settings, policy, marketplaces and installs.

@@ -5,11 +5,13 @@ implementation is audited paragraph by paragraph against this specification.
 
 ## agent-plugins
 
-Audited at 018f293+rename, 018f293+rename+fixes, 018f293+rename+fixes+core, 018f293+rename+fixes+core+last: **2730 of 2730 requirements audited, 2730 conform** (an id counts as conforming only when every file that states it conforms).
+Audited at 018f293+rename, 018f293+rename+fixes, 018f293+rename+fixes+core, 018f293+rename+fixes+core+last: **2689 of 2816 requirements audited, 2689 conform** (an id counts as conforming only when every file that states it conforms).
+
+The passes audited the specification text of Claude Code 2.1.321; the snapshot is 2.1.330.
 
 | Outcome | Count |
 | --- | ---: |
-| conforms | 2735 |
+| conforms | 2692 |
 | judgment conforms | 466 |
 | judgment not-applicable | 44 |
 | not-applicable | 11 |
@@ -17,3 +19,49 @@ Audited at 018f293+rename, 018f293+rename+fixes, 018f293+rename+fixes+core, 018f
 ### Open: divergences and missing behaviour (0)
 
 None.
+
+### Retired (41)
+
+Ids that passes of an earlier release audited and the 2.1.330 snapshot no longer has; counted nowhere above.
+
+- `cli.errors.Path escapes plugin directory.settings.json`
+- `cli.errors.Remote managed settings failed to load.No cache`
+- `hooks.behavior.Exit code 2`
+- `hooks.troubleshooting.A plugin hook blocks a tool call or prompt`
+- `hooks.troubleshooting.Hook loads but never fires`
+- `hooks.troubleshooting.Hooks fail to load`
+- `hooks.troubleshooting.hook error notices in the transcript`
+- `install.troubleshooting.Failed to install: <plugin> (<reason>)`
+- `install.troubleshooting.No plugins available or No marketplaces configured`
+- `install.troubleshooting.Plugin "<name>" is enabled in project settings but isn't installed here`
+- `layout.Settings`
+- `manifest.field.settings`
+- `manifest.rule.settings`
+- `marketplace.rule.Reserved names.npm, pip, uv, cargo, github, and gh`
+- `mods.apiGuide.Add a command`
+- `mods.create.Sessions where a mod Claude writes can't load.Mods are disabled`
+- `mods.create.Sessions where a mod Claude writes can't load.Nobody is there to approve`
+- `mods.create.Sessions where a mod Claude writes can't load.The workspace isn't trusted`
+- `mods.events.Filter which events a hook handles`
+- `mods.hookArgument.next.error.cause`
+- `mods.interface.Put a backdrop behind the conversation.One backdrop for each session`
+- `mods.reference.Mods API calls`
+- `mods.troubleshoot.Another mod's band shows and yours doesn't`
+- `mods.troubleshoot.Hotkeys do nothing.In the VS Code extension`
+- `mods.troubleshoot.Hotkeys do nothing.No keyboard focus`
+- `mods.troubleshoot.Hotkeys do nothing.The button is in a collapsed band`
+- `mods.troubleshoot.Stopped: type a message to continue; a mod cannot resume work after Stop`
+- `policy.mods.Choose how much to allow.Any mod from marketplaces you approve`
+- `policy.mods.Know what happens by default.A user's mod can still skip some prompts`
+- `policy.mods.Know what happens by default.The guard protects what you manage`
+- `policy.mods.Know which controls still apply.Mods can't change the permission prompt`
+- `policy.mods.Know which controls still apply.Settings hooks keep working`
+- `policy.mods.Set options on the built-in guard.Only managed settings count`
+- `policy.mods.Stop user-installed mods from loading.No mod a user brings runs its hooks`
+- `policy.mods.Stop user-installed mods from loading.Users can't undo it`
+- `policy.org.Seed containers and CI.Seed entries take precedence`
+- `policy.server.Settings precedence`
+- `settings.components.Default settings.File over manifest`
+- `settings.components.Default settings.Two plugins set the same key`
+- `settings.components.Default settings.User settings over plugin defaults`
+- `skills.behavior.Permission checks on injected commands`

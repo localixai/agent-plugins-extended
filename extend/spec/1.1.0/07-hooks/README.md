@@ -5,8 +5,8 @@ call to an MCP tool, a one-turn prompt to a model, or a subagent. A Claude Code 
 hooks in `hooks/hooks.json` and in the manifest's `hooks` key (§2.8); the same configuration also
 comes from settings files, managed policy, and the frontmatter of skills and agents. This chapter
 states how every one of them is found, selected, run and read, so that a client runs a plugin's
-hooks as Claude Code 2.1.321 does. Evidence: `hooks.md` unless a section names another page
-(`hooks-guide.md`, `plugins/components.md`, `plugins/troubleshooting.md`).
+hooks as Claude Code 2.1.330 does. Evidence: `hooks.md` unless a section names another page
+(`hooks-guide.md`, `code-mode.md`, `plugins/components.md`, `plugins/troubleshooting.md`).
 
 Hooks written as JavaScript functions that run inside the client (a hooks module, listed under
 `modules` in the same `hooks/hooks.json`) make a plugin a mod; they are §10, and the hooks of this
@@ -31,7 +31,7 @@ chapter keep working beside them.
 | 7.3 | [Handlers](handlers.md) | Each handler type and its fields: `command` (exec and shell form, `shell`, the environment, async), `http`, `mcp_tool`, `prompt`, `agent`; timeouts; which types each event accepts. |
 | 7.4 | [Results](results.md) | Exit codes and what stdout is, JSON output, HTTP responses, blocking when a hook fails, the prompt and agent response schema, permission update entries, combining several hooks, the auto mode classifier note, PowerShell edge cases, and the result rules particular to some events. |
 | 7.5 | [Events](events.md) | Each event: when it fires, its matcher values, its input, its decision control and what exit code 2 does. |
-| 7.6 | [Tools](tools.md) | The built-in tools whose names and inputs hooks see and match. |
+| 7.6 | [Tools](tools.md) | The built-in tools whose names and inputs hooks see and match, and how Code Mode's tool calls from code (the `REPL` tool) meet rules and hooks. |
 | 7.7 | This file | How these hooks relate to the core's portable hooks. |
 
 ## 7.1 Where hooks come from
@@ -96,8 +96,10 @@ The place that declares a hook decides when it runs:
    hooks run, and skill and agent frontmatter hooks follow §7.1.4. What else each setting narrows is
    §14. <!-- req: hooks.behavior.Hook locations -->
 5. **Allowlists.** The HTTP hook allowlists `allowedHttpHookUrls` and `httpHookAllowedEnvVars` apply
-   to the HTTP hooks of every location, managed ones included (§7.3.4).
-   <!-- req: hooks.behavior.Hook locations -->
+   to the HTTP hooks of every location: set in managed settings they cover the hooks of managed
+   settings, set in any settings file they cover the others, and a covered hook is checked against
+   the list merged across files (§7.3.4, §12.7.1).
+   <!-- req: hooks.behavior.Hook locations | hooks.behavior.Limit HTTP hooks -->
 6. **Workspace trust.** The client MUST hold back the hooks of every settings file, the user's own
    included, in an interactive session until the user accepts the workspace trust dialog for the
    folder (or a parent whose trust extends to it). A `-p` or SDK session shows no dialog and treats
@@ -122,29 +124,30 @@ The place that declares a hook decides when it runs:
 3. **Two enabled plugins with one manifest name.** Only one of them registers the hooks of its
    `hooks/hooks.json`: the copy that managed settings turn on, else the copy loaded first. The
    other's plugin details show a note that begins `Its hooks.json hooks do not run` and names the
-   copy holding the name (Claude Code 2.1.296 or later; §16). <!-- req: hooks.components.Hooks | hooks.troubleshooting.Hook loads but never fires -->
+   copy holding the name (Claude Code 2.1.296 or later; §16). <!-- req: hooks.components.Hooks | install.troubleshooting.Hook loads but never fires -->
 4. **Load failures.** A client MUST report these in the plugin's error list, and the hooks they
    name do not run:
-   - `Failed to load hooks from <path>: <reason>` — the hooks file is not valid JSON, or fails the
-     hooks schema in a way that keeps it from loading (§7.2.1 says which failures drop one entry and
-     which drop the file or the plugin); the reason names the parse or validation error.
+   - `Couldn't load hooks from <path>: <reason>` or `Failed to load hooks from <path>: <reason>` —
+     the hooks file is not valid JSON, lacks the top-level `hooks` key, or fails the hooks schema in
+     a way that keeps it from loading (§7.2.1 says which failures drop one entry and which drop the
+     file or the plugin); the reason names the problem.
    - `hooks path not found: <path>` — the manifest's `hooks` names a file that does not exist
      (§2.5).
    - `hooks path escapes plugin directory: <path>` — the path resolves outside the plugin root
      (§2.5).
 
    A validator (§17) SHOULD catch the first case before publication.
-   <!-- req: hooks.troubleshooting.Hooks fail to load -->
+   <!-- req: install.troubleshooting.Hooks fail to load -->
 5. **A hook that never fires.** A hook that loads without error but never runs is diagnosed in this
    order: the shadowing note of item 3; an event name spelt with the wrong case (event names are
    case-sensitive, and an unknown one never fires, §7.2.1); a matcher that does not match the value
    (§7.2.2); then the debug log, which records which hooks matched and, for one that ran, its exit
-   code. A client MUST record that much in its debug log. <!-- req: hooks.troubleshooting.Hook loads but never fires -->
+   code. A client MUST record that much in its debug log. <!-- req: install.troubleshooting.Hook loads but never fires -->
 6. When the directory the session loaded a plugin's hooks from no longer exists, the hook MUST NOT
-   run; the client reports `Failed to run: Plugin directory does not exist: <path> (<plugin> — run
-   /plugin to reinstall)`, once per session for each event and command, and a plugin reload
+   run; the client reports an error that begins `Failed to run: Plugin directory does not exist:
+   <path>`, once per session for each event and command, and a plugin reload
    re-registers the hooks from the plugin's current directory (§16).
-   <!-- req: hooks.troubleshooting.hook error notices in the transcript -->
+   <!-- req: install.troubleshooting.hook error notices in the transcript -->
 
 ### 7.1.4 Hooks in skills and agents
 
@@ -153,11 +156,12 @@ A skill's and an agent's frontmatter `hooks` take the same event map as settings
 1. **Agent hooks** MUST run only while that agent runs, and be removed when it finishes. A `Stop`
    hook declared there MUST be registered as `SubagentStop` when the agent runs as a subagent,
    since that is the event that fires when a subagent completes. <!-- req: hooks.behavior.Hooks in skills and agents -->
-2. **Skill hooks** MUST be registered when the user or Claude invokes the skill and keep running
-   for the rest of the session, on later turns too. A handler with `once: true` is removed after
-   its first successful run (§7.3.1). <!-- req: hooks.behavior.Hooks in skills and agents -->
+2. **Skill hooks** MUST NOT run before the user or Claude invokes the skill. Once registered they
+   keep running, on later turns too, until the user exits or leaves the conversation with a command
+   such as `/clear` or `/resume`, which removes them. A handler with `once: true` is removed sooner,
+   after its first successful run (§7.3.1). <!-- req: hooks.behavior.Hooks in skills and agents | hooks.behavior.Hook locations.Skill frontmatter -->
 3. **Trust.** A project skill's frontmatter hooks follow the settings-file trust rule of §7.1.2
-   item 6 and register on invocation, also in a `-p` run in an untrusted folder. A project
+   item 6, so they can run under `-p` in a folder the user has not trusted. A project
    subagent's frontmatter hooks run only after the user accepts the trust dialog for the folder the
    agent file came from; a `-p` session does not count as accepting it (§5.12.1, §13).
    <!-- req: hooks.behavior.Hooks in skills and agents -->

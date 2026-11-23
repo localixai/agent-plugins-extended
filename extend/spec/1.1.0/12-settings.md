@@ -3,11 +3,12 @@
 Settings are the JSON keys that change how the client behaves. A plugin meets them three ways: the
 user's and the organization's settings decide whether it is enabled, which marketplaces are known
 and which of its hooks, mods, monitors and channels may run; its user configuration is saved in
-them; and it can ship two defaults of its own (§12.6). This chapter states the settings files, how
-the same key set in several of them resolves, how the managed tier composes its sources, and every
-key the contract names. Evidence: `settings.md` for §12.1–§12.4, `managed-settings.md` for §12.5,
-`plugins/components.md` ("Default settings") for §12.6 and `settings-reference.md` for §12.7, unless
-a paragraph names another page. Permission rules and workspace trust are §13's; what each managed
+them; and it can ship a default `agent` of its own, a deprecated feature (§12.6). This chapter
+states the settings files, how the same key set in several of them resolves, how the managed tier
+composes its sources, and every key the contract names. Evidence: `settings.md` for §12.1–§12.4,
+`managed-settings.md` for §12.5, the changelog and Claude Code's own validator for §12.6 (the
+documentation of the target release no longer describes plugin defaults), and
+`settings-reference.md` for §12.7, unless a paragraph names another page. Permission rules and workspace trust are §13's; what each managed
 policy key enforces is §14's, the marketplace keys are also §15's.
 
 ## 12.1 Settings files and scopes
@@ -37,11 +38,10 @@ policy key enforces is §14's, the marketplace keys are also §15's.
    - **Managed**: the organization deploys it; the user neither creates nor edits it.
    - **Shared project**: committed with the project, or created by the user at `.claude/settings.json`.
    - **User** and **project local**: created by the user, or by the client when it first saves a
-     choice there. The client writes `~/.claude/settings.json` the first time the user changes a
-     `/config` option stored in user settings (the theme, for one), and
-     `.claude/settings.local.json` the first time the user gives a standing approval on a permission
-     prompt ("Yes, and don't ask again"). A few `/config` options, **Show tips** among them, save to
-     the local file instead.
+     choice there. The client writes `~/.claude/settings.json` when the user saves a user setting
+     (the theme, for one), and `.claude/settings.local.json` when the user gives a standing approval
+     on a permission prompt ("Yes, and don't ask again") or saves a `/config` option stored there
+     (§12.2.1).
 
 ### 12.1.2 Where the project files are read
 
@@ -73,8 +73,8 @@ policy key enforces is §14's, the marketplace keys are also §15's.
 1. A settings file MUST be strict JSON: a `//` comment or a trailing comma is a syntax error and
    makes the file a Settings Error (§12.2.4). A `$schema` key naming the published settings schema
    is accepted for editors and has no effect. <!-- req: settingsMerge.settings.Edit a settings file -->
-2. The `/config` menu writes most options to the user file, a few (**Show tips**) to the local
-   file, and the global config options to `~/.claude.json`. `/status` lists, in its `Setting
+2. The `/config` menu writes most options to the user file, the output style to the local file, and
+   the global config options to `~/.claude.json`. `/status` lists, in its `Setting
    sources` line, each settings file the session loaded, and for managed settings in parentheses
    how they arrived; it does not say which file supplied which key.
 
@@ -83,9 +83,10 @@ policy key enforces is §14's, the marketplace keys are also §15's.
 A value can be set for one session without writing any file, three ways:
 
 1. **`--settings <file-or-json>`**: JSON given inline or as a path. It is the command-line level of
-   the stack (§12.3): above user, project and local settings, below managed settings. It can set any
-   key the user file can set, and MUST NOT set a `Managed` or `Global config` key. A key it leaves
-   out keeps its value from the files. <!-- req: settingsMerge.settings.Change a setting for one session.--settings -->
+   the stack (§12.3): above user, project and local settings, below managed settings. It MUST NOT
+   set a `Managed` or `Global config` key, nor the few user keys whose scope leaves it out, such as
+   `prependPlugins` and `appendPlugins` (§12.7.1); every other key the user file can set it can set.
+   A key it leaves out keeps its value from the files. <!-- req: settingsMerge.settings.Change a setting for one session.--settings -->
 2. **A flag for that key**, such as `--model` for `model`, `--effort` for `effortLevel` and
    `modelSettings`, `--agent` for `agent`, `--teammate-mode` for `teammateMode`. A flag is not a
    level of the stack; the key's entry says that the flag wins over it. <!-- req: settingsMerge.settings.Change a setting for one session.A flag for that key -->
@@ -104,7 +105,7 @@ the session only.
 2. A file created mid-session MUST be loaded when its directory existed at session start; the
    project's `.claude/settings.json` and `.claude/settings.local.json` are loaded even when the
    `.claude/` directory itself was created in the same session.
-3. For each settings-file change it detects the client runs the `ConfigChange` hook (§7). Managed
+3. For a direct edit to a settings file the client runs the `ConfigChange` hook (§7). Managed
    settings that arrive through MDM or server delivery reach the session on that source's schedule
    (§12.5.1) and do not fire the hook.
 4. A few keys are read only at session start, so an edit reaches the next session only: `model`
@@ -123,7 +124,7 @@ What the client does with a file it cannot fully read depends on how much of it 
 | **Settings Error**: a user, project or local file is not valid JSON, or a value the schema rejects | At the start of an interactive session the client shows a dialog that offers to fix the file with Claude's help, to exit, or to continue without the broken settings (Judgment J12.5). <!-- req: settingsMerge.settings.Fix a broken settings file.Settings Error --> |
 | **Settings Warning**: only individual entries fail, such as a malformed permission rule or an unknown hook event | The client skips those entries and keeps the rest of the file in effect. <!-- req: settingsMerge.settings.Fix a broken settings file.Settings Warning --> |
 | **Managed settings** with an invalid entry | The client keeps enforcing the rest of the document; what it drops, and which keys fall back to a stricter value, is §14's. A managed document that is not valid JSON stops the client at startup (§14). <!-- req: settingsMerge.settings.Fix a broken settings file.Managed settings --> |
-| **Configuration error**: `~/.claude.json` does not parse | A `claude -p` run exits and leaves the file unchanged. The client copies the broken file to `~/.claude/backups/.claude.json.corrupted.<timestamp>` and, in an interactive session, asks whether to exit and fix it or reset to the default configuration. A blank file with no backup to restore starts with the defaults. <!-- req: settingsMerge.settings.Fix a broken settings file.Configuration error --> |
+| **Configuration error**: `~/.claude.json` does not parse | A `claude -p` run exits. The client copies the broken file to `~/.claude/backups/.claude.json.corrupted.<timestamp>` and, in an interactive session, asks whether to exit and fix it or reset to the default configuration. A blank file with no backup to restore starts with the defaults. <!-- req: settingsMerge.settings.Fix a broken settings file.Configuration error --> |
 
 A `-p` run shows no dialog: it skips a broken user, project or local file, or its broken values,
 and continues, unless a managed document cannot be parsed. After continuing, `/status` names the
@@ -144,7 +145,7 @@ that sets it, unless §12.4 gives the key another way to combine. Highest first:
 | 4 | Shared project, `.claude/settings.json` | The team's settings, in source control. <!-- req: settingsMerge.settings.Settings precedence.Shared project settings --> |
 | 5 | User, `~/.claude/settings.json` | The user's settings for every project. <!-- req: settingsMerge.settings.Settings precedence.User settings --> |
 | 6 | `--add-dir` directories | Only `enabledPlugins` and `extraKnownMarketplaces` are read from an added directory's two settings files, and of `enabledPlugins` only a `true` entry counts (`plugins/loading.md`, `permissions.md`; Judgment J12.1). |
-| 7 | Plugin defaults | `agent` and `subagentStatusLine` from enabled plugins (§12.6). |
+| 7 | Plugin defaults | `agent` from enabled plugins (§12.6). |
 
 1. Permission rules follow the same stack, managed highest: no other level, command-line arguments
    included, overrides a managed rule. In addition, a tool denied at any level cannot be allowed at
@@ -228,8 +229,8 @@ ignores it:
 The stack decides which file wins; the kind of the value decides whether the files combine.
 
 1. **A single value** (a string, number or Boolean, or an object the key's entry treats as one
-   value, such as `statusLine`, `subagentStatusLine` or a `fallbackModel` chain) comes whole from the
-   highest level that sets it.
+   value, such as `statusLine` or a `fallbackModel` chain) comes whole from the highest level that
+   sets it.
 2. **A list** (such as `permissions.allow`, `allowedHttpHookUrls`, `httpHookAllowedEnvVars`,
    `sandbox.network.allowedDomains`) MUST combine across files: each file adds its entries and none
    removes another file's. Repeated entries appear once (Judgment J12.2). <!-- req: settingsMerge.settings.Lists merge instead of overriding -->
@@ -350,6 +351,8 @@ composes them into the one managed level of §12.3. The policy each key enforces
    the policy or file omits one, the remote value applies), and the gateway login keys
    (`forceLoginGatewayUrl`, `gatewayInternalNetworks`, `forceLoginMethod: "gateway"`), for which a
    remote value is never used. <!-- req: settingsMerge.managed.Which managed source supplies login keys -->
+   The sign-in requirement `enforceAnthropicSignIn` likewise comes only from the file or the MDM
+   policy (§14.2.8).
 
 ### 12.5.4 Composing every source
 
@@ -373,92 +376,56 @@ composes them into the one managed level of §12.3. The policy each key enforces
 
 3. A `policyHelper` whose output carries a `managedSettings` object makes that object the only
    managed settings of the session, for the keys of §12.5.3 item 5 too, apart from
-   `forceRemoteSettingsRefresh`; and parent settings from an embedding host add to the policy as §14
-   states.
+   `forceRemoteSettingsRefresh` and `enforceAnthropicSignIn` (§14.2.5); and parent settings from
+   an embedding host add to the policy as §14 states.
 
 ## 12.6 Plugin default settings
 
 A plugin MAY ship default settings that apply while it is enabled, in a `settings.json` at the
-plugin root (§1.4) or as the `settings` object of its manifest (§2.4).
+plugin root (§1.4) or as the `settings` object of its manifest (§2.4). The feature is deprecated:
+since 2.1.323 a plugin's `agent` setting still applies but warns, and `subagentStatusLine`, the
+other key it carried, was removed: it has no effect from a plugin or any settings file, though a
+validator still words a plugin's copy as deprecated in favor of mods (§12.7.1, Judgment J12.17). The documentation of the target release no longer
+describes plugin defaults; the rules below are those the 2.1.321 documentation stated
+(`plugins/components.md`, "Default settings"), which the deprecation leaves in force (Judgment
+J12.14). <!-- docs: changelog.md | 2.1.323 -->
 
-1. Only `agent` and `subagentStatusLine` take effect. Every other key MUST be dropped at load and
-   MUST NOT reach any settings layer: a plugin cannot set permissions, hooks, `env` or any policy
-   through its defaults. A value of the wrong type for one of the two keys (`agent` not a string,
-   `subagentStatusLine` not an object with `type: "command"` and a `command` string) is dropped as
-   well. A dropped key or value, and a `settings.json` that does not parse, is at most a load
-   warning: it never fails the plugin, whose other components load, and a validator reports none
-   of them (Judgment J12.10).
-2. **File over manifest.** When both exist and `settings.json` sets at least one supported key, the
-   client MUST apply `settings.json` and ignore the manifest's `settings` entirely; the two are never
-   combined key by key. A `settings.json` that sets no supported key (none, or only dropped keys, or
-   one that is not a readable JSON object) does not count, and the manifest's `settings` applies
-   (Judgment J12.10). <!-- req: settings.components.Default settings.File over manifest -->
-3. **User settings over plugin defaults.** Plugin defaults are the lowest settings layer (§12.3.1):
-   a value of the same key at any settings level, the user's own `agent` in
-   `~/.claude/settings.json` for one, replaces the plugin's, and `--agent` replaces both (§5). <!-- req: settings.components.Default settings.User settings over plugin defaults -->
-4. **Two plugins set the same key.** The value of the plugin loaded last applies, in the client's
-   plugin load order (§16; Judgment J12.12), and the client logs under `claude --debug` a line
-   containing `overrides setting` (Judgment J12.11). The two keys resolve independently: one plugin
-   can supply `agent` and another `subagentStatusLine`. <!-- req: settings.components.Default settings.Two plugins set the same key -->
-5. A default `agent` names one of the plugin's own agents and runs the main thread as it, with that
-   agent's system prompt and model (§5). A default `subagentStatusLine` runs as §12.6.1 says,
-   under the gates of §12.7.3. A plugin's value MUST NOT run under `allowManagedHooksOnly`, even
-   when managed `enabledPlugins` force-enables the plugin, unlike that plugin's hooks; nor, being no
-   managed value, while the other gates narrow the key to managed settings (Judgment J12.13).
-   <!-- docs: statusline.md | Subagent status lines -->
-6. The defaults stop applying when the plugin is disabled or uninstalled.
-7. A plugin's `agent` default is a supported key of the target release. A validator for that release
-   MUST NOT warn that it is deprecated, in `settings.json` or in the manifest's `settings` (Judgment
-   J12.14).
+1. Only `agent` takes effect. Every other key MUST be dropped at load and MUST NOT reach any
+   settings layer: a plugin cannot set permissions, hooks, `env` or any policy through its
+   defaults. An `agent` that is not a string is dropped as well. A dropped key or value, and a
+   `settings.json` that does not parse, is at most a load warning: it never fails the plugin, whose
+   other components load (Judgment J12.10).
+2. **Deprecation warnings.** While an enabled plugin sets `agent`, the client warns at startup and
+   in `claude plugin list`. A validator MUST report, as warnings that do not fail validation, the
+   presence of `agent` or `subagentStatusLine` in either place, whatever the value: <!-- docs: changelog.md | 2.1.323 -->
+
+   | Key | Warning |
+   | --- | --- |
+   | `agent` | ``agent: A plugin's `agent` setting is deprecated and will stop applying in a future release. Tell people to set `agent` in their own settings or pass --agent.``, under `settings.json`; the same text with the path `settings.agent:` for the manifest. |
+   | `subagentStatusLine` | `subagentStatusLine is deprecated in favor of mods and will stop working in a future release.`, under `settings.json`; prefixed `settings.` for the manifest. |
+
+   A validator reports nothing for any other key, for a value of the wrong type or for a
+   `settings.json` that does not parse; only a manifest `settings` that is not an object fails
+   validation (§2.4; Judgment J12.10).
+3. **File over manifest.** When both exist and `settings.json` sets a valid `agent`, the client MUST
+   apply `settings.json` and ignore the manifest's `settings` entirely; the two are never combined
+   key by key. A `settings.json` without a valid `agent` (none, only dropped keys, or a file that is
+   not a readable JSON object) does not count, and the manifest's `settings` applies (Judgment
+   J12.10).
+4. **User settings over plugin defaults.** Plugin defaults are the lowest settings layer (§12.3.1):
+   an `agent` at any settings level, the user's own in `~/.claude/settings.json` for one, replaces
+   the plugin's, and `--agent` replaces both (§5).
+5. **Two plugins set the key.** The value of the plugin loaded last applies, in the client's plugin
+   load order (§16; Judgment J12.12), and the client logs under `claude --debug` a line containing
+   `overrides setting` (Judgment J12.11).
+6. A default `agent` names one of the plugin's own agents and runs the main thread as it, with that
+   agent's system prompt, tool restrictions and model (§5).
+7. The default stops applying when the plugin is disabled or uninstalled.
 
 ```json
-// my-plugin/settings.json: applies; the manifest's "settings" is ignored
+// my-plugin/settings.json: applies, with a deprecation warning; the manifest's "settings" is ignored
 { "agent": "security-reviewer", "model": "opus" }
 // "model" is dropped. With "agent": "code-reviewer" in ~/.claude/settings.json, the user's wins.
-```
-
-### 12.6.1 The subagent status line
-
-`subagentStatusLine`, from a plugin's defaults or any settings file, replaces the body of the rows
-of the subagent task display below the prompt (by default `name · description · token count`).
-<!-- docs: settings-reference.md | subagentStatusLine -->
-
-1. **When it runs.** The client runs `command` through a shell, as it runs a `statusLine` command
-   (Git Bash on Windows when installed, otherwise PowerShell; wrapped by `CLAUDE_CODE_SHELL_PREFIX`,
-   §8.2.1), once per refresh tick of the display, with every visible subagent row in one input.
-2. **Input.** One JSON object on stdin: the common input fields hooks receive (§7.5.2), `columns`
-   (the usable row width), and `tasks`, one entry per visible row. A field marked optional is
-   omitted when it has no value: <!-- docs: statusline.md | Task fields -->
-
-   | Field | Type | Value |
-   | --- | --- | --- |
-   | `id` | string | The task's identifier, echoed back in the output. |
-   | `name` | string, optional | The name the subagent is addressed by, when it has one. |
-   | `type` | string | The kind of task: `local_agent`. |
-   | `agentType` | string | The subagent type, the value hooks receive as `agent_type` (§7), such as `Explore` or a plugin agent's scoped name (2.1.293 and later). |
-   | `status` | string | Such as `running`, `completed`, `failed` or `killed`. |
-   | `description` | string | The task's short description, such as the one Claude gave when it spawned it. |
-   | `label` | string | A short progress summary when the client has one, otherwise `description`. |
-   | `startTime` | number | Start time, milliseconds since the Unix epoch. |
-   | `model` | string, optional | The resolved model ID; omitted until resolved. |
-   | `effort` | string or number, optional | The effort set in the agent's frontmatter or on the invocation: `low`, `medium`, `high`, `xhigh`, `max` or a token budget; the configured value, not necessarily the applied one. |
-   | `contextWindowSize` | number, optional | The context window of `model` in tokens, computed as the status line's `context_window.context_window_size`; omitted when `model` is. |
-   | `tokenCount` | number | The running token count, the figure the default row shows. |
-   | `tokenSamples` | number[] | Up to the last 16 `tokenCount` readings, one per tick, oldest first, ending with the current one. |
-   | `cwd` | string | The subagent's own working directory, such as an isolated worktree, otherwise the session's. |
-
-3. **Output.** One JSON line on stdout per row the command overrides, `{"id": "<task id>",
-   "content": "<row body>"}`. `content` is rendered as is, ANSI colours and OSC 8 hyperlinks
-   included; an empty `content` hides the row; a row whose `id` no line names keeps the default
-   rendering. A line that is not such an object, or names an unknown `id`, is ignored; a command
-   that exits non-zero, or is still running when the next tick starts it again (it is cancelled),
-   leaves every row at its default (Judgment J12.16).
-4. **Gates.** The trust, `disableAllHooks` and `allowManagedHooksOnly` gates of `statusLine` apply
-   (§12.7.3); a plugin's value never runs under `allowManagedHooksOnly` (§12.6 item 5).
-
-```json
-{ "subagentStatusLine": { "type": "command",
-  "command": "jq -c '.tasks[] | {id, content: \"\\(.name): \\(.tokenCount) tokens\"}'" } }
 ```
 
 ## 12.7 Settings keys a plugin meets
@@ -473,16 +440,16 @@ unset by default and a client MUST accept exactly the type given.
 
 | Key | Type | Scope | Combines | Effect |
 | --- | --- | --- | --- | --- |
-| `agent` | string, a built-in or custom agent name | Any file; plugin default (§12.6) | single | Runs the main thread as that agent; also the default agent of sessions dispatched from `claude agents`. `--agent` wins for a session (§5). <!-- req: settings.key.agent --> |
-| `allowedChannelPlugins` | array of `{ "marketplace", "plugin" }`, or `"plugin@marketplace"` strings (2.1.267 and later; earlier releases reject the whole value) | Managed | restriction allowlist | Replaces the default Anthropic allowlist of channel plugins; `[]` blocks every channel plugin. Takes effect once channels pass the `channelsEnabled` gate (§9.3, §14). <!-- req: settings.key.allowedChannelPlugins --> |
-| `allowedHttpHookUrls` | array of URL patterns, `*` a wildcard | Any file | list | When defined, an HTTP hook runs only if its URL matches a pattern; others are blocked without running, and `[]` blocks every HTTP hook. Host matching ignores case and a trailing dot. Applies to hooks of every source, managed included. A list with entries in the Agent SDK's `managedSettings` is ignored (§7, §14). <!-- req: settings.key.allowedHttpHookUrls --> |
+| `agent` | string, a built-in or custom agent name | Any file; deprecated plugin default (§12.6) | single | Runs the main thread as that agent; also the default agent of sessions dispatched from `claude agents`. `--agent` wins for a session (§5). Unset, the main thread runs as the default agent. <!-- req: settings.key.agent --> |
+| `allowedChannelPlugins` | array of `{ "marketplace", "plugin" }`, or `"plugin@marketplace"` strings (2.1.267 and later; earlier releases reject the whole value) | Managed | restriction allowlist | Replaces the default Anthropic allowlist of channel plugins; `[]` blocks every channel plugin except one the user loads with `--dangerously-load-development-channels`. Takes effect once channels pass the `channelsEnabled` gate (§9.3, §14). <!-- req: settings.key.allowedChannelPlugins --> |
+| `allowedHttpHookUrls` | array of URL patterns, `*` a wildcard | Any file | list | Limits the URLs of the HTTP hooks it covers: defined in managed settings it covers the hooks of managed settings, defined in any file it covers every other HTTP hook (Judgment J12.18). A covered hook runs only if its URL matches a pattern of the list merged across files; others are blocked without running. Host matching ignores case and a trailing dot. A list with entries in the Agent SDK's `managedSettings` is ignored (§7, §14). <!-- req: settings.key.allowedHttpHookUrls --> |
 | `allowManagedHooksOnly` | Boolean | Managed | lock | `true` runs only managed, SDK and force-enabled plugins' hooks (§12.7.3). <!-- req: settings.key.allowManagedHooksOnly --> |
 | `appendPlugins` | array of `plugin@marketplace` | Managed; user only on a machine with no managed settings and no `managed-mcp.json`, in a session whose credential is not a Team or Enterprise `/login`; never project, local or `--settings` | single | Mods of these plugins run after every mod the user installs, in list order; an id in both `prependPlugins` and `appendPlugins` is prepended; in managed settings an id whose plugin does not count as the organization's is skipped (§10). <!-- req: settings.key.appendPlugins --> |
 | `blockedMarketplaces` | array of marketplace source objects (`strictKnownMarketplaces` forms; `"owner/*"` for `github`, 2.1.223 and later; `{ "source": "skills-dir" }`) | Managed | list | Blocks matching sources at marketplace add and at plugin install, update, refresh and auto-update, before any download; `skills-dir` stops `@skills-dir` plugins (§14, §15). <!-- req: settings.key.blockedMarketplaces --> |
 | `channelsEnabled` | Boolean | Managed | single | `true` allows channels for the organization; `false` is unset. Unset, channels are blocked on Team and Enterprise plans and on Console accounts with managed settings, allowed otherwise (§9.3). <!-- req: settings.key.channelsEnabled --> |
 | `crossSessionInbound` | `"accept"`, `"hold"` or `"refuse"` | Any file; project and local only when stricter | exception (§12.3.3) | What the session does with messages from the user's other sessions. Managed, then `--settings`, then user: the first value found applies; a project or local `hold` or `refuse` applies when stricter, or when none of those sets one. An unrecognized value in a user, project, local or `--settings` file holds messages even over an `accept` (a `refuse` elsewhere still applies); in managed settings it reads as `refuse`. Unset, the client decides per message (2.1.224 and later). <!-- req: settings.key.crossSessionInbound --> |
 | `disableAgentView` | Boolean | Any file | single | `true` turns off `claude agents`, `--bg`, `/background` and the on-demand supervisor. `CLAUDE_CODE_DISABLE_AGENT_VIEW` also turns it off, and neither can turn it back on against the other. <!-- req: settings.key.disableAgentView --> |
-| `disableAllHooks` | Boolean | Any file; only managed settings disable managed hooks | single | Turns off hooks, the custom status lines and the custom file suggestion; reach by file in §12.7.3. While hooks are off `/goal` cannot run and `/hooks` shows a notice (§7, §10). <!-- req: settings.key.disableAllHooks --> |
+| `disableAllHooks` | Boolean | Any file; only managed settings disable managed hooks | single | Turns off hooks, the custom status line and the custom file suggestion; reach by file in §12.7.3. While hooks are off `/goal` cannot run and `/hooks` shows a notice (§7, §10). <!-- req: settings.key.disableAllHooks --> |
 | `disableBundledSkills` | Boolean | Any file | single | `true` removes the bundled skills and workflows; built-in commands such as `/init` stay typable but hidden from the model. Plugin, `.claude/skills/` and `.claude/commands/` skills are unaffected. `CLAUDE_CODE_DISABLE_BUNDLED_SKILLS=1` also turns them off, irreversibly for the session (§4). <!-- req: settings.key.disableBundledSkills --> |
 | `disableCommandPluginSources` | Boolean | Managed | lock | `true`: the client never runs a marketplace's `command` source, installs or updates no command-sourced plugin and stops loading those installed. `false` allows them explicitly. Unset, it follows `allowManagedHooksOnly`. Whenever command sources are blocked, marketplace `headersHelper` commands are blocked too, except for a marketplace managed settings declare (2.1.229 and 2.1.238 and later; §15, §16). <!-- req: settings.key.disableCommandPluginSources --> |
 | `disableSkillShellExecution` | Boolean | Any file; a managed `true` cannot be overridden | single | `true` replaces each inline shell command of a user, project, plugin or added-directory skill or command with `[shell command execution disabled by policy]`; bundled and managed skills are unaffected (§4). <!-- req: settings.key.disableSkillShellExecution --> |
@@ -492,7 +459,7 @@ unset by default and a client MUST accept exactly the type given.
 | `env` | object, variable name to string | Any file | block, per variable | Variables for the session and its subprocesses (§12.7.4, §3.6). <!-- req: settings.key.env --> |
 | `extraKnownMarketplaces` | object, marketplace name to `{ "source", "autoUpdate"? }`; alias `additionalMarketplaces` | Any file; project and local only after trust; `--add-dir` | per name | Registers each marketplace the client does not know (§12.7.2, §15). <!-- req: settings.key.extraKnownMarketplaces --> |
 | `hooks` | object, hook event to an array of `{ "matcher", "hooks" }` groups whose handlers have `type` `command`, `prompt`, `agent`, `http` or `mcp_tool` | Any file | hooks (§12.4) | Handlers run at lifecycle events (§7). <!-- req: settings.key.hooks --> |
-| `httpHookAllowedEnvVars` | array of variable names | Any file | list | An outer limit on every HTTP hook's own `allowedEnvVars`: a hook may interpolate a variable only when both name it. Unset, each hook's own list applies. Applies to every source; a list with entries in the SDK's `managedSettings` is ignored (§7). <!-- req: settings.key.httpHookAllowedEnvVars --> |
+| `httpHookAllowedEnvVars` | array of variable names | Any file | list | An outer limit on the `allowedEnvVars` of the HTTP hooks it covers, covered as for `allowedHttpHookUrls` (Judgment J12.18): a covered hook may interpolate a variable only when both its own list and this key's list merged across files name it. Unset, each hook's own list applies. A list with entries in the SDK's `managedSettings` is ignored (§7). <!-- req: settings.key.httpHookAllowedEnvVars --> |
 | `isolatePeerMachines` | Boolean | Any file | `true` from any scope | `true` asks the user's approval before `SendMessage` reaches a session on another machine, even in `bypassPermissions` mode (2.1.224 and later). A repository file can turn it on, not off. <!-- req: settings.key.isolatePeerMachines --> |
 | `outputStyle` | string, a built-in or custom style name | Any file | single | The active output style, from the next message after a change (§6.1). <!-- req: settings.key.outputStyle --> |
 | `pluginConfigs` | object, plugin id to `{ "options", "mcpServers"? }`; `options` maps an option to a string, number, Boolean or array of strings, `mcpServers` holds per-server values in the same shape | User or managed; project and local entries ignored | per name | The non-sensitive `userConfig` answers, written by the client (§3.4). Built-in plugins use the `@builtin` suffix; an entry under the pre-2.1.285 id of a renamed built-in plugin is still read. A repository cannot supply them because they are substituted into hook, MCP and LSP configuration. <!-- req: settings.key.pluginConfigs --> |
@@ -508,7 +475,7 @@ unset by default and a client MUST accept exactly the type given.
 | `strictPluginOnlyCustomization` `"agents"` | — | Managed | — | Stops agents of `~/.claude/agents/`, `.claude/agents/` and `--add-dir` directories; built-in, managed and plugin agents load. <!-- req: settings.key.strictPluginOnlyCustomization.agents --> |
 | `strictPluginOnlyCustomization` `"hooks"` | — | Managed | — | Stops hooks of user, project and local settings and the frontmatter hooks of the skills, commands and agents a `skills` or `agents` lock would block; such a user or project skill also loses its `allowed-tools` pre-approval unless it runs with `context: fork`. Managed and plugin hooks run. <!-- req: settings.key.strictPluginOnlyCustomization.hooks --> |
 | `strictPluginOnlyCustomization` `"mcp"` | — | Managed | — | Stops servers of `~/.claude.json` and `.mcp.json`; `managed-mcp.json`, `managedMcpServers` and plugin servers load (§8.11). <!-- req: settings.key.strictPluginOnlyCustomization.mcp --> |
-| `subagentStatusLine` | `{ "type": "command", "command" }` | Any file; plugin default (§12.6) | single | A command that rewrites the rows of the subagent task display: it gets the visible rows on stdin as one JSON object with a `tasks` array and writes `{"id", "content"}` lines; unwritten rows keep the default (§12.6.1). Gated as §12.7.3 says; under `allowManagedHooksOnly` or `disableAllHooks` outside managed settings only the managed value runs. <!-- docs: settings-reference.md | Settings index — subagentStatusLine --> |
+| `subagentStatusLine` | any | — | — | Removed in 2.1.323: the client MUST ignore it in every settings file and in a plugin's defaults, and subagent rows always use the default look. A file that holds it loads as before, with no error; a validator warns only for a plugin's copy (§12.6; Judgment J12.17). <!-- docs: changelog.md | 2.1.323 --> |
 | `syncClaudeAiPlugins` | Boolean; only `false` has an effect | User, local, managed and `--settings` | `false` wins (§12.3.3) | `false` stops downloading the account's plugins into `~/.claude/plugins/synced/` and stops loading `<name>@synced`; in user or managed settings it also moves them to `~/.claude/plugins/.trash/`. One synced plugin is turned off with `"<name>@synced": false` in `enabledPlugins` (2.1.273 and later; §16). <!-- req: settings.key.syncClaudeAiPlugins --> |
 | `syncClaudeAiSkills` | Boolean; only `false` has an effect | User, local, managed and `--settings` | `false` wins (§12.3.3) | The same for skills, in `~/.claude/skills/synced/` and `~/.claude/skills/.trash/` (§4). <!-- req: settings.key.syncClaudeAiSkills --> |
 | `teammateMode` | `"in-process"` (default), `"auto"`, `"tmux"` or `"iterm2"` | Any file; a value left in `~/.claude.json` is still read | single | Where agent-team teammates are shown. `--teammate-mode` wins for a session. <!-- req: settings.key.teammateMode --> |
@@ -530,8 +497,9 @@ unset by default and a client MUST accept exactly the type given.
    `defaultEnabled` (§2.4). A managed `true` force-enables the plugin and no other source turns it
    off; a managed `false` blocks its installation at every scope and hides it from the marketplace.
    So a user's `false` does not disable a plugin the project enables; a local `false` does. A
-   project file that enables a plugin from an external source does not install it for others: the
-   client reports it as not installed until each user installs it (§16). The client writes this key
+   project file that enables a plugin does not install it for others: until each user installs it,
+   the client can report it as not installed, unless a seed supplies it or a local `directory` or
+   `file` marketplace lists it by a relative path (§16, §14.8.2). The client writes this key
    when the user enables or disables a plugin with `/plugin` or `claude plugin enable` (§17). An
    entry that is not a Boolean counts as enabled (Judgment J12.4).
 2. **`extraKnownMarketplaces`.** The client MUST register each named marketplace it does not
@@ -563,8 +531,7 @@ unset by default and a client MUST accept exactly the type given.
      `disableCommandPluginSources` is explicitly `false`; and marketplace `headersHelper` commands are
      blocked on the same condition, except for a marketplace managed settings declare (2.1.238 and
      later). <!-- req: settings.reference.What runs under allowManagedHooksOnly.Command-sourced plugins are disabled -->
-   - `statusLine`, `fileSuggestion` and `subagentStatusLine` narrow to managed settings (item 3),
-     and `/goal` cannot run. <!-- req: settings.reference.What runs under allowManagedHooksOnly -->
+   - `statusLine` and `fileSuggestion` narrow to managed settings (item 3), and `/goal` cannot run. <!-- req: settings.reference.What runs under allowManagedHooksOnly -->
 2. **`disableAllHooks: true`** reaches according to the file that carries it:
    - in managed settings: every configured hook, managed ones included, and the mods of every
      installed plugin, the organization's included; Agent SDK in-process hooks keep running
@@ -578,8 +545,8 @@ unset by default and a client MUST accept exactly the type given.
      managed hooks, SDK hooks, force-enabled plugins' hooks and the organization's mods keep running.
    Built-in mods keep running in every case. An `"disableAllHooks": false` in a lower file does not
    undo a higher `true` (single value, §12.4).
-3. **Status line and file suggestion gates.** For `statusLine`, `fileSuggestion` and
-   `subagentStatusLine` the client MUST decide, in this order: <!-- req: settings.reference.Status line and file suggestion gates -->
+3. **Status line and file suggestion gates.** For `statusLine` and `fileSuggestion` the client MUST
+   decide, in this order: <!-- req: settings.reference.Status line and file suggestion gates -->
    1. **Off entirely** when managed settings set `disableAllHooks`, or when the folder is not trusted
       under the workspace-trust rule for hooks in settings files (§13).
    2. **Narrowed to managed settings** when `allowManagedHooksOnly` is set, when `disableAllHooks`
@@ -593,9 +560,10 @@ unset by default and a client MUST accept exactly the type given.
 §3.6.2 states how a variable reaches the client; this section states how settings files carry it.
 
 1. **Against the shell.** An `env` value replaces the same variable exported in the shell, and
-   between files the highest-precedence one applies (per variable, §12.4). When the desktop app or a
-   self-hosted environment runner builds the launch environment, a variable it already sets wins
-   over every settings file and the debug log names each ignored one. An empty value cancels a
+   between files the highest-precedence one applies (per variable, §12.4), apart from the variables
+   of item 3. When the desktop app or a self-hosted environment runner builds the launch
+   environment, a variable it already sets wins over every settings file, and the debug log can name
+   an ignored one. An empty value cancels a
    shell export: it counts as unset for provider selection, and subprocesses inherit it empty.
    `NO_COLOR` and `FORCE_COLOR` from `env` reach subprocesses only. <!-- req: settings.reference.How env values interact with your shell -->
 2. **When values apply.** From user settings, `--settings` and managed settings: at startup, and
@@ -618,8 +586,8 @@ unset by default and a client MUST accept exactly the type given.
      `OTEL_TRACES_EXPORTER`, `OTEL_LOG_USER_PROMPTS`, `OTEL_LOG_ASSISTANT_RESPONSES`,
      `OTEL_LOG_TOOL_CONTENT`, `OTEL_LOG_TOOL_DETAILS`, `OTEL_EXPORTER_OTLP_*` names ending in
      `_ENDPOINT`, `_HEADERS`, `_PROTOCOL`, `_CERTIFICATE`, `_CLIENT_KEY` or `_INSECURE` (generic and
-     per signal), `OTEL_EXPORTER_PROMETHEUS_HOST` and `OTEL_EXPORTER_PROMETHEUS_PORT` (2.1.282 and
-     later). Only off values still apply from a repository file: `none` for the three exporter
+     per signal), `OTEL_EXPORTER_PROMETHEUS_HOST`, `OTEL_EXPORTER_PROMETHEUS_PORT` and
+     `OTEL_RESOURCE_INCLUDE_HOST`, which adds the machine's name and ID (2.1.282 and later). Only off values still apply from a repository file: `none` for the three exporter
      selectors, and an off value such as `0` for `OTEL_LOG_USER_PROMPTS`, `OTEL_LOG_TOOL_CONTENT`
      and `OTEL_LOG_TOOL_DETAILS`; such a value overrides the user file but not the launch
      environment, `--settings` or managed settings. A local interactive session shows a notice at
@@ -632,24 +600,32 @@ unset by default and a client MUST accept exactly the type given.
      `CLAUDE_CODE_USER_DIALOG_TIMEOUT_MS`, `CLAUDE_CODE_DISABLE_ATTACHMENTS` and
      `CLAUDE_CODE_DISABLE_FILE_MENTIONS`.
 
+   `CLAUDE_CODE_EXPERIMENTAL_CODE_MODE` turns Code Mode on only from the launch environment, user
+   settings or `--settings`, never from managed, project or local settings; a `0` in any of those
+   three or in managed settings keeps Code Mode off whatever the others say, and under a managed
+   `1` a `1` in the launch environment is ignored, so the user's own `1` goes in user settings.
+
    From **every** file the client ignores the identity variables its hosting environments own
    (`CLAUDE_CODE_REMOTE`, `CLAUDE_CODE_ACCOUNT_UUID`), the variables it exports itself
    (`CLAUDE_CODE_MESSAGING_SOCKET`, `CLAUDE_CODE_MESSAGING_TOKEN`), and the variables read from the
    launch environment only: `CLAUDE_CODE_PROJECT_DIR_NAME`, `CLAUDE_CODE_RESTRICTED`,
    `CLAUDE_CODE_DISABLE_POWERSHELL_CMD_RM_DENY`, `CLAUDE_CODE_DISABLE_DANGEROUS_RM_TIMEOUT`,
    `CLAUDE_CODE_DISABLE_SUBSTITUTION_RM_PROMPT`, `CLAUDE_CODE_DISABLE_INLINE_SHELL_RM_PROMPT`,
-   `CLAUDE_CODE_DISABLE_MOUNTED_DRIVE_RM_PROMPT`, `CLAUDE_CODE_EVEN_MORE_DANGEROUSLY_SKIP_PERMISSIONS`,
+   `CLAUDE_CODE_STRICT_INLINE_SHELL_RM_PROMPT`, `CLAUDE_CODE_DISABLE_MOUNTED_DRIVE_RM_PROMPT`,
+   `CLAUDE_CODE_DISABLE_ULTRAREVIEW_TRUST_CHECK`, `CLAUDE_CODE_EVEN_MORE_DANGEROUSLY_SKIP_PERMISSIONS`,
    `CLAUDE_CODE_WARN_DISK_FREE_GIB` and `CLAUDE_CODE_WARN_MEMORY_FREE_GIB`.
 
 ## Design decisions
 
-### Why a plugin's defaults hold only two keys
+### Why a plugin's defaults hold only one key
 
 A plugin installed from a marketplace is code the user chose to run, not policy the user chose to
 accept. Letting it set permissions, hooks, `env` or a policy key through a settings layer would let
 one install widen what every other plugin and every session may do, without the trust dialogs that
-guard those keys elsewhere (§13). Claude Code takes two presentation-level keys and drops the rest,
-and an Extended client drops them at load so that no later layer can read them by accident.
+guard those keys elsewhere (§13). Claude Code takes one presentation-level key, `agent`, and drops
+the rest, and an Extended client drops them at load so that no later layer can read them by
+accident. The specification keeps the deprecated `agent` default, with its warnings, for as long as
+the target release applies it: a plugin written for it still runs as it does in Claude Code.
 
 ### Why the stack and the merge rule are stated separately
 
@@ -673,10 +649,10 @@ per kind of key.
 | J12.7 | The keys read once at session start are `model`, `effortLevel`, `modelSettings` and the managed keys `requiredMinimumVersion`, `forceRemoteSettingsRefresh` and `policyHelper`; every other key applies on save (§12.2.3). | `settings.md` lists "the ones you're most likely to edit" and `managed-settings.md` adds the managed three; no page gives a closed list. Lead: reference `src/settings/general/edit-effect.ts`. |
 | J12.8 | "Alphabetical order" of `managed-settings.d/` is code-unit order of the file names (an upper-case name before a lower-case one). Two lists combine as Judgment J14.1 says: each entry at its first occurrence in file order, `managed-settings.json` first, a later duplicate dropped (§12.5.2). | The page says alphabetical with numeric prefixes and nothing of case or entry order. A byte order is the same on every file system. The entry order is J14.1's, so the two chapters give one rule. Lead: reference `src/settings/managed/drop-in.ts`. |
 | J12.9 | Under `"merge"`, "a looser value applies only from the highest-ranked source" means a lower source's looser lock value (`false`, `accept`) is ignored even when the highest source sets none (§12.5.4). | The table states the rule without that case; ignoring it never loosens a lock from a lower source. Lead: reference `src/settings/managed/combine.ts`. |
-| J12.10 | A plugin `settings.json` that does not parse, is not an object, or holds no valid value of `agent` or `subagentStatusLine` sets no supported key, so the manifest's `settings` applies. A dropped key, an invalid value and an unreadable file are warnings at load, never a plugin failure, and a validator reports none of them; only a manifest `settings` that is not an object fails validation (§12.6). | `plugins/components.md` says other keys are "dropped" and gives the file-over-manifest condition, not what a broken file does. Oracle 2.1.321, corpus: no finding at all on the plugins whose `settings.json` sets only dropped keys (`permissions`, `hooks`, `statusLine`, `$schema`, unknown keys; for example `kindex`, `claude-crew`, `claude-music`, `just-ship`), and each loads. Oracle 2.1.325: `claude plugin validate` passes a plugin whose `settings.json` is `[1]`, `{bad` or `{"agent":5}`, and fails `"settings": "str"` with `settings: Invalid input: expected record, received string`. Lead: reference `src/format/plugin-settings.ts`. |
-| J12.11 | The debug line is `Plugin "<later>" overrides setting "<key>" set by plugin "<earlier>"` (§12.6). | The docs quote only `overrides setting`. Lead: reference `src/settings/general/plugin-defaults.ts`. |
-| J12.12 | "The plugin loaded last" is the last in the order the client loads the enabled plugins (§16); the two keys resolve independently (§12.6). | The docs name no order. Using the load order every other cross-plugin rule uses (§9, J9.4) keeps one order per session. |
-| J12.13 | A plugin's default `subagentStatusLine` follows the gates of `statusLine`; besides the documented rule that it never runs under `allowManagedHooksOnly`, it never runs while `disableAllHooks` outside managed settings or `--safe-mode` narrows the key to managed settings, since a plugin default is not managed (§12.6). | statusline.md ("Subagent status lines") states the `allowManagedHooksOnly` case for plugin values, force-enabled plugins included; settings-reference.md gives the other narrowing causes for the key without naming the plugin layer. Lead: reference `src/host/session-agents.ts`. |
-| J12.14 | The 2.1.325 deprecation warning for a plugin's `agent` default is not part of the target release, so a validator does not give it (§12.6 item 7). | Oracle 2.1.325: `claude plugin validate` reports `agent: A plugin's \`agent\` setting is deprecated and will stop applying in a future release. …` for both `settings.json` and the manifest's `settings.agent`. The 2.1.321 documentation states the key as supported with no deprecation; the documented behaviour is kept. |
+| J12.10 | A plugin `settings.json` that does not parse, is not an object, or holds no `agent` string sets no supported key, so the manifest's `settings` applies. A dropped key, an invalid value and an unreadable file are warnings at load, never a plugin failure, and a validator reports none of them apart from the deprecation warnings of §12.6 item 2; only a manifest `settings` that is not an object fails validation (§12.6). | The 2.1.330 documentation describes no plugin defaults; `plugins/components.md` of 2.1.321 said other keys are "dropped" and gave the file-over-manifest condition, not what a broken file does. Oracle 2.1.321, corpus: no finding at all on the plugins whose `settings.json` sets only dropped keys (`permissions`, `hooks`, `statusLine`, `$schema`, unknown keys; for example `kindex`, `claude-crew`, `claude-music`, `just-ship`), and each loads. Oracle 2.1.330 (`claude plugin validate`): `settings.json` of `[1]`, `{bad` or `{"model":"opus","permissions":{}}` passes with no finding; `{"agent":5}` passes with only the `agent` deprecation warning; `"settings": "str"` fails with `settings: Invalid input: expected record, received string`. Since `subagentStatusLine` is removed (J12.17), a file holding only it no longer counts as setting a supported key. Lead: reference `src/format/plugin-settings.ts`. |
+| J12.11 | The debug line is `Plugin "<later>" overrides setting "<key>" set by plugin "<earlier>"` (§12.6). | The 2.1.321 docs quoted only `overrides setting`; the 2.1.330 docs no longer mention it. Lead: reference `src/settings/general/plugin-defaults.ts`. |
+| J12.12 | "The plugin loaded last" is the last in the order the client loads the enabled plugins (§16; §12.6). | The 2.1.321 docs named no order, and the 2.1.330 docs no longer describe the rule. Using the load order every other cross-plugin rule uses (§9, J9.4) keeps one order per session. |
+| J12.14 | A plugin's `agent` default still applies in the target release, with every rule the 2.1.321 documentation gave it; the client warns at startup and in `claude plugin list`, and a validator warns for `agent` and for `subagentStatusLine` in `settings.json` and in the manifest's `settings`, whatever the value, without failing; the startup and `claude plugin list` warnings use the validator's text (§12.6). | The 2.1.330 documentation drops plugin defaults (`plugins/components.md`, `plugins/manifest-reference.md`); the changelog of 2.1.323 says the `agent` setting "still applies, and now warns at startup, in `claude plugin list` and in `claude plugin validate`". Oracle 2.1.330, `claude plugin validate`: the texts of §12.6 item 2, for `settings.json` and for the manifest (`settings.agent:`, `settings.subagentStatusLine`), and `Validation passed`, exit 0, for a plugin with only that warning. The startup and list texts were not observed. |
 | J12.15 | A project or local value of a key that takes part in precedence only when stricter is compared with the winning value, or with the ladder's first rung when nothing wins; a lone `accept` or a lone `remoteControlAtStartup: true` is ignored, and a value off the ladder is never honoured (§12.3.3). | `settings.md` says a project or local value "that isn't stricter is ignored" without the case where no other source sets the key. Lead: reference `src/settings/general/exceptions.ts`. |
-| J12.16 | The `subagentStatusLine` command runs as a `statusLine` command does: the same shell choice (Git Bash or PowerShell on Windows) and `CLAUDE_CODE_SHELL_PREFIX` wrapping; its output counts only after exit code 0, an in-flight run is cancelled when the next tick starts, and a line that is not a `{"id", "content"}` object or names an unknown `id` is ignored, so any failure leaves the default rows (§12.6.1). | statusline.md gives these rules for `statusLine` ("Windows configuration", "Script errors or hangs", "How status lines work") and says the same gates apply to `subagentStatusLine`, but states no failure rule for it; env-vars.md says the prefix wraps "status line commands". Keeping the default rows on any failure never hides a subagent by accident. |
+| J12.17 | `subagentStatusLine` has no effect from any file or plugin in the target release, and a settings file holding it is not an error (§12.7.1). | The changelog of 2.1.323 says the setting was removed, subagent rows always use the default look, and files that still hold the key load as before; `settings-reference.md` and `statusline.md` of 2.1.330 no longer name it. Oracle 2.1.330: `claude plugin validate` still words a plugin's copy as deprecated (`… will stop working in a future release`), which §12.6 item 2 keeps as the warning's text. |
+| J12.18 | A managed `allowedHttpHookUrls` or `httpHookAllowedEnvVars` covers the hooks of managed settings, and the key set in any file covers every other HTTP hook; a covered hook is checked against the list merged across files, so a user entry can admit a managed hook's URL once a managed list exists (§12.7.1). | `settings-reference.md` (2.1.330) says "set this key in managed settings to cover hooks your organization deploys, or in any settings file to cover other hooks" and that a covered hook matches "the list merged across settings files"; the changelog of 2.1.324 names the change for managed hooks without detail; `managed-settings.md` keeps that user, project and local entries apply while the managed list is empty. The reading that hooks of plugins force-enabled by managed settings count as other hooks is ours. |

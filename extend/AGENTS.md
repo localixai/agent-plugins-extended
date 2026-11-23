@@ -103,9 +103,9 @@ Commit only when asked, never push: the repository is local until the owner says
 
 1. List its requirements: `jq -r '.requirements[] | select(.category == "<category>") | "\(.id)\t\(.page)\t\(.section)"' extend/conformance/requirements.json`.
 2. Read every documentation section they name, in full, in the docs of the targeted release
-   (2.1.321: `extend/.cache/claude-docs/2.1.321/<page>`, from `bun run docs:pull` or `mine`). Read
-   the official types for the shapes (`@anthropic-ai/claude-agent-sdk/*.d.ts` in the
-   implementation's `node_modules`; for mods `extend/.cache/claude-types/<release>/`).
+   (2.1.330: `extend/.cache/claude-docs/2.1.330/<page>`, from `bun run docs:pull` or `mine`). Read
+   the official types for the shapes (`@anthropic-ai/claude-agent-sdk/*.d.ts`, the release
+   pinned in `extend/tools/package.json`, in `extend/tools/node_modules`; for mods `extend/.cache/claude-types/<release>/`).
 3. Read how the implementation reads the same behaviour (`agent-plugins`: `src/`, its tests, and
    the rows of its `spec/judgments.md` for these pages) to find the edges the docs
    imply: exact messages, defaults, order, failure boundaries. Check each against the docs (E3).

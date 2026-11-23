@@ -8,7 +8,7 @@ reach. This part states the methods and how a client shapes and answers each req
 limits are in `reference.md`, "Limits"; drawing is in `interface.md`.
 
 Evidence: `plugins/mods/api.md` unless a section names another page. Shapes follow the declarations
-Claude Code 2.1.321 writes beside a mod (`claude-code/index.d.ts`, interface `CoreEngineInterface`
+Claude Code 2.1.330 writes beside a mod (`claude-code/index.d.ts`, interface `CoreEngineInterface`
 and the `*Args`/`*Result` types named below), which win over the prose (E2).
 
 ## 10.30 Commands and tools
@@ -30,7 +30,14 @@ turn.
    `immediate: true`.
 4. A name a built-in command holds MUST be refused: the call throws, as in `"/focus" refused: it is
    the built-in /focus`. A name another mod holds is refused likewise (`"/x" refused: it is already
-   registered by <mod>`, Judgment J10.140). A throw skips the rest of the hook like any other. <!-- req: mods.apiGuide.Add a command -->
+   registered by <mod>`, Judgment J10.140). A throw skips the rest of the hook like any other.
+
+#### Hiding command text from Claude
+
+From 2.1.326, a `command.run` hook that answers without calling `next` and returns `{ text,
+isTextDisplayOnly: true }`, for a command registered without `immediate`, MUST print `text` in the
+transcript and MUST NOT give it to the model. Otherwise, or on an earlier release, the model can
+read the text. <!-- req: mods.apiGuide.Hide command text from Claude -->
 
 ### 10.30.2 Tools
 
@@ -170,8 +177,9 @@ A refused call returns, `<reason>` being the reason:
 | `$.session.send` | To a subagent that finished: `{ isDelivered: false, reason: 'Agent "<id>" was not resumed: <reason>.' }`; a subagent still running receives the message. To an agent-team teammate: `{ isDelivered: false, reason: 'Teammate "<name>" was not messaged: <reason>.' }`. <!-- req: mods.apiGuide.What refused calls return.$.session.send --> |
 | `$.tool.call` | Of Bash with `run_in_background: true`, Monitor or CronCreate: `{ deny: '<tool> was not run: it starts background work, a schedule or a goal, and <reason>' }`. Other tools run. <!-- req: mods.apiGuide.What refused calls return.$.tool.call --> |
 
-In an interactive session such a refusal raises the toast `Stopped: type a message to continue; a
-mod cannot resume work after Stop` (§10.43.2).
+In an interactive session a refused `$.session.send` or `$.tool.call` raises the toast `stopped ·
+type a message to continue` (§10.43.2; before 2.1.330 `Stopped: type a message to continue; a mod
+cannot resume work after Stop`).
 
 Work the mod started before the interruption, until the user's next input:
 
@@ -181,11 +189,9 @@ Work the mod started before the interruption, until the user's next input:
 | A command from `$.command.run` still queued | Dropped; the call rejects with a message that includes `the command was removed from the queue before it ran`. <!-- req: mods.apiGuide.Work your mod started before the interruption.$.command.run --> |
 | A one-time scheduled job (CronCreate) that comes due | Starts no turn then, runs after that input. |
 | A recurring scheduled job that comes due | Starts no turn; loses that run, keeps its schedule. |
-| An event from a monitor the mod started | The monitor keeps running; its events are dropped, except the notice that it ended, which arrives after that input. <!-- req: mods.apiGuide.Work your mod started before the interruption.An event from a monitor your mod started --> |
+| An event from a monitor the mod started | The monitor keeps running, and the client drops the events it raises meanwhile (2.1.330; before, the notice that it ended was kept and arrived after that input). <!-- req: mods.apiGuide.Work your mod started before the interruption.An event from a monitor your mod started --> |
 | A spawned subagent resumed with `$.session.send` that finishes | Its finish notice waits and reaches the conversation after that input. <!-- req: mods.apiGuide.Work your mod started before the interruption.$.session.send --> |
 | A foreground Bash or PowerShell command from `$.tool.call` already running that reaches its timeout | Stopped at the timeout instead of moving to the background; resolves with `isError` set and the output line `Ended instead of moving to the background: plugins' input is held, by a Stop or by the host's limits.` <!-- req: mods.apiGuide.Work your mod started before the interruption.$.tool.call --> |
-
-A scheduled job coming due or a monitor event in that time also raises the `Stopped:` toast.
 
 ### 10.33.2 Retrying
 
@@ -249,9 +255,11 @@ of its own; standard JavaScript and web APIs (`URL`, `TextEncoder`, `AbortContro
 | `$.settings` | `read()` the merged settings, or one source or key (§10.35.1). <!-- req: mods.apiGuide.Reach files, processes, and the network.$.settings --> |
 | `$.session` | `messages()` the transcript as `{ role, text, toolUses }` entries; `cwd()`, `model()`, `id()` and the rest of §10.36; `usage()` context window use and plan limits. <!-- req: mods.apiGuide.Reach files, processes, and the network.$.session --> |
 | `$.mcp` | `call(server, tool, args)` a tool on a connected MCP server. <!-- req: mods.apiGuide.Reach files, processes, and the network.$.mcp --> |
+| `$.wasm` | `compile('./engine.wasm')` turns a file of up to 64 MiB, named by a string literal relative to the calling file, into a module to pass to `WebAssembly.instantiate` (2.1.326 or later; `reference.md` §10.4.1, §10.7.1). <!-- req: mods.apiGuide.Reach files, processes, and the network.$.wasm --> |
 
-1. **Paths.** A relative path resolves against the working directory of the session, or of the
-   subagent whose event the hook handles. <!-- req: mods.apiGuide.Reach files, processes, and the network.Paths -->
+1. **Paths.** In `$.fs` and `$.process`, a relative path resolves against the working directory of
+   the session, or of the subagent whose event the hook handles; a `$.wasm.compile` path is relative
+   to the calling file. <!-- req: mods.apiGuide.Reach files, processes, and the network.Paths -->
 2. **`$.fs.list`** returns one directory's entries as `{ name, kind, size, isLink }` and does not
    recurse. <!-- req: mods.apiGuide.Reach files, processes, and the network.$.fs.list -->
 3. **`$.process.run`** takes an argument list and uses no shell. It resolves `{ exitCode, stdout,
@@ -293,7 +301,7 @@ Another `source` rejects (Judgment J10.144).
 
 ## 10.36 Every method
 
-The namespaces of `$` and their methods, as the 2.1.321 declarations define them. The prose above
+The namespaces of `$` and their methods, as the 2.1.330 declarations define them. The prose above
 states the methods the API page covers; the event each raises and the rules of the other methods
 are in `reference.md` and `events.md`.
 
@@ -305,20 +313,22 @@ are in `reference.md` and `events.md`.
 | `$.model` | `complete`, `fork`, `classify` |
 | `$.audio` | `play`, `speak` |
 | `$.mcp` | `call`, `connect` |
-| `$.session` | `messages`, `cwd`, `root`, `model`, `turns`, `id`, `repo`, `surfaces`, `surface`, `usage`, `version`, `compact`, `send`, `append`, `authorize`, `identity` |
+| `$.session` | `messages`, `cwd`, `root`, `model`, `turns`, `id`, `repo`, `surfaces`, `surface`, `usage`, `version`, `info`, `machine`, `compact`, `send`, `append`, `authorize`, `identity` |
 | `$.turn` | `abort` |
 | `$.prompt` | `submit`, `read`, `media`, `fill`, `paint`, `suggest`, `compose` |
 | `$.tool` | `list`, `call`, `check`, `register` |
 | `$.command` | `list`, `run`, `register` |
 | `$.config` | `list`, `set` |
 | `$.telemetry` | `log`, `mark` |
-| `$.agent` | `spawn`, `list`, `register` |
+| `$.agent` | `spawn`, `call`, `list`, `limits`, `register` |
 | `$.fs` | `read`, `write`, `list`, `exists`, `stat`, `ancestors` |
 | `$.store` | `get`, `set`, `delete`, `keys` |
 | `$.state` | `get`, `set` |
 | `$.clock` | `now`, `sleep`, `after`, `every` |
 | `$.http` | `fetch` |
-| `$.process` | `run`, `spawn` |
+| `$.process` | `run`, `spawn`, `hookEnv` |
+| `$.wasm` | `compile` |
+| `$.vcs` | `detect`, `diff`, `isolate`, `list`, `release`, `status` (experimental) |
 | `$.settings` | `read` |
 | `$.env` | `get`, `set` |
 

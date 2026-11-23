@@ -3,6 +3,7 @@
   "revision": "018f293+rename+fixes",
   "pass": "r01-format-skills-mcp-settings",
   "date": "2026-11-16",
+  "release": "2.1.321",
   "files": [
     "01-packages.md",
     "02-manifest.md",

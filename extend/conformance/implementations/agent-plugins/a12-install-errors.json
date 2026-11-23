@@ -3,6 +3,7 @@
   "revision": "018f293+rename",
   "pass": "a12-install-errors",
   "date": "2026-11-16",
+  "release": "2.1.321",
   "files": [
     "16-install.md",
     "17-errors.md"

@@ -2,21 +2,27 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://localix.ai/schemas/agent-plugins-extended/1.1.0/claude-code/plugin.schema.json",
   "title": "Claude Code plugin manifest",
-  "description": "The .claude-plugin/plugin.json of a Claude Code plugin as Claude Code 2.1.321 accepts it (Agent Plugins Extended 1.1.0, chapter 2, with userConfig of section 3.4 and channels of section 9.3). An unknown top-level field is ignored by Claude Code and accepted here; an unknown key inside a strict object (a userConfig option, a channels entry, an LSP configuration, a monitor) is refused.",
+  "description": "The .claude-plugin/plugin.json of a Claude Code plugin as Claude Code 2.1.330 accepts it (Agent Plugins Extended 1.1.0, chapter 2, with userConfig of section 3.4 and channels of section 9.3). An unknown top-level field is ignored by Claude Code and accepted here; an unknown key inside a strict object (a userConfig option, a channels entry, an LSP configuration, a monitor) is refused. A malformed display field, engines or network is ignored at load, with a note or a validator warning, and accepted here; $defs/effective states the values that take effect.",
   "$comment": "Not expressed here, and checked by a validator instead: that a path exists and stays inside the plugin, the reserved-name rule of section 2.3 item 2, a userConfig default that is one of its options, options that repeat a value in another letter case, unique monitor names, and ${user_config.KEY} references to undeclared options.",
   "type": "object",
   "required": ["name"],
   "properties": {
-    "$schema": { "type": "string", "description": "A JSON Schema URL for editors; ignored by the client (section 2.2)." },
+    "$schema": { "$ref": "#/$defs/displayField" },
     "name": { "$ref": "#/$defs/pluginName" },
-    "displayName": { "type": "string" },
+    "displayName": { "$ref": "#/$defs/displayField" },
     "version": { "type": "string", "description": "Not checked against Semantic Versioning (section 2.4)." },
-    "description": { "type": "string" },
-    "author": { "$ref": "#/$defs/person" },
-    "homepage": { "$ref": "#/$defs/url" },
-    "repository": { "type": "string", "description": "A string; an object such as npm's {type, url} is refused (section 2.2)." },
-    "license": { "type": "string" },
-    "keywords": { "type": "array", "items": { "type": "string" } },
+    "description": { "$ref": "#/$defs/displayField" },
+    "author": { "$ref": "#/$defs/displayField" },
+    "homepage": { "$ref": "#/$defs/displayField" },
+    "repository": { "$ref": "#/$defs/displayField" },
+    "license": { "$ref": "#/$defs/displayField" },
+    "keywords": { "$ref": "#/$defs/displayField" },
+    "engines": {
+      "description": "The Claude Code versions the plugin works on (section 2.4). A value that is not an object, or a claude-code value that is not a range, is ignored at load with a validator warning or error and a note; other keys are ignored (Judgment J2.10). The form that takes effect is $defs/effective/properties/engines."
+    },
+    "network": {
+      "description": "The hosts the plugin reaches, informational only (section 2.4). A value that is not an object with a hosts list, a malformed host and an unknown key are ignored at load with a validator warning (Judgment J2.10). The form that takes effect is $defs/effective/properties/network."
+    },
     "metadata": { "type": "object", "description": "The author's own data; never given meaning (section 2.4)." },
     "icon": { "type": "string" },
     "documentationUrl": { "type": "string" },
@@ -45,6 +51,49 @@
     "monitors": { "$ref": "#/$defs/monitors", "description": "Still loaded at the top level, with a validator warning; belongs under experimental." }
   },
   "$defs": {
+    "displayField": {
+      "description": "A display field: a value of the wrong type is ignored at load, with the note \"<field>\" in plugin.json is malformed and ignored, and the plugin still loads; a validator reports it as an error (section 2.1 item 3, Judgment J2.6). The type that takes effect is in $defs/effective."
+    },
+    "effective": {
+      "type": "object",
+      "properties": {
+        "$schema": { "type": "string", "description": "A JSON Schema URL for editors; ignored by the client (section 2.2)." },
+        "displayName": { "type": "string" },
+        "description": { "type": "string" },
+        "author": { "$ref": "#/$defs/person" },
+        "homepage": { "$ref": "#/$defs/url" },
+        "repository": { "type": "string", "description": "A string; an object such as npm's {type, url} is ignored (section 2.2)." },
+        "license": { "type": "string" },
+        "keywords": { "type": "array", "items": { "type": "string" } },
+        "engines": {
+          "type": "object",
+          "properties": {
+            "claude-code": {
+              "type": "string",
+              "minLength": 1,
+              "description": "A node-semver range such as \">=2.1.0\"; outside it the client does not install, update or load the plugin, except from a local folder (section 2.4)."
+            }
+          }
+        },
+        "network": {
+          "type": "object",
+          "required": ["hosts"],
+          "additionalProperties": false,
+          "properties": {
+            "hosts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[\\x21-\\x7E]+$",
+                "not": { "pattern": "/" },
+                "description": "A host as sandbox.network.allowedDomains takes it: no scheme or path, plain ASCII (section 2.4)."
+              }
+            }
+          }
+        }
+      },
+      "description": "The values that take effect of the fields Claude Code ignores when malformed (display fields, engines, network); every other field is checked by the root. A manifest the root accepts and this refuses loads without the refused field."
+    },
     "pluginName": {
       "type": "string",
       "minLength": 1,

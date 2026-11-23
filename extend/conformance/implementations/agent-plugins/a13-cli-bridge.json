@@ -3,6 +3,7 @@
  "revision": "018f293+rename",
  "pass": "a13-cli-bridge",
  "date": "2026-11-16",
+ "release": "2.1.321",
  "files": [
   "17-cli.md",
   "18-bridge.md"

@@ -4,10 +4,10 @@ An agent (a *subagent* in Claude Code's words) is a separate assistant with its 
 tools, model and context window, to which the main conversation delegates a task and from which it
 gets one result back. A plugin supplies agents as Markdown files; so do the user, the project,
 managed settings and the `--agents` flag. This chapter defines how an Extended client finds them,
-reads them, ranks them against each other, and runs them as Claude Code 2.1.321 does. Evidence:
+reads them, ranks them against each other, and runs them as Claude Code 2.1.330 does. Evidence:
 `sub-agents.md` unless a section names another page; the shapes follow the official
 `AgentDefinition`, `AgentMcpServerSpec`, `PermissionMode` (`sdk.d.ts`) and `AgentInput`
-(`sdk-tools.d.ts`) of `@anthropic-ai/claude-agent-sdk` 0.3.321.
+(`sdk-tools.d.ts`) of `@anthropic-ai/claude-agent-sdk` 0.3.330.
 
 ## 5.1 Terminology
 
@@ -20,6 +20,7 @@ reads them, ranks them against each other, and runs them as Claude Code 2.1.321 
 | Main conversation | The session's own thread. When an agent runs *as the main session* (`--agent`, the `agent` setting), the main thread takes on that agent's definition (§5.13). |
 | Fork | A subagent that inherits the whole conversation instead of starting from a definition. |
 | Spawn depth | How many subagent layers lie between a subagent and the main conversation; a subagent the main conversation spawns is at depth 1. |
+| Parent conversation | The conversation that spawned a subagent: the main conversation for a subagent at depth 1, the spawning subagent for a nested one. |
 
 ## 5.2 Agents in a plugin
 
@@ -94,10 +95,10 @@ specific, actionable feedback on quality, security, and best practices.
    (§5.6), which tells its host to create the worktree and apply the checks; such an
    implementation records this item as not applicable.
 5. The client MUST pick up an added or edited file in `~/.claude/agents/` and `.claude/agents/`
-   within seconds, so that the next delegation uses the new definition. It need not watch a
-   directory that did not exist when the session started, the `.claude/agents/` of a directory
-   added with `--add-dir` or `/add-dir`, or anything at all in a session started with
-   `--disable-slash-commands`; those changes take effect on restart.
+   within seconds, so that the next delegation uses the new definition, including the first file of
+   an `agents` directory created after the session started. It need not watch the
+   `.claude/agents/` of a directory added with `--add-dir` or `/add-dir`, or anything at all in a
+   session started with `--disable-slash-commands`; those changes take effect on restart.
 6. In non-interactive mode, `--append-subagent-system-prompt <text>` (and
    `--append-subagent-system-prompt-file <path>`) appends the text to every subagent's system
    prompt, nested ones included, except a fork's.
@@ -149,7 +150,7 @@ fields in plugin agents"):
 
 A field whose value has the wrong type or lies outside its listed values is ignored: the agent loads
 as if the field were absent. A client SHOULD record each such value in its debug log
-(Judgment J5.5). `autoCompactWindow` is the documented case: a value outside its range is logged as
+(Judgment J5.5). `autoCompactWindow` is the documented case: a value below its minimum is logged as
 `invalid autoCompactWindow` (§5.6). `maxTurns` written as text holding a whole number (`"5"`) is
 that number.
 
@@ -192,7 +193,7 @@ one from the higher-priority source:
    working directory wins. The `.claude/agents/` of each `--add-dir` directory loads at the same
    priority, after the project's own directories (Judgment J5.6).
 3. **One directory, one name twice.** When two files under the same `agents` directory, subfolders
-   included, declare one name, the client MUST load only one. Claude Code picks by filesystem order;
+   included, declare one name, the client MUST load only one. Claude Code names no rule for which;
    an Extended client MUST pick the file whose path relative to that directory sorts first by code
    unit, and SHOULD report the other as a setup problem, as Claude Code's `/doctor` does
    (Judgment J5.3).
@@ -250,7 +251,7 @@ with the field (`plugins/components.md`, "Frontmatter fields in plugin agents"):
 | `model` | `sonnet`, `opus`, `haiku`, `fable`, a full model ID, or `inherit` | The agent's model (§5.8). <!-- req: agents.frontmatter.model --> | applied |
 | `permissionMode` | `default`, `acceptEdits`, `auto`, `dontAsk`, `bypassPermissions`, `plan`; `manual` is an alias of `default` | The permission mode the agent asks for (§5.9). <!-- req: agents.frontmatter.permissionMode --> | ignored |
 | `maxTurns` | whole number ≥ 1 | The most agentic turns before the subagent stops; its output then returns marked as partial, and it can be resumed to continue. <!-- req: agents.frontmatter.maxTurns --> | applied |
-| `autoCompactWindow` | whole number from `100000` to `1000000` | Lowers the auto-compact window of this subagent (§5.10). <!-- req: agents.frontmatter.autoCompactWindow --> | applied |
+| `autoCompactWindow` | whole number, `100000` or more | Lowers the auto-compact window of this subagent (§5.10). <!-- req: agents.frontmatter.autoCompactWindow --> | applied |
 | `skills` | comma-separated string or YAML list of skill names | Skills whose full content is preloaded (§5.10). <!-- req: agents.frontmatter.skills --> | applied |
 | `mcpServers` | list; each entry a server name or a one-key map of name to server configuration | MCP servers for this agent (§5.11). <!-- req: agents.frontmatter.mcpServers --> | ignored |
 | `hooks` | the hooks object of a settings file | Hooks active only while this agent runs (§5.12.1). <!-- req: agents.frontmatter.hooks --> | ignored |
@@ -301,7 +302,7 @@ the fields copies the file into `.claude/agents/` or `~/.claude/agents/`.
 ### 5.7.1 The pool a subagent inherits
 
 A non-fork subagent starts from the built-in tools and MCP tools of the main conversation, narrowed
-by two filters. A fork skips both and receives the main conversation's exact tool pool.
+by two filters. A fork skips both and receives its parent conversation's exact tool pool.
 
 **Filter 1, every subagent.** The client MUST withhold these tools from every non-fork subagent, even
 when its `tools` field lists them:
@@ -313,6 +314,7 @@ when its `tools` field lists them:
 | `EndConversation` | Always withheld: it can end only the main conversation (`tools-reference.md`). <!-- req: agents.behavior.Available tools.EndConversation --> |
 | `EnterPlanMode` | Always withheld. <!-- req: agents.behavior.Available tools.EnterPlanMode --> |
 | `ExitPlanMode` | Withheld unless the subagent's permission mode is `plan`. <!-- req: agents.behavior.Available tools.ExitPlanMode --> |
+| `propose_skills` | Always withheld. <!-- req: agents.behavior.Available tools.propose_skills --> |
 | `ScheduleWakeup` | Always withheld. <!-- req: agents.behavior.Available tools.ScheduleWakeup --> |
 | `WaitForMcpServers` | Always withheld. <!-- req: agents.behavior.Available tools.WaitForMcpServers --> |
 | `ExitWorktree` | Withheld from a subagent that already runs in its own working directory, such as one with `isolation: worktree` (`tools-reference.md`, its row of the tools table). <!-- req: tools.tool.ExitWorktree --> |
@@ -321,12 +323,14 @@ when its `tools` field lists them:
 **Filter 2, background subagents.** A subagent that runs in the background (the default, §5.12)
 keeps every MCP tool but only these built-in tools: `Read`, `Grep`, `Glob`, `LSP`, `Bash`,
 `PowerShell`, `Edit`, `Write`, `NotebookEdit`, `WebFetch`, `WebSearch`, `TodoWrite`, `Skill`,
-`ToolSearch`, `EnterWorktree`, `ExitWorktree`, `Monitor`, `TaskStop`, `SendMessage` and `Artifact`,
-plus `SubagentHandback` where the subagent reports through it. `Agent` and `ExitPlanMode` follow
-filter 1 wherever the subagent runs. The client MUST remove every other built-in tool from a
-background subagent, inherited or listed, without an error unless the `tools` list then resolves
-to nothing (§5.7.3). So one definition can resolve to different tools in the foreground and in the
-background. A resumed subagent keeps the tool set of its first run.
+`ToolSearch`, `EnterWorktree`, `ExitWorktree`, `Monitor`, `TaskStop`, `SendMessage`, `Artifact`,
+`ListPlugins`, `ListSkills`, `SearchPlugins` and `SearchSkills`, plus `SubagentHandback` where the
+subagent reports through it. `Agent` and `ExitPlanMode` follow filter 1 wherever the subagent runs.
+The client MUST remove every other built-in tool from a background subagent, inherited or listed,
+without an error unless the `tools` list then resolves to nothing (§5.7.3) (Judgment J5.19). So one
+definition can resolve to different tools in the foreground and in the background. A plugin agent
+MUST NOT rely on any other built-in tool when it may run in the background. A resumed subagent
+keeps the tool set of its first run.
 
 Additions and narrower cases:
 
@@ -339,6 +343,9 @@ Additions and narrower cases:
 - **Agent team teammates** additionally keep `TaskCreate`, `TaskGet`, `TaskList`, `TaskUpdate`,
   `CronCreate`, `CronDelete` and `CronList`. In a session without the task tools, subagents do not
   get them either.
+- **`WebFetch` and the `web-fetch` agent**: in a session where the built-in `web-fetch` agent
+  (§5.12.4) reads web pages, the main conversation has no `WebFetch` tool, and neither do forks and
+  teammates; other subagents the Agent tool starts keep `WebFetch` under the filters above.
 
 <!-- req: agents.behavior.Available tools.Agent | agents.behavior.Available tools.ExitPlanMode -->
 
@@ -409,11 +416,14 @@ would be spawned with zero tools"; Judgment J5.9).
 
 ### 5.8.1 The `model` value
 
+Unset, a subagent runs on the model of its parent conversation (§5.1). The `model` value is one of:
 <!-- req: agents.behavior.Choose a model -->
 
-- **Model alias**: `sonnet`, `opus`, `haiku` or `fable`, resolved as `model-config.md` defines. <!-- req: agents.behavior.Choose a model.Model alias -->
+- **Model alias**: `sonnet`, `opus`, `haiku` or `fable`, resolved as `model-config.md` defines and
+  §5.8.3 narrows. <!-- req: agents.behavior.Choose a model.Model alias -->
 - **Full model ID**: such as `claude-opus-5-5`; any value the `--model` flag accepts. <!-- req: agents.behavior.Choose a model.Full model ID -->
-- **`inherit`**: the main conversation's model. <!-- req: agents.behavior.Choose a model.inherit -->
+- **`inherit`**: the parent conversation's model: the main conversation's, or the spawning
+  subagent's for a nested subagent. <!-- req: agents.behavior.Choose a model.inherit -->
 
 ### 5.8.2 Resolution order
 
@@ -422,39 +432,87 @@ The client MUST resolve a subagent's model from the first of these that gives on
 1. The Agent call's `model` parameter. It takes an alias only (`AgentInput.model`); a full ID or
    `inherit` there counts as unset (Judgment J5.11). A mod's `agent.spawn` hook that sets a model
    replaces this parameter (§10).
-2. The definition's `model`, where `inherit` selects the main conversation's model.
-3. `CLAUDE_CODE_SUBAGENT_MODEL`, set to an alias or ID; `inherit` there is the same as unset.
-4. The main conversation's model.
+2. The definition's `model`, where `inherit` selects the parent conversation's model.
+3. `CLAUDE_CODE_SUBAGENT_MODEL`, set to an alias or ID; `inherit` there is the same as unset
+   (Judgment J5.20).
+4. The parent conversation's model: the main conversation's, or the spawning subagent's for a
+   nested subagent.
 
-A family alias from step 1 or 2 resolves to the main conversation's exact model, `[1m]` suffix
-included, when that model belongs to the family; and `opus` resolves to the main model on a
-third-party provider when the client cannot tell the main model's family, unless
-`ANTHROPIC_DEFAULT_OPUS_MODEL` is set. An alias in `CLAUDE_CODE_SUBAGENT_MODEL` always resolves to
-the version the alias points to. The variable alone does not change Explore or Plan.
+An alias passed on the Agent call stays with the subagent when it is resumed or sent a follow-up
+message. The variable alone does not change Explore or Plan (§5.8.5).
 
-The client MUST check each candidate value against the organization's `availableModels` allowlist.
-A blocked family alias runs on the newest version of that family the allowlist permits, under the
-rules of `/model`; any other blocked value, or no permitted version, runs on the inherited model,
-trying `CLAUDE_CODE_SUBAGENT_MODEL` first when it is set. An interactive session warns with both
-model names. The per-invocation parameter persists when the subagent is resumed or messaged.
-Subagents inherit the main conversation's extended-thinking setting; there is no per-agent one.
+**Nested subagents.** A subagent spawned by another subagent runs, unless its own `model` names one,
+on the spawning subagent's model: a subagent with `model: inherit` or no `model`, the built-in
+Explore, Plan and `general-purpose`, and a fork all do. With the main conversation on Opus and a
+reviewer subagent on Haiku, every such subagent the reviewer spawns runs on Haiku.
+<!-- req: agents.behavior.Which model a nested subagent runs on -->
 
-### 5.8.3 One model for every subagent
+**Checking.** The client's task list (`/tasks`) names, on each subagent's row, the model it runs on,
+and the effort level set for that subagent when there is one. <!-- req: agents.behavior.Check a subagent's model -->
+
+### 5.8.3 Which version an alias selects
+
+An alias selects the version it points to (`model-config.md`, "Model aliases"), except that a
+family alias in the Agent call's `model` or the definition's `model` selects the parent
+conversation's exact model in two cases:
+
+- **Same family**: the parent's model belongs to the alias's family. With the main conversation on
+  `claude-opus-4-7`, `model: opus` runs on `claude-opus-4-7`, `[1m]` suffix included when the
+  parent has it. A definition that needs another version names a full model ID.
+- **Unknown family**: on a provider other than the Anthropic API, the client cannot tell the
+  parent model's family (such as an Amazon Bedrock ARN it cannot look up). This case applies to the
+  `opus` alias only, and not while `ANTHROPIC_DEFAULT_OPUS_MODEL` is set, since `opus` then
+  resolves to that model.
+
+An alias in `CLAUDE_CODE_SUBAGENT_MODEL` falls under neither case and selects the version it points
+to (Judgment J5.20). <!-- req: agents.behavior.Which version a model alias selects -->
+
+### 5.8.4 When an allowlist blocks the model
+
+The client MUST check the model set for a subagent, other than the built-in `web-fetch` agent
+(§5.12.4), against the organization's `availableModels` allowlist. When the allowlist blocks it, the
+subagent runs on the first of these that applies:
+
+1. For a blocked family alias, the newest version of that family the allowlist permits, on the
+   providers where `/model` makes this substitution (`model-config.md`, "Restrict model
+   selection").
+2. `CLAUDE_CODE_SUBAGENT_MODEL`, when it is set, under these same rules.
+3. The main conversation's model, or the spawning subagent's model for a nested subagent.
+
+For a top-level subagent in an interactive session, the client warns with the requested model and
+its replacement. <!-- req: agents.behavior.When an allowlist blocks a subagent model -->
+
+### 5.8.5 One model for every subagent
 
 With `CLAUDE_CODE_SUBAGENT_MODEL_FORCE=1`, the client MUST ignore every definition's `model` and
 refuse a per-invocation `model`, for subagents, teammates and workflow agents alike: they run on
 `CLAUDE_CODE_SUBAGENT_MODEL` when it is set, otherwise on the main conversation's model, except the
-built-in Explore, which then keeps its own model (§5.12). A fork, and a skill run in a subagent with
-`model: inherit`, still run on the main conversation's model. <!-- req: agents.behavior.Run every subagent on one model -->
+built-in Explore, which then keeps its own model (§5.12.4). A fork, and a skill run in a subagent
+with `model: inherit`, still run on their parent conversation's model. The forced model also
+reaches the built-in `web-fetch` agent (`tools-reference.md`, "Which model the web-fetch subagent
+runs on"). <!-- req: agents.behavior.Run every subagent on one model -->
 
-### 5.8.4 Effort
+### 5.8.6 Extended thinking
+
+Subagents inherit the main conversation's extended-thinking configuration: on in the session, on for
+the subagent; off, off. There is no per-agent thinking setting.
+<!-- req: agents.behavior.Extended thinking in subagents -->
+
+### 5.8.7 Effort
 
 The Agent call's `effort` parameter (non-fork calls) overrides the `effort` field and persists on
-resume; `CLAUDE_CODE_EFFORT_LEVEL` overrides both. With neither field nor parameter, a subagent on
-the main conversation's model runs at the session's level (`/effort`, `--effort`); on another model
-the session level does not apply and the client sends no level of its own, so the model's default
-applies (`model-config.md`, "Effort level of subagents and teammates"; Judgment J5.12).
-<!-- req: agents.behavior.When a subagent has no effort field or parameter -->
+resume; `CLAUDE_CODE_EFFORT_LEVEL` overrides both. A subagent with neither field nor parameter,
+other than a fork, a forked skill (§4.9.4) or a teammate, runs at the first of these that applies:
+
+1. `CLAUDE_CODE_EFFORT_LEVEL`, when it is set.
+2. The `effort` set for the subagent that spawned it, or a level set for the current turn only,
+   such as a skill's `effort` (§4.9.3).
+3. `CLAUDE_CODE_SUBAGENT_EFFORT`, when it is set (§3.6.7).
+
+With none of these, a subagent on the main conversation's model runs at the session's level
+(`/effort`, `--effort`); on another model the session level does not apply and the client sends no
+level of its own, so the model's default applies (`model-config.md`, "Effort level of subagents and
+teammates"; Judgment J5.12). <!-- req: agents.behavior.When a subagent has no effort field or parameter -->
 
 ## 5.9 Permission mode
 
@@ -463,7 +521,7 @@ mode decides whether the value is used:
 
 | Main conversation | Subagent runs in |
 | --- | --- |
-| `bypassPermissions`, `acceptEdits` or `auto` | The main conversation's mode; the field is ignored. Under `auto`, the classifier judges the subagent's calls with the main conversation's rules and reviews its final report before delivery. |
+| `bypassPermissions`, `acceptEdits` or `auto` | The main conversation's mode; the field is ignored. Under `auto`, the classifier judges the subagent's calls with the main conversation's rules and, for a subagent started with the Agent tool other than an agent team teammate, reviews its work and final report before delivery. |
 | `plan` | `plan`, whatever the field says, except for an agent team teammate under the agent-teams rules. With the field `dontAsk`, what plan mode would ask about is denied instead. |
 | `default` or `dontAsk` | The field's mode, except that `bypassPermissions` keeps the main conversation's mode, and so does `auto` when auto mode is not available to the subagent (`disableAutoMode`, a model without auto mode). |
 
@@ -490,7 +548,7 @@ invoked, no files already read. Its initial context holds:
 - **System prompt**: the agent's prompt plus the environment details the client appends.
 - **Task message**: the delegation prompt the main conversation writes.
 - **CLAUDE.md files**: every level the main conversation loads (user, project, local, managed
-  policy, and `AGENTS.md` loaded as project instructions). Explore and Plan skip them; an agent
+  policy, and `AGENTS.md` loaded as project instructions). Explore, Plan and `web-fetch` skip them; an agent
   with `omitClaudeMd` loads only the managed policy files, or none for a managed agent. A
   subdirectory's CLAUDE.md and matching path-scoped rules still load when such a subagent works
   there.
@@ -534,11 +592,13 @@ instructions for reading and writing the directory and the first 200 lines or 25
 ### 5.10.4 Auto-compaction
 
 A subagent compacts as its own context fills; `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` applies to it.
-`autoCompactWindow` lowers its window: the value MUST be a whole number from 100000 to 1000000, and
-a string is read as its leading integer, so `200k` reads as 200 and is out of range. An out-of-range
-value leaves the subagent as if the field were absent, logged as `invalid autoCompactWindow`. A set
-`CLAUDE_CODE_AUTO_COMPACT_WINDOW` that the client accepts wins over the field. The field has no
-effect when the agent runs as the main session.
+`autoCompactWindow` lowers its window: the value MUST be a whole number of 100000 or more, and a
+string is read as its leading integer, so `200k` reads as 200 and is below the minimum. A value
+below the minimum leaves the subagent as if the field were absent, logged as
+`invalid autoCompactWindow`; a value not below the window the subagent would otherwise inherit
+changes nothing. When `CLAUDE_CODE_AUTO_COMPACT_WINDOW` is also set, the subagent uses the lowest of
+the field's value, its model's context window and the variable's window. The field has no effect
+when the agent runs as the main session.
 
 ## 5.11 MCP servers
 
@@ -621,18 +681,23 @@ subagents: tool events fire for a subagent's tool calls as in the main conversat
 and `SubagentStop` fire in the main session when a subagent begins and completes; their matcher is
 the agent type — the frontmatter `name`, or a plugin agent's scoped name. A scoped name contains `:`
 and is matched as an unanchored regular expression, so `^my-plugin:db-agent$` matches that agent
-only (§7). <!-- req: agents.behavior.Project-level hooks for subagent events -->
+only (§7). One exception: for the built-in `web-fetch` agent only `SubagentStart` and
+`SubagentStop` hooks from managed settings run; those of any other settings file and of plugins do
+not, while `PreToolUse` and `PostToolUse` hooks matching `WebFetch` still run for the fetches it
+makes (`tools-reference.md`, "Rules, hooks, and CLAUDE.md with the web-fetch subagent").
+<!-- req: agents.behavior.Project-level hooks for subagent events -->
 
 ### 5.12.2 Nesting and concurrency
 
 1. A subagent MAY spawn subagents of its own, up to `CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH` layers
    below the main conversation (default 3; `1` turns nesting off). At the limit the client withholds
    `Agent` from every subagent but a fork (§5.7.1), so the subagent does its work itself. A nested
-   subagent resolves from the same scopes as a top-level one. In an interactive session a spawning
-   subagent waits for its nested subagents' results; in `-p` and the SDK it waits while fork mode
-   is on, and with fork mode off its nested subagents start in the background and report to the main
-   conversation if they outlast it. To keep one agent from spawning, its `tools` leaves out `Agent`
-   or `disallowedTools` lists it. <!-- req: agents.behavior.Let subagents spawn their own subagents -->
+   subagent resolves from the same scopes as a top-level one and runs on the spawning subagent's
+   model unless its own `model` names one (§5.8.2). In an interactive session a spawning subagent
+   waits for its nested subagents' results; in `-p` and the SDK it waits only for a foreground
+   nested subagent, and a background one reports to the main conversation if it outlasts the
+   spawning subagent. To keep one agent from spawning, its `tools` leaves out `Agent` or
+   `disallowedTools` lists it. <!-- req: agents.behavior.Let subagents spawn their own subagents -->
 2. While `CLAUDE_CODE_MAX_CONCURRENT_SUBAGENTS` (default 20) subagents run, an Agent call fails with
    `Concurrent subagent limit reached` and tells the model not to retry. `/subtask` forks and
    resumes take slots without being blocked; workflow agents and teammates follow their own limits.
@@ -640,17 +705,20 @@ only (§7). <!-- req: agents.behavior.Project-level hooks for subagent events --
 
 ### 5.12.3 Foreground and background
 
-A subagent the main conversation spawns starts in the background unless the main conversation waits
-for it (the Agent call's `run_in_background: false`, where fork mode allows waiting). Fork mode is on
-by default and `CLAUDE_CODE_FORK_SUBAGENT=0` turns it off; while it is on, the main conversation of
-an interactive terminal, VS Code or desktop session on the user's machine cannot wait for a
-subagent, so a plugin agent always starts in the background there; in `-p` and the Agent SDK it can
-wait. A skill with `context: fork` follows §4.9.4 instead, whether or not fork mode is on.
+A subagent the main conversation spawns, other than the built-in `web-fetch` agent, starts in the
+background unless the main conversation waits for it (the Agent call's `run_in_background: false`,
+where fork mode allows waiting). Fork mode is on by default and `CLAUDE_CODE_FORK_SUBAGENT=0` turns
+it off; while it is on, the main conversation of an interactive terminal, VS Code or desktop session
+on the user's machine cannot wait for a subagent other than `web-fetch`, so a plugin agent always
+starts in the background there; in `-p` and the Agent SDK it can wait. A skill with `context: fork` follows §4.9.4 instead, whether or not fork mode is on.
 <!-- docs: env-vars.md | Variables — CLAUDE_CODE_FORK_SUBAGENT -->
 `background: true` keeps it in the background even then. `CLAUDE_CODE_DISABLE_BACKGROUND_TASKS=1`
 makes every subagent run in the foreground. A background subagent surfaces its permission prompts in
 the main session naming itself, and gets the reduced tool set of §5.7.1; its result arrives as a
-completion notification.
+completion notification. A completed background subagent stays in the task list (`/tasks`), marked
+done, for 30 seconds, or longer when the user messaged it; the task list also offers a row from
+which the user reopens the transcripts of some subagents that have left it, a row
+`CLAUDE_CODE_SUBAGENT_HISTORY=0` removes (`env-vars.md`).
 
 ### 5.12.4 Built-in agents
 
@@ -658,12 +726,13 @@ A client MUST register these built-in agent types in interactive sessions:
 
 | Type | Model | Tools | Purpose |
 | --- | --- | --- | --- |
-| `Explore` | The main conversation's (with Fable as the main model, the `opus` alias's model on first-party connections) | Read-only; `Write` and `Edit` denied | Codebase search, at a thoroughness of quick, medium or very thorough. Starts without CLAUDE.md and git status; returns no agent ID. |
-| `Plan` | The main conversation's | Read-only; `Write` and `Edit` denied | Research during plan mode. Starts without CLAUDE.md and git status; returns no agent ID. |
+| `Explore` | The parent conversation's (with Fable as the parent's model, the `opus` alias's model on a subscription, Console account or gateway reached through `ANTHROPIC_BASE_URL`; Fable on the cloud providers and apps gateways) | Read-only; `Write` and `Edit` denied | Codebase search, at a thoroughness of quick, medium or very thorough. Starts without CLAUDE.md and git status; may finish without an agent ID to resume it by. |
+| `Plan` | The parent conversation's | Read-only; `Write` and `Edit` denied | Research during plan mode. Starts without CLAUDE.md and git status; may finish without an agent ID to resume it by. |
 | `general-purpose` | The model order of §5.8.2 | Every tool available to subagents | Multi-step tasks that explore and change. The default `subagent_type`. |
 | `claude` | The model order of §5.8.2 | Every tool available to subagents | The catch-all, and the default agent of a dispatched background session. |
 | `statusline-setup` | Sonnet | — | `/statusline`. |
 | `claude-code-guide` | Haiku | — | Questions about Claude Code. |
+| `web-fetch` | The `haiku` alias's model; the starting conversation's model when it cannot use that one (an `availableModels` allowlist that leaves it out) | `WebFetch` | Reads a web page for Claude in a session that uses it (signed in with a claude.ai account, feature flags fetched, no LLM gateway, not turned off by the deny rule `Agent(web-fetch)`); runs in the foreground; starts without CLAUDE.md. Its fetches follow the `WebFetch` permission rules. |
 
 Built-ins inherit the parent's permission rules. `CLAUDE_CODE_DISABLE_EXPLORE_PLAN_AGENTS=1`
 removes Explore and Plan; in non-interactive mode and the SDK,
@@ -699,7 +768,7 @@ else of it:
 | `tools` | The teammate's tools are the list, plus `SendMessage`, plus `TaskCreate`, `TaskGet`, `TaskList` and `TaskUpdate` in a session that has the Task tools. | The teammate's tools are the list. |
 | `model` | Used when the spawn request names no model. | The same. |
 | `disallowedTools` | Removed from the teammate's tools, except `SendMessage` and the Task tools added above. | Not applied. |
-| `effort` | Applied under the frontmatter effort rules (§5.8.4). | Not applied. |
+| `effort` | Applied under the frontmatter effort rules (§5.8.7). | Not applied. |
 | `autoCompactWindow` | Applied under §5.10.4. | Ignored. |
 | Body | Appended to the teammate's default system prompt as further instructions. | Replaces the default system prompt. |
 | `skills` | Not applied: the teammate loads skills from the project and user settings. | The same. |
@@ -729,8 +798,8 @@ agent's definition is re-applied in either case.
    delegate. <!-- req: agents.behavior.Invoke subagents explicitly.Natural language -->
 3. **@-mention.** The `@` typeahead MUST offer each agent, a plugin agent under its scoped name
    (`my-plugin:code-reviewer`, `my-plugin:review:security`), and named background subagents running
-   in the session with their status. Choosing one guarantees that agent runs for that message; the
-   whole message still goes to the model, which writes the task prompt. Typed by hand,
+   in the session with their status. Choosing one tells the model to run that agent for the task;
+   the whole message still goes to the model, which writes the task prompt. Typed by hand,
    `@agent-<type>` resolves on submit, as `@agent-code-reviewer` or
    `@agent-my-plugin:code-reviewer`. <!-- req: agents.behavior.Invoke subagents explicitly.@-mention -->
 4. **Session-wide.** `--agent <name>`, or the `agent` setting (§12), runs the main thread as that
@@ -739,7 +808,8 @@ agent's definition is re-applied in either case.
    load, `omitClaudeMd` notwithstanding; in `-p` a custom agent with its own prompt starts without
    the git status snapshot. `initialPrompt` is submitted as the first user turn, commands and
    skills processed, prepended to any prompt the user gives. The header shows `@<name>`. The flag beats the
-   setting, and a plugin's default `agent` (§12.6) is the lowest settings layer. A plugin agent is
+   setting, and a plugin's default `agent` (§12.6: deprecated since 2.1.323, still applied with a
+   warning) is the lowest settings layer. A plugin agent is
    found by its bare name when one plugin has it, and by its scoped name always
    (Judgment J5.16). The choice persists on resume; if the agent is gone, the session continues with
    the default tools and warns
@@ -776,8 +846,8 @@ silently replaces a definition the project checked in.
 | Id | Judgment | Why, and the evidence |
 | --- | --- | --- |
 | J5.1 | For a project, user, managed or `--add-dir` file, an empty `name` (`name:`, `""`, whitespace) is no name (documentation, nothing logged); a `name` that is a list or table makes the file skipped with an error; a number or boolean is read as its text (§5.4.1). | `sub-agents.md` names "No `name`" only. YAML gives `name:` a null value, so it reads as absent; a structured value is not a name. Lead: the reference implementation's rows for `src/format/agent.ts`. |
-| J5.2 | A plugin agent without a usable `description` loads with `Agent from <plugin> plugin`; a plugin agent's `name` that contains `:` or starts with `-` is kept (§5.4.2). | `plugins/components.md` gives that description only for unparsable frontmatter and lists only the 256-character fallback for names; `sub-agents.md` says a plugin agent "still loads". Oracle 2.1.325: `claude plugin validate` reports a plugin agent without `description` as a warning only (`No description in frontmatter`) and says nothing of `name: has:colon`; oracle 2.1.321 on the corpus gives the whole warning of §5.4.4 27 times, on files without the key, `agents/_shared/constitution.md` and `agents/research/references/README.md` among them. |
-| J5.3 | Two files in one `agents` directory with one name: the one whose relative path sorts first by code unit loads and the client reports the other; two agents of one plugin with one scoped name are handled the same way (§5.2, §5.5). | The docs leave it to "filesystem read order rather than a documented precedence", which differs between machines; a fixed order makes two Extended clients agree. `/doctor` reporting duplicates is documented. |
+| J5.2 | A plugin agent without a usable `description` loads with `Agent from <plugin> plugin`; a plugin agent's `name` that contains `:` or starts with `-` is kept (§5.4.2). | `plugins/components.md` gives that description only for unparsable frontmatter and lists only the 256-character fallback for names; `sub-agents.md` says a plugin agent "still loads". Oracle 2.1.325: `claude plugin validate` reports a plugin agent without `description` as a warning only (`No description in frontmatter`) and says nothing of `name: has:colon`; oracle 2.1.330 (`claude -p --plugin-dir`, `init.agents`) registers `name: has:colon` as `p1:has:colon` and `name: -dash` as `p2:-dash`, and the validator again only warns for a missing `description`; oracle 2.1.321 on the corpus gives the whole warning of §5.4.4 27 times, on files without the key, `agents/_shared/constitution.md` and `agents/research/references/README.md` among them. |
+| J5.3 | Two files in one `agents` directory with one name: the one whose relative path sorts first by code unit loads and the client reports the other; two agents of one plugin with one scoped name are handled the same way (§5.2, §5.5). | The 2.1.330 docs say only that Claude Code loads one of them (2.1.321 added that the choice follows "filesystem read order rather than a documented precedence"), which differs between machines; a fixed order makes two Extended clients agree. `/doctor` reporting duplicates is documented. |
 | J5.4 | Unrecognized fields are logged up to five per agent in file order, with a suggestion when a supported field matches case-insensitively or within two edits; plugin agents too; the SDK-only `observer`, `observerMessage` and `criticalSystemReminder_EXPERIMENTAL` are unrecognized in a file (§5.4, §5.6). | The docs give the limit of five and "the likely intended name when a supported field is close" without the similarity rule; the three SDK keys are in `AgentDefinition` but not in the frontmatter table. Oracle 2.1.325: the validator does not report `maxTurn` (an unknown field) in a plugin agent. |
 | J5.5 | A field value of the wrong type or outside its listed values (`color: magenta`, `isolation: remote` in a file, `maxTurns: 0`, `effort: huge`, `background: yes`) is dropped and the agent loads; the client logs it. `background` and `omitClaudeMd` take a YAML boolean or the text `true`/`false`; `maxTurns` a whole number ≥ 1, or text holding one (`"5"` is 5); `effort` the five names exactly; `model` any non-empty text (§5.4.3). | The docs say unknown fields are ignored and that a bad `autoCompactWindow` loads "as if the field were absent", and give no other invalid-value rule. Oracle 2.1.325: `claude plugin validate` reports none of `isolation: remote`, `color: magenta`, `maxTurns: "5"`, `tools: 5`, `effort: HIGH` or the ignored plugin fields (oracle 2.1.321 on the corpus: none of 68 agent `effort` values outside the list). **Quoted `maxTurns`**: oracle 2.1.325, re-run 2026-11-16 with a private config directory and a local stand-in for the Messages API that answers every subagent turn with a `Read` call: a plugin agent with `maxTurns: "2"` stopped after 2 turns, as `maxTurns: 2` did, and one without the field ran 9 turns until the stand-in answered with text. The reference implementation accepts the text too. |
 | J5.6 | The `.claude/agents/` of `--add-dir` directories rank after the project's own directories, in the order the directories were added (§5.5). | The docs say they load "alongside your project subagents" without an order. See Design decisions. |
@@ -786,10 +856,12 @@ silently replaces a definition the project checked in.
 | J5.9 | The zero-tools refusal fires only when every entry matched nothing in the filtered pool; an entry that `disallowedTools` removed counts as matched (§5.7.3). | `errors.md` says the refusal is skipped when `disallowedTools` removes every entry and fires when every entry "failed to match"; a mixed list is not described. |
 | J5.10 | `Agent(<type>)` deny rules and `Agent(...)` allowlists match the agent type exactly and case-sensitively; for a plugin agent that is the scoped name (§5.7.4). | `sub-agents.md` says the rule uses "the subagent's name field", written before plugin scoping; the scoped name is what `subagent_type` carries and what `SubagentStart` matchers see. |
 | J5.11 | A full model ID or `inherit` on the Agent call's `model` counts as unset (§5.8.2). | `AgentInput.model` allows only the four aliases, and the docs say the model "can't pass" the others; falling through to the definition is the safe reading. |
-| J5.12 | With no `effort` field or parameter, on a model other than the main one, the client sends no effort level (§5.8.4). | `sub-agents.md` and `model-config.md` say the session's level "doesn't apply" there and name no other source. |
+| J5.12 | With no `effort` field or parameter, on a model other than the main one, the client sends no effort level (§5.8.7). | `sub-agents.md` and `model-config.md` say the session's level "doesn't apply" there and name no other source. |
 | J5.13 | A plugin agent's memory directory replaces `:` and path separators in the scoped name with `-` (`my-plugin:review:security` → `my-plugin-review-security`) (§5.10.3). | The docs name the directory `<name-of-agent>`; `:` is not a valid file-name character on Windows, and a separator must not leave the memory root. |
 | J5.14 | A managed agent's frontmatter hooks need no folder trust (§5.12.1). | The docs exempt user and `--agents` agents and require trust for project and `--add-dir` ones; a managed agent does not come from opening a folder. |
 | J5.15 | Without agent teams enabled, a `name` on an Agent call makes nothing addressable and starts no teammate; a call made by a subagent never starts a teammate (§5.12.5). | The docs define the parameter only "with agent teams enabled" and the teammate rule for calls "from the main conversation". |
 | J5.16 | For `--agent` and the `agent` setting, an exact type of any source wins over a plugin agent's bare name; a bare name that two plugins share is refused with the scoped names listed; a plugin agent's bare name is the last part of its scoped name (§5.13). | `sub-agents.md` says a bare name finds a plugin agent and the scoped name disambiguates, without the rules for a clash with another source or for subfolders. |
-| J5.17 | A validator reports an agent file whose frontmatter does not parse as an error, as §2.11 states for every skill, agent and command file (§5.4.4). Oracle 2.1.325 agrees: it reports `YAML frontmatter failed to parse: … At runtime this agent loads with its name taken from the filename and every other frontmatter field silently dropped.` as an **error**, and validation fails (exit 1). | `plugins/components.md` says only to run `claude plugin validate` to find such files. The 2.1.325 message confirms the runtime rule of §5.4.2. The same oracle read `name: [bad` (an unclosed flow sequence) without a parse error, which is §4's frontmatter reading to define. |
+| J5.17 | A validator reports an agent file whose frontmatter does not parse as an error, as §2.11 states for every skill, agent and command file (§5.4.4). Oracle 2.1.325 agrees: it reports `YAML frontmatter failed to parse: … At runtime this agent loads with its name taken from the filename and every other frontmatter field silently dropped.` as an **error**, and validation fails (exit 1). | `plugins/components.md` says only to run `claude plugin validate` to find such files. The 2.1.325 message confirms the runtime rule of §5.4.2. The same oracle read `name: [bad` (an unclosed flow sequence) without a parse error, which is §4's frontmatter reading to define. Oracle 2.1.330 repeats both: the error and exit 1 for `name: a: b: c`, which then registers under its file name (`p1:broken`), and no finding for `name: [bad`, which registers as `p1:[bad`. |
 | J5.18 | The worktree-isolation checks of §5.3 item 4 belong to the client's command execution, not to agent loading. | `worktrees.md`, "How Claude Code enforces isolation", describes them as checks on each Bash, PowerShell or Monitor command before it runs, including a worktree removed while the subagent ran, which no reading of the agent file can foresee; the agent file only asks for isolation. A library that only loads plugins sees no command, so it owns none of the checks: what it returns is the parsed `isolation` field, and the host whose execution runs the commands applies them; conformance records the item as not applicable to such a library. |
+| J5.19 | A background subagent keeps exactly the built-in tools §5.7.1 lists, and the client removes every other built-in tool (§5.7.1). | 2.1.321's `sub-agents.md` said every other built-in tool is removed; 2.1.330's says Claude Code removes "most of them" and tells authors not to rely on the rest, without naming an exception. Removing all keeps the tool set of a background subagent the same on every client, and a plugin that follows the 2.1.330 advice runs either way. |
+| J5.20 | `CLAUDE_CODE_SUBAGENT_MODEL=inherit` is the same as unset, and an alias in the variable selects the version it points to even when it names the parent's family (§5.8.2, §5.8.3). | Both were stated in 2.1.321's `sub-agents.md`, "Choose a model"; 2.1.330's rewrite of the section drops the sentences without stating the opposite, and its "Which version a model alias selects" names only the `model` field and the per-invocation parameter as the sources the family rule applies to. |

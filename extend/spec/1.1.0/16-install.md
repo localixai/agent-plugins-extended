@@ -55,10 +55,10 @@ distinct, because a change at one stage does not reach the next on its own:
    per user, so a marketplace added in one project is known in every project;
    `installed_plugins.json` records each install with its `scope`, `installPath` and `version`; and
    `cache/` holds the plugin files.
-3. **Loaded**, in the running session: the plugin set loaded at startup or at the last
-   `/reload-plugins` (§16.12). A change to settings or disk MUST NOT change the loaded set until
-   `/reload-plugins` runs or a new session starts. This is why `claude plugin update` ends with
-   `Restart to apply changes.` and a background update says `Run /reload-plugins to apply`.
+3. **Loaded**, in the running session: the plugin set loaded at startup or at the last reload
+   (§16.12). A change to settings or disk made outside the `/plugin` panel — an install, update,
+   enable or disable from the shell — MUST NOT change the loaded set until `/reload-plugins` runs or
+   a new session starts; a change made in the panel reloads as §16.4.5 states.
    <!-- req: install.loading.Check which stage a plugin reached | install.overview.Make an installed plugin available in your session.Settings | install.overview.Make an installed plugin available in your session.Disk | install.overview.Make an installed plugin available in your session.Session -->
 
 ### 16.2.1 What is not on disk at session start
@@ -68,8 +68,7 @@ distinct, because a change at one stage does not reach the next on its own:
 2. After the session starts, the client checks the declared marketplaces in the background. A
    marketplace that settings declare and `known_marketplaces.json` lacks is cloned; the client then
    reloads plugins and downloads enabled plugins that are not cached yet. A declared marketplace
-   whose source changed in settings is fetched again from the new source, and the client shows
-   `Plugins changed. Run /reload-plugins to activate.`
+   whose source changed in settings is fetched again from the new source.
 3. An enabled plugin that neither path fetched and that has no usable cache directory is reported in
    the `/plugin` **Errors** tab as `Plugin "<name>" not cached at <path>` (§16.14).
    <!-- req: install.loading.Plugins and marketplaces that aren't on disk at session start -->
@@ -91,7 +90,7 @@ visible, because:
 A client SHOULD show a plugin's footprint before install (Claude Code shows a **Context cost**
 estimate for plugins of its official marketplace, opened from the **Marketplaces** tab or by naming
 the marketplace) and after it (`claude plugin details`, §17, and a **Not used recently** group of
-self-installed plugins with a **Last used** line in their details). A user stops a plugin without
+the self-installed plugins not used lately on the **Installed** tab). A user stops a plugin without
 uninstalling it by disabling it (§16.4).
 <!-- req: install.overview.What an enabled plugin adds to your sessions.Before you install | install.overview.What an enabled plugin adds to your sessions.After you install | install.overview.What an enabled plugin adds to your sessions.To stop it without uninstalling -->
 
@@ -109,7 +108,7 @@ install scopes"):
 | `managed` | Every user a policy covers; installed by managed settings (§14). | Managed settings; never written by the client |
 
 1. A project-scope entry turns the plugin on for collaborators but does not download it to their
-   machines: each collaborator installs it once at project scope (§16.4.2).
+   machines: each collaborator installs it once at project scope, in each clone (§16.4.2).
    <!-- req: install.guide.Choose an install scope.User scope | install.guide.Choose an install scope.Project scope | install.guide.Choose an install scope.Local scope | install.overview.Understand install scopes.User scope | install.overview.Understand install scopes.Project scope | install.overview.Understand install scopes.Local scope -->
 2. When one plugin is set at several scopes, local overrides project and project overrides user
    (§16.4).
@@ -130,7 +129,7 @@ install scopes"):
 
    | Source | File | Reaches |
    | --- | --- | --- |
-   | `--add-dir` | `.claude/settings.json` or `.claude/settings.local.json` of a directory passed with `--add-dir` | This session; only a `true` has an effect, and every other source overrides it |
+   | `--add-dir` | `.claude/settings.json` or `.claude/settings.local.json` of a directory passed with `--add-dir` | This session, and every other source overrides it; skipped until the user saves trust for the directory (§16.4.6) |
    | `user` | `~/.claude/settings.json` | The user, in every project |
    | `project` | `.claude/settings.json` | Everyone who clones the repository |
    | `local` | `.claude/settings.local.json` | The user, in this repository |
@@ -154,18 +153,28 @@ organization requires is marked `required by your org` instead (§16.10).
 
 ### 16.4.2 Enabled in project settings but not installed
 
-1. When a plugin's only `true` is in the project's `.claude/settings.json`, the client MUST NOT
-   fetch it onto a machine where it is not installed, unless its marketplace entry has a
-   relative-path source (which needs no install record, because it loads from the marketplace
-   itself) or a seed directory already holds it (§14).
+1. A plugin whose only `true` is in the project's `.claude/settings.json` MUST NOT load at session
+   start on a machine where it is not installed, and the client MUST NOT fetch it there, except:
+   - a seed directory (§14) already holds it: it loads with nothing to run;
+   - its entry has a relative-path source in a marketplace added from a local path: it loads at
+     session start, from the marketplace itself, with no install record;
+   - its entry has a relative-path source (such as `./plugins/formatter`) in a git marketplace the
+     user has added: `/reload-plugins` loads it for the current session only, and
+     `CLAUDE_CODE_SYNC_PLUGIN_INSTALL=1` loads it for one non-interactive `-p` run.
 2. A client fetches a plugin with an external source only when one of these sets it `true`: the user
    settings, a `.claude/settings.local.json` that git does not track, the `--settings` flag, or
    managed settings.
-3. Otherwise the **Errors** tab shows `Plugin "<name>" is enabled in project settings but isn't
-   installed here` with the guidance `Run claude plugin install <name>@<marketplace> --scope project
-   to install it for this project`. After that install and `/reload-plugins` the entry is gone and
-   the plugin is under **Installed**.
-   <!-- req: install.loading.Enabled in project settings but not installed | install.troubleshooting.Plugin "<name>" is enabled in project settings but isn't installed here -->
+3. Otherwise, when the plugin's marketplace is on the machine at session start, the **Errors** tab
+   shows `Plugin "<name>" is on in project settings but isn't installed here` with the guidance
+   `Run claude plugin install <name>@<marketplace> --scope project to install it for this project`.
+   The same state in a text or `stream-json` `-p` run is reported there too, as not installed with
+   the install command, not as `not cached` (§16.6.1). When the marketplace is not on the machine,
+   the user adds it first, from the source the project's `extraKnownMarketplaces` names (§16.5.3).
+4. The user installs from a shell in the project with the plugin's `enabledPlugins` key,
+   `claude plugin install <name>@<marketplace> --scope project`, then runs `/reload-plugins` or starts
+   a new session; the entry is gone and the plugin is listed under **Installed**. The install is
+   per clone; `--scope user` covers every project of the user.
+   <!-- req: install.loading.Enabled in project settings but not installed | install.troubleshooting.Plugin "<name>" is on in project settings but isn't installed here -->
 
 ### 16.4.3 Repository plugins
 
@@ -178,15 +187,17 @@ organization requires is marked `required by your org` instead (§16.10).
    MCP bundle (`.mcpb`, `.dxt`) or from a file outside the plugin directory are skipped; its
    monitors do not load (§9.2). None of this applies to a plugin under the user's own
    `~/.claude/skills/`.
-3. A cloud session does not add the marketplaces a repository lists under `extraKnownMarketplaces`,
-   because that needs the trust dialog a cloud session never shows.
+3. An Anthropic-hosted cloud session does not add the marketplaces a repository lists under
+   `extraKnownMarketplaces`, because that needs the trust dialog such a session never shows.
 
 ### 16.4.4 Uninstalling a plugin the project enables
 
 When the user uninstalls, from `/plugin`, a plugin the repository's `.claude/settings.json` enables,
-the client MUST ask whether to disable it for the user (**y**: write `false` for it in
-`.claude/settings.local.json`, leaving the project install) or to uninstall it for everyone (**u**:
-remove it from the shared `.claude/settings.json`).
+the client MUST ask whether to disable it for the user (**Disable for me**: write `false` for it in
+`.claude/settings.local.json`, leaving the project install) or to uninstall it for everyone
+(**Uninstall for everyone**: remove it from the shared `.claude/settings.json`). The question is a
+list answered with the arrow keys and Enter, or Esc to cancel; single-letter answers are not taken
+(Claude Code 2.1.326 changelog).
 <!-- req: install.guide.Uninstall a plugin the project enables -->
 
 ### 16.4.5 Managing installed plugins
@@ -195,11 +206,33 @@ The **Installed** tab of `/plugin` lists the plugins with actions to enable, dis
 uninstall each; `/plugin enable`, `disable` and `uninstall` open it at the plugin (§17). Disabled
 plugins are grouped under a collapsed header at the bottom. A plugin's details offer **Disable
 plugin** or **Enable plugin**, **Update now** and **Uninstall**, plus **Configure options** when the
-manifest declares `userConfig` (§3.4) and **Configure** when the plugin has an MCP bundle (§8).
-Managed-scope plugins are listed without enable, disable or uninstall. Closing the panel with pending
-changes made in it runs `/reload-plugins` (§16.12), which warns and leaves them pending when it would
-invalidate the prompt cache, until `/reload-plugins --force`.
+manifest declares `userConfig` (§3.4) and **Configure** when a marketplace plugin has an MCP bundle
+(§8). Managed-scope plugins are listed without enable, disable or uninstall. Closing the panel with
+pending changes made in it runs `/reload-plugins` (§16.12), which warns and leaves them pending when
+it would invalidate the prompt cache, until `/reload-plugins --force`.
 <!-- req: install.guide.Manage installed plugins -->
+
+### 16.4.6 Enabled in an `--add-dir` directory but not loaded
+
+1. Until the user has saved workspace trust for a directory passed with `--add-dir`, the client
+   MUST skip that directory's `extraKnownMarketplaces` entries and, in an interactive terminal
+   session, its `enabledPlugins` entries set to `true` (§13). Answering the prompt that `--add-dir`
+   shows does not save that trust; the user saves it by starting a session in the directory and
+   accepting the trust dialog, or by setting the trust key (§13). A directory inside a
+   pull-request worktree can be skipped even after it is trusted.
+2. A `true` in one of the added directory's files is read only when that file's setting sources are
+   loaded (`--setting-sources`, §17.15.3; all three are on by default):
+
+   | File of the added directory | Setting sources it needs |
+   | --- | --- |
+   | `.claude/settings.json` | `project` <!-- req: install.loading.Enabled in an --add-dir directory but not loaded..claude/settings.json --> |
+   | `.claude/settings.local.json` | `project` and `local` <!-- req: install.loading.Enabled in an --add-dir directory but not loaded..claude/settings.local.json --> |
+
+   So `claude --setting-sources user --add-dir ./shared` reads neither file of `./shared`; the user
+   adds `--setting-sources user,project` for a `true` in `settings.json`
+   <!-- req: install.loading.Enabled in an --add-dir directory but not loaded.settings.json -->
+   and `--setting-sources user,project,local` for one in `settings.local.json`.
+   <!-- req: install.loading.Enabled in an --add-dir directory but not loaded.settings.local.json -->
 
 ## 16.5 Installing
 
@@ -217,15 +250,16 @@ invalidate the prompt cache, until `/reload-plugins --force`.
    MAY show `Components will be discovered at installation` instead.
 3. The user chooses **Install for you (user scope)**, **Install for all collaborators on this
    repository (project scope)** or **Install for you, in this repo only (local scope)**. The client
-   then installs the plugin with its declared dependencies (§16.23) and prints a summary whose last
-   sentence is one of:
-   - `Plugin is now active.` — no reload is needed;
-   - `Plugin is now active.` followed by `Its bundled MCP server needs configuration before it can
-     start` — the plugin's MCP bundle needs its options set through **Configure** (§8);
+   then installs the plugin, with the dependencies it is missing (§16.23), and prints a summary that
+   ends in one of these ways:
+   - `Plugin is now active.` — the plugin is loaded;
+   - `Plugin is now active.` followed by a note that starts `Its bundled MCP server needs` — the
+     plugin's MCP bundle needs its options set through **Configure** (§8);
    - `Run /reload-plugins to apply.` — the panel closes and the client runs the reload itself
      (§16.12); when that reload would invalidate the prompt cache it warns and leaves the plugin
      pending until `/reload-plugins --force`;
-   - `The plugin couldn't be loaded` — the reason is in the **Errors** tab.
+   - a sentence that includes `The plugin couldn't` — it did not load, and the reason is in the
+     **Errors** tab.
 4. The plugin's skills then appear as `/<plugin>:<skill>`, and the plugin is listed under
    **Installed** with its scope and by `claude plugin list` with `Version`, `Scope` and `Status`.
    <!-- req: install.guide.Install a plugin -->
@@ -233,7 +267,8 @@ invalidate the prompt cache, until `/reload-plugins --force`.
 ### 16.5.2 From the shell
 
 `claude plugin install <name>@<marketplace>` (§17) installs without a session and prints
-`Successfully installed plugin: <name>@<marketplace> (scope: <scope>)`. Plugins it installs load at
+`Installed plugin: <name>@<marketplace> (scope: <scope>)` in a terminal, `Successfully installed
+plugin: …` when its output is not a terminal (§17.2.1). Plugins it installs load at
 the next session start, or at `/reload-plugins` in an open session. On a machine where no
 interactive session has run, the official marketplace is not registered yet (§15), so a setup script
 runs `claude plugin marketplace add anthropics/claude-plugins-official` before installing from it. A plugin whose marketplace entry uses a `command` source shows its
@@ -253,9 +288,9 @@ A client MUST know a marketplace before it installs from it. A user adds it once
 | Local directory or file | A path to a directory holding `.claude-plugin/marketplace.json`, or to the file; a relative path starts with `./` or `../`, because a bare `name/name` is GitHub shorthand |
 | Hosted `marketplace.json` | Its `https://` URL |
 
-On success the client prints `Successfully added marketplace: <name>` (from the shell followed by
-` (declared in <scope> settings)`, §17.14.1), and its plugins appear on **Discover** the next time
-`/plugin` opens, with no reload. Marketplaces are listed, refreshed and removed with the
+On success the marketplace is listed on the **Marketplaces** tab of `/plugin` and its plugins on
+**Discover**; from the shell the client prints `Added marketplace: <name> (declared in <scope>
+settings)` in a terminal and `Successfully added marketplace: …` otherwise (§17.14.1). Marketplaces are listed, refreshed and removed with the
 `marketplace list`, `update` and `remove` commands (§17); removing one from the last scope that
 declares it uninstalls every plugin installed from it and removes their `enabledPlugins` entries, and the **Marketplaces**
 tab names them before asking to confirm.
@@ -274,7 +309,8 @@ named without `@marketplace` (§17).
 2. From the shell (2.1.292 or later), the client adds the marketplace without confirmation, reusing
    one already added from that source. A new one goes through the same policy checks as
    `marketplace add` (§14) and is declared in the user's settings even with `--scope project`; the
-   command prints `Successfully added marketplace: <name> (declared in user settings)` and installs.
+   command prints `Added marketplace: <name> (declared in user settings)` (in a terminal; §17.2.1)
+   and installs.
    <!-- req: install.guide.Add and install from your shell -->
 3. When the catalog fetched from the source has the name of a marketplace added from another source,
    the client keeps the existing one and installs nothing:
@@ -310,8 +346,8 @@ The same credentials apply to plugin install, marketplace update and plugin upda
 3. The Agent SDK loads plugins through its `plugins` option, which is the equivalent of
    `--plugin-dir` (§16.8; type `SdkPluginConfig`, `{ type: 'local', path }`, in
    `@anthropic-ai/claude-agent-sdk`). <!-- req: install.guide.JetBrains, non-interactive runs, and the Agent SDK.Agent SDK -->
-4. A cloud session does not load the plugins installed on the user's machine nor those a repository's
-   `.claude/settings.json` turns on; it loads what managed settings distribute (§14).
+4. A cloud session has no plugin browser and does not load the plugins the user installed at `user`
+   or `local` scope; it loads what managed settings distribute (§14).
 5. A client that offers sessions on a remote machine over SSH, as the Desktop app does, copies the
    user's plugins from their computer to `~/.claude/remote/plugins/` on the remote machine and loads
    them from there; on a Windows remote machine it leaves out a plugin holding a file or folder name
@@ -326,17 +362,19 @@ The same credentials apply to plugin install, marketplace update and plugin upda
 
 1. All plugin files and records live under one **plugins root**: `CLAUDE_CODE_PLUGIN_CACHE_DIR` when
    it is set and not empty, else `plugins` under the configuration directory, `~/.claude/plugins` by
-   default (§3.1.2, Judgment J3.1). Every path below is relative to it.
+   default (§3.1.2, Judgment J3.1). Every path below is relative to it, except `synced/` and
+   `.trash/`, which stay under `~/.claude/plugins` even when `CLAUDE_CODE_PLUGIN_CACHE_DIR` is set.
 
    | Path | Holds |
    | --- | --- |
    | `cache/<marketplace>/<plugin>/<version>/` | One directory per installed version of a copied marketplace plugin; `<plugin>` is the entry name and `<version>` the resolved version (§16.16). `${CLAUDE_PLUGIN_ROOT}` points here (§3.1.1). |
    | `data/<plugin-id>/` | The plugin's persistent directory, `${CLAUDE_PLUGIN_DATA}` (§3.1.2). Created on first use, kept across updates, deleted by the last uninstall (§16.13). |
    | `marketplaces/<name>/` | The clone or download of a marketplace added from GitHub, another git host or a URL. A marketplace added from a local file or directory has no copy here; its `installLocation` is the path given. |
+   | `mcpb/` | The files extracted from the MCP bundles (`.mcpb`, `.dxt`) that plugins declare (§2.9, §8); deleted with a plugin's options at its last uninstall unless another plugin uses an identical bundle (§17.5.1). |
    | `synced/` | Plugins synced from claude.ai (§16.10). |
    | `.trash/` | Plugins the claude.ai sync removed. |
    | `installed_plugins.json`, `known_marketplaces.json` | The records of §16.2. A marketplace hosted on claude.ai is recorded in `known_marketplaces_claudeai.json` instead. |
-   | `flagged-plugins.json` | Plugins uninstalled because their marketplace removed them; listed under **Flagged** in `/plugin` (§16.21). |
+   | `flagged-plugins.json` | Plugins flagged as removed because their marketplace delisted them; listed under **Needs attention** on the **Installed** tab of `/plugin` (§16.21). |
    | `installed_plugins.set-aside.<date>.<hash>.json`, `installed_plugins.unreadable.<date>.<hash>.kept` | Dated copies kept before records are dropped or the file is rebuilt (§16.6.2); they age out on the `cleanupPeriodDays` schedule (§12). |
 
 2. Because `${CLAUDE_PLUGIN_ROOT}` is a version directory, a plugin's root changes with each version;
@@ -350,10 +388,13 @@ The same credentials apply to plugin install, marketplace update and plugin upda
    `{ "version": 2, "plugins": { "<id>": [ <record>, ... ] } }`, with optional text fields
    `installedAt`, `lastUpdated` and `gitCommitSha`, and MUST keep and write back fields it does not
    know (Judgment J16.1).
-2. A plugin whose record exists but whose `installPath` is missing is reported `Plugin "<name>" not
-   cached at <path>` with the guidance `Run /plugin to refresh the plugin cache`. Installing it again
-   from the shell MUST download it again even though its record exists; after `/reload-plugins` the
-   entry is gone. <!-- req: install.troubleshooting.Plugin "<name>" not cached at <path> -->
+2. An enabled plugin of which the client finds no usable copy — such as one whose record exists but
+   whose `installPath` is missing — is reported `Plugin "<name>" not cached at <path>` with the
+   guidance `Run /plugin to refresh the plugin cache`. A plugin that only a repository's settings
+   enable and that is not installed is not reported this way but as §16.4.2 item 3 states. Installing
+   it again from the shell MUST download it again even though its record exists (for a plugin the
+   project enables, `--scope project` from the project); after `/reload-plugins` the entry is gone
+   and the plugin is listed under **Installed**. <!-- req: install.troubleshooting.Plugin "<name>" not cached at <path> -->
 
 ### 16.6.2 A file or record the client cannot use
 
@@ -522,13 +563,15 @@ plugin for one session").
    <!-- req: install.develop.Load plugins from an environment variable -->
 4. **A folder of plugins** (2.1.265 or later): a folder with no `.claude-plugin/` directory and no
    plugin component at its top level is a folder of plugins, and each immediate subfolder that has
-   `.claude-plugin/plugin.json` loads as its own plugin; everything else, including a subfolder
-   without a manifest, is skipped without an error. A folder whose `.claude-plugin/` holds a
+   `.claude-plugin/plugin.json` and whose name does not start with `.` loads as its own plugin;
+   everything else, including a subfolder without a manifest and a dot-named one with a manifest, is
+   skipped without an error (`plugins/create.md`, "Load a folder of plugins"). A folder whose `.claude-plugin/` holds a
    `marketplace.json` and no `plugin.json` is also a folder of plugins (2.1.281 or later); the
    marketplace file is not read and nothing is installed from it, so a plugin under its `plugins/`
    folder does not load (§2.12); before 2.1.281 such a folder loaded as one empty plugin named
    after it. In an interactive session, a
-   subfolder added later loads once its manifest exists, and one removed unloads, each with a
+   subfolder added later loads once its manifest exists, unless its name starts with `.`, and one
+   removed unloads, each with a
    message; a change that would invalidate the prompt cache is held and the message says to run
    `/reload-plugins` (§16.12). Judgment J16.6 lists what counts as a component at the top level.
    <!-- req: install.develop.Load a folder of plugins -->
@@ -651,10 +694,12 @@ such as a `claude plugin` command in another terminal, need it typed. `force` wi
    `Reloaded: N plugins · N skills · N agents · N hooks · N plugin MCP servers · N plugin LSP
    servers`, without the MCP server count in a session without an interactive terminal. The skills
    count covers a plugin's `commands/` entries and its `SKILL.md` skills; the agents count is every
-   agent loaded in the session, plugin or not. When a reloaded plugin's dependencies are missing, the
-   client installs them, reloads again and appends `(+ N dependencies: <names>) resolved`. When any
-   plugin failed, it adds `N errors during load. Run /plugin for details.` (Judgment J16.7 for the
-   joining). <!-- req: install.plugin.Reload summary -->
+   agent loaded in the session, plugin or not. When any plugin failed, it adds `N errors during
+   load. Run /plugin for details.` (Judgment J16.7 for the joining). <!-- req: install.plugin.Reload summary -->
+   **Dependencies**: when a reloaded plugin is missing a dependency the client can resolve (§16.23),
+   the reload installs it; when the reload applies, the summary includes
+   `(+ N dependencies: <names>) resolved`. When the reload is not applied (item 2) or the summary
+   says the dependencies were `installed but not applied`, `/reload-plugins --force` applies them. <!-- req: cli.plugin.Dependencies installed during a reload -->
 2. **MCP tools**: when the reload would add or remove a plugin MCP server or the `LSP` tool and so
    invalidate the prompt cache, the client MUST NOT apply it without `--force`. It prints `This reload
    changes MCP tools (<server>) — your next message will re-read the whole conversation instead of
@@ -740,20 +785,42 @@ of the marketplace stage are §15's and those of policy §14's.
 | --- | --- |
 | `Plugin "<name>" not found in marketplace "<marketplace>"` with the hint `Your local copy may be out of date — try claude plugin marketplace update <marketplace>` or `The marketplace couldn't be refreshed (...)` | The name is not in the local catalog and the client did not refresh it before the lookup (offline, or a skip of §16.17). The user refreshes and retries. <!-- req: install.troubleshooting.not found in marketplace with a refresh hint --> |
 | The same message with no hint | The catalog was refreshed; the name is likely wrong. Before 2.1.232 the named marketplace was refreshed only after a miss and only with auto-update on. `claude plugin install` prints it also for a marketplace never added. <!-- req: install.troubleshooting.not found in marketplace with no hint --> |
-| `Plugin "<name>" not found in any marketplace` (`… in any configured marketplace` from the shell) | A bare name matched no catalog; neither form refreshed every catalog first (§16.17). Success reads `✓ Installed <plugin>.` in a session, `Successfully installed plugin: <plugin>@<marketplace>` in the shell. <!-- req: install.troubleshooting.Plugin "<name>" not found in any marketplace --> |
-| `Plugin '<name>@<marketplace>' is already installed globally` and `Use '/plugin' to manage existing plugins.` | `/plugin install` of a plugin installed at user scope or by managed settings; without `@<marketplace>` the word `globally` is left out. A plugin installed only at project or local scope MAY be installed at user scope too. The shell prints `Plugin "<name>@<marketplace>" is already installed (scope: user)` and exits 0, downloading again when the cache directory is missing. <!-- req: install.troubleshooting.Plugin '<name>@<marketplace>' is already installed globally --> |
+| `Plugin "<name>" not found in any marketplace` (`… in any configured marketplace` from the shell) | A bare name matched no catalog; neither form refreshed every catalog first (§16.17). Success reads `✓ Installed <plugin>.` in a session, and `Installed plugin: <plugin>@<marketplace>` from the shell in a terminal (`Successfully installed plugin: …` when the output is not a terminal, §17.2.1). <!-- req: install.troubleshooting.Plugin "<name>" not found in any marketplace --> |
+| `Plugin '<name>@<marketplace>' is already installed globally` | `/plugin install` of a plugin installed at user scope or by managed settings; without `@<marketplace>` the word `globally` is left out. A plugin installed only at project or local scope MAY be installed at user scope too. The shell prints `Plugin "<name>@<marketplace>" is already installed (scope: user)` and exits 0, downloading again when the cache directory is missing. <!-- req: install.troubleshooting.Plugin '<name>@<marketplace>' is already installed globally --> |
 | `This plugin uses a source type your Claude Code version does not support` and `Update Claude Code and try again.` | The entry's source type is unknown to this version (§15). <!-- req: install.troubleshooting.This plugin uses a source type your Claude Code version does not support --> |
 | `Plugin archive integrity check failed for <url>: expected sha256 <pin>, got <digest>. The archive was not installed. Verify the sha256 in the marketplace entry, or that the URL serves the intended file.` | An `archive` source's download does not match its `sha256` pin (§15); nothing is installed. <!-- req: install.troubleshooting.Plugin archive integrity check failed --> |
 | `"<package>" was not installed: <reason>. An npm plugin source must name a registry package (name or name@version) or link to a tarball file. For a plugin in a git repository, use a "github", "url" or "git-subdir" source.` | An `npm` source's `package` was refused before any fetch, on install, update or load (§15). <!-- req: install.troubleshooting.An npm plugin source must name a registry package --> |
-| `Marketplace "<name>" is registered from an untrusted source: The name '<name>' is reserved for official Anthropic marketplaces. Only repositories from 'github.com/anthropics/' can use this name. To fix it, remove the marketplace and re-add it from the official source.` | A reserved name is re-checked every time the marketplace loads or refreshes (2.1.205 or later), so the marketplace and its plugins stop loading (§15). <!-- req: install.troubleshooting.Marketplace "<name>" is registered from an untrusted source --> |
+| `Marketplace "<name>" is registered from an untrusted source: The name '<name>' is reserved for official Anthropic marketplaces. Only repositories from 'github.com/anthropics/' can use this name. To fix it, remove the marketplace and re-add it from the official source.` | A reserved name is re-checked every time the marketplace loads or refreshes (2.1.205 or later), so the marketplace and its plugins stop loading (§15); `claude plugin marketplace update <name>` prints the line. For a source that is neither GitHub nor git, such as a local directory, the reserved-name sentence ends `can only be used with GitHub sources from the 'anthropics' organization`; `claude plugin marketplace add` runs the same check and refuses with `Failed to add marketplace:` and that sentence (§17.19.2). <!-- req: install.troubleshooting.Marketplace "<name>" is registered from an untrusted source --> |
 | `Marketplace <name> is added but ignored. <reason> <fix>` | A `known_marketplaces.json` entry failed a check run on every read: a location on a network drive, with a `.` or `..` segment, or not checkable; a git URL or URL that cannot be used; a source that differs from its `extraKnownMarketplaces` declaration; or, with `(see the debug log)`, a refused name. The marketplace and its plugins stop loading; `claude plugin marketplace remove` works on the entry; a network location is trusted only when declared in user or managed settings (§15). In `/plugin` the name is quoted and the fix is on the next line. <!-- req: install.troubleshooting.Marketplace "<name>" is added but ignored --> |
 | `Cannot add marketplace "<name>": its source doesn't match its extraKnownMarketplaces entry in user or managed settings` | Two sources match only when their type and every field are equal; an unpassed `ref` differs, and an `https://github.com/` URL is a `git` source, not `github`. Nothing is registered (before 2.1.287 the wording was `its network source differs from the one declared for it in settings (…)`). <!-- req: install.troubleshooting.Cannot add marketplace "<name>": its source doesn't match its extraKnownMarketplaces entry in user or managed settings --> |
 | `Plugin <name> has a corrupt manifest file` + `JSON parse error:` / `has an invalid manifest file` + `Validation errors:` | The fetched `.claude-plugin/plugin.json` is not JSON, or fails the schema (§2.1). From the shell the line is prefixed `Failed to install plugin "<name>@<marketplace>":` (where `<name>` in the rest MAY be a temporary directory) and the command exits 1. <!-- req: install.troubleshooting.Plugin <name> has a corrupt manifest file or has an invalid manifest file --> |
 | `Plugin directory not found at path: <path>` | An enabled relative-path plugin's folder is missing inside its marketplace. `Marketplace directory not found at path: <path>` means the marketplace's own local directory moved or was deleted. <!-- req: install.troubleshooting.Plugin directory not found at path: <path> --> |
-| `No plugins available` / `No marketplaces configured` | No marketplace is registered; **Discover** is empty. <!-- req: install.troubleshooting.No plugins available or No marketplaces configured --> |
-| `Failed to install: <plugin> (<reason>)` | A bulk install from `/plugin` installed none. A reason MAY be cut to its first line; then the summary ends `Installing a plugin from its details (Enter) in /plugin shows its full error.` <!-- req: install.troubleshooting.Failed to install: <plugin> (<reason>) --> |
+| `No plugins yet` / `No marketplaces configured` | No marketplace is registered; **Discover** is empty (`No plugins yet`) and `claude plugin marketplace list` prints `No marketplaces configured` (or lists only the built-in directory marketplace, §17.14.2). <!-- req: install.troubleshooting.No plugins yet or No marketplaces configured --> |
+| `Couldn't install: <plugin> (<reason>)` or `Failed to install: <plugin> (<reason>)` | A bulk install from `/plugin` installed none; the menu closes with this summary. A reason MAY be cut to its first line; then the summary ends `Installing a plugin from its details (Enter) in /plugin shows its full error.`, and installing from the details shows the whole error. <!-- req: install.troubleshooting.Couldn't install: <plugin> (<reason>) or Failed to install: <plugin> (<reason>) --> |
+| `Marketplace "<name>", which managed settings declare, stands from another source and cannot be taken back while its declared source is unreachable` | Managed settings declare a marketplace under a name the user's registry holds from another source, and the client could not reach the declared source, so it keeps the user's marketplace. Once the declared source is reachable, the next interactive session replaces it (§14, §15). <!-- req: install.troubleshooting.Marketplace "<name>", which managed settings declare, stands from another source and cannot be taken back while its declared source is unreachable --> |
+| `The list of installed plugins (installed_plugins.json) could not be read, so marketplace "<name>", which managed settings declare, cannot be taken back from another source` | Before replacing such a marketplace the client reads `installed_plugins.json`, and the read failed; it replaces nothing. When `claude plugin list` reports a record this version cannot read, §16.6.2 item 1 applies; otherwise the user makes the file readable again (fixing its JSON or restoring it), and the next interactive session replaces the marketplace. <!-- req: install.troubleshooting.The list of installed plugins (installed_plugins.json) could not be read, so marketplace "<name>", which managed settings declare, cannot be taken back from another source --> |
 | `⚠ <file> does not load (<error>), so Claude Code ignores the whole file, including anything this command wrote there. Fix the file, then run this command again if its change is missing. If a newer Claude Code wrote the file, update Claude Code instead.` | After the success line of `install`, `enable`, `disable` or `marketplace add`, when the settings file written has an error: `its "<key>" is not valid` (`its "<key>" and N other value are not valid` for several), or `it is not a JSON object` (§12). <!-- req: install.troubleshooting.does not load (...), so Claude Code ignores the whole file --> |
-| `Failed to run: Plugin directory does not exist: <path> (<plugin> — run /plugin to reinstall)` | A hook's plugin directory is gone from disk; the hook does not run, and the failure shows once per session per hook event and command. `/reload-plugins` loads the hooks from the current directory (§7). <!-- req: install.troubleshooting.Plugin directory does not exist: <path> --> |
+| A hook failure beginning `Failed to run: Plugin directory does not exist`, or one saying the plugin `was updated or removed, so this hook did not run` | A hook's plugin directory is gone from disk; the hook does not run, and the failure shows once per session per hook event and command. `/reload-plugins` loads the hooks from the current directory (§7); its output, not the hook going quiet, confirms the fix: `Reloaded:` with no errors line, `N errors during load.` (see the **Errors** tab), or a line ending `Run /reload-plugins --force to apply.` (nothing reloaded) (`errors.md`, "Find your error"). <!-- req: install.troubleshooting.Plugin directory does not exist: <path> --> |
+
+A plugin's hooks that do not run, or that block an action, are found this way (§7 states the
+behaviour; `plugins/troubleshooting.md`, "`Couldn't load hooks from <path>` and hooks that don't
+fire"):
+
+1. **Load failures** are in the **Errors** tab: `Couldn't load hooks from <path>: <reason>` or
+   `Failed to load hooks from <path>: <reason>`, the reason naming the problem, such as invalid JSON
+   or a missing top-level `hooks` key; `hooks path not found: <path>`; and
+   `hooks path escapes plugin directory: <path>` (§17.18.4). <!-- req: install.troubleshooting.Hooks fail to load -->
+2. **A hook whose command failed** shows `<Event> hook error: Failed with non-blocking status code:
+   <stderr>` in the transcript. A plugin path cut off at a space in that stderr means an unquoted
+   `${CLAUDE_PLUGIN_ROOT}` in a shell-form command, which the validator warns about (§2.5, §7); a
+   notice reading `Failed to run: Plugin directory does not exist: <path>` is the last row of the
+   table above; for any other error the full stderr is in the debug log. <!-- req: install.troubleshooting.hook error notices in the transcript -->
+3. **A blocking hook**: when a plugin hook exits `2` and its stderr is the blocking message, the
+   error MUST end with `This hook comes from the <plugin> plugin.` (§7). <!-- req: install.troubleshooting.A plugin hook blocks a tool call or prompt -->
+4. **A hook that loads but never fires**: the plugin's details first, where a note beginning
+   `Its hooks.json hooks do not run` means a same-named plugin holds the hooks (§16.11 item 1); then
+   the event name (case-sensitive), the `matcher` for a tool event, and the debug log, with debug
+   logging on, after triggering the event, where a hook that ran shows with its exit code. <!-- req: install.troubleshooting.Hook loads but never fires -->
 
 A plugin that is installed but shows no skills is checked in order: listed and enabled under
 **Installed** (`Status: ✔ enabled` in `claude plugin list`); the **Errors** tab, where each entry pairs
